@@ -95,7 +95,7 @@
         height: 20px;
         border-bottom: 1px solid #929292;
     }
-    #asideBack ul li:first-child {
+    #asideBack ul li:last-child {
         font-weight: bold;
     }
     button {
@@ -111,7 +111,7 @@
     <section>
         <article style="margin-top: 30px;">
             <div id="menuTitle">
-                <span>전체 프로젝트</span>
+                <span>완료 프로젝트</span>
                 <button>신규</button>
                 <hr style="width: 95%; margin-top: 10px; color: #929292;">
             </div>
