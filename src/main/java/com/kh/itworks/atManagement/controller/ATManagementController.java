@@ -8,6 +8,21 @@ public class ATManagementController {
 	@RequestMapping("selectATManagement.at")
 	public String selectATManagement() {
 		
+		return "atManagement/atStatus";
+	}
+	@RequestMapping("insertATManagement.at")
+	public String insertATManagement() {
+		
 		return "atManagement/atManagement";
+	}
+	@RequestMapping("selectCorrectionList.at")
+	public String selectCorrentionList() {
+		
+		return "atManagement/selectCorrectionList";
+	}
+	@RequestMapping("selectOvertimeList.at")
+	public String selectOvertimeList() {
+		
+		return "atManagement/selectOvertimeList";
 	}
 }

@@ -41,9 +41,9 @@
         <div id="asideBack">
             <div class="asideMenuTitle">근태 정보</div>
             <ul>
-                <li><a href="#" class="asideMenu">- 근태 현황</a></li>
-                <li><a href="#" class="asideMenu">- 근태 수정 내역</a></li>
-                <li><a href="#" class="asideMenu">- 연장 근무 신청 내역</a></li>
+                <li><a href="selectATManagement.at" class="asideMenu">- 근태 현황</a></li>
+                <li><a href="selectCorrectionList.at" class="asideMenu">- 근태 수정 내역</a></li>
+                <li><a href="selectOvertimeList.at" class="asideMenu">- 연장 근무 신청 내역</a></li>
             </ul>
         
         <div class="asideMenuTitle">휴가 정보</div>
@@ -54,7 +54,7 @@
         
         <div class="asideMenuTitle">근태 관리</div>
             <ul>
-                <li><a href="#" class="asideMenu">- 기본 설정</a></li>
+                <li><a href="insertATManagement.at" class="asideMenu">- 기본 설정</a></li>
                 <li><a href="#" class="asideMenu">- 휴직자 관리</a></li>
                 <li><a href="#" class="asideMenu">- 직원 근태 관리</a></li>
                 <li><a href="#" class="asideMenu">- 직원 근무 관리</a></li>
