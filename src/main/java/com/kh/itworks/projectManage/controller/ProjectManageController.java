@@ -20,4 +20,25 @@ public class ProjectManageController {
 	public String finishProjectList() {
 		return "projectManage/finishProjectList";
 	}
+	
+	@RequestMapping("insertProjectForm.pm")
+	public String showInsertProjectForm() {
+		return "projectManage/insertProjectForm";
+	}
+	
+	@RequestMapping("projectInfo.pm")
+	public String showProjectInfo() {
+		return "projectManage/projectDetail";
+	}
+	
+	@RequestMapping("projectNotice.pm")
+	public String showProjectNotice() {
+		return "projectManage/projectNoticeList";
+	}
+	
+	@RequestMapping("projectDetail.pm")
+	public String showProjectDetail() {
+		return "projectManage/projectDetail";
+	}
+
 }
