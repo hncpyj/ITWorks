@@ -25,4 +25,9 @@ public class ATManagementController {
 		
 		return "atManagement/selectOvertimeList";
 	}
+	@RequestMapping("selectVacationStatus.at")
+	public String selectVacationStatus() {
+		
+		return "atManagement/vacationStatus";
+	}
 }
