@@ -41,4 +41,33 @@ public class ProjectManageController {
 		return "projectManage/projectDetail";
 	}
 
+	@RequestMapping("insertTaskForm.pm")
+	public String showInsertTaskForm() {
+		return "projectManage/insertTaskForm";
+	}
+	
+	@RequestMapping("taskDetail.pm")
+	public String showTaskDetail() {
+		return "projectManage/taskDetail";
+	}
+	
+	@RequestMapping("insertSubTaskForm.pm")
+	public String showInsertSubTaskForm() {
+		return "projectManage/insertSubTaskForm";
+	}
+	
+	@RequestMapping("subTaskDetail.pm")
+	public String showSubTaskDetail() {
+		return "projectManage/subTaskDetail";
+	}
+	
+	@RequestMapping("insertProjectNotice.pm")
+	public String showInsertProjectNoticeForm() {
+		return "projectManage/insertProjectNoticeForm";
+	}
+	
+	@RequestMapping("noticeDetail.pm")
+	public String showNoticeDetail() {
+		return "projectManage/noticeDetail";
+	}
 }
