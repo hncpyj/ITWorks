@@ -125,7 +125,7 @@
             		<tr>
             			<td class="timeText">현재 접속 IP : 192.168.30.234</td>
             			<td><button class="timeBtn">퇴근</button><input type="text"></td>
-            			<td><a class="btn">연장 근무 신청</a></td>
+            			<td><a class="btn" href="insertCorrectionForm.at">연장 근무 신청</a></td>
             		</tr>
             	</table>
             </div>

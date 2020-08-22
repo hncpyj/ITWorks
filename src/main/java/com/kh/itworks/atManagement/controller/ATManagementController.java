@@ -40,4 +40,9 @@ public class ATManagementController {
 		
 		return "atManagement/insertObjectionForm";
 	}
+	@RequestMapping("insertCorrectionForm.at")
+	public String insertCorrectionForm() {
+		
+		return "atManagement/insertCorrectionForm";
+	}
 }
