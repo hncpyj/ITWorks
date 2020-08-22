@@ -49,7 +49,7 @@
         <div class="asideMenuTitle">휴가 정보</div>
             <ul>
                 <li><a href="selectVacationStatus.at" class="asideMenu">- 휴가 현황</a></li>
-                <li><a href="#" class="asideMenu">- 휴가 신청</a></li>
+                <li><a href="insertVacation.at" class="asideMenu">- 휴가 신청</a></li>
             </ul>
         
         <div class="asideMenuTitle">근태 관리</div>

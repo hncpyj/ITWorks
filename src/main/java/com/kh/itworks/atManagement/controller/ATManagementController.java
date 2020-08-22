@@ -30,4 +30,14 @@ public class ATManagementController {
 		
 		return "atManagement/vacationStatus";
 	}
+	@RequestMapping("insertVacation.at")
+	public String insertVacation() {
+		
+		return "atManagement/insertVacation";
+	}
+	@RequestMapping("insertObjectionForm.at")
+	public String insertObjectionForm() {
+		
+		return "atManagement/insertObjectionForm";
+	}
 }

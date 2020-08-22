@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style type="text/css">
 	section{
 		width: 75%;
@@ -72,10 +73,9 @@
     	height: 30px;
     }
     .btn{
-    	outline: 0;
-    	border : 0;
-    	color: #004771;
-    	background-color: white;
+    	text-decoration: none;
+        color: #004771;
+        font-size: 14px;
     }
     .timeText{
     	width: 170px;
@@ -120,12 +120,12 @@
             		<tr>
             			<td class="timeText">10 : 00 : 00</td>
             			<td><button class="timeBtn">출근</button><input type="text"></td>
-            			<td><button class="btn">출/퇴근 이의 신청</button></td>
+            			<td><a class="btn" href="insertObjectionForm.at">출/퇴근 이의 신청</a></td>
             		</tr>
             		<tr>
             			<td class="timeText">현재 접속 IP : 192.168.30.234</td>
             			<td><button class="timeBtn">퇴근</button><input type="text"></td>
-            			<td><button class="btn">연장 근무 신청</button></td>
+            			<td><a class="btn">연장 근무 신청</a></td>
             		</tr>
             	</table>
             </div>
