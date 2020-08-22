@@ -55,7 +55,7 @@
         <div class="asideMenuTitle">근태 관리</div>
             <ul>
                 <li><a href="insertATManagement.at" class="asideMenu">- 기본 설정</a></li>
-                <li><a href="#" class="asideMenu">- 휴직자 관리</a></li>
+                <li><a href="selectTakeTimeOffList.at" class="asideMenu">- 휴직자 관리</a></li>
                 <li><a href="#" class="asideMenu">- 직원 근태 관리</a></li>
                 <li><a href="#" class="asideMenu">- 직원 근무 관리</a></li>
             </ul>

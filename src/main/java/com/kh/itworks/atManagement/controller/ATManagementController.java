@@ -45,4 +45,9 @@ public class ATManagementController {
 		
 		return "atManagement/insertCorrectionForm";
 	}
+	@RequestMapping("selectTakeTimeOffList.at")
+	public String selectTakeTimeOffList() {
+		
+		return "atManagement/takeTimeOffList";
+	}
 }
