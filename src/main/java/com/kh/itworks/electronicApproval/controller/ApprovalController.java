@@ -62,6 +62,27 @@ public class ApprovalController {
 		return "electronicApproval/refRead";
 	}
 	
+	//새기안작성 버튼 누르면 양식 선택
+	@RequestMapping("approvalForm.ea") 
+	public String showApprovalFormForm() {
+		
+		return "electronicApproval/approvalForm";
+	}
+	
+	//양식-기안문
+	@RequestMapping("draft.ea")
+	public String showDraftForm() {
+		
+		return "electronicApproval/draft";
+	}
+	
+	//결재처리
+	@RequestMapping("appProce.ea")
+	public String showAppProceForm() {
+		
+		return "electronicApproval/approvalProcessing";
+	}
+	
 }
 
 

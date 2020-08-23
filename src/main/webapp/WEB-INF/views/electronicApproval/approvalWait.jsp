@@ -4,8 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ItWorks</title>
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style>
+	* {
+        margin: 0px;
+        font-family: "Noto Sans KR";
+    }
 	#wait {
 		border-collapse: collapse;
 		text-align: center;

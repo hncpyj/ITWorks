@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ItWorks</title>
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style>
 	* {
 		margin: 0px;
@@ -15,7 +16,7 @@
     }
     #asideBack {
         width: 250px;
-        height: 900px;
+        height: 1500px;
         background: #E4EBF3;
     }      
     #asideBack ul li{
@@ -37,7 +38,7 @@
         font-size: 14px;
         cursor: pointer; 
     }
-    #draft {
+    #newDraft {
         background: #29A2F7;
         color: white;
         width: 150px;
@@ -60,7 +61,7 @@
 	<aside style="display: inline-block; float:left;">
         <div id="asideBack">
             <br>
-            <div id="draft" onclick="location.href='#'">새 기안 작성</div>
+            <div id="newDraft" onclick="location.href='approvalForm.ea'">새 기안 작성</div>
             <div id="asideMenuTitle">결재</div>
             <ul>
                 <li><a href="approvalIng.ea" class="asideMenu">- 결재진행함</a></li>
