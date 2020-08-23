@@ -11,7 +11,7 @@
         margin: 0px;
         font-family: "Noto Sans KR";
     }
-	#ing {
+	#return {
 		border-collapse: collapse;
 		text-align: center;
 		margin:auto;
@@ -19,10 +19,9 @@
 		border-bottom: 3px solid #c4c4c4;
 	}
 	
-	#ing td {
+	#return td {
 		 border-bottom: 1px solid #c4c4c4;
 	}
-	
 	#menuTitle {
         width: 1240px; 
         margin: 0 auto;
@@ -59,10 +58,11 @@
 	<%@ include file="/WEB-INF/views/electronicApproval/common/electronicApprovalAside.jsp" %>
 
 	<section>
+	
 	<br>
  	<table style="margin:auto;">
 		<tr>
-			<td><p style="color:#004771; font-size:30px; width:660px;">결재진행함</p></td>
+			<td><p style="color:#004771; font-size:30px; width:660px;">반려문서함</p></td>
 			<td width="90px">
 				<select>
 					<option selected disabled hidden>검색조건</option>
@@ -77,20 +77,14 @@
 		</tr>
 	</table>
 	<br>
-<!--   	<article style="margin-top: 30px;">
-            <div id="menuTitle">
-                <span>전체 프로젝트</span>
-                <hr style="width: 95%; margin-top: 10px; color: #929292;">
-            </div>
-    </article> -->
 	
-	<table id="ing">
+	<table id="return">
 		<tr height="50px" style="background-color:#ffffff;">
 			<td width="170px">문서번호</td>
 			<td width="310px">문서제목</td>
 			<td width="110px">기안자</td>
 			<td width="150px">기안부서</td>
-			<td width="170px">기안일</td>
+			<td width="170px">반려일</td>
 			<td width="110px">진행상태</td>
 		</tr>
 		<tr height="40px">
@@ -99,7 +93,7 @@
 			<td width="110px">이호정</td>
 			<td width="150px">영업기획팀</td>
 			<td width="170px">2020/08/01</td>
-			<td width="110px">진행중</td>
+			<td width="110px" style="color: red;"><b>반려</b></td>
 		</tr>
 		<tr height="40px">
 			<td width="170px">20200801-0001</td>
@@ -107,7 +101,7 @@
 			<td width="110px">이호정</td>
 			<td width="150px">영업기획팀</td>
 			<td width="170px">2020/08/01</td>
-			<td width="110px">진행중</td>
+			<td width="110px" style="color: red;"><b>반려</b></td>
 		</tr>
 		<tr height="40px">
 			<td width="170px">20200801-0001</td>
@@ -115,7 +109,7 @@
 			<td width="110px">이호정</td>
 			<td width="150px">영업기획팀</td>
 			<td width="170px">2020/08/01</td>
-			<td width="110px">진행중</td>
+			<td width="110px" style="color: red;"><b>반려</b></td>
 		</tr>
 		<tr height="40px">
 			<td width="170px">20200801-0001</td>
@@ -123,14 +117,14 @@
 			<td width="110px">이호정</td>
 			<td width="150px">영업기획팀</td>
 			<td width="170px">2020/08/01</td>
-			<td width="110px">진행중</td>
+			<td width="110px" style="color: red;"><b>반려</b></td>
 		</tr>
 	</table>
 	
 	</section>
+
 </body>
 </html>
-
 
 
 
