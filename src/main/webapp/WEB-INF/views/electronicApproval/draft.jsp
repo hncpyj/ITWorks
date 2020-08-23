@@ -144,7 +144,19 @@
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendR.png" style="margin: auto; width: 40px;"><br>
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendL.png" style="margin: auto; width: 40px;">
 				</td>
-				<td width="270px"><div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;"></div></td>
+				<td width="270px">
+					<div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;">
+						<br>
+						<table style="margin: auto; border: 1px solid #c4c4c4; border-collapse: collapse; text-align: left; width: 230px;" border="1">
+							<tr height="40px">
+								<Td>&nbsp;&nbsp;정다빈 기술지원팀</Td>
+							</tr>
+							<Tr height="40px">
+								<Td>&nbsp;&nbsp;최재영 마케팅팀</Td>
+							</Tr>
+						</table>
+					</div>
+				</td>
 			</tr>
 		</table>
 		<table style="margin-left: 460px;">
@@ -168,7 +180,19 @@
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendR.png" style="margin: auto; width: 40px;"><br>
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendL.png" style="margin: auto; width: 40px;">
 				</td>
-				<td width="270px"><div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;"></div></td>
+				<td width="270px">
+					<div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;">
+						<br>
+						<table style="margin: auto; border: 1px solid #c4c4c4; border-collapse: collapse; text-align: left; width: 230px;" border="1">
+							<tr height="40px">
+								<Td>&nbsp;&nbsp;최우아 기술지원팀</Td>
+							</tr>
+							<Tr height="40px">
+								<Td>&nbsp;&nbsp;윤수경 경영지원팀</Td>
+							</Tr>
+						</table>
+					</div>
+				</td>
 			</tr>
 		</table>
 		<table style="margin-left: 460px;">
@@ -243,14 +267,30 @@
 				<td width="265px"><div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;"></div></td>
 				<td width="100px">
 					<div style="margin-left: 15px;">
-					<input type="radio" id="k">&nbsp;&nbsp;<label for="k">결재</label><br>
-					<input type="radio" id="h">&nbsp;&nbsp;<label for="h">합의</label><br><br></div>
+					<input type="radio" name="ra" id="k">&nbsp;&nbsp;<label for="k">결재</label><br>
+					<input type="radio" name="ra" id="h">&nbsp;&nbsp;<label for="h">합의</label><br><br></div>
 					<div style="margin-left: 20px;">
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendR.png" style="margin: auto; width: 40px;"><br>
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendL.png" style="margin: auto; width: 40px;">
 					</div>
 				</td>
-				<td width="265px"><div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;"></div></td>
+				<td width="265px">
+					<div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;">
+						<Br>
+						<table style="margin: auto; border: 1px solid #c4c4c4; border-collapse: collapse; text-align: center;" border="1">
+							<tr height="40px">
+								<td width="50px"></td>
+								<td width="50px">결재</td>
+								<td width="150px">이수정 영업기획팀</td>
+							</tr>
+							<tr height="40px">
+								<td>최종</td>
+								<td>결재</td>
+								<td>홍길동 영업기획팀</td>
+							</tr>
+						</table>
+					</div>
+				</td>
 			</tr>
 		</table>
 		<table style="margin-left: 480px;">
