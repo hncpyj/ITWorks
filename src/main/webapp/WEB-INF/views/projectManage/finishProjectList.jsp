@@ -95,11 +95,7 @@
         height: 20px;
         border-bottom: 1px solid #929292;
     }
-    #projectList tr:hover {
-        cursor: pointer;
-        background: rgb(221, 221, 221);
-    }
-    #asideBack ul li:first-child {
+    #asideBack ul li:last-child {
         font-weight: bold;
     }
     button {
@@ -115,7 +111,7 @@
     <section>
         <article style="margin-top: 30px;">
             <div id="menuTitle">
-                <span>전체 프로젝트</span>
+                <span>완료 프로젝트</span>
                 <button onclick="location.href='insertProjectForm.pm'">신규</button>
                 <hr style="width: 95%; margin-top: 10px; color: #929292;">
             </div>
@@ -150,7 +146,7 @@
                     <th width="100px">작성자</th>
                     <th width="200px">기간</th>
                 </tr>
-                <tr onclick="location.href='projectDetail.pm'">
+                <tr>
                     <td>10</td>
                     <td>temp</td>
                     <td>temp</td>
