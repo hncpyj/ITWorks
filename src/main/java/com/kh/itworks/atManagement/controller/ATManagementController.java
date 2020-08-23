@@ -50,4 +50,49 @@ public class ATManagementController {
 		
 		return "atManagement/takeTimeOffList";
 	}
+	@RequestMapping("selectEmployeeATManagement.at")
+	public String selectEmployeeATManagement() {
+		
+		return "atManagement/employeeATManagement";
+	}
+	@RequestMapping("updateEmpAt.at")
+	public String updateEmpAt() {
+		
+		return "atManagement/updateEmpAt";
+	}
+	@RequestMapping("employeeWorkManagement.at")
+	public String employeeWorkManagement() {
+		
+		return "atManagement/employeeWorkManagement";
+	}
+	@RequestMapping("vacationManagement.at")
+	public String vacationManagement() {
+		
+		return "atManagement/vacationManagement";
+	}
+	@RequestMapping("employeeVacation.at")
+	public String employeeVacation() {
+		
+		return "atManagement/employeeVacation";
+	}
+	@RequestMapping("selectVacationList.at")
+	public String selectVacationList() {
+		
+		return "atManagement/vacationList";
+	}
+	@RequestMapping("insertRewardVacation.at")
+	public String insertRewardVacation() {
+		
+		return "atManagement/insertRewardVacation";
+	}
+	@RequestMapping("selectATDetail.at")
+	public String selectATDetail() {
+		
+		return "atManagement/selectATDetail";
+	}
+	@RequestMapping("selectOvertimeDetail.at")
+	public String selectOvertimeDetail() {
+		
+		return "atManagement/selectOvertimeDetail";
+	}
 }

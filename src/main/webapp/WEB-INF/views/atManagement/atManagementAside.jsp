@@ -56,15 +56,15 @@
             <ul>
                 <li><a href="insertATManagement.at" class="asideMenu">- 기본 설정</a></li>
                 <li><a href="selectTakeTimeOffList.at" class="asideMenu">- 휴직자 관리</a></li>
-                <li><a href="#" class="asideMenu">- 직원 근태 관리</a></li>
-                <li><a href="#" class="asideMenu">- 직원 근무 관리</a></li>
+                <li><a href="selectEmployeeATManagement.at" class="asideMenu">- 직원 근태 관리</a></li>
+                <li><a href="employeeWorkManagement.at" class="asideMenu">- 직원 근무 관리</a></li>
             </ul>
         <div class="asideMenuTitle">휴가 관리</div>
             <ul>
-                <li><a href="#" class="asideMenu">- 기본 설정</a></li>
-                <li><a href="#" class="asideMenu">- 휴가 현황 조회</a></li>
-                <li><a href="#" class="asideMenu">- 휴가 신청 관리</a></li>
-                <li><a href="#" class="asideMenu">- 포상 휴가 생성</a></li>
+                <li><a href="vacationManagement.at" class="asideMenu">- 기본 설정</a></li>
+                <li><a href="employeeVacation.at" class="asideMenu">- 휴가 현황 조회</a></li>
+                <li><a href="selectVacationList.at" class="asideMenu">- 휴가 신청 관리</a></li>
+                <li><a href="insertRewardVacation.at" class="asideMenu">- 포상 휴가 생성</a></li>
             </ul>
         </div>
 

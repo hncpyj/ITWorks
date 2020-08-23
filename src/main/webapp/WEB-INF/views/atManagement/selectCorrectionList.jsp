@@ -114,7 +114,7 @@
                 		<td>9 : 00</td>
                 		<td class="long">전산 오류로 인한 출근 미처리</td>
                 		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
+                		<td><button class="btn" onclick="location.href='selectATDetail.at'">수정</button></td>
                 	</tr>
                 	<tr>
                 		<td>2020-08-14</td>

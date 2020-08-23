@@ -107,7 +107,7 @@
                 		<td>2020-08-14</td>
                 		<td>2 : 00</td>
                 		<td>결재중</td>
-                		<td><button class="btn">상세</button></td>
+                		<td><button class="btn" onclick="location.href='selectOvertimeDetail.at'">상세</button></td>
                 	</tr>
                 	<tr>
                 		<td>이름</td>
