@@ -85,6 +85,8 @@
         
     </nav>
 
+	<div><a href="join.me">회원가입</a></div>
+
 
 </body>
 </html>
