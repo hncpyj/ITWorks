@@ -17,6 +17,11 @@ public class MemberController {
 	@Autowired
 	private MemberService ms;
 	
+	@RequestMapping("main.me")
+	public String main() {
+		
+		return "main/main";
+	}
 	   
 	@RequestMapping("login.me")
 	public String loginCheck(Model model, Member m) {
@@ -28,7 +33,7 @@ public class MemberController {
 		      
 		      model.addAttribute("loginUser", loginUser);
 		      
-		      return "redirect:index.jsp";
+		      return "redirect:main.me";
 		} catch(LoginFailedException e){
 		      model.addAttribute("msg", e.getMessage());
 		         
