@@ -76,7 +76,7 @@
 	<form action="login.me" method="post">
 	<input type="text" placeholder="회사코드 입력" name="corpNo">
 	<input type="text" placeholder="아이디 입력" name="eid">
-	<input type="text" placeholder="비밀번호 입력" name="epwd">
+	<input type="password" placeholder="비밀번호 입력" name="epwd">
 	<button class="loginBtn">로그인</button>
 	<div class="saveBox" align="left">
 	<input type="checkbox"><span>아이디 저장</span><br>
