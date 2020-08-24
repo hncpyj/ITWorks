@@ -18,7 +18,11 @@
 
 table {
 	border-collapse: seperate;
-	width: 100%;
+	  border-spacing: 0 10px;
+	margin-top:10px;
+	margin-right:10px;
+	margin-left:10px;
+	margin-bottom:10px;
 }
 
 tr {
@@ -27,16 +31,12 @@ tr {
 }
 
 input {
-	height: 30px;
+	height: 20px;
 }
 
 #modal-wrapper {
 	width: 500px;
 	height: 600px;
-}
-
-#addAddressModal tr td:first-of-type {
-	width: 50px;
 }
 
 a.button {
@@ -186,7 +186,10 @@ nav li {
 	height: 48px;
 	cursor: pointer;
 }
-
+td {
+	margin-top:10px;
+	margin-bottom:10px;
+}
 </style>
 </head>
 <body>
@@ -225,7 +228,7 @@ nav li {
 						</tr>
 						<tr>
 							<td style="width: 200px;">이름 *</td>
-							<td colspan="3" style="width: 400px;"><input type="text"
+							<td colspan="3"><input type="text"
 								placeholder="이름을 입력하세요"></td>
 							<td></td>
 						</tr>
@@ -237,15 +240,15 @@ nav li {
 						</tr>
 						<tr>
 							<td>전화</td>
-							<td><select>
+							<td style="width:100%;"><select>
 									<option>휴대폰</option>
 							</select></td>
-							<td colspan="2"><input type="text"></td>
+							<td colspan="2" style="width:100%;"><input type="text" ></td>
 							<td><input type="button"></td>
 						</tr>
 						<tr>
 							<td>태그</td>
-							<td colspan="3"><select>
+							<td colspan="3"><select style="width:300px;">
 									<option>태그</option>
 							</select></td>
 							<td><input type="button" value="새 태그 만들기"></td>
@@ -259,25 +262,25 @@ nav li {
 						</tr>
 						<tr>
 							<td>주소</td>
-							<td colspan="3"><input type="text" placeholder="주소를 입력하세요">
+							<td colspan="3"><input type="text" placeholder="주소를 입력하세요" style="width:100%;">
 							</td>
 							<td></td>
 						</tr>
 						<tr>
 							<td>홈페이지</td>
 							<td colspan="3"><input type="text"
-								placeholder="홈페이지 주소를 입력하세요"></td>
+								placeholder="홈페이지 주소를 입력하세요" style="width:100%;"></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td>생일</td>
-							<td colspan="3"><input type="text" placeholder="YYYYMMDD">
+							<td colspan="3"><input type="text" placeholder="YYYYMMDD" style="width:100%;">
 							</td>
 							<td></td>
 						</tr>
 						<tr>
 							<td>메모</td>
-							<td colspan="3"><textarea placeholder="내용을 입력하세요"></textarea>
+							<td colspan="3"><textarea placeholder="내용을 입력하세요" style="width:100%;"></textarea>
 							</td>
 							<td></td>
 						</tr>
