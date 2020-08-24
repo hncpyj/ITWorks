@@ -1,5 +1,19 @@
 package com.kh.itworks.member.controller;
 
+<<<<<<< src/main/java/com/kh/itworks/member/controller/MemberController.java
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class MemberController {
+
+	@RequestMapping("/join.me")
+	public String memberJoin() {
+		
+		return "join/join";
+	}
+	
+=======
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,4 +54,13 @@ public class MemberController {
 		      return "common/errorPage";
 		}
 	}
+	@Controller
+public class MemberController {
+
+	@RequestMapping("/join.me")
+	public String memberJoin() {
+		
+		return "join/join";
+	}
+>>>>>>> src/main/java/com/kh/itworks/member/controller/MemberController.java
 }
