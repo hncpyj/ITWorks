@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member">
+	<resultMap type="com.kh.itworks.member.model.vo.Member" id="memberResultSet">
+		<id property="mno" column="MNO"/>
+		<result property="eid" column="EID"/>
+		<result property="epwd" column="EPWD"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="roleNo" column="ROLE_NO"/>
+		<result property="jobNo" column="JOB_NO"/>
+		<result property="deptNo" column="DEPT_NO"/>
+		<result property="ename" column="ENAME"/>
+		<result property="phone" column="PHONE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="birthday" column="BIRTHDAY"/>
+		<result property="eno" column="ENO"/>
+		<result property="hireDate" column="HIREDATE"/>
+		<result property="resignationDate" column="RESIGNATIONDATE"/>
+		<result property="status" column="STATUS"/>
+		<result property="approval" column="APPROVAL"/>
+		<result property="internalPhone" column="INTERNAL_PHONE"/>
+	</resultMap>
+	<select id="loginCheck" resultMap="memberResultSet" parameterType="Member">
+		SELECT *
+		  FROM EMPLOYEE
+		 WHERE EID = #{eid}
+		   AND EPWD = #{epwd}
+		   AND CORP_NO = #{corpNo}
+	</select>
+</mapper>
