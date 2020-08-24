@@ -8,6 +8,8 @@
 <title>ItWorks</title>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico"
 	type="image/x-icon">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 
 aside {
@@ -32,7 +34,7 @@ section {
 	margin-top: 30px;
 }
 
-tr {
+#addressTable tr {
 	border-bottom: 0.5px solid #9F9F9F;
 	border-top: 0.5px solid #9F9F9F;
 }
@@ -246,4 +248,16 @@ tr {
 		</div>
 </section>
 </body>
+<script>
+ $(function() {
+	$("#addressTable td").mouseenter(function() {
+		$(this).parent().css({"background":"#E4E4E4", "cursor":"pointer"});
+	}).mouseout(function() {
+		$(this).parent().css({"background":"#fafafa"});
+	}).click(function() {
+		
+		var num = $(this).parent().children().eq(0).text();
+						});
+	});
+</script>
 </html>

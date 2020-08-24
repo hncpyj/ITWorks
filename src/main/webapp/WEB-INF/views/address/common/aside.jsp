@@ -11,32 +11,18 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
-#modal-title {
-	font-size: 18px;
-	font-weight: bold;
-}
-
-table {
-	border-collapse: seperate;
-	  border-spacing: 0 10px;
-	margin-top:10px;
-	margin-right:10px;
-	margin-left:10px;
-	margin-bottom:10px;
-}
-
-tr {
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-input {
-	height: 20px;
-}
-
-#modal-wrapper {
+#addAddressWindow {
+	display: none;
 	width: 500px;
-	height: 600px;
+	height:600px;
+	padding: 20px 20px 20px 20px;
+	background-color: #fefefe;
+	border: 1px solid #888;
+	border-radius: 3px;
+}
+
+#addAddressWindow .modal_close_btn {
+	
 }
 
 a.button {
@@ -46,33 +32,6 @@ a.button {
 	color: #fff;
 	background: #000;
 	margin: 20px;
-}
-
-#modal {
-	display: none;
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	background: rgba(0, 0, 0, 0.3);
-}
-
-.modal-con {
-	display: none;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	max-width: 60%;
-	min-height: 30%;
-	background: #fff;
-}
-
-.modal-con .con {
-	font-size: 15px;
-	line-height: 1.3;
-	padding: 30px;
 }
 
 * {
@@ -185,10 +144,42 @@ nav li {
 	width: 175px;
 	height: 48px;
 	cursor: pointer;
+}	
+.modal-title {
+	margin-bottom:10px;
 }
-td {
+#add-address-table {
 	margin-top:10px;
 	margin-bottom:10px;
+	border-collapse: separate;
+	border-spacing:0 5px;
+}
+input {
+	height:30px;
+	radius:0;
+}
+#dept, #position {
+	width:30%;
+}
+#company {
+	width:31%;
+}
+.firstLabel {
+	width:50px;
+	font-size:12px;
+}
+.secondInput {
+	margin-left:20px;
+	width:350px;
+}
+#add-address-table select {
+	height:35px;
+}
+#saveBtn {
+	float:right;
+}
+#conSaveBtn {
+	float:right;
 }
 </style>
 </head>
@@ -214,92 +205,135 @@ td {
 	</aside>
 	<section>
 		<!-- 모달창 영역 -->
-		<div id="modal"></div>
-		<div class="modal-con modal1">
-			<p class="title">주소추가</p>
-			<hr>
-			<div id="con">
-				<hr>
-				<form>
-					<table id="addAddressModal">
-						<tr>
-							<td colspan="5"><input type="button" value="개인 주소록"><input
-								type="button" value="공유 주소록"></td>
-						</tr>
-						<tr>
-							<td style="width: 200px;">이름 *</td>
-							<td colspan="3"><input type="text"
-								placeholder="이름을 입력하세요"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>이메일</td>
-							<td colspan="3"><input type="email" placeholder="이메일을 입력하세요">
-							</td>
-							<td><input type="button"></td>
-						</tr>
-						<tr>
-							<td>전화</td>
-							<td style="width:100%;"><select>
-									<option>휴대폰</option>
-							</select></td>
-							<td colspan="2" style="width:100%;"><input type="text" ></td>
-							<td><input type="button"></td>
-						</tr>
-						<tr>
-							<td>태그</td>
-							<td colspan="3"><select style="width:300px;">
-									<option>태그</option>
-							</select></td>
-							<td><input type="button" value="새 태그 만들기"></td>
-						</tr>
-						<tr>
-							<td>회사</td>
-							<td><input type="text" placeholder="회사"></td>
-							<td><input type="text" placeholder="부서"></td>
-							<td><input type="text" placeholder="직급"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>주소</td>
-							<td colspan="3"><input type="text" placeholder="주소를 입력하세요" style="width:100%;">
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>홈페이지</td>
-							<td colspan="3"><input type="text"
-								placeholder="홈페이지 주소를 입력하세요" style="width:100%;"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>생일</td>
-							<td colspan="3"><input type="text" placeholder="YYYYMMDD" style="width:100%;">
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>메모</td>
-							<td colspan="3"><textarea placeholder="내용을 입력하세요" style="width:100%;"></textarea>
-							</td>
-							<td></td>
-						</tr>
-					</table>
-				</form>
-			</div>
+		<div id="addAddressWindow">
+		<div class="modal-title"><p>주소 추가</p></div>
+		<hr>
+			<form>
+				<table id="add-address-table">
+					<tr>
+						<td style="padding-bottom:5px;" colspan="2">
+							<button type="button">개인주소록</button><button type="button">공유주소록</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>이름 *</label></td>
+						<td class="secondInput"><input type="text" placeholder="이름을 입력하세요" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>이메일</label></td>
+						<td class="secondInput"><input type="email" placeholder="이메일을 입력하세요" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>전화</label></td>
+						<td class="secondInput">
+							<select style="float:left; margin-right:5px;">
+								<option>휴대폰</option>	
+							</select>
+							<input type="text" style="display:inline-block; width:78%;">
+						</td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>태그</label></td>
+						<td class="secondInput">
+							<select style="width:100%;">
+								<option>선택</option>
+								<option>선택</option>
+							</select>
+						</td>
+						<td><input type="button" value="새 태그 만들기"></td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>회사</label></td>
+						<td class="secondInput">
+							<input type="text" placeholder="회사" id="company">
+							<input type="text" placeholder="부서" id="dept">
+							<input type="text" placeholder="직급" id="position">
+						</td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>주소</label></td>
+						<td class="secondInput"><input type="text" placeholder="주소를 입력하세요" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>홈페이지</label></td>
+						<td class="secondInput"><input type="text" placeholder="주소를 입력하세요" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td class="firstLabel"><label>생일</label></td>
+						<td class="secondInput"><input type="text" placeholder="YYYYMMDD" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td class="firstLabel" style="padding-top:0;"><label>메모</label></td>
+						<td class="secondInput"><textarea style="resize:none;width:100%; height:80px;" placeholder="내용을 입력하세요"></textarea></td>
+					</tr>
+				</table>	
+				<hr>	
+				<div style="height:30px;"></div>	
+				<button class="modal_close_btn">취소</button>
+				<button id="saveBtn">저장</button>
+				<button id="conSaveBtn">저장 후 계속 추가</button>
+			</form>
+
 		</div>
 	</section>
 </body>
 <script>
-	function openModal(modalname) {
-		document.get
-		$("#modal").fadeIn(300);
-		$("." + modalname).fadeIn(300);
+
+	function modal(id) {
+		var zIndex = 9999;
+		var modal = document.getElementById(id);
+
+		// 모달 div 뒤에 희끄무레한 레이어
+		var bg = document.createElement('div');
+		bg.setStyle({
+			position : 'fixed',
+			zIndex : zIndex,
+			left : '0px',
+			top : '0px',
+			width : '100%',
+			height : '100%',
+			overflow : 'auto',
+			// 레이어 색갈은 여기서 바꾸면 됨
+			backgroundColor : 'rgba(0,0,0,0.4)'
+		});
+		document.body.append(bg);
+
+		// 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+		modal.querySelector('.modal_close_btn').addEventListener('click',
+				function() {
+					bg.remove();
+					modal.style.display = 'none';
+				});
+
+		modal
+				.setStyle({
+					position : 'fixed',
+					display : 'block',
+					boxShadow : '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+					// 시꺼먼 레이어 보다 한칸 위에 보이기
+					zIndex : zIndex + 1,
+
+					// div center 정렬
+					top : '50%',
+					left : '50%',
+					transform : 'translate(-50%, -50%)',
+					msTransform : 'translate(-50%, -50%)',
+					webkitTransform : 'translate(-50%, -50%)'
+				});
 	}
 
-	$("#modal, .close").on('click', function() {
-		$("#modal").fadeOut(300);
-		$(".modal-con").fadeOut(300);
-	});
+	// Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+	Element.prototype.setStyle = function(styles) {
+		for ( var k in styles)
+			this.style[k] = styles[k];
+		return this;
+	};
+
+	document.getElementById('addAddressBtn').addEventListener('click',
+			function() {
+				// 모달창 띄우기
+				modal('addAddressWindow');
+			});
 </script>
 </html>
