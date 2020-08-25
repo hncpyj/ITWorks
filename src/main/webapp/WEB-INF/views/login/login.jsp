@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ItWorks</title>
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style type="text/css">
 	.innerBox{
 		width: 480px;
@@ -65,6 +66,7 @@
 		font-weight: 500;
 		font-size: 15px;
 		line-height: 22px;
+		text-decoration: none;
 	}
 </style>
 </head>
@@ -86,7 +88,7 @@
 	<div class="btnBox">
 		<a>아이디 찾기</a> |
 		<a>비밀번호 찾기</a> |
-		<a>회원가입</a>
+		<a href="join.me">회원가입</a>
 	</div>
 </div>
 </body>
