@@ -12,10 +12,10 @@ public class Member {
 	private String phone;
 	private String email;
 	private String address;
-	private Date birthday;
+	private String birthday;
 	private int eno;
-	private Date hireDate;
-	private Date resignationDate;
+	private String hireDate;
+	private String resignationDate;
 	private String status;
 	private String approval;
 	private String internalPhone;
@@ -25,8 +25,8 @@ public class Member {
 	public Member() {}
 
 	public Member(int corpNo, String roleNo, String jobNo, String deptNo, String ename, String epwd, String phone,
-			String email, String address, Date birthday, int eno, Date hireDate, Date resignationDate, String status,
-			String approval, String internalPhone, int mno, String eid) {
+			String email, String address, String birthday, int eno, String hireDate, String resignationDate,
+			String status, String approval, String internalPhone, int mno, String eid) {
 		super();
 		this.corpNo = corpNo;
 		this.roleNo = roleNo;
@@ -120,11 +120,11 @@ public class Member {
 		this.address = address;
 	}
 
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 
@@ -136,19 +136,19 @@ public class Member {
 		this.eno = eno;
 	}
 
-	public Date getHireDate() {
+	public String getHireDate() {
 		return hireDate;
 	}
 
-	public void setHireDate(Date hireDate) {
+	public void setHireDate(String hireDate) {
 		this.hireDate = hireDate;
 	}
 
-	public Date getResignationDate() {
+	public String getResignationDate() {
 		return resignationDate;
 	}
 
-	public void setResignationDate(Date resignationDate) {
+	public void setResignationDate(String resignationDate) {
 		this.resignationDate = resignationDate;
 	}
 
@@ -200,7 +200,7 @@ public class Member {
 				+ resignationDate + ", status=" + status + ", approval=" + approval + ", internalPhone=" + internalPhone
 				+ ", mno=" + mno + ", eid=" + eid + "]";
 	}
-	
+
 	
 	
 	

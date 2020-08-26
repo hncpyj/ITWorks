@@ -8,9 +8,9 @@
 		<result property="eid" column="EID"/>
 		<result property="epwd" column="EPWD"/>
 		<result property="corpNo" column="CORP_NO"/>
-		<result property="roleNo" column="ROLE_NO"/>
-		<result property="jobNo" column="JOB_NO"/>
-		<result property="deptNo" column="DEPT_NO"/>
+		<result property="roleNo" column="RID"/>
+		<result property="jobNo" column="JID"/>
+		<result property="deptNo" column="DID"/>
 		<result property="ename" column="ENAME"/>
 		<result property="phone" column="PHONE"/>
 		<result property="email" column="EMAIL"/>

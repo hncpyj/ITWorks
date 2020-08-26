@@ -127,7 +127,7 @@
 		</tr>
 		<tr>
 			<Td height="40px" style="background-color: #e5e5e5; text-align: center;">문서제목</Td>
-			<Td colspan="3">&nbsp;&nbsp;회의록어쩌구웅앵</Td>
+			<Td colspan="3">&nbsp;&nbsp;<input type="text" name="" style=" width: 765px; height: 30px; border: none; background-color: #fafafa; font-size: 17px;"></Td>
 		</tr>
 	</table>
 	<Br>
@@ -225,7 +225,7 @@
 	</script>
 	
 	<!-- 텍스트 에디터 api -->
-	<textarea name="weditor" id="weditor" rows="10" cols="100" style="resize: none; margin-left: 80px;" readonly>스마트에디터 들어갈자리</textarea>
+	<textarea name="weditor" id="weditor" rows="40" cols="141" style="resize: none; margin-left: 80px;"></textarea>
 	<input type="button" id="writebtn" name="writebtn" value="저장">
 	
 	<br>
@@ -328,13 +328,13 @@
 	
 	</script>
 
-	<script type="text/javascript" src="/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+	<script type="text/javascript" src="${contextPath }/resources/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 	<script type="text/javascript">
 		var oEditors = [];
 		nhn.husky.EZCreator.createInIFrame({
 		    oAppRef: oEditors,
 		    elPlaceHolder: "weditor",  //textarea ID
-		    sSkinURI: "${contextPath}/smarteditor/SmartEditor2Skin.html",  //skin경로
+		    sSkinURI: "${contextPath}/resources/smarteditor/SmartEditor2Skin.html",  //skin경로
 		    fCreator: "createSEditor2",
 		});
 	</script>
