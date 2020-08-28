@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Address">
+	<resultMap type="com.kh.itworks.address.model.vo.Address" id="addressResultSet">
+		<id property="contactsNo" column="CONTACTS_NO"/> 
+		<id property="corpNo" column="CORP_NO"/> 
+		<result property="conType" column="CON_TYPE"/>
+		<result property="conName" column="CON_NAME"/>
+		<result property="email" column="CON_EMAIL"/>
+		<result property="conPhone" column="CON_PHONE"/>
+		<result property="conCorp" column="CON_CORP"/>
+		<result property="homePage" column="CON_HOMEPAGE"/>
+		<result property="conBirthDay" column="CON_BIRTHDAY"/>
+		<result property="conContent" column="CON_CONTENT"/>
+		<result property="importCon" column="IMPORT_CON"/>
+		<result property="roleNo" column="ROLE_NO"/>
+		<result property="tagNo" column="TAG_NO"/>
+		<result property="deptNo" column="DEPTNO"/>
+		<result property="jobNo" column="JOBNO"/>
+		<result property="mNo" column="MNO"/>
+		<result property="tagName" column="TAG_NAME"/>
+		<result property="tagId" column="TID"/>
+		<result property="realAddress" column="ADDRESS"/>
+	</resultMap>
+	
+	<insert id="insertAddress" parameterType="Address">
+		INSERT INTO CONTACTS
+		VALUES ('CONN'||SEQ_CONTACTS_NO.NEXTVAL, #{conType},#{conName},#{email},#{conPhone},
+				#{conCorp},#{homePage},#{conBirthDay},#{conContent},DEFAULT,
+				#{corpNo},#{roleNo},#{tagId},#{deptNo},#{jobNo},#{mNo},#{realAddress})
+	</insert>
+ 
+</mapper>

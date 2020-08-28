@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ItWorks</title>
-<link rel="icon" href="${contextPath}/resources/images/favicon.ico"
-	type="image/x-icon">
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
@@ -134,116 +133,17 @@ section {
 					</th>
 					<th style="width: 25%;">태그</th>
 				</tr>
+				<c:forEach var="b" items="${ list }">
 				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
+					<td style="width: 5%;"><input type="checkbox" id="checkAddress"></td>
+					<td style="width: 5%;" id="importantAdr"><img src="./resources/images/star.png" id="star"></td>
 					<td style="width: 10%;">고상호</td>
 					<td style="width: 30%;">shko9291@gmail.com</td>
 					<td style="width: 15%;">010-9566-7080</td>
 					<td style="width: 10%;">내외건축사무소</td>
 					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
 				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
+				</c:forEach>
 			</table>
 		</div>
 </section>
