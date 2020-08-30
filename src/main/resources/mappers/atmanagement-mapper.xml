@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ATManagement">
+
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="attendence">
+		<id property="corpNo" column="CORP_NO"/>
+		<result property="attendence" column="ATTENDENCE"/>
+		<result property="workTimeLimit" column="WORK_TIME_LIMIT"/>
+		<result property="laborDay" column="LABOR_DAY"/>
+		<result property="holidays" column="HOLIDAYS"/>
+		<result property="alternativeHolidays" column="ALTERNATIVE_HOLIDAYS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="breakTime">
+		<id property="breakTimeNo" column="BREAK_TIME_NO"/>
+		<result property="btType" column="BT_TYPE"/>
+		<result property="btStart" column="BT_START"/>
+		<result property="btEnd" column="BT_END"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leave">
+		<id property="leaveNo" column="LEAVE_NO"/>
+		<result property="lname" column="LNAME"/>
+		<result property="luse" column="LUSE"/>
+		<result property="aleaveDeduction" column="ALEVE_DEDUCTION"/>
+		<result property="harfLeave" column="HARF_LEAVE"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="lcategory" column="LCOTEGORY"/>
+		<result property="rwdNo" column="RWD_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveApply">
+		<id property="lInfoNo" column="L_INFO_NO"/>
+		<result property="lstartDay" column="LSTART_DAY"/>
+		<result property="lendDay" column="LEND_DAY"/>
+		<result property="lref" column="LREF"/>
+		<result property="lreason" column="LREASON"/>
+		<result property="leaveNo" column="LEAVE_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveHistory">
+		<id property="lhistoryNo" column="LHISTORY_NO"/>
+		<result property="lstartDate" column="LSTART_DATE"/>
+		<result property="lendDate" column="LEND_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="leaveNo" column="LEAVE_NO"/>
+		<result property="apvNo" column="APV_NO"/>
+		<result property="apvLineNo" column="APV_LINE_NO"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveSetting">
+		<id property="leaveFunc" column="LEAVE_FUNC"/>
+		<result property="lcreationCondition" column="LCREATION_CONDITION"/>
+		<result property="lcreationDate" column="LCREATION_DATE"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="objection">
+		<id property="objNo" column="OBJ_NO"/>
+		<result property="objDate" column="OBJ_DATE"/>
+		<result property="objType" column="OBJ_TYPE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="objStatus" column="OBJ_STATUS"/>
+		<result property="objReason" column="OBJ_REASON"/>
+		<result property="wno" column="WNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="overtime">
+		<id property="otNo" column="OT_NO"/>
+		<result property="wno" column="WNO"/>
+		<result property="otRef" column="OT_REF"/>
+		<result property="otDate" column="OT_DATE"/>
+		<result property="otStart" column="OT_START"/>
+		<result property="otEnd" column="OT_END"/>
+		<result property="otReason" column="OT_REASON"/>
+		<result property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="reward">
+		<id property="rwdNo" column="RWD_NO"/>
+		<result property="rwdName" column="RWD_NAME"/>
+		<result property="rwdPeriod" column="RWD_PERIOD"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="workInfo">
+		<id property="wno" column="WNO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="if" column="IF"/>
+		<result property="outsideWork" column="OUSIDE_WORK"/>
+		<result property="wdate" column="WDATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="workTimeSet">
+		<id property="workingSetNo" column="WORKING_SET_NO"/>
+		<result property="workingSetTime" column="WORKING_SET_TIME"/>
+		<result property="dayOfTheWeek" column="DAY_OF_THE_WEEK"/>
+		<result property="workingTime" column="WORKING_TIME"/>
+		<result property="quittingTime" column="QUITTING_TIME"/>
+		<result property="harfOff" column="HARF_OFF"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="workingStatus">
+		<result property="workingStatusNo" column="WORKING_STATUS_NO"/>
+		<result property="workType" column="WORK_TYPE"/>
+		<result property="work" column="WORK"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="atManagementResultSet1">
+		<id property="corpNo" column="CORP_NO"/>
+		<result property="attendence" column="ATTENDENCE"/>
+		<result property="workTimeLimit" column="WORK_TIME_LIMIT"/>
+		<result property="laborDay" column="LABOR_DAY"/>
+		<result property="holidays" column="HOLIDAYS"/>
+		<result property="alternativeHolidays" column="ALTERNATIVE_HOLIDAYS"/>
+		<result property="breakTimeNo" column="BREAK_TIME_NO"/>
+		<result property="btType" column="BT_TYPE"/>
+		<result property="btStart" column="BT_START"/>
+		<result property="btEnd" column="BT_END"/>
+	</resultMap>
+	<select id="selectAtBt" resultMap="atManagementResultSet1" parameterType="_int">
+		SELECT *
+		  FROM ATTENDENCE A
+		  JOIN BREAKTIME BT ON (A.CORP_NO = BT.CORP_NO)
+		 WHERE A.CORP_NO = #{corpNo}
+	</select>
+	<select id="selectWorkingStatus" resultMap="workingStatus" parameterType="_int">
+		SELECT *
+		  FROM WORKING_STATUS
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<select id="selectWorkTimeSet" resultMap="workTimeSet" parameterType="_int">
+		SELECT *
+		  FROM WORK_TIME_SET
+		 WHERE CORP_NO=#{corpNo}
+	</select>
+	
+</mapper>

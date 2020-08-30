@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	section{
 		width: 75%;
@@ -30,6 +31,10 @@
     #inner-title span{
     	margin-left: 20;
     }
+    .centerBox{
+    	width: 100%;
+    	text-align: center;
+    }
     .worktime{
     	display: inline-block;
     	width: 220px;
@@ -42,7 +47,7 @@
     	margin-top: auto;
     	margin-bottom: auto;
     	vertical-align: middle;
-    	
+    	text-align: left;
     }
     .worktime label{
     	font-family: Noto Sans KR;
@@ -63,6 +68,7 @@
 		margin-top: auto;
     	margin-bottom: auto;
     	vertical-align: middle;
+    	text-align: left;
     }
     .timeBtn{
     	outline: 0;
@@ -92,6 +98,59 @@
     input[type=checkbox] {
 		margin-right: 10px;
 	}
+	/*달력*/
+	.cal_top{
+    text-align: center;
+    font-size: 30px;
+    margin-top: 20px;
+}
+.cal{
+    text-align: center; 
+}
+table.calendar{
+    border: 1px solid #929292;
+    display: inline-table;
+    text-align: center;
+    background: white;
+    border-collapse: collapse;
+    width: 95%;
+}
+table.calendar td{
+    vertical-align: top;
+    text-align:right;
+    border: 1px solid #929292;
+    width: 100px;
+    padding-right: 5px;
+}
+.leftArrow{
+		width: 15px;
+		height: auto;
+		transform: rotate(90deg);
+	}
+	.rightArrow{
+		width: 15px;
+		height: auto;
+		transform: rotate(-90deg);
+	}
+	#cal_top_year{
+		font-family: Noto Sans KR;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 24px;
+		line-height: 35px;
+		align-items: center;
+		color: #004771;
+	}
+	#cal_top_month{
+		font-family: Noto Sans KR;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 24px;
+		line-height: 35px;
+		align-items: center;
+		color: #004771;
+	}
+	
 </style>
 </head>
 <body>
@@ -130,6 +189,162 @@
             	</table>
             </div>
             </div>
+            <!-- 달력 -->
+                <div class="cal_top">
+        <a href="#" id="movePrevMonth"><span id="prevMonth" class="cal_tit"><img class="leftArrow" src="${ contextPath }/resources/images/arrow.png"></span></a>
+        <span id="cal_top_year"></span>
+        <span id="cal_top_month"></span>
+        <a href="#" id="moveNextMonth"><span id="nextMonth" class="cal_tit"><img class="rightArrow" src="${ contextPath }/resources/images/arrow.png"></span></a>
+    </div>
+    <div id="cal_tab" class="cal">
+    </div>
+ 
+<script type="text/javascript">
+    
+    var today = null;
+    var year = null;
+    var month = null;
+    var firstDay = null;
+    var lastDay = null;
+    var $tdDay = null;
+    var $tdSche = null;
+    var jsonData = null;
+    $(document).ready(function() {
+        drawCalendar();
+        initDate();
+        drawDays();
+        drawSche();
+        $("#movePrevMonth").on("click", function(){movePrevMonth();});
+        $("#moveNextMonth").on("click", function(){moveNextMonth();});
+    });
+    
+    //Calendar 그리기
+    function drawCalendar(){
+        var setTableHTML = "";
+        setTableHTML+='<table class="calendar">';
+        setTableHTML+='<tr><th style="color:red;">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th style="color:blue;">토</th></tr>';
+        for(var i=0;i<6;i++){
+            setTableHTML+='<tr height="100">';
+            for(var j=0;j<7;j++){
+                setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
+                setTableHTML+='    <div class="cal-day"></div>';
+                setTableHTML+='    <div class="cal-schedule"></div>';
+                setTableHTML+='</td>';
+            }
+            setTableHTML+='</tr>';
+        }
+        setTableHTML+='</table>';
+        $("#cal_tab").html(setTableHTML);
+    }
+    
+    //날짜 초기화
+    function initDate(){
+        $tdDay = $("td div.cal-day")
+        $tdSche = $("td div.cal-schedule")
+        dayCount = 0;
+        today = new Date();
+        year = today.getFullYear();
+        month = today.getMonth()+1;
+        if(month < 10){month = "0"+month;}
+        firstDay = new Date(year,month-1,1);
+        lastDay = new Date(year,month,0);
+    }
+    
+    //calendar 날짜표시
+    function drawDays(){
+        $("#cal_top_year").text(year);
+        $("#cal_top_month").text(month);
+        for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
+            $tdDay.eq(i).text(++dayCount);
+        }
+        for(var i=0;i<42;i+=7){
+            $tdDay.eq(i).css("color","red");
+        }
+        for(var i=6;i<42;i+=7){
+            $tdDay.eq(i).css("color","blue");
+        }
+    }
+    
+    //calendar 월 이동
+    function movePrevMonth(){
+        month--;
+        if(month<=0){
+            month=12;
+            year--;
+        }
+        if(month<10){
+            month=String("0"+month);
+        }
+        getNewInfo();
+        }
+    
+    function moveNextMonth(){
+        month++;
+        if(month>12){
+            month=1;
+            year++;
+        }
+        if(month<10){
+            month=String("0"+month);
+        }
+        getNewInfo();
+    }
+    
+    //정보갱신
+    function getNewInfo(){
+        for(var i=0;i<42;i++){
+            $tdDay.eq(i).text("");
+            $tdSche.eq(i).text("");
+        }
+        dayCount=0;
+        firstDay = new Date(year,month-1,1);
+        lastDay = new Date(year,month,0);
+        drawDays();
+        drawSche();
+    }
+    
+    //2019-08-27 추가본
+    
+    //데이터 등록
+    function setData(){
+        jsonData = 
+        {
+            "2019":{
+                "07":{
+                    "17":"제헌절"
+                }
+                ,"08":{
+                    "7":"칠석"
+                    ,"15":"광복절"
+                    ,"23":"처서"
+                }
+                ,"09":{
+                    "13":"추석"
+                    ,"23":"추분"
+                }
+            }
+        }
+    }
+    
+    //스케줄 그리기
+    function drawSche(){
+        setData();
+        var dateMatch = null;
+        for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
+            var txt = "";
+            txt =jsonData[year];
+            if(txt){
+                txt = jsonData[year][month];
+                if(txt){
+                    txt = jsonData[year][month][i];
+                    dateMatch = firstDay.getDay() + i -1; 
+                    $tdSche.eq(dateMatch).text(txt);
+                }
+            }
+        }
+    }
+ 
+</script>
 		</div>
 	</section>
 </body>

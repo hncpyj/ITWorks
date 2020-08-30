@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style type="text/css">
 
@@ -38,6 +40,8 @@
     .leftTable{
     	width:100%;
         border-collapse: collapse;
+        margin-bottom: 10px;
+        margin-top: 10px;
     }
     #managerTable tr{
     	border-bottom: 0.5px solid #9F9F9F;
@@ -48,6 +52,7 @@
         font-family: Noto Sans KR;
         font-style: normal;
         font-size: 14px;
+        
     }
     #usageStatus{
     	width: 500px;
@@ -105,7 +110,20 @@
     .padding{
     	padding-left: 10px;
     }
-    
+    #addBtnAt{
+    	float: right;
+    	margin-bottom: 10px;
+    }
+    input[type=text]{
+    	border-radius: 0;
+		border: 1px solid gray;
+		outline-style: none;
+    }
+    select{
+	    border-radius: 0;
+		border: 1px solid gray;
+		outline-style: none;
+    }
 </style>
 </head>
 <body>
@@ -113,6 +131,7 @@
 	<jsp:include page="/WEB-INF/views/atManagement/atManagementAside.jsp"></jsp:include>
 	    <section>
         <div class="inner">
+            	<form action="">
             <div id="inner-title">
             <span>근태 기본 설정</span>
             <br>
@@ -121,32 +140,31 @@
             </div>
             <!-- 근태랑 52시간 근무 적용 여부 시작-->
             <div>
-            	<form action="">
                 <table id="usageStatus" class="leftTable">
                     <tr>
                         <td class="middleName">근태 사용 여부</td>
-                        <td><input type="radio" name="workState"></td>
+                        <td><input type="radio" name="attendence" value="Y"></td>
                         <td>사용함</td>
-                        <td><input type="radio" name="workState"></td>
+                        <td><input type="radio" name="attendence" value="N"></td>
                         <td>사용 안함</td>
                     </tr>
                     <tr>
                         <td class="middleName">52시간 근무 적용 여부</td>
-                        <td><input type="radio" name="52State"></td>
+                        <td><input type="radio" name="workTimeLimit" value="Y"></td>
                         <td>사용함</td>
-                        <td><input type="radio" name="52State"></td>
+                        <td><input type="radio" name="workTimeLimit" value="N"></td>
                         <td>사용 안함</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan="5"><button class="saveBtn">저장</button></td>
-                    </tr>
+                    </tr> -->
                 </table>
-            	</form>
+            	
             </div>
             <br>
             <!-- 근태랑 52시간 근무 적용 여부 끝 -->
             <div>
-            	<form action="">
+            	
                 <label class="middleName">근태 정책 설정</label>
                 <table class="leftTable">
                     <tr class="line">
@@ -159,166 +177,169 @@
                     </tr>
                     <tr>
                         <th rowspan="5">출퇴근 설정</th>
-                        <td colspan="15" class="padding"><input type="radio" name="worktime">
-                        	<span class="left">출근일 및 출퇴근 시간 설정</span>
-                        	<input type="radio" name="worktime">
-                        	<span class="left">자율 출퇴근 설정</span></td>
+                        <td colspan="15" class="padding">
+                        	<input type="radio" id="default" name="workingSetTime">
+                        	<label class="left" for="default">출근일 및 출퇴근 시간 설정</label>
+                        	<input type="radio" name="workingSetTime" id="free">
+                        	<label class="left" for="free">자율 출퇴근 설정</label></td>
                     </tr>
                     <tr>
-                        <td colspan="15" class="padding"><input type="checkbox">
-                        	<span class="left">월</span>
-                        	<input type="checkbox">
-                        	<span class="left">화</span>
-                        	<input type="checkbox">
-                        	<span class="left">수</span>
-                        	<input type="checkbox">
-                        	<span class="left">목</span>
-                        	<input type="checkbox">
-                        	<span class="left">금</span>
-                        	<input type="checkbox">
-                        	<span class="left">토</span>
-                        	<input type="checkbox">
-                        	<span class="left">일</span>
+                        <td colspan="15" class="padding">
+                        	<input type="checkbox" name="dayOfTheWeek" id="mon">
+                        	<label class="left" for="mon">월</label>
+                        	<input type="checkbox" name="dayOfTheWeek" id="tue">
+                        	<label class="left" for="tue">화</label>
+                        	<input type="checkbox" name="dayOfTheWeek" id="wed">
+                        	<label class="left" for="wed">수</label>
+                        	<input type="checkbox" name="dayOfTheWeek" id="thu">
+                        	<label class="left" for="thu">목</label>
+                        	<input type="checkbox" name="dayOfTheWeek" id="fri">
+                        	<label class="left" for="fri">금</label>
+                        	<input type="checkbox" name="dayOfTheWeek" id="sat">
+                        	<label class="left" for="sat">토</label>
+                        	<input type="checkbox" name="dayOfTheWeek" id="sun">
+                        	<label class="left" for="sun">일</label>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="15" class="padding"><input type="checkbox">
-                        	<span class="left">근로자의 날(5/1)</span>
-                        	<input type="checkbox">
-                        	<span class="left">공휴일</span>
-                        	<input type="checkbox">
-                        	<span class="left">대체공휴일</span>
+                        <td colspan="15" class="padding">
+                        	<input type="checkbox" name="laborDay" id="laborDay">
+                        	<label class="left" for="laborDay">근로자의 날(5/1)</label>
+                        	<input type="checkbox" name="holidays" id="holidays">
+                        	<label class="left" for="holidays">공휴일</label>
+                        	<input type="checkbox" name="alternativeHolidays" id="alternativeHolidays">
+                        	<label class="left" for="alternativeHolidays">대체공휴일</label>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="15" class="padding">
                         	<span>출근</span>
-                            <select>
-                                <option>01</option>
-                                <option>02</option>
-                                <option>03</option>
-                                <option>04</option>
-                                <option>05</option>
-                                <option>06</option>
-                                <option>07</option>
-                                <option>08</option>
-                                <option>09</option>
-                                <option>10</option>
-                                <option>11</option>
-                                <option>12</option>
-                                <option>13</option>
-                                <option>14</option>
-                                <option>15</option>
-                                <option>16</option>
-                                <option>17</option>
-                                <option>18</option>
-                                <option>19</option>
-                                <option>20</option>
-                                <option>21</option>
-                                <option>22</option>
-                                <option>23</option>
-                                <option>24</option>
+                            <select name="startTime">
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
                         	<span class="left">시</span>
-                            <select>
-                            	<option>00</option>
-                                <option>05</option>
-                                <option>10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                                <option>35</option>
-                                <option>40</option>
-                                <option>45</option>
-                                <option>50</option>
-                                <option>55</option>
+                            <select name="startMin">
+                            	<option value="00">00</option>
+                                <option value="05">05</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                                <option value="55">55</option>
                             </select>
                         	<span class="left">분</span>
                         	<span>퇴근</span>
-                            <select>
-                                <option>01</option>
-                                <option>02</option>
-                                <option>03</option>
-                                <option>04</option>
-                                <option>05</option>
-                                <option>06</option>
-                                <option>07</option>
-                                <option>08</option>
-                                <option>09</option>
-                                <option>10</option>
-                                <option>11</option>
-                                <option>12</option>
-                                <option>13</option>
-                                <option>14</option>
-                                <option>15</option>
-                                <option>16</option>
-                                <option>17</option>
-                                <option>18</option>
-                                <option>19</option>
-                                <option>20</option>
-                                <option>21</option>
-                                <option>22</option>
-                                <option>23</option>
-                                <option>24</option>
+                            <select name="endTime">
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
                         	<span class="left">시</span>
-                            <select>
-                                <option>00</option>
-                                <option>05</option>
-                                <option>10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                                <option>35</option>
-                                <option>40</option>
-                                <option>45</option>
-                                <option>50</option>
-                                <option>55</option>
+                            <select name="endMin">
+                                <option value="00">00</option>
+                                <option value="05">05</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                                <option value="55">55</option>
                             </select>
                         	<span class="left">분</span>
                         	<span>반차</span>
-                            <select>
-                                <option>01</option>
-                                <option>02</option>
-                                <option>03</option>
-                                <option>04</option>
-                                <option>05</option>
-                                <option>06</option>
-                                <option>07</option>
-                                <option>08</option>
-                                <option>09</option>
-                                <option>10</option>
-                                <option>11</option>
-                                <option>12</option>
-                                <option>13</option>
-                                <option>14</option>
-                                <option>15</option>
-                                <option>16</option>
-                                <option>17</option>
-                                <option>18</option>
-                                <option>19</option>
-                                <option>20</option>
-                                <option>21</option>
-                                <option>22</option>
-                                <option>23</option>
-                                <option>24</option>
+                            <select name="halfTime">
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
                         	<span class="left">시</span>
-                            <select>
-                                <option>00</option>
-                                <option>05</option>
-                                <option>10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                                <option>35</option>
-                                <option>40</option>
-                                <option>45</option>
-                                <option>50</option>
-                                <option>55</option>
+                            <select name="halfMin">
+                                <option value="00">00</option>
+                                <option value="05">05</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                                <option value="55">55</option>
                             </select>
                         	<span class="left">분</span></td>
                     </tr>
@@ -328,149 +349,218 @@
                     <tr class="line">
                         <th>휴게 시간</th>
                         <td colspan="15" class="padding">
-                            <select>
-                                <option>01</option>
-                                <option>02</option>
-                                <option>03</option>
-                                <option>04</option>
-                                <option>05</option>
-                                <option>06</option>
-                                <option>07</option>
-                                <option>08</option>
-                                <option>09</option>
-                                <option>10</option>
-                                <option>11</option>
-                                <option>12</option>
-                                <option>13</option>
-                                <option>14</option>
-                                <option>15</option>
-                                <option>16</option>
-                                <option>17</option>
-                                <option>18</option>
-                                <option>19</option>
-                                <option>20</option>
-                                <option>21</option>
-                                <option>22</option>
-                                <option>23</option>
-                                <option>24</option>
+                            <select name="restStartTime">
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
                         	<span class="left">시</span>
-                            <select>
-                                <option>00</option>
-                                <option>05</option>
-                                <option>10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                                <option>35</option>
-                                <option>40</option>
-                                <option>45</option>
-                                <option>50</option>
-                                <option>55</option>
+                            <select name="restStartMin">
+                                <option value="00">00</option>
+                                <option value="05">05</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                                <option value="55">55</option>
                             </select>
                         	<span>분 ~ </span>
-                            <select>
-                                <option>01</option>
-                                <option>02</option>
-                                <option>03</option>
-                                <option>04</option>
-                                <option>05</option>
-                                <option>06</option>
-                                <option>07</option>
-                                <option>08</option>
-                                <option>09</option>
-                                <option>10</option>
-                                <option>11</option>
-                                <option>12</option>
-                                <option>13</option>
-                                <option>14</option>
-                                <option>15</option>
-                                <option>16</option>
-                                <option>17</option>
-                                <option>18</option>
-                                <option>19</option>
-                                <option>20</option>
-                                <option>21</option>
-                                <option>22</option>
-                                <option>23</option>
-                                <option>24</option>
+                            <select name="restEndTime">
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
                         	<span class="left">시</span>
-                            <select>
-                                <option>00</option>
-                                <option>05</option>
-                                <option>10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                                <option>35</option>
-                                <option>40</option>
-                                <option>45</option>
-                                <option>50</option>
-                                <option>55</option>
+                            <select name="restEndMin">
+                                <option value="00">00</option>
+                                <option value="05">05</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                                <option value="55">55</option>
                             </select>
                         	<span class="left">분</span> 
                         	<input type="text" placeholder="기본휴게시간">
-                        	<button class="addBtn">추가하기</button></td>
+                        	<!-- <button type="button" class="addBtn" onclick="addRest();">추가하기</button> --></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan="16"><button class="saveBtn">저장</button></td>
-                    </tr>
+                    </tr> -->
                 </table>
-                </form>
+                
             </div>
             <br>
             <div>
-            	<form action="">
-                <label class="middleName">근무상태 관리</label>
+            	
+                <label class="middleName">근무상태 관리</label><button class="saveBtn" id="addBtnAt">추가</button>
                 <table id="managerTable" class="middleTable">
                 	<tr>
                 		<th>근무상태</th>
                 		<th>근무 시간 포함 여부</th>
                 		<th>수정 및 삭제</th>
                 	</tr>
+                	<c:forEach var="i" begin="0" end="${sessionScope.workingStatus.size()-1 }">
                 	<tr>
-                		<td>업무</td>
+                		<td><c:out value="${sessionScope.workingStatus.get(i).workType }"/></td>
+                		<c:if test="${sessionScope.workingStatus.get(i).work eq 'Y' }">
                 		<td>포함</td>
-                		<td><button class="btn">수정</button>/<button class="btn">삭제</button></td>
-                	</tr>
-                	<tr>
-                		<td>외출</td>
+                		</c:if>
+                		<c:if test="${sessionScope.workingStatus.get(i).work eq 'N' }">
                 		<td>미포함</td>
-                		<td><button class="btn">수정</button>/<button class="btn">삭제</button></td>
+                		</c:if>
+                		<td><button class="btn" id="modify${i}">수정</button>/<button class="btn" id="delBtn${i}">삭제</button></td>
                 	</tr>
-                	<tr>
-                		<td>외근</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button>/<button class="btn">삭제</button></td>
-                	</tr>
-                	<tr>
-                		<td>출장</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button>/<button class="btn">삭제</button></td>
-                	</tr>
-                	<tr>
-                		<td>훈련/교육</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button>/<button class="btn">삭제</button></td>
-                	</tr>
-                	<tr>
-                		<td>휴식</td>
-                		<td>미포함</td>
-                		<td><button class="btn">수정</button>/<button class="btn">삭제</button></td>
-                	</tr>
-                	<tr>
-                		<td>추가근무</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button>/<button class="btn">삭제</button></td>
-                	</tr>
+                	</c:forEach>
+                	
                 </table>
-                <button class="saveBtn">저장</button><button class="saveBtn">추가</button>
-            	</form>
+                <button class="saveBtn">저장</button>
             </div>
+            	</form>
         </div>
     </section>
+    <c:forEach var="i" begin="0" end="${sessionScope.workTimeSet.size() -1 }">
+    	<c:choose>
+    		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '월'}">
+    			<script type="text/javascript">
+    			$(document).ready(function() {
+    				$("#mon").attr("checked", true);
+    			});
+    			</script>
+    		</c:when>
+    		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '화'}">
+    			<script type="text/javascript">
+    			$(document).ready(function() {
+    				$("#tue").attr("checked", true);
+    			});
+    			</script>
+    		</c:when>
+    		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '수'}">
+    			<script type="text/javascript">
+    			$(document).ready(function() {
+    				$("#wed").attr("checked", true);
+    			});
+    			</script>
+    		</c:when>
+    		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '목'}">
+    			<script type="text/javascript">
+    			$(document).ready(function() {
+    				$("#thu").attr("checked", true);
+    			});
+    			</script>
+    		</c:when>
+    		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '금'}">
+    			<script type="text/javascript">
+    			$(document).ready(function() {
+    				$("#fri").attr("checked", true);
+    			});
+    			</script>
+    		</c:when>
+    		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '토'}">
+    			<script type="text/javascript">
+    			$(document).ready(function() {
+    				$("#sat").attr("checked", true);
+    			});
+    			</script>
+    		</c:when>
+    		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '일'}">
+    			<script type="text/javascript">
+    			$(document).ready(function() {
+    				$("#sun").attr("checked", true);
+    			});
+    			</script>
+    		</c:when>
+    	</c:choose>
+    </c:forEach>
+    <script type="text/javascript">
+    	$(document).ready(function() {
+			console.log("${sessionScope.atbt.attendence}");
+			console.log("${sessionScope.workTimeSet.size()}");
+
+			
+			if('${sessionScope.atbt.attendence}' == 'Y'){
+				$("input:radio[name=attendence]:input[value='Y']").attr("checked", true);
+			} else {
+				$("input:radio[name=attendence]:input[value='N']").attr("checked", true);
+			}
+			
+			if('${sessionScope.atbt.workTimeLimit}' == 'Y'){
+				$("input:radio[name=workTimeLimit]:input[value='Y']").attr("checked", true);
+			} else {
+				$("input:radio[name=workTimeLimit]:input[value='N']").attr("checked", true);
+			}
+			
+			if('${sessionScope.workTimeSet.get(0).workingSetTime}' == '기본'){
+				$("input:radio[name=workingSetTime]:input[id='default']").attr("checked", true);
+			} else {
+				$("input:radio[name=workingSetTime]:input[id='free']").attr("checked", true);
+			}
+			
+			if('${sessionScope.atbt.laborDay}' == 'Y'){
+				$("input:checkbox[name=laborDay]").attr("checked", true);
+			}
+			
+			if('${sessionScope.atbt.holidays}' == 'Y'){
+				$("input:checkbox[name=holidays]").attr("checked", true);
+			} 
+			
+			if('${sessionScope.atbt.alternativeHolidays}' == 'Y'){
+				$("input:checkbox[name=alternativeHolidays]").attr("checked", true);
+			}
+			
+    	});
+    </script>
 </body>
 </html>
