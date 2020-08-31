@@ -9,4 +9,8 @@ public interface MemberDao {
 
 	Member loginCheck(SqlSessionTemplate sqlSession, Member m) throws LoginFailedException ;
 
+	Member duplicationCheck(SqlSessionTemplate sqlSession, String userId);
+
+	int insertMember(SqlSessionTemplate sqlSession, Member m);
+
 }

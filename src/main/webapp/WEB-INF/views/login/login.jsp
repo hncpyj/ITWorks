@@ -88,7 +88,7 @@
 	<div class="btnBox">
 		<a>아이디 찾기</a> |
 		<a>비밀번호 찾기</a> |
-		<a href="join.me">회원가입</a>
+		<a href="MemberjoinForm.me">회원가입</a>
 	</div>
 </div>
 </body>

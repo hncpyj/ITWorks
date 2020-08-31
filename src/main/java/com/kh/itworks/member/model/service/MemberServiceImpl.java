@@ -22,4 +22,19 @@ public class MemberServiceImpl implements MemberService {
 		return md.loginCheck(sqlSession, m);
 	}
 
+	//중복체크
+	@Override
+	public Member duplicationCheck(String userId) {
+
+		return md.duplicationCheck(sqlSession, userId);
+	}
+
+	//회원가입
+	@Override
+	public int insertMember(Member m) {
+		
+		return md.insertMember(sqlSession, m);
+	}
+
+	
 }
