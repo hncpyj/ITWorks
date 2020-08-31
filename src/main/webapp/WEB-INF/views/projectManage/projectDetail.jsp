@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -272,39 +274,64 @@
             <table>
                 <tr>
                     <th>프로젝트명</th>
-                    <td colspan="7">프로젝트명</td>
+                    <td colspan="7"><c:out value="${ projectInfo.project.pname }"/></td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td colspan="3"></td>
+                    <td colspan="3">
+                    	<c:forEach var="m" items="${ projectInfo.member }">
+                    		<c:if test="${ m.prole eq '작성자' }">
+                    			<c:out value="${ m.pmName }"/>
+                    		</c:if>
+                    	</c:forEach>
+                    </td>
                     <th>상태</th>
-                    <td>temp</td>
+                    <c:set var="progress" value="${ projectInfo.project.pprogress }"/>
+                    <td><c:out value="${ projectInfo.project.pprogress }"/></td>
                 </tr>
                 <tr>
                     <th>담당자</th>
-                    <td colspan="3">temp</td>
+                    <td colspan="3">
+                    	<c:forEach var="m" items="${ projectInfo.member }">
+                    		<c:if test="${ m.prole eq '담당자' }">
+                    			<c:out value="${ m.pmName }"/>
+                    		</c:if>
+                    	</c:forEach>
+                    </td>
                     <th>관리부서</th>
-                    <td>temp</td>
+                    <td><c:out value="${ projectInfo.project.pdept }"/></td>
                 </tr>
                 <tr>
                     <th>참여자</th>
-                    <td colspan="6">temp</td>
+                    <td colspan="6">
+						<c:forEach var="m" items="${ projectInfo.member }">
+                    		<c:if test="${ m.prole eq '참여자' }">
+                    			<c:out value="${ m.pmName }"/>
+                    		</c:if>
+                    	</c:forEach>
+					</td>
                 </tr>
                 <tr>
                     <th>열람 권한</th>
-                    <td colspan="6">temp</td>
+                    <td colspan="6">
+                    	<c:forEach var="m" items="${ projectInfo.member }">
+                    		<c:if test="${ m.prole eq '열람권한' }">
+                    			<c:out value="${ m.pmName }"/>
+                    		</c:if>
+                    	</c:forEach>
+                    </td>
                 </tr>
                 <tr>
                     <th>계획 시작일</th>
-                    <td>2020/08/21</td>
+                    <td><c:out value="${ projectInfo.project.pstartDate }"/></td>
                     <th>계획 종료일</th>
-                    <td>2020/08/21</td>
+                    <td><c:out value="${ projectInfo.project.pendDate }"/></td>
                     <th>실제 종료일</th>
-                    <td>2020/08/21</td>
+                    <td><c:out value="${ projectInfo.project.actualEndDate }"/></td>
                 </tr>
                 <tr>
                     <th>프로젝트 개요</th>
-                    <td colspan="6">프로젝트 개요입니다.<br>두 줄도 돼요<br>세 줄도요</td>
+                    <td colspan="6"><c:out value="${ projectInfo.project.psummary }"/></td>
                 </tr>
                 <tr>
                     <th>첨부파일</th>
@@ -382,10 +409,10 @@
                         <th class="date">0</th>
                     </tr>
                     <tr>
-                        <td>00/00/00</td>
-                        <td>00/00/00</td>
-                        <td>  </td>
-                        <td>예정</td>
+                        <td><c:out value="${ fn:substring(projectInfo.project.pstartDate, 2,10) }"/></td>
+                        <td><c:out value="${ fn:substring(projectInfo.project.pendDate, 2, 10) }"/></td>
+                        <td><c:out value="${ fn:substring(projectInfo.project.actualEndDate, 2, 10) }"/></td>
+                        <td><c:out value="${ projectInfo.project.pprogress }"/></td>
 
                         <td></td>
                         <td></td>
@@ -860,20 +887,26 @@
                 <table>
                     <tr>
                         <th>프로젝트명</th>
-                        <td colspan="7"><input type="text" name="projectName" style="width: 850px;"></td>
+                        <td colspan="7"><input type="text" name="projectName" style="width: 850px;" value="${ projectInfo.project.pname }"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td colspan="3"></td>
+                        <td colspan="3" style="font-size: 13px; padding-left: 13px;">
+                        	<c:forEach var="m" items="${ projectInfo.member }">
+                    		<c:if test="${ m.prole eq '작성자' }">
+                    			<c:out value="${ m.pmName }"/>
+                    		</c:if>
+                    	</c:forEach>
+                        </td>
                         <th>상태</th>
                         <td>
-                            <select name="projectStatus" id="" style="width: 100px;">
-                                <option value="">예정</option>
-                                <option value="">진행</option>
-                                <option value="">완료</option>
-                                <option value="">보류</option>
-                                <option value="">폐기</option>
-                            </select>
+                            <select name="pprogress" id="pprogress" style="width: 179px; height: 25px;">
+			                    <option value="schedule">예정</option>
+			                    <option value="progress">진행</option>
+			                    <option value="finish">완료</option>
+			                    <option value="hold">보류</option>
+			                    <option value="discard">폐기</option>
+		                </select>
                         </td>
                     </tr>
                     <tr>
@@ -936,6 +969,20 @@
             $('#modifyProjectForm').css('display', 'block');
             $('.menuTitle>span').text('프로젝트 수정');
             $('.menuTitle>button').hide();
+            
+            console.log('${progress}');
+            
+            if('${progress}' == '진행') {
+            	$("option[value='progress']").attr("selected", true);
+            } else if('${progress}' == '예정') {
+            	${"option[value='schedule']"}.attr("selected", true);
+            } else if('${progress}' == '완료') {
+            	${"option[value='finish']"}.attr("selected", true);
+            } else if('${progress}' == '보류') {
+            	${"option[value='hold']"}.attr("selected", true);
+            } else {
+            	${"option[value='discard']"}.attr("selected", true);
+            }
         }
         function showSubTask() {
             if($('.subTask').css('display') == 'none') {

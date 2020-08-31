@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Project">
+	
+	<resultMap type="Project" id="projectList">
+		<id property="pno" column="PNO"/>
+		<result property="pname" column="PNAME"/>
+		<result property="pdept" column="PDEPT"/>
+		<result property="pstartDate" column="PSTART_DATE"/>
+		<result property="pendDate" column="PEND_DATE"/>
+		<result property="actualEndDate" column="ACTUAL_END_DATE"/>
+		<result property="psummary" column="PSUMMARY"/>
+		<result property="plevel" column="PLEVEL"/>
+		<result property="pcontent" column="PCONTENT"/>
+		<result property="uniqueness" column="UNIQUENESS"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="pstatus" column="P_STATUS"/>
+		<result property="pdate" column="PDATE"/>
+		<result property="ptime" column="PTIME"/>
+		<result property="parentPjt" column="PARENT_PJT"/>
+		<result property="pjtTaskNo" column="PJT_TASK_NO"/>
+		<result property="pprogress" column="PPROGRESS"/>
+	</resultMap>
+	
+	<resultMap type="Project" id="projectList2">
+		<id property="pno" column="PNO"/>
+		<result property="pname" column="PNAME"/>
+		<result property="pdept" column="PDEPT"/>
+		<result property="pstartDate" column="PSTART_DATE"/>
+		<result property="pendDate" column="PEND_DATE"/>
+		<result property="actualEndDate" column="ACTUAL_END_DATE"/>
+		<result property="psummary" column="PSUMMARY"/>
+		<result property="plevel" column="PLEVEL"/>
+		<result property="pcontent" column="PCONTENT"/>
+		<result property="uniqueness" column="UNIQUENESS"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="pstatus" column="P_STATUS"/>
+		<result property="pdate" column="PDATE"/>
+		<result property="ptime" column="PTIME"/>
+		<result property="parentPjt" column="PARENT_PJT"/>
+		<result property="pjtTaskNo" column="PJT_TASK_NO"/>
+		<result property="pprogress" column="PPROGRESS"/>
+		<result property="pwriter" column="ENAME"/>
+	</resultMap>
+	
+	<resultMap type="ProjectMember" id="projectMember">
+		<id property="pmemberId" column="PMEMBER_ID"/>
+		<result property="prole" column="PROLE"/>
+		<result property="pno" column="PNO"/>
+		<result property="mno" column="MNO"/>
+		<result property="pmName" column="ENAME"/>
+	</resultMap>
+	
+	<resultMap type="map" id="member">
+		<id property="mno" column="MNO"/>
+		<result property="eid" column="EID"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="rid" column="RID"/>
+		<result property="jid" column="JID"/>
+		<result property="did" column="DID"/>
+		<result property="ename" column="ENAME"/>
+		<result property="phone" column="PHONE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="eno" column="ENO"/>
+		<result property="status" column="STATUS"/>
+		<result property="approval" column="APPROVAL"/>
+		<result property="internalPhone" column="INTERNAL_PHONE"/>
+		<result property="dname" column="DNAME"/>
+		<result property="jname" column="JNAME"/>
+	</resultMap>
+	
+	<resultMap type="Dept" id="dept">
+		<id property="did" column="DID"/>
+		<result property="dname" column="DNAME"/>
+		<result property="dlevel" column="DLEVEL"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="deptNo" column="DEPT_NO"/>
+	</resultMap>
+	
+	<select id="selectListCount" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+          FROM PROJECT P
+          JOIN (SELECT DISTINCT PNO, MNO FROM PMEMBER) M ON(P.PNO = M.PNO)
+         WHERE P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND M.MNO = #{ loginUser.getMno() }
+   </select>
+   
+   <select id="selectAdminListCount" resultType="_int">
+   		SELECT COUNT(*)
+          FROM PROJECT
+         WHERE P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+   </select>
+   
+   <select id="selectAllProjectList" resultMap="projectList2">
+   		SELECT
+               DISTINCT P.*
+             , E.ENAME
+          FROM PMEMBER PM
+          JOIN EMPLOYEE E ON(PM.MNO = E.MNO)
+          JOIN PROJECT P ON (P.PNO = PM.PNO)
+         WHERE PM.PROLE = '작성자'
+           AND P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0  
+           AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{ loginUser.getMno() })
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectAdminProjectList" resultMap="projectList2">
+   		SELECT 
+               P.*
+             , E.ENAME 
+          FROM PROJECT P 
+          JOIN PMEMBER M ON(P.PNO = M.PNO) 
+          JOIN EMPLOYEE E ON(E.MNO = M.MNO) 
+         WHERE P.P_STATUS = 'Y' 
+           AND P.PLEVEL = 0
+           AND M.PROLE = '작성자'
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectAdminSearchListCount" resultType="_int" parameterType="ProjectSearchCondition">
+   		SELECT COUNT(*)
+          FROM PROJECT
+         WHERE P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+           <if test="progress != null">
+           		AND P.PPROGRESS = #{progress}
+           </if>     
+   </select>
+   
+   <select id="selectSearchListCount" resultType="_int" parameterType="ProjectSearchCondition">
+   		SELECT COUNT(*)
+          FROM PROJECT P
+          JOIN (SELECT DISTINCT PNO, MNO FROM PMEMBER) M ON(P.PNO = M.PNO)
+         WHERE P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND M.MNO = #{scMno}
+	       <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+           <if test="progress != null">
+           		AND P.PPROGRESS = #{progress}
+           </if>
+           
+           <!-- <if test="writer != null">
+           		AND 
+           </if> -->
+   </select>
+   
+   <select id="selectAdminSearchProjectList" resultMap="projectList2">
+   		SELECT 
+               P.*
+             , E.ENAME 
+          FROM PROJECT P 
+          JOIN PMEMBER M ON(P.PNO = M.PNO) 
+          JOIN EMPLOYEE E ON(E.MNO = M.MNO) 
+         WHERE P.P_STATUS = 'Y' 
+           AND P.PLEVEL = 0
+           AND M.PROLE = '작성자'
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+           <if test="progress != null">
+           		AND P.PPROGRESS = #{progress}
+           </if>
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectAllSearchProjectList" resultMap="projectList2">
+   		SELECT
+               DISTINCT P.*
+             , E.ENAME
+          FROM PMEMBER PM
+          JOIN EMPLOYEE E ON(PM.MNO = E.MNO)
+          JOIN PROJECT P ON (P.PNO = PM.PNO)
+         WHERE PM.PROLE = '작성자'
+           AND P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0  
+           AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{scMno})
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+           <if test="progress != null">
+           		AND P.PPROGRESS = #{progress}
+           </if>
+           
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectAdminOngoingListCount" resultType="_int">
+   		SELECT COUNT(*)
+          FROM PROJECT
+         WHERE P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND PPROGRESS = '진행'
+   </select>
+   
+   <select id="selectOngoingListCount" resultType="_int" parameterType="_int">
+   		SELECT COUNT(*)
+          FROM PROJECT P
+          JOIN (SELECT DISTINCT PNO, MNO FROM PMEMBER) M ON(P.PNO = M.PNO)
+         WHERE P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND M.MNO = #{ loginUser.getMno() }
+           AND P.PPROGRESS = '진행'
+   </select>
+   
+   <select id="selectAdminOngoingProjectList" resultMap="projectList2">
+   		SELECT 
+               P.*
+             , E.ENAME 
+          FROM PROJECT P 
+          JOIN PMEMBER M ON(P.PNO = M.PNO) 
+          JOIN EMPLOYEE E ON(E.MNO = M.MNO) 
+         WHERE P.P_STATUS = 'Y' 
+           AND P.PLEVEL = 0
+           AND M.PROLE = '작성자'
+           AND P.PPROGRESS = '진행'
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectOngoingProjectList" resultMap="projectList2">
+   		SELECT
+               DISTINCT P.*
+             , E.ENAME
+          FROM PMEMBER PM
+          JOIN EMPLOYEE E ON(PM.MNO = E.MNO)
+          JOIN PROJECT P ON (P.PNO = PM.PNO)
+         WHERE PM.PROLE = '작성자'
+           AND P.P_STATUS = 'Y'
+             AND P.PLEVEL = 0
+           AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{ loginUser.getMno() })
+           AND P.PPROGRESS = '진행'
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectAdminSearchOngoingListCount" resultType="_int">
+   		SELECT COUNT(*)
+          FROM PROJECT
+         WHERE P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND PPROGRESS = '진행'
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+           <if test="progress != null">
+           		AND P.PPROGRESS = #{progress}
+           </if>
+   </select>
+   
+   <select id="selectSearchOngoinListCount" resultType="_int" parameterType="ProjectSearchCondition">
+   		SELECT COUNT(*)
+          FROM PROJECT P
+          JOIN (SELECT DISTINCT PNO, MNO FROM PMEMBER) M ON(P.PNO = M.PNO)
+         WHERE P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND P.PPROGRESS = '진행'
+           AND M.MNO = #{scMno}
+	       <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+   </select>
+   
+   <select id="selectAdminSearchOngoingProjectList" resultMap="projectList2">
+   		SELECT 
+               P.*
+             , E.ENAME 
+          FROM PROJECT P 
+          JOIN PMEMBER M ON(P.PNO = M.PNO) 
+          JOIN EMPLOYEE E ON(E.MNO = M.MNO) 
+         WHERE P.P_STATUS = 'Y' 
+           AND P.PLEVEL = 0
+           AND M.PROLE = '작성자'
+           AND P.PPROGRESS = '진행'
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectSearchOngoingProjectList" resultMap="projectList2">
+   		SELECT
+               DISTINCT P.*
+             , E.ENAME
+          FROM PMEMBER PM
+          JOIN EMPLOYEE E ON(PM.MNO = E.MNO)
+          JOIN PROJECT P ON (P.PNO = PM.PNO)
+         WHERE PM.PROLE = '작성자'
+           AND P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{scMno})
+           AND P.PPROGRESS = '진행'
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectFinishListCount" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+          FROM PROJECT P
+          JOIN (SELECT DISTINCT PNO, MNO FROM PMEMBER) M ON(P.PNO = M.PNO)
+         WHERE P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND M.MNO = #{ loginUser.getMno() }
+           AND P.PPROGRESS = '완료'
+   </select>
+   
+   <select id="selectAdminFinishListCount" resultType="_int">
+   		SELECT COUNT(*)
+          FROM PROJECT
+         WHERE P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+         AND P.PPROGRESS = '완료'
+   </select>
+   
+   <select id="selectAdminFinishProjectList" resultMap="projectList2">
+   		SELECT 
+               P.*
+             , E.ENAME 
+          FROM PROJECT P 
+          JOIN PMEMBER M ON(P.PNO = M.PNO) 
+          JOIN EMPLOYEE E ON(E.MNO = M.MNO) 
+         WHERE P.P_STATUS = 'Y' 
+           AND M.PROLE = '작성자'
+           AND P.PLEVEL = 0
+           AND P.PPROGRESS = '완료'
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectFinishProjectList" resultMap="projectList2">
+   		SELECT
+               DISTINCT P.*
+             , E.ENAME
+          FROM PMEMBER PM
+          JOIN EMPLOYEE E ON(PM.MNO = E.MNO)
+          JOIN PROJECT P ON (P.PNO = PM.PNO)
+         WHERE PM.PROLE = '작성자'
+           AND P.PLEVEL = 0
+           AND P.P_STATUS = 'Y'
+           AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{ loginUser.getMno() })
+           AND P.PPROGRESS = '완료'
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectAdminSearchFinishListCount" resultType="_int">
+   		SELECT COUNT(*)
+          FROM PROJECT
+         WHERE P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND PPROGRESS = '완료'
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+           <if test="progress != null">
+           		AND P.PPROGRESS = #{progress}
+           </if>
+   </select>
+   
+   <select id="selectSearchFinishListCount" resultType="_int" parameterType="ProjectSearchCondition">
+   		SELECT COUNT(*)
+          FROM PROJECT P
+          JOIN (SELECT DISTINCT PNO, MNO FROM PMEMBER) M ON(P.PNO = M.PNO)
+         WHERE P.P_STATUS = 'Y'
+           AND P.PLEVEL = 0
+           AND P.PPROGRESS = '완료'
+           AND M.MNO = #{scMno}
+	       <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+   </select>
+   
+   <select id="selectAdminSearchFinishProjectList" resultMap="projectList2">
+   		SELECT 
+               P.*
+             , E.ENAME 
+          FROM PROJECT P 
+          JOIN PMEMBER M ON(P.PNO = M.PNO) 
+          JOIN EMPLOYEE E ON(E.MNO = M.MNO) 
+         WHERE P.P_STATUS = 'Y' 
+           AND P.PLEVEL = 0
+           AND M.PROLE = '작성자'
+           AND P.PPROGRESS = '진행'
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectSearchFinishProjectList" resultMap="projectList2">
+   		SELECT
+               DISTINCT P.*
+             , E.ENAME
+          FROM PMEMBER PM
+          JOIN EMPLOYEE E ON(PM.MNO = E.MNO)
+          JOIN PROJECT P ON (P.PNO = PM.PNO)
+         WHERE PM.PROLE = '작성자'
+           AND P.PLEVEL = 0
+           AND P.P_STATUS = 'Y'
+           AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{scMno})
+           AND P.PPROGRESS = '진행'
+           <if test="startDate != null">
+	       		AND TO_DATE(P.PSTART_DATE) >= TO_DATE(#{startDate})
+	       </if>
+	       <if test="endDate != null">
+	       		AND TO_DATE(P.PEND_DATE) <![CDATA[<=]]> TO_DATE(#{endDate})
+	       </if>
+           <if test="projectName != null">
+           		AND P.PNAME LIKE '%' || #{projectName} || '%'
+           </if>
+         ORDER BY P.PSTART_DATE DESC
+   </select>
+   
+   <select id="selectOneProject" resultMap="projectList" resultType="_int">
+   		SELECT * FROM PROJECT
+   		 WHERE PNO = #{pno}
+   </select>
+   
+   <select id="selectMemberList" resultType="_int" resultMap="projectMember">
+   		SELECT M.*, E.ENAME FROM PMEMBER M
+   		JOIN EMPLOYEE E ON(M.MNO = E.MNO)
+   		 WHERE PNO = #{pno}
+   </select>
+   
+   <select id="selectAllMember" resultType="_int" resultMap="member">
+   		SELECT 
+   		       E.* 
+   		     , D.DNAME
+   		     , J.JNAME
+   		 FROM EMPLOYEE E
+   		 JOIN DEPT D ON(E.DID = D.DID)
+   		 JOIN JOB J ON(E.JID = J.JID)
+   		WHERE E.CORP_NO = #{corpNo}
+   		  AND E.STATUS = 'Y'
+   		  AND E.APPROVAL = 'Y'
+   		ORDER BY E.ENAME
+   </select>
+   
+   <select id="selectAllDept" resultType="_int" resultMap="dept">
+   		SELECT * FROM DEPT
+   		WHERE CORP_NO = #{corpNo}
+   		ORDER BY DNAME
+   </select>
+   
+</mapper>
