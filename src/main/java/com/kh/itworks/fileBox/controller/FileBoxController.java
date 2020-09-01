@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.itworks.common.CommonUtils;
@@ -47,7 +48,8 @@ public class FileBoxController {
 	}
 	
 	@RequestMapping("upload.fb")
-	public String FileUpload(Model model, FileBox fb, HttpServletRequest request, MultipartFile photo) {
+	public String FileUpload(Model model, FileBox fb, HttpServletRequest request, MultipartFile photo, @SessionAttribute("loginUser") Member loginUser) {
+		
 		
 //		Member loginUser = (Member)request.getSession().getAttribute("");
 		
