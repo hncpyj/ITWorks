@@ -309,6 +309,7 @@
 	        </div>
         <br><br>
         <div id="fileOption">
+        	<button class="fileOptionBtn"><a href="uploadPage.fb">파일 업로드</a></button>
         	<button class="fileOptionBtn">삭제</button>
         	<button class="fileOptionBtn">폴더 이동</button>
         	<button class="fileOptionBtn">다운로드</button>
