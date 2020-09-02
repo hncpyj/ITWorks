@@ -16,4 +16,8 @@ public interface ATManagementService {
 
 	int deleteWorkingStatus(String string) throws DeleteUpdateInsertException;
 
+	int deleteWorkTimeSet(String string) throws DeleteUpdateInsertException;
+
+	int updateWorkingStatus(ArrayList<ATManagement> worklist) throws DeleteUpdateInsertException;
+
 }

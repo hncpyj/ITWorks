@@ -1133,6 +1133,7 @@
     	<c:choose>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '월'}">
     			<script type="text/javascript">
+    				var num = 0;
     			$(document).ready(function() {
     				$("#mon").attr("checked", true);
     				
@@ -1150,37 +1151,58 @@
     				$('#monSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#monSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
     				
-    				/* var selectStartTime = $("#monSelectTime option:selected").val();
-    				var selectStartMin = $("#monSelectMin option:selected").val();
-    				var selectEndTime = $("#monSelectEndTime option:selected").val();
-    				var selectEndMin = $("#monSelectEndMin option:selected").val();
-    				var selectHalfTime = $("#monSelectHalfTime option:selected").val();
-    				var selectHalfMin = $("#monSelectHalfMin option:selected").val();
     				
-    				var updatestartTime = selectStartTime+":"+selectStartMin+":00";
-    				var updateEndTime = selectEndTime+":"+selectEndMin+":00";
-    				var updateHalfTime = selectHalfTime+":"+selectHalfMin+":00";
+    				var updateStartTime = $("#monSelectTime option:selected").val();
+    				var updateStartMin = $("#monSelectMin option:selected").val();
+    				var updateEndTime = $("#monSelectEndTime option:selected").val();
+    				var updateEndMin = $("#monSelectEndMin option:selected").val();
+    				var updateHalfTime = $("#monSelectHalfTime option:selected").val();
+    				var updateHalfMin = $("#monSelectHalfMin option:selected").val();
+    				
+    				var workingTime = updateStartTime+":"+updateStartMin+":00";
+                	$("#monTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');    						
+    				$("select[id^='monSelect'], input:checkbox[id=mon]").change(function() {
+						
+    				if($("input:checkbox[id=mon]").is(":checked")){
+    					updateStartTime = $("#monSelectTime option:selected").val();
+    					updateStartMin = $("#monSelectMin option:selected").val();
+    					updateEndTime = $("#monSelectEndTime option:selected").val();
+    					updateEndMin = $("#monSelectEndMin option:selected").val();
+    					updateHalfTime = $("#monSelectHalfTime option:selected").val();
+    					updateHalfMin = $("#monSelectHalfMin option:selected").val();
+    					workingTime = updateStartTime+":"+updateStartMin+":00";
+    					if(num == 1){
+    						$("#monTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');
+    						num = 0;
+    					} else{
+    						$("#workingTime${i}").val(workingTime);
+    					}
+    				}else{
+    					$("#workingTime${i}").detach();
+    					num = 1;
+    				}
+    				});
+
+    				$("input:checkbox[id=mon]").change(function() {
+                    	
+                		if($("input:checkbox[id=mon]").is(":checked") == false){
+                    		$("#monTr").after('<input id="delNo${i}" type="hidden" name="deleteWorkTimeSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo}">');
+                    		$("#workingTime${i}").detach();
+                		}
+                		if($("input:checkbox[id=mon]").is(":checked")){
+                			$("#delNo${i}").detach();
+                		}
+    				});
     				
     				
     				
-    				$("#monSelectTime").change(function() {
-    					var selectStartTime = $("#monSelectTime option:selected").val();
-        				var selectStartMin = $("#monSelectMin option:selected").val();
-        				var selectEndTime = $("#monSelectEndTime option:selected").val();
-        				var selectEndMin = $("#monSelectEndMin option:selected").val();
-        				var selectHalfTime = $("#monSelectHalfTime option:selected").val();
-        				var selectHalfMin = $("#monSelectHalfMin option:selected").val();
-        				var updatestartTime = selectStartTime+":"+selectStartMin+":00";
-        				var updateEndTime = selectEndTime+":"+selectEndMin+":00";
-        				var updateHalfTime = selectHalfTime+":"+selectHalfMin+":00";
-        				
-					}); */
     				
     			});
     			</script>
     		</c:when>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '화'}">
     			<script type="text/javascript">
+    			var num = 0;
     			$(document).ready(function() {
     				$("#tue").attr("checked", true);
     				var startTime = "${sessionScope.workTimeSet.get(i).workingTime}";
@@ -1196,12 +1218,53 @@
     				$('#tueSelectEndMin option[value='+end[1]+']').attr('selected','ture');
     				$('#tueSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#tueSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
+    				
+    				var updateStartTime = $("#tueSelectTime option:selected").val();
+    				var updateStartMin = $("#tueSelectMin option:selected").val();
+    				var updateEndTime = $("#tueSelectEndTime option:selected").val();
+    				var updateEndMin = $("#tueSelectEndMin option:selected").val();
+    				var updateHalfTime = $("#tueSelectHalfTime option:selected").val();
+    				var updateHalfMin = $("#tueSelectHalfMin option:selected").val();
+    				
+    				var workingTime = updateStartTime+":"+updateStartMin+":00";
+                	$("#tueTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');    						
+    				$("select[id^='tueSelect'], input:checkbox[id=tue]").change(function() {
+						
+    				if($("input:checkbox[id=tue]").is(":checked")){
+    					updateStartTime = $("#tueSelectTime option:selected").val();
+    					updateStartMin = $("#tueSelectMin option:selected").val();
+    					updateEndTime = $("#tueSelectEndTime option:selected").val();
+    					updateEndMin = $("#tueSelectEndMin option:selected").val();
+    					updateHalfTime = $("#tueSelectHalfTime option:selected").val();
+    					updateHalfMin = $("#tueSelectHalfMin option:selected").val();
+    					workingTime = updateStartTime+":"+updateStartMin+":00";
+    					if(num == 1){
+    						$("#tueTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');
+    						num = 0;
+    					} else{
+    						$("#workingTime${i}").val(workingTime);
+    					}
+    				}else{
+    					$("#workingTime${i}").detach();
+    					num = 1;
+    				}
+    				
+    			});
+    			$("input:checkbox[id=tue]").change(function() {
+            		if($("input:checkbox[id=tue]").is(":checked") == false){
+                		$("#tueTr").after('<input id="delNo${i}" type="hidden" name="deleteWorkTimeSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo}">');
+    				}
+            		if($("input:checkbox[id=tue]").is(":checked")){
+            			$("#delNo${i}").detach();
+            		}
+				});
     			});
     			</script>
     		</c:when>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '수'}">
     		
     			<script type="text/javascript">
+    			var num = 0;
     			$(document).ready(function() {
     				$("#wed").attr("checked", true);
     				var startTime = "${sessionScope.workTimeSet.get(i).workingTime}";
@@ -1217,12 +1280,53 @@
     				$('#wedSelectEndMin option[value='+end[1]+']').attr('selected','ture');
     				$('#wedSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#wedSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
+    				
+    				var updateStartTime = $("#wedSelectTime option:selected").val();
+    				var updateStartMin = $("#wedSelectMin option:selected").val();
+    				var updateEndTime = $("#wedSelectEndTime option:selected").val();
+    				var updateEndMin = $("#wedSelectEndMin option:selected").val();
+    				var updateHalfTime = $("#wedSelectHalfTime option:selected").val();
+    				var updateHalfMin = $("#wedSelectHalfMin option:selected").val();
+    				
+    				var workingTime = updateStartTime+":"+updateStartMin+":00";
+                	$("#wedTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');    						
+    				$("select[id^='wedSelect'], input:checkbox[id=wed]").change(function() {
+						
+    				if($("input:checkbox[id=wed]").is(":checked")){
+    					updateStartTime = $("#wedSelectTime option:selected").val();
+    					updateStartMin = $("#wedSelectMin option:selected").val();
+    					updateEndTime = $("#wedSelectEndTime option:selected").val();
+    					updateEndMin = $("#wedSelectEndMin option:selected").val();
+    					updateHalfTime = $("#wedSelectHalfTime option:selected").val();
+    					updateHalfMin = $("#wedSelectHalfMin option:selected").val();
+    					workingTime = updateStartTime+":"+updateStartMin+":00";
+    					if(num == 1){
+    						$("#wedTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');
+    						num = 0;
+    					} else{
+    						$("#workingTime${i}").val(workingTime);
+    					}
+    				}else{
+    					$("#workingTime${i}").detach();
+    					num = 1;
+    				}
+    				
+    			});
+    			$("input:checkbox[id=wed]").change(function() {
+            		if($("input:checkbox[id=wed]").is(":checked") == false){
+                		$("#wedTr").after('<input id="delNo${i}" type="hidden" name="deleteWorkTimeSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo}">');
+    				}
+            		if($("input:checkbox[id=wed]").is(":checked")){
+            			$("#delNo${i}").detach();
+            		}
+				});
     			});
     			</script>
     		</c:when>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '목'}">
     		
     			<script type="text/javascript">
+    			var num = 0;
     			$(document).ready(function() {
     				$("#thu").attr("checked", true);
     				var startTime = "${sessionScope.workTimeSet.get(i).workingTime}";
@@ -1238,12 +1342,53 @@
     				$('#thuSelectEndMin option[value='+end[1]+']').attr('selected','ture');
     				$('#thuSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#thuSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
+    				
+    				var updateStartTime = $("#thuSelectTime option:selected").val();
+    				var updateStartMin = $("#thuSelectMin option:selected").val();
+    				var updateEndTime = $("#thuSelectEndTime option:selected").val();
+    				var updateEndMin = $("#thuSelectEndMin option:selected").val();
+    				var updateHalfTime = $("#thuSelectHalfTime option:selected").val();
+    				var updateHalfMin = $("#thuSelectHalfMin option:selected").val();
+    				
+    				var workingTime = updateStartTime+":"+updateStartMin+":00";
+                	$("#thuTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');    						
+    				$("select[id^='thuSelect'], input:checkbox[id=thu]").change(function() {
+						
+    				if($("input:checkbox[id=thu]").is(":checked")){
+    					updateStartTime = $("#thuSelectTime option:selected").val();
+    					updateStartMin = $("#thuSelectMin option:selected").val();
+    					updateEndTime = $("#thuSelectEndTime option:selected").val();
+    					updateEndMin = $("#thuSelectEndMin option:selected").val();
+    					updateHalfTime = $("#thuSelectHalfTime option:selected").val();
+    					updateHalfMin = $("#thuSelectHalfMin option:selected").val();
+    					workingTime = updateStartTime+":"+updateStartMin+":00";
+    					if(num == 1){
+    						$("#thuTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');
+    						num = 0;
+    					} else{
+    						$("#workingTime${i}").val(workingTime);
+    					}
+    				}else{
+    					$("#workingTime${i}").detach();
+    					num = 1;
+    				}
+    				
+    			});
+    			$("input:checkbox[id=thu]").change(function() {
+            		if($("input:checkbox[id=thu]").is(":checked") == false){
+                		$("#thuTr").after('<input id="delNo${i}" type="hidden" name="deleteWorkTimeSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo}">');
+    				}
+            		if($("input:checkbox[id=thu]").is(":checked")){
+            			$("#delNo${i}").detach();
+            		}
+				});
     			});
     			</script>
     		</c:when>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '금'}">
     		
     			<script type="text/javascript">
+    			var num = 0;
     			$(document).ready(function() {
     				$("#fri").attr("checked", true);
     				var startTime = "${sessionScope.workTimeSet.get(i).workingTime}";
@@ -1259,12 +1404,53 @@
     				$('#friSelectEndMin option[value='+end[1]+']').attr('selected','ture');
     				$('#friSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#friSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
+    				
+    				var updateStartTime = $("#friSelectTime option:selected").val();
+    				var updateStartMin = $("#friSelectMin option:selected").val();
+    				var updateEndTime = $("#friSelectEndTime option:selected").val();
+    				var updateEndMin = $("#friSelectEndMin option:selected").val();
+    				var updateHalfTime = $("#friSelectHalfTime option:selected").val();
+    				var updateHalfMin = $("#friSelectHalfMin option:selected").val();
+    				
+    				var workingTime = updateStartTime+":"+updateStartMin+":00";
+                	$("#friTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');    						
+    				$("select[id^='friSelect'], input:checkbox[id=fri]").change(function() {
+						
+    				if($("input:checkbox[id=fri]").is(":checked")){
+    					updateStartTime = $("#friSelectTime option:selected").val();
+    					updateStartMin = $("#friSelectMin option:selected").val();
+    					updateEndTime = $("#friSelectEndTime option:selected").val();
+    					updateEndMin = $("#friSelectEndMin option:selected").val();
+    					updateHalfTime = $("#friSelectHalfTime option:selected").val();
+    					updateHalfMin = $("#friSelectHalfMin option:selected").val();
+    					workingTime = updateStartTime+":"+updateStartMin+":00";
+    					if(num == 1){
+    						$("#friTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');
+    						num = 0;
+    					} else{
+    						$("#workingTime${i}").val(workingTime);
+    					}
+    				}else{
+    					$("#workingTime${i}").detach();
+    					num = 1;
+    				}
+    				
+    			});
+    			$("input:checkbox[id=fri]").change(function() {
+            		if($("input:checkbox[id=fri]").is(":checked") == false){
+                		$("#friTr").after('<input id="delNo${i}" type="hidden" name="deleteWorkTimeSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo}">');
+    				}
+            		if($("input:checkbox[id=fri]").is(":checked")){
+            			$("#delNo${i}").detach();
+            		}
+				});
     			});
     			</script>
     		</c:when>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '토'}">
     		
     			<script type="text/javascript">
+    			var num = 0;
     			$(document).ready(function() {
     				$("#sat").attr("checked", true);
     				var startTime = "${sessionScope.workTimeSet.get(i).workingTime}";
@@ -1280,12 +1466,53 @@
     				$('#satSelectEndMin option[value='+end[1]+']').attr('selected','ture');
     				$('#satSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#satSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
+    				
+    				var updateStartTime = $("#satSelectTime option:selected").val();
+    				var updateStartMin = $("#satSelectMin option:selected").val();
+    				var updateEndTime = $("#satSelectEndTime option:selected").val();
+    				var updateEndMin = $("#satSelectEndMin option:selected").val();
+    				var updateHalfTime = $("#satSelectHalfTime option:selected").val();
+    				var updateHalfMin = $("#satSelectHalfMin option:selected").val();
+    				
+    				var workingTime = updateStartTime+":"+updateStartMin+":00";
+                	$("#satTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');    						
+    				$("select[id^='satSelect'], input:checkbox[id=sat]").change(function() {
+					
+    				if($("input:checkbox[id=sat]").is(":checked")){
+    					updateStartTime = $("#satSelectTime option:selected").val();
+    					updateStartMin = $("#satSelectMin option:selected").val();
+    					updateEndTime = $("#satSelectEndTime option:selected").val();
+    					updateEndMin = $("#satSelectEndMin option:selected").val();
+    					updateHalfTime = $("#satSelectHalfTime option:selected").val();
+    					updateHalfMin = $("#satSelectHalfMin option:selected").val();
+    					workingTime = updateStartTime+":"+updateStartMin+":00";
+    					if(num == 1){
+    						$("#satTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');
+    						num = 0;
+    					} else{
+    						$("#workingTime${i}").val(workingTime);
+    					}
+    				}else{
+    					$("#workingTime${i}").detach();
+    					num = 1;
+    				}
+    				
+    			});
+    			$("input:checkbox[id=sat]").change(function() {
+            		if($("input:checkbox[id=sat]").is(":checked") == false){
+                		$("#satTr").after('<input id="delNo${i}" type="hidden" name="deleteWorkTimeSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo}">');
+    				}
+            		if($("input:checkbox[id=sat]").is(":checked")){
+            			$("#delNo${i}").detach();
+            		}
+				});
     			});
     			</script>
     		</c:when>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '일'}">
     		
     			<script type="text/javascript">
+    			var num = 0;
     			$(document).ready(function() {
     				$("#sun").attr("checked", true);
     				var startTime = "${sessionScope.workTimeSet.get(i).workingTime}";
@@ -1301,6 +1528,46 @@
     				$('#sunSelectEndMin option[value='+end[1]+']').attr('selected','ture');
     				$('#sunSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#sunSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
+    				
+    				var updateStartTime = $("#sunSelectTime option:selected").val();
+    				var updateStartMin = $("#sunSelectMin option:selected").val();
+    				var updateEndTime = $("#sunSelectEndTime option:selected").val();
+    				var updateEndMin = $("#sunSelectEndMin option:selected").val();
+    				var updateHalfTime = $("#sunSelectHalfTime option:selected").val();
+    				var updateHalfMin = $("#sunSelectHalfMin option:selected").val();
+    				
+    				var workingTime = updateStartTime+":"+updateStartMin+":00";
+                	$("#sunTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');    						
+    				$("select[id^='sunSelect'], input:checkbox[id=sun]").change(function() {
+					
+    				if($("input:checkbox[id=sun]").is(":checked")){
+    					updateStartTime = $("#sunSelectTime option:selected").val();
+    					updateStartMin = $("#sunSelectMin option:selected").val();
+    					updateEndTime = $("#sunSelectEndTime option:selected").val();
+    					updateEndMin = $("#sunSelectEndMin option:selected").val();
+    					updateHalfTime = $("#sunSelectHalfTime option:selected").val();
+    					updateHalfMin = $("#sunSelectHalfMin option:selected").val();
+    					workingTime = updateStartTime+":"+updateStartMin+":00";
+    					if(num == 1){
+    						$("#sunTr").after('<input id="workingTime${i}" type="hidden" name="workingTime" value="'+workingTime+'">');
+    						num = 0;
+    					} else{
+    						$("#workingTime${i}").val(workingTime);
+    					}
+    				}else{
+    					$("#workingTime${i}").detach();
+    					num = 1;
+    				}
+    				
+    			});
+    			$("input:checkbox[id=sun]").change(function() {
+            		if($("input:checkbox[id=sun]").is(":checked") == false){
+                		$("#sunTr").after('<input id="delNo${i}" type="hidden" name="deleteWorkTimeSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo}">');
+    				}
+            		if($("input:checkbox[id=sun]").is(":checked")){
+            			$("#delNo${i}").detach();
+            		}
+				});
     			});
     			</script>
     		</c:when>
@@ -1602,8 +1869,9 @@
 					$("#sunTr").hide();
 				}
 			});
+			
     	});
-    	
+    	/*여기까지가 document 실행끝*/
     	$("#addBtnAt").click(function() {
 	    		console.log("들어옴");
 				$("#managerTable").append('<tr><td><input type="text" placeholder="상태 이름 입력"></td><td><select><option>포함</option><option>미포함</option></select></td><td></td></tr>');
@@ -1623,7 +1891,7 @@
     	function deleteType(num, no) {
 			var value = confirm("삭제하시겠습니까?");
 			if(value == true){
-				$("#managerTable").prepend('<input id="delNo'+num+'" type="hidden" name="deleteWorkingStatusNo" value="'+no+'">')
+				$("#managerTable").prepend('<input id="delNo'+num+'" type="hidden" name="deleteWorkingStatusNo" value="'+no+'">');
 				$("#workingTr"+num).detach();
 				$("#hiddenNo"+num).detach();
 				$("#hiddenType"+num).detach();

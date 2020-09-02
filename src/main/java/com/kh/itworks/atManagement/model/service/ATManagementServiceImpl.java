@@ -47,4 +47,18 @@ public class ATManagementServiceImpl implements ATManagementService {
 		return ad.deleteWorkingStatus(sqlSession, dwNo);
 	}
 
+
+	@Override
+	public int deleteWorkTimeSet(String dtNo) throws DeleteUpdateInsertException {
+
+		return ad.deleteWorkTimeSet(sqlSession, dtNo);
+	}
+
+
+	@Override
+	public int updateWorkingStatus(ArrayList<ATManagement> worklist) throws DeleteUpdateInsertException {
+
+		return ad.updateWorkingStatus(sqlSession, worklist);
+	}
+
 }

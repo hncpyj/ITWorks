@@ -45,9 +45,6 @@ public class ATManagementController {
 				
 			}
 			
-			
-		
-		
 		return mv;
 	}
 	
@@ -59,6 +56,9 @@ public class ATManagementController {
 		
 		//delete workingStatus
 		String[] dwNo = request.getParameterValues("deleteWorkingStatusNo");
+		
+		//delete workTimeSet
+		String[] dtNo = request.getParameterValues("deleteWorkTimeSetNo");
 		
 		//update workingStatus
 				String[] workingStatusNo = at.getWorkingStatusNo().split(",");
@@ -78,13 +78,20 @@ public class ATManagementController {
 
 					worklist.add(workAt);
 				}	
-		
+		//update workTimeSet
+				
 		
 	try {
+			int[] dws = null;
+			int[] dwts = null;
 			for(int i = 0; i < dwNo.length; i++) {
-					as.deleteWorkingStatus(dwNo[i]);
+				dws[i] = as.deleteWorkingStatus(dwNo[i]);
 			}
-			//as.updateWorkingStatus(worklist);
+			for(int i = 0; i < dtNo.length; i++) {
+				dwts[i] = as.deleteWorkTimeSet(dtNo[i]);
+			}
+			int uws = as.updateWorkingStatus(worklist);
+			
 		} catch (DeleteUpdateInsertException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

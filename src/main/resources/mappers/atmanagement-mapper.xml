@@ -142,4 +142,17 @@
 		  FROM WORKING_STATUS
 		 WHERE WORKING_STATUS_NO = #{dwNo}
 	</delete>
+	<delete id="deleteWorkTimeSet" parameterType="java.lang.String">
+		DELETE
+		  FROM WORK_TIME_SET
+		 WHERE WORKING_SET_NO = #{dtNo}
+	</delete>
+	<update id="updateWorkingStatus" parameterType="ATManagement">
+		UPDATE WORKING_STATUS
+		   SET WORK_TYPE = #{workType}
+		     , WORK = #{work}
+		 WHERE WORKING_STATUS_NO = #{workingStatusNo}
+		   AND CORP_NO = #{corpNo}
+		   
+	</update>
 </mapper>

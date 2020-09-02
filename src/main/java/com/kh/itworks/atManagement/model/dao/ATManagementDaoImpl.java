@@ -73,4 +73,34 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		return delWS;
 	}
 
+	@Override
+	public int deleteWorkTimeSet(SqlSessionTemplate sqlSession, String dtNo) throws DeleteUpdateInsertException {
+		
+		int delWTS = sqlSession.delete("ATManagement.deleteWorkTimeSet", dtNo);
+		
+		if(delWTS == 0) {
+			
+			throw new DeleteUpdateInsertException("근태 기본 시간 삭제 실패");
+		}
+		
+		return delWTS;
+	}
+
+	@Override
+	public int updateWorkingStatus(SqlSessionTemplate sqlSession, ArrayList<ATManagement> worklist) throws DeleteUpdateInsertException {
+		int[] updateWS = null;
+		for(int i = 0; i < worklist.size(); i++) {
+			updateWS[i] = sqlSession.update("ATManagement.updateWorkingStatus", worklist.get(i));
+			
+		}
+		int result = 0;
+		if(updateWS.length == 0) {
+			throw new DeleteUpdateInsertException("근태 상태 수정 실패");
+		} else {
+			result = 1;
+		}
+		
+		return result;
+	}
+
 }
