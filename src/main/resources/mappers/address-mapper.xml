@@ -3,33 +3,79 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Address">
-	<resultMap type="com.kh.itworks.address.model.vo.Address" id="addressResultSet">
-		<id property="contactsNo" column="CONTACTS_NO"/> 
-		<id property="corpNo" column="CORP_NO"/> 
-		<result property="conType" column="CON_TYPE"/>
-		<result property="conName" column="CON_NAME"/>
-		<result property="email" column="CON_EMAIL"/>
-		<result property="conPhone" column="CON_PHONE"/>
-		<result property="conCorp" column="CON_CORP"/>
-		<result property="homePage" column="CON_HOMEPAGE"/>
-		<result property="conBirthDay" column="CON_BIRTHDAY"/>
-		<result property="conContent" column="CON_CONTENT"/>
-		<result property="importCon" column="IMPORT_CON"/>
-		<result property="roleNo" column="ROLE_NO"/>
-		<result property="tagNo" column="TAG_NO"/>
-		<result property="deptNo" column="DEPTNO"/>
-		<result property="jobNo" column="JOBNO"/>
-		<result property="mNo" column="MNO"/>
-		<result property="tagName" column="TAG_NAME"/>
-		<result property="tagId" column="TID"/>
-		<result property="realAddress" column="ADDRESS"/>
+	<resultMap type="com.kh.itworks.address.model.vo.AddressVO"
+		id="addressResultSet">
+		<id property="contactsNo" column="CONTACTS_NO" />
+		<id property="corpNo" column="CORP_NO" />
+		<result property="conType" column="CON_TYPE" />
+		<result property="conName" column="CON_NAME" />
+		<result property="email" column="CON_EMAIL" />
+		<result property="conPhone" column="CON_PHONE" />
+		<result property="conCorp" column="CON_CORP" />
+		<result property="homePage" column="CON_HOMEPAGE" />
+		<result property="conBirthDay" column="CON_BIRTHDAY" />
+		<result property="conContent" column="CON_CONTENT" />
+		<result property="importCon" column="IMPORT_CON" />
+		<result property="roleNo" column="ROLE_NO" />
+		<result property="tagNo" column="TAG_NO" />
+		<result property="deptNo" column="DEPTNO" />
+		<result property="jobNo" column="JOBNO" />
+		<result property="mNo" column="MNO" />
+		<result property="tagName" column="TAG_NAME" />
+		<result property="tagId" column="TID" />
+		<result property="realAddress" column="ADDRESS" />
 	</resultMap>
-	
+
+	<!--  주소록등록 -->
 	<insert id="insertAddress" parameterType="Address">
 		INSERT INTO CONTACTS
-		VALUES ('CONN'||SEQ_CONTACTS_NO.NEXTVAL, #{conType},#{conName},#{email},#{conPhone},
-				#{conCorp},#{homePage},#{conBirthDay},#{conContent},DEFAULT,
-				#{corpNo},#{roleNo},#{tagId},#{deptNo},#{jobNo},#{mNo},#{realAddress})
+		VALUES ('CONN'||SEQ_CONTACTS_NO.NEXTVAL,
+		#{conType},#{conName},#{email},#{conPhone},
+		#{conCorp},#{homePage},#{conBirthDay},#{conContent},DEFAULT,
+		#{corpNo},#{roleNo},#{tagId},#{deptNo},#{jobNo},#{mNo},#{realAddress})
 	</insert>
- 
+
+	<!-- 메인주소록 리스트 게시글 개수 부르기 -->
+	<select id="listCountMain" resultType="_int">
+		SELECT COUNT(*)
+		FROM CONTACTS
+		WHERE CON_TYPE = 'PRV'
+	</select>
+
+ 	<!-- 회사별 직원별 내 개인주소록 리스트 불러오기  -->
+	<select id="selectMainAddressList" resultMap="addressResultSet" parameterType="com.kh.itworks.address.model.vo.Criteria">
+		SELECT *
+	      FROM (
+		SELECT ROWNUM RN, A.*
+		FROM (
+		SELECT CON_NAME, CON_EMAIL, CON_PHONE, CON_CORP
+		FROM CONTACTS
+		WHERE CON_TYPE = 'PRV'
+		AND CORP_NO = 999
+		AND MNO = 999
+		ORDER BY CONTACTS_NO DESC
+		) A
+		)
+		WHERE RN BETWEEN #{pageStart} AND #{perPageNum}
+	</select>
+
+	<!-- 해당 주소록 보기 -->
+<!-- <select id="select" parameterType="int" resultType="com.kh.itworks.address.model.vo.AddressVO">
+		SELECT *
+		FROM b_board
+		WHERE num = #{num}
+	</select> -->	
+	
+	<!-- 수정 
+	<update id="update" parameterType="boardDTO">
+		UPDATE b_board SET title = #{title},
+		contents = #{contents}
+		WHERE num = #{num}
+	</update>-->
+	
+	<!-- 삭제 : 상태값 -->
+<!-- 	<delete id="delete" parameterType="boardDTO">
+
+	</delete> -->
+
 </mapper>

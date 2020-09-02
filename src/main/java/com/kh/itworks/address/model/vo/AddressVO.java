@@ -1,6 +1,6 @@
 package com.kh.itworks.address.model.vo;
 
-public class Address implements java.io.Serializable{
+public class AddressVO implements java.io.Serializable{
 	
 	private String contactsNo;
 	private String conType;
@@ -23,10 +23,10 @@ public class Address implements java.io.Serializable{
 	private String realAddress;
 	
 	
-	public Address() {}
+	public AddressVO() {}
 
 
-	public Address(String contactsNo, String conType, String conName, String email, String conPhone, String conCorp,
+	public AddressVO(String contactsNo, String conType, String conName, String email, String conPhone, String conCorp,
 			String homePage, String conBirthDay, String conContent, String importCon, String roleNo, int corpNo,
 			String tagId, String deptNo, String jobNo, int mNo, String tagName, String tagNo, String realAddress) {
 		super();
