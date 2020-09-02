@@ -48,7 +48,7 @@ public class FileBoxController {
 	}
 	
 	@RequestMapping("upload.fb")
-	public String FileUpload(Model model, FileBox fb, HttpServletRequest request, MultipartFile photo, @SessionAttribute("loginUser") Member loginUser) {
+	public String FileUpload(Model model, FileBox fb, HttpServletRequest request, MultipartFile photo/*, @SessionAttribute("loginUser") Member loginUser*/) {
 		
 		
 //		Member loginUser = (Member)request.getSession().getAttribute("");
