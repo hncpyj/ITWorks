@@ -8,7 +8,6 @@
 <title>ITWorks!</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
-    /*메뉴 타이틀 관련 css 설정*/
     body {
         width: 1420px;
         height: 900px;
@@ -37,7 +36,6 @@
         color: white;
         margin-left: 75%;
     }
-    /*메뉴 타이틀 관련 css 설정 종료*/
 
     article:nth-child(2) {
         margin-top: 30px;
@@ -99,6 +97,10 @@
     #personList tr:hover {
     	background: rgba(0, 71, 113, 0.2);
     }
+    #deptList tr:hover {
+    	background: rgba(0, 71, 113, 0.2);
+    	cursor: pointer;
+    }
     .searchModal {
      	position: fixed; 
      	left: 0; 
@@ -143,24 +145,41 @@
     	 height: 25px;
     }
     .selectedMember {
-    	 display: inline-block; 
     	 font-size: 13px; 
-    	 width: 70px; 
+    	 width: 80px; 
     	 height: 25px; 
-    	 background: rgba(0, 71, 113, 0.3); 
+    	 background: #0095ED; 
+    	 color: white;
     	 border-radius: 10px;
-    	 margin-left: 8px;
-
+    	 margin-left: 10px;
+    	 border-spacing: 8px;
+    	 text-align: right;
+		 min-width: 90px;
+		 float: left;
+		 line-height: 25px;
+		 margin-top: 8px;
     }
     #selectArea {
     	 border-radius: 7px; 
     	 background: rgb(242, 242, 242); 
     	 width: 325px; 
-    	 height: 40px; 
+    	 height: 45px; 
     	 margin: auto; 
-    	 display: table-cell;
-    	 vertical-align: middle;
     	 text-align: left;
+    	 overflow: auto;
+    }
+    .selectedMember>img {
+    	width: 10px; 
+    	height: 10px; 
+    	margin-right: 7px; 
+    	margin-left: 10px;
+    }
+    .selectedMember>img:hover {
+    	cursor: pointer;
+    }
+    span {
+    	color: red;
+    	margin-left: 5px;
     }
 </style>
 </head>
@@ -179,57 +198,58 @@
 
         <!--프로젝트 정보 입력 폼-->
         <article>
-            <form action="insertProject.pm" method="post" enctype="multipart/form-data">
+            <form action="insertProject.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
                 <table>
                     <tr>
-                        <th>프로젝트명<span></span></th>
+                    	
+                        <th>프로젝트명<span>*</span><input type="hidden" name="plevel" value="0"></th>
                         <td colspan="7"><input type="text" name="pname" style="width: 850px;"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
                         <td colspan="3"><input type="text" name="pwriter" value="${ loginUser.ename }" readonly="readonly" style="border: none; box-shadow: none;"></td>
-                        <th>상태</th>
+                        <th>상태<span>*</span></th>
                         <td>
                             <select name="pprogress" id="pprogress" style="width: 100px;">
-                                <option value="schedule">예정</option>
-                                <option value="progress">진행</option>
-                                <option value="finish">완료</option>
-                                <option value="hold">보류</option>
-                                <option value="discard">폐기</option>
+                                <option value="예정">예정</option>
+                                <option value="진행">진행</option>
+                                <option value="완료">완료</option>
+                                <option value="보류">보류</option>
+                                <option value="폐기">폐기</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <th>담당자</th>
-                        <td colspan="3">
-                            <input type="text" name="charge">
-                            <button onclick="searchPerson();" class="selectMemberBtn" type="button">조회</button>
+                        <th>담당자<span>*</span></th>
+                        <td colspan="3" id="chargeTd">
+                            <input type="text" name="charge" readonly="readonly"><input type="hidden" name="chargeMno" value="">
+                            <button onclick="searchPerson(0);" class="selectMemberBtn" type="button">조회</button>
                         </td>
                         <th>관리부서</th>
-                        <td>
-                            <input type="text" name="chargeDept" style="width: 145px;">
+                        <td id="chrgeDeptTd">
+                            <input type="text" name="chargeDept" style="width: 145px;" readonly="readonly"><input type="hidden" name="chargeDid" value="">
                             <button onclick="searchDept();" class="selectMemberBtn" type="button">조회</button>
                         </td>
                     </tr>
                     <tr>
                         <th>참여자</th>
-                        <td colspan="6">
-                            <input type="text" name="Participant" style="width: 520px;">
-                            <button onclick="searchPerson();" class="selectMemberBtn" type="button">조회</button>
+                        <td colspan="6" id="participantTd">
+                            <input type="text" name="participant" style="width: 520px;" readonly="readonly"><input type="hidden" name="participantMno" value="">
+                            <button onclick="searchPerson(1);" class="selectMemberBtn" type="button">조회</button>
                         </td>
                     </tr>
                     <tr>
                         <th>열람 권한</th>
-                        <td colspan="6">
-                            <input type="text" name="perusal" style="width: 520px;">
-                            <button onclick="searchPerson();" class="selectMemberBtn" type="button">조회</button>
+                        <td colspan="6" id="perusalTd">
+                            <input type="text" name="perusal" style="width: 520px;" readonly="readonly"><input type="hidden" name="perusalMno" value="">
+                            <button onclick="searchPerson(2);" class="selectMemberBtn" type="button">조회</button>
 
                         </td>
                     </tr>
                     <tr>
-                        <th>계획 시작일</th>
+                        <th>계획 시작일<span>*</span></th>
                         <td><input type="date" name="pstartDate"></td>
-                        <th>계획 종료일</th>
+                        <th>계획 종료일<span>*</span></th>
                         <td><input type="date" name="pendDate"></td>
                         <th>실제 종료일</th>
                         <td><input type="date" name="actualEndDate"></td>
@@ -241,12 +261,14 @@
                     <tr>
                         <th>첨부파일</th>
                         <td colspan="6">
-                            <input multiple="multiple" type="file" name="filename[]" style="width: 480px; border: none; box-shadow: none;"/>
+                            <input multiple="multiple" type="file" id="files" name="files" style="width: 480px; border: none; box-shadow: none;"/>
                             <!--file drag and drop 더 알아보기-->
                         </td>
                     </tr>
                 </table>
+                <!-- <input type="submit" value="등록"> -->
                 <input type="submit" value="등록">
+                
             </form>
             
             <!-- 직원선택창 -->
@@ -258,10 +280,8 @@
             			<button onclick="closeSearchPerson();" style="background: white; color: black; width: 20px; height: 20px; border: none; border-radius: 5px; margin-left: 323px; font-weight: bold;">X</button>
             		</div>
             		<div align="center" style="margin-top: 10px; margin-bottom: 15px;">
-	            		<form action="searchPerson.pm">
-	            			<input type="text" name="searchName" style="width: 250px; border: 1px solid #929292; margin-left: 5px;" placeholder="검색하고자 하는 이름을 입력하세요.">
-	            			<button type="button" style="width: 50px; height: 25px; border-radius: 7px; background: #004771; border: nond; color: white; margin-left: 5px; font-size: 13px; border: none;">검색</button>
-	            		</form>
+	            		<input type="text" name="searchName" style="width: 250px; border: 1px solid #929292; margin-left: 5px;" placeholder="검색하고자 하는 이름을 입력하세요.">
+	            		<button type="button" style="width: 50px; height: 25px; border-radius: 7px; background: #004771; border: nond; color: white; margin-left: 5px; font-size: 13px; border: none;">검색</button>
             		</div>
             		<div id="selectArea"></div>
             		<div style="width: 325px; height: 290px; border: 1px solid #929292; margin-top: 15px; overflow: auto;" align="center">
@@ -270,14 +290,10 @@
 	            				<c:if test="${ !empty p }">
 		            				<tr>
 		            					<td><div style="display: inline-block; width: 38px; height: 38px; border-radius: 50%; background: gray; margin-top: 5px;"></div></td>
-		            					<td style="padding-left: 10px; width: 100px;"><c:out value="${ p.ename }"/> &nbsp;&nbsp;<c:out value="${ p.jname }"/></td>
+		            					<td style="padding-left: 10px; width: 80px;"><c:out value="${ p.ename }"/></td>
+		            					<td><c:out value="${ p.jname }"/></td>
 		            					<td style="color: #929292; width: 100px;"><c:out value="${ p.dname }"/></td>
 		            					<td><button class="selectPersonBtn" onclick="goSelectArea(${ p.mno }, '${ p.ename }');">선택</button></td>
-		            				</tr>
-		            			</c:if>
-		            			<c:if test="${ empty p }">
-		            				<tr>
-		            					<td style="text-align: center; color: #929292; font-size: 13px;">표시할 내용이 없습니다.</td>
 		            				</tr>
 		            			</c:if>
             				</c:forEach>
@@ -294,7 +310,7 @@
             	<div class="searchBox" align="center" style="width: 300px; height: 400px;">
             		<div style="background: #004771; border-top-left-radius: 5px; border-top-right-radius: 5px; height: 35px; margin: 0; width: 300px; display: table-cell; vertical-align: middle;">
             			<span style="color: white; padding-left: 15px; margin-top: 15px; font-size: 14px;">검색</span>
-            			<button onclick="closeSearchDept();" style="background: white; color: black; width: 20px; height: 20px; border: none; border-radius: 5px; margin-left: 220px; font-weight: bold;">X</button>
+            			<button onclick="closeSearchDept();" type="button" style="background: white; color: black; width: 20px; height: 20px; border: none; border-radius: 5px; margin-left: 220px; font-weight: bold;">X</button>
             		</div>
             		<div align="center" style="margin-top: 10px;">
 	            		<form action="searchPerson.pm">
@@ -303,10 +319,10 @@
 	            		</form>
             		</div>
             		<div style="width: 230px; height: 280px; border: 1px solid #929292; margin-top: 15px; overflow: auto;" align="center">
-            			<table style="width: 100%; font-size: 13px;" id="personList">
+            			<table style="width: 100%; font-size: 13px;" id="deptList">
             				<c:forEach var="p" items="${ allMemberDept.allDept }">
 	            				<c:if test="${ !empty p }">
-		            				<tr>
+		            				<tr onclick="selectDept(${ p.did }, '${ p.dname }');">
 		            					<td><img src="${ contextPath }/resources/projectManageImages/deptIcon.png" style="height: 20px; float: left; padding-left: 15px; margin-right: 10px;">
 		            					<c:out value="${ p.dname }"/></td>
 		            				</tr>
@@ -330,8 +346,10 @@
         var dropFile = function(event) {
             event.preventDefault();
         } */
-        
-        function searchPerson() {
+
+        function searchPerson(index) {
+			tdNum = index;
+			
         	$(".selectedMember").remove();
         	jQuery('.searchPerson').fadeIn('slow');
         }
@@ -354,10 +372,122 @@
         	console.log(mno + ', ' + ename);
         	
         	if($(".selectedMember").length == 0) {
-        		$("#selectArea").wrapInner("<div class='selectedMember' style='text-align: center;'>" + ename + "</div>");
+        		$("#selectArea").wrapInner("<div class='selectedMember'>" + ename + 
+        			"<img src='${contextPath}/resources/projectManageImages/closeBtn4.png' onclick='removeMember(this);'><input type='hidden' name='tempMno' value='" + mno +"'></div>");
         	} else {
-        		
-        		$(".selectedMember:last-child").after("<div class='selectedMember' style='text-align: center;'>" + ename + "</div>");
+        		if(tdNum == 0) {
+        			alert("담당자는 1명만 선택 가능합니다.");
+        			return;
+        		} else {
+	        		$(".selectedMember:last-child").after("<div class='selectedMember'>" + ename +
+	        			"<img src='${contextPath}/resources/projectManageImages/closeBtn4.png' onclick='removeMember(this);'><input type='hidden' name='tempMno' value='" + mno +"'></div>");
+        		}
+        	}
+        	
+        	mnoArr = "";
+    		for(var i = 0; i < $("input[name=tempMno]").length; i++) {
+    			mnoArr += $("input[name=tempMno]")[i].value;
+    			if(i < $("input[name=tempMno]").length - 1) {
+    					mnoArr += ", ";
+    			}
+    		}	
+        }
+        
+        function removeMember(selectedMember) {
+        	var selectedMember = selectedMember;
+        	$(selectedMember).parent().remove();
+        }
+        
+        function selectPerson() {
+        	console.log(mnoArr);
+        	var names = '';
+        	
+        	for(var i = 0; i < $(".selectedMember").length; i++) {
+        		names += $(".selectedMember").eq(i).text();
+        		if(i != $(".selectedMember").length - 1) {
+        			names += ", ";
+        		}
+        	}
+        	
+        	if(tdNum == 0) {
+	        	$("input[name='charge']").val(names);
+	        	$("input[name='chargeMno']").val(mnoArr);
+	        	console.log("담당mnoArr : " + mnoArr);
+	        	mnoArr = "";
+	        	console.log("담당자 : " + $("input[name='chargeMno']").val());
+        	} else if(tdNum == 1) {
+        		$("input[name='participant']").val(names);
+        		$("input[name='participantMno']").val(mnoArr);
+        		console.log("참여mnoArr : " + mnoArr);
+        		mnoArr = "";
+	        	console.log("초기화 후 : " + mnoArr);
+	        	console.log("참여자 : " + $("input[name='participantMno']").val());
+        	} else {
+        		$("input[name='perusal']").val(names);
+        		$("input[name='perusalMno']").val(mnoArr);
+        		console.log("열람mnoArr : " + mnoArr);
+        		mnoArr = "";
+	        	console.log("열람권한 : " + $("input[name='perusalMno']").val());
+        	}
+
+        	jQuery('.searchPerson').fadeOut('slow');
+        	
+        }
+        
+/*         function searchPersonAjax() {
+        	var searchName = $("input[name='searchName']").val();
+       	
+        	$.ajax({
+        		url: "searchPerson.pm",
+        		type: "get",
+        		data: {searchName: searchName},
+        		success: function(data) {
+        			console.log('${requestScope.allMemberDept.allMember}');
+        		},
+        		error: function(data) {
+        			console.log("실패");
+        		}
+        	});    
+        } */
+        
+        function selectDept(did, dname) {
+        	console.log(did + ", " + dname);
+        	
+        	$("input[name='chargeDept']").val(dname);
+        	$("input[name='chargeDid']").val(did);
+        	console.log("담당부서명 : " + $("input[name=chargeDept]").val());
+        	console.log("담당부서코드 : " + $("input[name=chargeDid]").val());
+        	
+        	jQuery('.searchDept').fadeOut('slow');
+        }
+        
+        function checkNull() {
+        	var pname = $("input[name='pname']").val();
+        	var charge = $("input[name='charge']").val();
+        	var pstartDate = $("input[name='pstartDate']").val();
+        	var pendDate = $("input[name='pendDate']").val();
+        	
+        	console.log(pstartDate > pendDate);
+        	
+        	if(!pname) {
+        		alert("프로젝트명을 입력 해 주세요.");
+        		$("input[name='pname']").focus();
+        		return false;
+        	} else if(!charge) {
+        		alert("담당자를 등록 해 주세요.");
+        		$("input[name='charge']").focus();
+        		return false;
+        	} else if(!pstartDate) {
+        		alert("계획시작일을 입력 해 주세요.");
+        		return false;
+        	} else if(!pendDate) {
+        		alert("계획종료일을 입력 해 주세요.");
+        		return false;
+        	} else if(pstartDate > pendDate) {
+        		alert("계획종료일은 계획시작일보다 빠를 수 없습니다.");
+        		return false;
+        	} else {
+        		return true;
         	}
         }
 

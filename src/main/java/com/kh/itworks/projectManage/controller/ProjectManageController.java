@@ -1,7 +1,10 @@
 package com.kh.itworks.projectManage.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.kh.itworks.common.CommonUtils;
 import com.kh.itworks.common.Pagination;
 import com.kh.itworks.member.model.vo.Member;
+import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.service.ProjectService;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectMember;
@@ -47,8 +53,6 @@ public class ProjectManageController {
 		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectProjectList(pi, loginUser);
-		
-		System.out.println(projectList);
 		
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("projectList", projectList);
@@ -92,8 +96,6 @@ public class ProjectManageController {
 		}
 		
 		searchCondition.setScMno(loginUser.getMno());
-		
-		System.out.println("searchCondition : " + searchCondition);
 
 		int currentPage = 1;
 		
@@ -103,13 +105,9 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getSearchListCount(searchCondition, loginUser);
 		
-		System.out.println("controller listCount : " + listCount);
-		
 		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectSearchProjectList(pi, loginUser, searchCondition);
-		
-		System.out.println(projectList);
 		
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("projectList", projectList);
@@ -131,8 +129,6 @@ public class ProjectManageController {
 		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectOngoingProjectList(pi, loginUser);
-		
-		System.out.println("controller projectList : " + projectList);
 		
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("projectList", projectList);
@@ -165,8 +161,6 @@ public class ProjectManageController {
 		}
 		
 		searchCondition.setScMno(loginUser.getMno());
-		
-		System.out.println("ongoing searchCondition : " + searchCondition);
 
 		int currentPage = 1;
 		
@@ -176,13 +170,9 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getSearchOngoingListCount(searchCondition, loginUser);
 		
-		System.out.println("controller ongoing search listCount : " + listCount);
-		
 		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectSearchOngoingProjectList(pi, loginUser, searchCondition);
-		
-		System.out.println("search ongoing projectList : " + projectList);
 		
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("projectList", projectList);
@@ -204,8 +194,6 @@ public class ProjectManageController {
 		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectFinishProjectList(pi, loginUser);
-		
-		System.out.println("controller projectList : " + projectList);
 		
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("projectList", projectList);
@@ -238,8 +226,6 @@ public class ProjectManageController {
 		}
 		
 		searchCondition.setScMno(loginUser.getMno());
-		
-		System.out.println("finish searchCondition : " + searchCondition);
 
 		int currentPage = 1;
 		
@@ -249,13 +235,9 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getSearchFinishListCount(searchCondition, loginUser);
 		
-		System.out.println("controller ongoing search listCount : " + listCount);
-		
 		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectSearchFinishProjectList(pi, loginUser, searchCondition);
-		
-		System.out.println("search finish projectList : " + projectList);
 		
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("projectList", projectList);
@@ -269,28 +251,132 @@ public class ProjectManageController {
 		
 		HashMap<String, Object> allMemberDept = projectService.selectAllMemberDept(loginUser.getCorpNo());
 		
-		System.out.println("controller allMemberDept : " + allMemberDept);
-		
 		model.addAttribute("allMemberDept", allMemberDept);
 		
 		return "projectManage/insertProjectForm";
 	}
 	
-	@RequestMapping("insertProject.pm")
-	public String insertProject(Model model, Project project, ProjectMember member, HttpServletRequest request, MultipartFile file, @SessionAttribute("loginUser") Member loginUser) {
-		System.out.println(project);
-		System.out.println(member);
-		System.out.println(file);
+	@RequestMapping("searchAllMember.pm")
+	public void searchAllMember(Model model, @SessionAttribute("loginUser") Member loginUser) {
 		
+		ArrayList<Object> searchAllMember = projectService.searchAllMember(loginUser.getCorpNo());
+		
+		model.addAttribute("searchMember", searchAllMember);
+	}
+	
+	@RequestMapping("searchAllDept.pm")
+	public void searchAllDept(Model model, @SessionAttribute("loginUser") Member loginUser) {
+		
+		ArrayList<Object> searchAllDept = projectService.searchAllDept(loginUser.getCorpNo());
+		System.out.println("searchAllDept : " + searchAllDept);
+		
+		model.addAttribute("searchAllDept", searchAllDept);
+	}
+	
+	@RequestMapping("insertProject.pm")
+	public String insertProject(Model model, Project project, MultipartHttpServletRequest request, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) throws InsertProjectException {
+		System.out.println("담당자 : " + request.getParameter("chargeMno"));
+		System.out.println("참여자 : " + request.getParameter("participantMno"));
+		System.out.println("열람권한 : " + request.getParameter("perusalMno"));
+		System.out.println("관리부서코드 : " + request.getParameter("chargeDid"));
+		
+		//프로젝트 insert
+		project.setCorpNo(loginUser.getCorpNo());
+		project.setPdept(request.getParameter("chargeDid"));
+		String writer = Integer.toString(loginUser.getMno());
+		
+		HashMap<String, Object> projectInfo = new HashMap<String, Object>();
+		projectInfo.put("project", project);
+		projectInfo.put("writer", writer);
+		
+		try {
+			int insertProjectResult = projectService.insertProject(projectInfo);
+		} catch(InsertProjectException e) {
+			model.addAttribute("msg", e.getMessage());
+		}
+		
+		//신규등록한 프로젝트 pno 가져오기
+		int newPno = projectService.selectNewProjectPno(loginUser.getMno());
+		System.out.println("find new pno : " + newPno);
+		
+		//프로젝트멤버 insert
+		String charge = request.getParameter("chargeMno");
+		String participant = request.getParameter("participantMno");
+		String perusal = request.getParameter("perusalMno");
+		
+		ArrayList<Integer> participantArr = new ArrayList<Integer>();
+		StringTokenizer participantSt = new StringTokenizer(participant, ", ");
+		while(participantSt.hasMoreTokens()) {
+			participantArr.add(Integer.parseInt(participantSt.nextToken()));
+		}
+		
+		ArrayList<Integer> perusalArr = new ArrayList<Integer>();
+		StringTokenizer perusalSt = new StringTokenizer(perusal, ", ");
+		while(perusalSt.hasMoreTokens()) {
+			perusalArr.add(Integer.parseInt(perusalSt.nextToken()));
+		}
+		
+		HashMap<String, Object> projectMember = new HashMap<String, Object>();
+		projectMember.put("pno", newPno);
+		projectMember.put("charge", charge);
+		projectMember.put("participant", participantArr);
+		projectMember.put("perusal", perusalArr);
+		
+		try {
+			int insertProjectMemberResult = projectService.insertProjectMember(projectMember);
+		} catch(InsertProjectException e) {
+			model.addAttribute("msg", e.getMessage());
+		}
+		
+		//프로젝트 첨부파일 업로드 및 ATTACHMENT 테이블 insert
+		if(!files[0].isEmpty()) {
+			//저장할 경로 지정(톰캣이 가지고 있는 webapp 폴더 밑 resources 폴더의 절대경로를 가져와라). 톰캣에서 관리하는 폴더는 하위폴더를 구분할 때 역슬러쉬(\)를 사용한다.
+			String root = request.getSession().getServletContext().getRealPath("resources");
+					
+			System.out.println(root);
+					
+			//이스케이프 문자 주의할 것
+			String filePath = root + "\\uploadFiles\\project";
+					
+			for(int i = 0; i < files.length; i++) {
+				
+				String originFileName = files[i].getOriginalFilename();
+				//확장자만 따로 저장하기
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));
+				
+				String changeName = CommonUtils.getRandomString();
+				
+				Long size = files[i].getSize();
+				
+				try {
+					files[i].transferTo(new File(filePath + "\\" + changeName + ext));
+					
+				} catch (IllegalStateException | IOException e) {
+					//익셉션 발생할 경우 파일 삭제
+					new File(filePath + "\\" + changeName + ext).delete();
+				}
+			}
+		}
+
 		return "";
 	}
 	
 	@RequestMapping("searchPerson.pm")
 	public String searchPerson(Model model, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
 		
-		System.out.println(request.getParameter("mno"));
+		HashMap<String, Object> searchCondition = new HashMap<String, Object>();
 		
-		return "";
+		searchCondition.put("name", request.getParameter("searchName"));
+		searchCondition.put("corpNo", loginUser.getCorpNo());
+		
+		HashMap<String, Object> allMemberDept = projectService.selectSearchPerson(searchCondition);
+		
+//		mv.addObject("allMemberDept", allMemberDept);
+//		mv.setViewName("projectManage/insertProjectForm");
+		
+		model.addAttribute("allMemberDept", allMemberDept);
+		
+		return "projectManage/insertProjectForm";
 	}
 	
 	@RequestMapping("projectNotice.pm")

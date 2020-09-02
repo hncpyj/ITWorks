@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.dao.ProjectDao;
+import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
@@ -94,5 +95,36 @@ public class ProjectServiceImpl implements ProjectService{
 	public HashMap<String, Object> selectAllMemberDept(int corpNo) {
 		return projectDao.selectAllMemberDept(sqlSession, corpNo);
 	}
+
+	@Override
+	public HashMap<String, Object> selectSearchPerson(HashMap<String, Object> searchCondition) {
+		return projectDao.selectSearchPerson(sqlSession, searchCondition);
+	}
+
+	@Override
+	public ArrayList<Object> searchAllMember(int corpNo) {
+		return projectDao.searchAllMember(sqlSession, corpNo);
+	}
+
+	@Override
+	public ArrayList<Object> searchAllDept(int corpNo) {
+		return projectDao.searchAllDept(sqlSession, corpNo);
+	}
+
+	@Override
+	public int insertProject(HashMap<String, Object> project) throws InsertProjectException {
+		return projectDao.insertProject(sqlSession, project);
+	}
+
+	@Override
+	public int selectNewProjectPno(int mno) {
+		return projectDao.selectNewProjectPno(sqlSession, mno);
+	}
+
+	@Override
+	public int insertProjectMember(HashMap<String, Object> projectMember) throws InsertProjectException {
+		return projectDao.insertProjectMember(sqlSession, projectMember);
+	}
+
 
 }

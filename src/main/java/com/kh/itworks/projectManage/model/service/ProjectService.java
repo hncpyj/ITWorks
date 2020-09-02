@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.itworks.member.model.vo.Member;
+import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.exception.SelectAllProjectListException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
@@ -40,4 +41,17 @@ public interface ProjectService {
 	HashMap<String, Object> selectOneProject(int pno);
 
 	HashMap<String, Object> selectAllMemberDept(int corpNo);
+
+	HashMap<String, Object> selectSearchPerson(HashMap<String, Object> searchCondition);
+
+	ArrayList<Object> searchAllMember(int corpNo);
+
+	ArrayList<Object> searchAllDept(int corpNo);
+
+	int insertProject(HashMap<String, Object> projectInfo) throws InsertProjectException;
+
+	int selectNewProjectPno(int mno);
+
+	int insertProjectMember(HashMap<String, Object> projectMember) throws InsertProjectException;
+
 }

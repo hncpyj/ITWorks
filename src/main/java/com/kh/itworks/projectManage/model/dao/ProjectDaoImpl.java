@@ -2,7 +2,6 @@ package com.kh.itworks.projectManage.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.itworks.dept.model.vo.Dept;
 import com.kh.itworks.member.model.vo.Member;
+import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectMember;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
@@ -28,8 +28,6 @@ public class ProjectDaoImpl implements ProjectDao{
 		} else {
 			result = sqlSession.selectOne("Project.selectListCount", loginUser.getMno());
 		}
-		
-		System.out.println("dao result : " + result);
 		
 		return result;
 	}
@@ -63,7 +61,6 @@ public class ProjectDaoImpl implements ProjectDao{
 			result = sqlSession.selectOne("Project.selectAdminSearchListCount", searchCondition);
 		} else {
 			result = sqlSession.selectOne("Project.selectSearchListCount", searchCondition);
-			System.out.println("SearchCount result : " + result);
 		}
 		return result;
 	}
@@ -84,7 +81,6 @@ public class ProjectDaoImpl implements ProjectDao{
 			allProjectList = (ArrayList) sqlSession.selectList("Project.selectAdminSearchProjectList", searchCondition, rowBounds);
 		} else {
 			allProjectList = (ArrayList) sqlSession.selectList("Project.selectAllSearchProjectList", searchCondition, rowBounds);
-			System.out.println("searchList : " + allProjectList);
 		}
 
 		return allProjectList;
@@ -99,8 +95,6 @@ public class ProjectDaoImpl implements ProjectDao{
 		} else {
 			result = sqlSession.selectOne("Project.selectOngoingListCount", loginUser.getMno());
 		}
-		
-		System.out.println("dao ongoing result : " + result);
 		
 		return result;
 	}
@@ -130,7 +124,6 @@ public class ProjectDaoImpl implements ProjectDao{
 			result = sqlSession.selectOne("Project.selectAdminSearchOngoingListCount", searchCondition);
 		} else {
 			result = sqlSession.selectOne("Project.selectSearchOngoinListCount", searchCondition);
-			System.out.println("SearchCount result : " + result);
 		}
 		return result;
 	}
@@ -150,7 +143,6 @@ public class ProjectDaoImpl implements ProjectDao{
 			allProjectList = (ArrayList) sqlSession.selectList("Project.selectAdminSearchOngoingProjectList", searchCondition, rowBounds);
 		} else {
 			allProjectList = (ArrayList) sqlSession.selectList("Project.selectSearchOngoingProjectList", searchCondition, rowBounds);
-			System.out.println("searchList : " + allProjectList);
 		}
 
 		return allProjectList;
@@ -165,8 +157,6 @@ public class ProjectDaoImpl implements ProjectDao{
 		} else {
 			result = sqlSession.selectOne("Project.selectFinishListCount", loginUser.getMno());
 		}
-		
-		System.out.println("dao ongoing result : " + result);
 		
 		return result;
 	}
@@ -196,7 +186,6 @@ public class ProjectDaoImpl implements ProjectDao{
 			result = sqlSession.selectOne("Project.selectAdminSearchFinishListCount", searchCondition);
 		} else {
 			result = sqlSession.selectOne("Project.selectSearchFinishListCount", searchCondition);
-			System.out.println("SearchCount result : " + result);
 		}
 		return result;
 	}
@@ -216,7 +205,6 @@ public class ProjectDaoImpl implements ProjectDao{
 			allProjectList = (ArrayList) sqlSession.selectList("Project.selectAdminSearchFinishProjectList", searchCondition, rowBounds);
 		} else {
 			allProjectList = (ArrayList) sqlSession.selectList("Project.selectSearchFinishProjectList", searchCondition, rowBounds);
-			System.out.println("searchList : " + allProjectList);
 		}
 
 		return allProjectList;
@@ -228,8 +216,6 @@ public class ProjectDaoImpl implements ProjectDao{
 		HashMap<String, Object> projectInfo = new HashMap<String, Object>();
 		Project project = sqlSession.selectOne("Project.selectOneProject", pno);
 		ArrayList<ProjectMember> member = (ArrayList) sqlSession.selectList("Project.selectMemberList", pno);
-		System.out.println("selectOne project : " + project);
-		System.out.println("select project member : " + member);
 		
 		projectInfo.put("project", project);
 		projectInfo.put("member", member);
@@ -243,17 +229,72 @@ public class ProjectDaoImpl implements ProjectDao{
 		HashMap<String, Object> allMemberDept = new HashMap<String, Object>();
 		
 		ArrayList<Object> allMember =  (ArrayList) sqlSession.selectList("Project.selectAllMember", corpNo);
-		System.out.println("dao allMember : " + allMember);
-		
-		
 		
 		ArrayList<Dept> allDept = (ArrayList) sqlSession.selectList("Project.selectAllDept", corpNo);
-		System.out.println("dao allDept : " + allDept);
 		
 		allMemberDept.put("allMember", allMember);
 		allMemberDept.put("allDept", allDept);
 		
 		return allMemberDept;
+	}
+
+	@Override
+	public HashMap<String, Object> selectSearchPerson(SqlSessionTemplate sqlSession,
+			HashMap<String, Object> searchCondition) {
+
+		HashMap<String, Object> searchMemberDept = new HashMap<String, Object>();
+		
+		ArrayList<Object> allMember = (ArrayList) sqlSession.selectList("Project.selectSearchPerson", searchCondition);
+		
+		searchMemberDept.put("allMember", allMember);
+		
+		return searchMemberDept;
+	}
+
+	@Override
+	public ArrayList<Object> searchAllMember(SqlSessionTemplate sqlSession, int corpNo) {
+		
+		ArrayList<Object> allMember =  (ArrayList) sqlSession.selectList("Project.selectAllMember", corpNo);
+		
+		return allMember;
+	}
+
+	@Override
+	public ArrayList<Object> searchAllDept(SqlSessionTemplate sqlSession, int corpNo) {
+		ArrayList<Object> allDept = (ArrayList) sqlSession.selectList("Project.selectAllDept", corpNo);
+		
+		return allDept;
+	}
+
+	@Override
+	public int insertProject(SqlSessionTemplate sqlSession, HashMap<String, Object> project) throws InsertProjectException {
+		int insertProjectResult = sqlSession.insert("Project.insertProject", project);
+		
+		if(insertProjectResult == 0) {
+			throw new InsertProjectException("프로젝트 등록 실패");
+		}
+		
+		return insertProjectResult;
+	}
+
+	@Override
+	public int selectNewProjectPno(SqlSessionTemplate sqlSession, int mno) {
+		int newProjectPno = sqlSession.selectOne("Project.selectNewProjectPno", mno);
+		
+		return newProjectPno;
+	}
+
+	@Override
+	public int insertProjectMember(SqlSessionTemplate sqlSession, HashMap<String, Object> projectMember) throws InsertProjectException {
+		int insertProjectMemberResult = sqlSession.insert("Project.insertProjectMember", projectMember);
+		
+		System.out.println("result : " + insertProjectMemberResult);
+		
+		if(insertProjectMemberResult == 0) {
+			throw new InsertProjectException("프로젝트 멤버 등록 실패");
+		}
+		
+		return insertProjectMemberResult;
 	}
 
 }

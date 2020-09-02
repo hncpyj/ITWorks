@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.itworks.member.model.vo.Member;
+import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
@@ -44,5 +45,17 @@ public interface ProjectDao {
 	HashMap<String, Object> selectOneProject(SqlSessionTemplate sqlSession, int pno);
 
 	HashMap<String, Object> selectAllMemberDept(SqlSessionTemplate sqlSession, int corpNo);
+
+	HashMap<String, Object> selectSearchPerson(SqlSessionTemplate sqlSession, HashMap<String, Object> searchCondition);
+
+	ArrayList<Object> searchAllMember(SqlSessionTemplate sqlSession, int corpNo);
+
+	ArrayList<Object> searchAllDept(SqlSessionTemplate sqlSession, int corpNo);
+
+	int insertProject(SqlSessionTemplate sqlSession, HashMap<String, Object> project) throws InsertProjectException;
+
+	int selectNewProjectPno(SqlSessionTemplate sqlSession, int mno);
+
+	int insertProjectMember(SqlSessionTemplate sqlSession, HashMap<String, Object> projectMember) throws InsertProjectException;
 
 }

@@ -27,5 +27,13 @@
     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     	<beans:property name="maxUploadSize" value="10000000"/>
     </beans:bean>
+    
+    <!-- jsonView bean 생성(ajax 관련) -->
+    <!-- template view, 가상의 view -->
+    <beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
+    <!-- 논리적인 view resolver. -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="1"/><!-- JsonView보다 먼저 동작하도록 우선순위 설정 -->
+	</beans:bean>
 	
 </beans:beans>

@@ -484,18 +484,18 @@
          ORDER BY P.PSTART_DATE DESC
    </select>
    
-   <select id="selectOneProject" resultMap="projectList" resultType="_int">
+   <select id="selectOneProject" resultMap="projectList">
    		SELECT * FROM PROJECT
    		 WHERE PNO = #{pno}
    </select>
    
-   <select id="selectMemberList" resultType="_int" resultMap="projectMember">
+   <select id="selectMemberList" resultMap="projectMember">
    		SELECT M.*, E.ENAME FROM PMEMBER M
    		JOIN EMPLOYEE E ON(M.MNO = E.MNO)
    		 WHERE PNO = #{pno}
    </select>
    
-   <select id="selectAllMember" resultType="_int" resultMap="member">
+   <select id="selectAllMember" resultMap="member">
    		SELECT 
    		       E.* 
    		     , D.DNAME
@@ -509,10 +509,62 @@
    		ORDER BY E.ENAME
    </select>
    
-   <select id="selectAllDept" resultType="_int" resultMap="dept">
+   <select id="selectAllDept" resultMap="dept">
    		SELECT * FROM DEPT
    		WHERE CORP_NO = #{corpNo}
    		ORDER BY DNAME
    </select>
    
+   <select id="selectSearchPerson" parameterType="java.util.HashMap" resultMap="member">
+   		SELECT 
+   		       E.* 
+   		     , D.DNAME
+   		     , J.JNAME
+   		 FROM EMPLOYEE E
+   		 JOIN DEPT D ON(E.DID = D.DID)
+   		 JOIN JOB J ON(E.JID = J.JID)
+   		WHERE E.CORP_NO = #{corpNo}
+   		  AND E.STATUS = 'Y'
+   		  AND E.APPROVAL = 'Y'
+   		  AND E.ENAME LIKE '%' || #{name} || '%'
+   		ORDER BY E.ENAME
+   </select>
+   
+   <insert id="insertProject" parameterType="Project">
+   		INSERT ALL
+   		INTO PROJECT VALUES (SEQ_PNO.NEXTVAL, #{project.pname}, #{project.pdept}, #{project.pstartDate}, #{project.pendDate}, #{project.actualEndDate}, #{project.psummary}, #{project.plevel}, #{project.pcontent}, #{project.uniqueness}, #{project.corpNo}, DEFAULT, '2020/09/03', TO_CHAR(SYSDATE + 9/24,'hh24:mi:ss'), 
+   				SEQ_PNO.NEXTVAL, #{project.pjtTaskNo}, #{project.pprogress})
+   		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer})
+   		SELECT *
+   		FROM DUAL
+   </insert>
+   
+   <select id="selectNewProjectPno" resultType="_int">
+   		SELECT
+               *
+          FROM (SELECT 
+                       P.PNO  
+                  FROM PROJECT P
+                  JOIN PMEMBER M ON(P.PNO = M.PNO)
+                 WHERE M.MNO = #{mno}
+                   AND M.PROLE = '작성자'
+                 ORDER BY P.PDATE DESC, P.PTIME DESC)
+         WHERE ROWNUM = 1
+   </select>
+
+   <insert id="insertProjectMember" parameterType="HashMap">
+   		INSERT ALL
+   		INTO PMEMBER VALUES(get_seq, '담당자', #{pno}, #{charge})
+   		<if test="participant != null">
+	   		<foreach collection="participant" item="item">
+	   		INTO PMEMBER VALUES(get_seq, '참여자', #{pno}, #{item})	
+	   		</foreach>
+   		</if>
+   		<if test="perusal != null">
+	   		<foreach collection="perusal" item="item">
+	   		INTO PMEMBER VALUES(get_seq, '열람권한', #{pno}, #{item})
+	   		</foreach>
+   		</if>
+   		SELECT * FROM DUAL
+   </insert>
 </mapper>
