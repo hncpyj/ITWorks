@@ -137,5 +137,9 @@
 		  FROM WORK_TIME_SET
 		 WHERE CORP_NO=#{corpNo}
 	</select>
-	
+	<delete id="deleteWorkingStatus" parameterType="java.lang.String">
+		DELETE
+		  FROM WORKING_STATUS
+		 WHERE WORKING_STATUS_NO = #{dwNo}
+	</delete>
 </mapper>

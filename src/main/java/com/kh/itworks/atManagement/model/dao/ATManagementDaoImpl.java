@@ -6,6 +6,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 
@@ -57,6 +58,19 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		}
 		
 		return selectWorkTimeSet;
+	}
+
+	@Override
+	public int deleteWorkingStatus(SqlSessionTemplate sqlSession, String dwNo) throws DeleteUpdateInsertException {
+		
+		int delWS = sqlSession.delete("ATManagement.deleteWorkingStatus", dwNo);
+		
+		if(delWS == 0) {
+			
+			throw new DeleteUpdateInsertException("근태 상태 삭제 실패");
+		}
+		
+		return delWS;
 	}
 
 }

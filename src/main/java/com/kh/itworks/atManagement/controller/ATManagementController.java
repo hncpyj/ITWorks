@@ -1,15 +1,19 @@
 package com.kh.itworks.atManagement.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.service.ATManagementService;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -30,10 +34,6 @@ public class ATManagementController {
 				ArrayList<ATManagement> workingStatus = as.selectWorkingStatus(at);
 				ArrayList<ATManagement> workTimeSet = as.selectWorkTimeSet(at);
 				
-				System.out.println("atbt : " + atbt);
-				System.out.println("workTimeSet : " + workTimeSet);
-				System.out.println("workingStatus : " + workingStatus);
-				
 				session.setAttribute("atbt", atbt);
 				session.setAttribute("workTimeSet", workTimeSet);
 				session.setAttribute("workingStatus", workingStatus);
@@ -50,6 +50,55 @@ public class ATManagementController {
 		
 		return mv;
 	}
+	
+	@RequestMapping("updateInsert.at")
+	public String updateInsert(Model model, ATManagement at, HttpServletRequest request) {
+		
+		System.out.println(at);
+		//dayOfTheWeek, workingStatusNo, workType, work(,로split해야할듯)
+		
+		//delete workingStatus
+		String[] dwNo = request.getParameterValues("deleteWorkingStatusNo");
+		
+		//update workingStatus
+				String[] workingStatusNo = at.getWorkingStatusNo().split(",");
+				String[] workType = at.getWorkType().split(",");
+				String[] work = at.getWork().split(",");
+				
+				ATManagement workAt = null;
+				
+				ArrayList<ATManagement> worklist = new ArrayList<ATManagement>();
+				
+				for(int i = 0; i < workingStatusNo.length; i++) {
+					workAt = new ATManagement();
+					workAt.setWorkingStatusNo(workingStatusNo[i]);
+					workAt.setWorkType(workType[i]);
+					workAt.setWork(work[i]);
+					workAt.setCorpNo(at.getCorpNo());
+
+					worklist.add(workAt);
+				}	
+		
+		
+	try {
+			for(int i = 0; i < dwNo.length; i++) {
+					as.deleteWorkingStatus(dwNo[i]);
+			}
+			//as.updateWorkingStatus(worklist);
+		} catch (DeleteUpdateInsertException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		return "";
+	}
+	
 	@RequestMapping("selectAtStatus.at")
 	public String selectAtStatus() {
 		

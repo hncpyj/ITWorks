@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.itworks.atManagement.model.dao.ATManagementDao;
+import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 
@@ -17,9 +18,6 @@ public class ATManagementServiceImpl implements ATManagementService {
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private ATManagementDao ad;
-	
-	
-
 
 
 	@Override
@@ -40,6 +38,13 @@ public class ATManagementServiceImpl implements ATManagementService {
 	public ArrayList<ATManagement> selectWorkTimeSet(ATManagement at) throws SelectATManagementFailedException {
 
 		return ad.selectWorkTimeSet(sqlSession, at);
+	}
+
+
+	@Override
+	public int deleteWorkingStatus(String dwNo) throws DeleteUpdateInsertException {
+		
+		return ad.deleteWorkingStatus(sqlSession, dwNo);
 	}
 
 }

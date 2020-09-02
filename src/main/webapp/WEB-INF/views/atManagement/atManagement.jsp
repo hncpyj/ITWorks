@@ -131,7 +131,9 @@
 	<jsp:include page="/WEB-INF/views/atManagement/atManagementAside.jsp"></jsp:include>
 	    <section>
         <div class="inner">
-            	<form action="">
+            	<form action="updateInsert.at" method="post">
+            	<input type="hidden" name="corpNo" value="${sessionScope.atbt.corpNo}">
+            	<input type="hidden" name="breakTimeNo" value="${sessionScope.atbt.breakTimeNo}">
             <div id="inner-title">
             <span>근태 기본 설정</span>
             <br>
@@ -178,26 +180,26 @@
                     <tr>
                         <th id="rowth" rowspan="${sessionScope.workTimeSet.size() + 3 }">출퇴근 설정</th>
                         <td colspan="15" class="padding">
-                        	<input type="radio" id="default" name="workingSetTime">
+                        	<input type="radio" id="default" name="workingSetTime" value="기본">
                         	<label class="left" for="default">출근일 및 출퇴근 시간 설정</label>
-                        	<input type="radio" name="workingSetTime" id="free">
+                        	<input type="radio" name="workingSetTime" id="free" value="자율">
                         	<label class="left" for="free">자율 출퇴근 설정</label></td>
                     </tr>
                     <tr>
                         <td colspan="15" class="padding">
-                        	<input type="checkbox" name="dayOfTheWeek" id="mon">
+                        	<input type="checkbox" name="dayOfTheWeek" id="mon" value="월">
                         	<label class="left" for="mon">월</label>
-                        	<input type="checkbox" name="dayOfTheWeek" id="tue">
+                        	<input type="checkbox" name="dayOfTheWeek" id="tue" value="화">
                         	<label class="left" for="tue">화</label>
-                        	<input type="checkbox" name="dayOfTheWeek" id="wed">
+                        	<input type="checkbox" name="dayOfTheWeek" id="wed" value="수">
                         	<label class="left" for="wed">수</label>
-                        	<input type="checkbox" name="dayOfTheWeek" id="thu">
+                        	<input type="checkbox" name="dayOfTheWeek" id="thu" value="목">
                         	<label class="left" for="thu">목</label>
-                        	<input type="checkbox" name="dayOfTheWeek" id="fri">
+                        	<input type="checkbox" name="dayOfTheWeek" id="fri" value="금">
                         	<label class="left" for="fri">금</label>
-                        	<input type="checkbox" name="dayOfTheWeek" id="sat">
+                        	<input type="checkbox" name="dayOfTheWeek" id="sat" value="토">
                         	<label class="left" for="sat">토</label>
-                        	<input type="checkbox" name="dayOfTheWeek" id="sun">
+                        	<input type="checkbox" name="dayOfTheWeek" id="sun" value="일">
                         	<label class="left" for="sun">일</label>
                         </td>
                     </tr>
@@ -1127,6 +1129,7 @@
                         	<span class="left">분</span></td></tr>
                         	
                     <c:forEach var="i" begin="0" end="${sessionScope.workTimeSet.size() -1 }">
+                    <input type="hidden" name="workingSetNo" value="${sessionScope.workTimeSet.get(i).workingSetNo }">
     	<c:choose>
     		<c:when test="${sessionScope.workTimeSet.get(i).dayOfTheWeek eq '월'}">
     			<script type="text/javascript">
@@ -1146,6 +1149,32 @@
     				$('#monSelectEndMin option[value='+end[1]+']').attr('selected','ture');
     				$('#monSelectHalfTime option[value='+half[0]+']').attr('selected','ture');
     				$('#monSelectHalfMin option[value='+half[1]+']').attr('selected','ture');
+    				
+    				/* var selectStartTime = $("#monSelectTime option:selected").val();
+    				var selectStartMin = $("#monSelectMin option:selected").val();
+    				var selectEndTime = $("#monSelectEndTime option:selected").val();
+    				var selectEndMin = $("#monSelectEndMin option:selected").val();
+    				var selectHalfTime = $("#monSelectHalfTime option:selected").val();
+    				var selectHalfMin = $("#monSelectHalfMin option:selected").val();
+    				
+    				var updatestartTime = selectStartTime+":"+selectStartMin+":00";
+    				var updateEndTime = selectEndTime+":"+selectEndMin+":00";
+    				var updateHalfTime = selectHalfTime+":"+selectHalfMin+":00";
+    				
+    				
+    				
+    				$("#monSelectTime").change(function() {
+    					var selectStartTime = $("#monSelectTime option:selected").val();
+        				var selectStartMin = $("#monSelectMin option:selected").val();
+        				var selectEndTime = $("#monSelectEndTime option:selected").val();
+        				var selectEndMin = $("#monSelectEndMin option:selected").val();
+        				var selectHalfTime = $("#monSelectHalfTime option:selected").val();
+        				var selectHalfMin = $("#monSelectHalfMin option:selected").val();
+        				var updatestartTime = selectStartTime+":"+selectStartMin+":00";
+        				var updateEndTime = selectEndTime+":"+selectEndMin+":00";
+        				var updateHalfTime = selectHalfTime+":"+selectHalfMin+":00";
+        				
+					}); */
     				
     			});
     			</script>
@@ -1367,7 +1396,7 @@
                                 <option value="55">55</option>
                             </select>
                         	<span class="left">분</span> 
-                        	<input type="text" placeholder="기본휴게시간">
+                        	<input type="text" name="btType" value="${sessionScope.atbt.btType}">
                         	<!-- <button type="button" class="addBtn" onclick="addRest();">추가하기</button> --></td>
                     </tr>
                     <!-- <tr>
@@ -1392,7 +1421,7 @@
             <br>
             <div>
             	
-                <label class="middleName">근무상태 관리</label><button class="saveBtn" id="addBtnAt">추가</button>
+                <label class="middleName">근무상태 관리</label><button type="button" class="saveBtn" id="addBtnAt" >추가</button>
                 <table id="managerTable" class="middleTable">
                 	<tr>
                 		<th>근무상태</th>
@@ -1400,17 +1429,21 @@
                 		<th>수정 및 삭제</th>
                 	</tr>
                 	<c:forEach var="i" begin="0" end="${sessionScope.workingStatus.size()-1 }">
-                	<tr>
-                		<td><c:out value="${sessionScope.workingStatus.get(i).workType }"/></td>
+                	<input id="hiddenNo${i}" type="hidden" name="workingStatusNo" value="${sessionScope.workingStatus.get(i).workingStatusNo }">
+                	<input id="hiddenType${i}" type="hidden" name="workType" value="${sessionScope.workingStatus.get(i).workType }">
+                	<input id="hiddenWork${i}" type="hidden" name="work" value="${sessionScope.workingStatus.get(i).work}">
+                	<tr id="workingTr${i}">
+                		<td id="type${i}"><c:out value="${sessionScope.workingStatus.get(i).workType }"/></td>
                 		<c:if test="${sessionScope.workingStatus.get(i).work eq 'Y' }">
-                		<td>포함</td>
+                		<td id="work${i}">포함</td>
                 		</c:if>
                 		<c:if test="${sessionScope.workingStatus.get(i).work eq 'N' }">
-                		<td>미포함</td>
+                		<td id="work${i}">미포함</td>
                 		</c:if>
-                		<td><button class="btn" id="modify${i}">수정</button>/<button class="btn" id="delBtn${i}">삭제</button></td>
+                		<td id="but${i}"><button type="button" class="btn" onclick="modify('${i}','${sessionScope.workingStatus.get(i).workType }');">수정</button>/<button type="button" class="btn" onclick="deleteType('${i}','${sessionScope.workingStatus.get(i).workingStatusNo }');">삭제</button></td>
                 	</tr>
                 	</c:forEach>
+                	
                 	
                 </table>
                 <button class="saveBtn">저장</button>
@@ -1445,16 +1478,37 @@
 			
 			if('${sessionScope.atbt.laborDay}' == 'Y'){
 				$("input:checkbox[name=laborDay]").attr("checked", true);
+				$("input:checkbox[name=laborDay]").attr("value", "Y");
 			}
-			
+			$("input:checkbox[name=laborDay]").change(function() {
+				if($("input:checkbox[name=laborDay]").is(":checked")){
+					$("input:checkbox[name=laborDay]").attr("value", "Y");
+				} else {
+					$("input:checkbox[name=laborDay]").attr("value", "N");
+				}
+			});
 			if('${sessionScope.atbt.holidays}' == 'Y'){
 				$("input:checkbox[name=holidays]").attr("checked", true);
+				$("input:checkbox[name=holidays]").attr("value", "Y");
 			} 
-			
+			$("input:checkbox[name=holidays]").change(function() {
+				if($("input:checkbox[name=holidays]").is(":checked")){
+					$("input:checkbox[name=holidays]").attr("value", "Y");
+				} else {
+					$("input:checkbox[name=holidays]").attr("value", "N");
+				}
+			});
 			if('${sessionScope.atbt.alternativeHolidays}' == 'Y'){
 				$("input:checkbox[name=alternativeHolidays]").attr("checked", true);
+				$("input:checkbox[name=alternativeHolidays]").attr("value", "Y");
 			}
-			
+			$("input:checkbox[name=alternativeHolidays]").change(function() {
+				if($("input:checkbox[name=alternativeHolidays]").is(":checked")){
+					$("input:checkbox[name=alternativeHolidays]").attr("value", "Y");
+				} else {
+					$("input:checkbox[name=alternativeHolidays]").attr("value", "N");
+				}
+			});
 			if($("input:checkbox[id=mon]").is(":checked")){
 				$("#monTr").show();
 			}
@@ -1548,8 +1602,36 @@
 					$("#sunTr").hide();
 				}
 			});
-			
     	});
+    	
+    	$("#addBtnAt").click(function() {
+	    		console.log("들어옴");
+				$("#managerTable").append('<tr><td><input type="text" placeholder="상태 이름 입력"></td><td><select><option>포함</option><option>미포함</option></select></td><td></td></tr>');
+			
+		});
+			
+    	
+    	/* 근무 상태 관리 수정 */
+    	function modify(num, type) {
+			 $("#type"+num).detach();
+			 $("#work"+num).detach();
+			 $("#but"+num).empty();
+			 $("#workingTr"+num).prepend('<td><select><option>포함</option><option>미포함</option></select></td>').prepend('<td id="type${i}"><input type="text" value="'+type+'"></td>');
+			 
+		}
+    	
+    	function deleteType(num, no) {
+			var value = confirm("삭제하시겠습니까?");
+			if(value == true){
+				$("#managerTable").prepend('<input id="delNo'+num+'" type="hidden" name="deleteWorkingStatusNo" value="'+no+'">')
+				$("#workingTr"+num).detach();
+				$("#hiddenNo"+num).detach();
+				$("#hiddenType"+num).detach();
+				$("#hiddenWork"+num).detach();
+			}
+		}
+    	
+    	
     </script>
 </body>
 </html>
