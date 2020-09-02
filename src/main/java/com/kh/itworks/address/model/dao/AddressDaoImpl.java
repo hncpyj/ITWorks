@@ -32,9 +32,37 @@ public class AddressDaoImpl implements AddressDao{
 	}
 
 	@Override
-	public int countBoardList() {
+	public int countAddressList() {
 		
 		return sqlSession.selectOne("Address.listCountMain");
+	}
+
+	//공유주소록 리스트
+	@Override
+	public List<Map<String, Object>> sharePageList(Criteria cri) {
+		
+		return sqlSession.selectList("Address.selectShareAddressList", cri);
+	}
+	
+	//공유주소록 카운트
+	@Override
+	public int countShareAddressList() {
+		
+		return sqlSession.selectOne("Address.listCountShare");
+	}
+
+	//중요주소록 페이징 리스트
+	@Override
+	public List<Map<String, Object>> importantPageList(Criteria cri) {
+
+		return sqlSession.selectList("Address.selectImportantAddressList", cri);
+	}
+
+	//중요주소록 카운트
+	@Override
+	public int countImportantAddressList() {
+
+		return sqlSession.selectOne("Address.importantListCount");
 	}
 
 //	@Override

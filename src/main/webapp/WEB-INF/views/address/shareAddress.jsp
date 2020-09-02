@@ -97,7 +97,7 @@
 						<td style="width:560px;"></td>
 						<td>
 							<label>공유 주소록</label>&nbsp;
-							<label id="addressCount">915</label>&nbsp;
+							<label id="addressCount"><c:out value="${sessionScope.shareList.size()}"></c:out></label>&nbsp;
 							<label>개</label>&nbsp;&nbsp;&nbsp;
 						</td>
 						<td>
@@ -119,117 +119,43 @@
 					</th>
 					<th style="width: 25%;">태그</th>
 				</tr>
+				<c:forEach var="i" begin="0" end="${sessionScope.shareList.size()-1 }">
 				<tr>
 					<td style="width: 5%;"><input type="checkbox"
 						id="checkAddress"></td>
 					<td style="width: 5%;" id="importantAdr"><img
 						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
+					<td style="width: 10%;"><c:out value="${sessionScope.shareList.get(i).conName }"></c:out></td>
+					<td style="width: 30%;"><c:out value="${sessionScope.shareList.get(i).email }"></c:out></td>
+					<td style="width: 15%;"><c:out value="${sessionScope.shareList.get(i).conPhone }"></c:out></td>
+					<td style="width: 10%;"><c:out value="${sessionScope.shareList.get(i).conCorp }"></c:out></td>
+					<td style="width: 25%;"><c:out value="${sessionScope.shareList.get(i).tagName }"></c:out></td>
 				</tr>
+				</c:forEach>	
+			</table>
+						<!-- 페이징 처리 영역 -->
+			<div class="pagingArea" align="center">
+			<table>
 				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
-				</tr>
-				<tr>
-					<td style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></td>
-					<td style="width: 5%;" id="importantAdr"><img
-						src="./resources/images/star.png" id="star"></td>
-					<td style="width: 10%;">고상호</td>
-					<td style="width: 30%;">shko9291@gmail.com</td>
-					<td style="width: 15%;">010-9566-7080</td>
-					<td style="width: 10%;">내외건축사무소</td>
-					<td style="width: 25%;">건축가, 대리, 고상호, 협력사</td>
+					<c:if test="${pageMaker.prev}">
+						<td><a
+							href='<c:url value="/shareAddress.ad?page=${pageMaker.startPage-1}"/>'>&laquo;</a>
+						</td>
+					</c:if>
+					<c:forEach begin="${pageMaker.startPage}"
+						end="${pageMaker.endPage}" var="idx">
+						<td><a href='<c:url value="/shareAddress.ad?page=${idx}"/>'>${idx}</a>
+						</td>
+					</c:forEach>
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<td><a
+							href='<c:url value="/shareAddress.ad?page=${pageMaker.endPage+1}"/>'>&raquo;</a>
+						</td>
+					</c:if>
 				</tr>
 			</table>
+			</div>
+			<!-- 페이징 영역 끝 -->	
 		</div>
 	</section>
 </body>

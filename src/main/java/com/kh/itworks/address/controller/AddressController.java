@@ -24,37 +24,6 @@ public class AddressController {
 	@Autowired
 	private AddressService as;
 	
-	@RequestMapping("/mainAddress.ad")
-	public ModelAndView addressList(Criteria cri, HttpSession session, ModelAndView mav) {
-
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(as.countBoardList());
-
-		List<Map<String, Object>> list = as.pageList(cri);
-
-		session.setAttribute("mainList", list);
-		session.setAttribute("pageMaker", pageMaker);
-
-		mav.setViewName("address/mainAddress");
-		System.out.println(list);
-		System.out.println(pageMaker);
-
-		return mav;
-	}
-	
-	@RequestMapping("/importantAddress.ad")
-	public String importantAddress(HttpServletRequest request) {
-		
-		return "address/importantAddress";
-	}
-	
-	@RequestMapping("/shareAddress.ad")
-	public String shareAddress(HttpServletRequest request) {
-		
-		return "address/shareAddress";
-	}
-	
 	@RequestMapping("/insert.ad")
 	public String insertAddress(Model model, AddressVO address) {
 
@@ -72,4 +41,60 @@ public class AddressController {
 			return "address/mainAddress";
 		}
 	}
+	
+	@RequestMapping("/mainAddress.ad")
+	public ModelAndView addressList(Criteria cri, HttpSession session, ModelAndView mav) {
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(as.countAddressList());
+
+		List<Map<String, Object>> list = as.pageList(cri);
+
+		session.setAttribute("mainList", list);
+		session.setAttribute("pageMaker", pageMaker);
+		
+		System.out.println(list.size());
+
+		mav.setViewName("address/mainAddress");
+		
+		return mav;
+	}
+	
+	@RequestMapping("/importantAddress.ad")
+	public ModelAndView importantAddress(Criteria cri, HttpSession session, ModelAndView mav) {
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(as.countImportantAddressList());
+
+		List<Map<String, Object>> list = as.importPageList(cri);
+
+		session.setAttribute("importantList", list);
+		session.setAttribute("pageMaker", pageMaker);
+		
+		mav.setViewName("address/importantAddress");
+		
+		return mav;
+		
+	}
+	
+	@RequestMapping("/shareAddress.ad")
+	public ModelAndView shareAddress(Criteria cri, HttpSession session, ModelAndView mav) {
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(as.countShareAddressList());
+
+		List<Map<String, Object>> list = as.sharePageList(cri);
+
+		session.setAttribute("shareList", list);
+		
+		session.setAttribute("pageMaker", pageMaker);
+		
+		mav.setViewName("address/shareAddress");
+		
+		return mav;
+	}
+	
 }

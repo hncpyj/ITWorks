@@ -33,9 +33,33 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public int countBoardList() {
+	public int countAddressList() {
 		
-		return ad.countBoardList();
+		return ad.countAddressList();
+	}
+
+	@Override
+	public List<Map<String, Object>> sharePageList(Criteria cri) {
+				
+		return ad.sharePageList(cri);
+	}
+
+	@Override
+	public int countShareAddressList() {
+
+		return ad.countShareAddressList();
+	}
+
+	@Override
+	public List<Map<String, Object>> importPageList(Criteria cri) {
+		
+		return ad.importantPageList(cri);
+	}
+
+	@Override
+	public int countImportantAddressList() {
+		
+		return ad.countImportantAddressList();
 	}
 
 	

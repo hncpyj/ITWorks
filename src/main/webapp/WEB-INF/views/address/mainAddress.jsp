@@ -100,7 +100,9 @@ section {
 	cursor: pointer;
 	outline: none;
 }
-
+.pagingArea {
+	
+}
 </style>
 </head>
 <body>
@@ -111,19 +113,19 @@ section {
 			<div class="mainTitleArea">
 				<table class="titleTable">
 					<tr>
-						<td style="width:130px;"><span>주소록</span></td>
+						<td style="width:130px;"><span>개인 주소록</span></td>
 						<td style="width: 560px;"></td>
-						<td><label>개인 주소록</label>&nbsp; <label id="addressCount">915</label>&nbsp;
+						<td><label>개인 주소록</label>&nbsp; <label id="addressCount"><c:out value="${sessionScope.mainList.size()}"></c:out></label>&nbsp;
 							<label>개</label>&nbsp;&nbsp;&nbsp;</td>
 						<td><input type="search" placeholder="이름, 회사명, 전화번호 검색"
 							id="searchBox"></td>
 					</tr>
 				</table>
 			</div>
+			<div>
 			<table id="addressTable">
 				<tr style="width: 100%;">
-					<th style="width: 5%;"><input type="checkbox"
-						id="checkAddress"></th>
+					<th style="width: 5%;"><input type="checkbox" id="checkAddress"></th>
 					<th style="width: 5%;"></th>
 					<th style="width: 10%;">이름</th>
 					<th style="width: 30%;">이메일</th>
@@ -144,9 +146,11 @@ section {
 						<td style="width: 10%;"><c:out value="${sessionScope.mainList.get(i).conCorp }"></c:out></td>
 						<td style="width: 25%;"><c:out value="${sessionScope.mainList.get(i).tagName }"></c:out></td>
 					</tr>
-				</c:forEach>
+				</c:forEach>				
 			</table>
+			</div>
 			<!-- 페이징 처리 영역 -->
+			<div class="pagingArea" align="center">
 			<table>
 				<tr>
 					<c:if test="${pageMaker.prev}">
@@ -166,23 +170,27 @@ section {
 					</c:if>
 				</tr>
 			</table>
-			<!-- 페이징 영역 끝 -->
-			
-			
+			</div>
+			<!-- 페이징 영역 끝 -->	
 		</div>
 </section>
 </body>
 <script>
- $(function() {
-	$("#addressTable td").mouseenter(function() {
-		$(this).parent().css({"background":"#E4E4E4", "cursor":"pointer"});
-	}).mouseout(function() {
-		$(this).parent().css({"background":"#fafafa"});
-	}).click(function() {
-		
-		var num = $(this).parent().children().eq(0).text();
-						});
-	});
+ 
+	$(function() {
+		$("#addressTable td").mouseover(function() {
+			$(this).parent().css({
+				"background" : "#E4E4E4",
+				"cursor" : "pointer"
+			});
+		}).mouseleave(function() {
+			$(this).parent().css({
+				"background" : "#fafafa"
+			});
+		}).click(function() {
 
+			var num = $(this).parent().children().eq(0).text();
+		});
+	});
 </script>
 </html>

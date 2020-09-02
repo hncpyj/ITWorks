@@ -38,25 +38,80 @@
 	<!-- 메인주소록 리스트 게시글 개수 부르기 -->
 	<select id="listCountMain" resultType="_int">
 		SELECT COUNT(*)
-		FROM CONTACTS
-		WHERE CON_TYPE = 'PRV'
+ 		  FROM CONTACTS
+		 WHERE CON_TYPE = 'PRV'
+   		   AND CORP_NO = 999
+           AND MNO = 999
 	</select>
 
  	<!-- 회사별 직원별 내 개인주소록 리스트 불러오기  -->
 	<select id="selectMainAddressList" resultMap="addressResultSet" parameterType="com.kh.itworks.address.model.vo.Criteria">
-		SELECT *
-	      FROM (
-		SELECT ROWNUM RN, A.*
+		SELECT * 
 		FROM (
-		SELECT CON_NAME, CON_EMAIL, CON_PHONE, CON_CORP
-		FROM CONTACTS
-		WHERE CON_TYPE = 'PRV'
-		AND CORP_NO = 999
-		AND MNO = 999
-		ORDER BY CONTACTS_NO DESC
-		) A
-		)
-		WHERE RN BETWEEN #{pageStart} AND #{perPageNum}
+			SELECT ROWNUM RN, A.* 
+				FROM (
+						SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, T.TAG_NAME
+						FROM CONTACTS C
+                        JOIN TAG T USING(TID)
+                        WHERE C.CON_TYPE = 'PRV'
+                        AND C.CORP_NO = 999
+                        AND C.MNO = 999
+						ORDER BY CONTACTS_NO DESC 
+						) A
+				)
+		 WHERE RN BETWEEN #{pageStart} AND #{perPageNum}
+	</select>
+	
+	<!-- 공유주소록 갯수 -->
+	<select id="listCountShare" resultType="_int">
+		SELECT COUNT(*)
+ 		  FROM CONTACTS
+ 		 WHERE CON_TYPE = 'SHR'
+   	       AND CORP_NO = 999
+	</select>
+
+	<!-- 공유주소록 리스트 -->
+	<select id="selectShareAddressList" resultMap="addressResultSet" parameterType="com.kh.itworks.address.model.vo.Criteria">
+		SELECT * 
+		FROM (
+				SELECT ROWNUM RN, A.* 
+				  FROM (
+						SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, T.TAG_NAME
+						FROM CONTACTS C
+                        JOIN TAG T USING(TID)
+                        WHERE C.CON_TYPE = 'SHR'
+                        AND C.CORP_NO = 999
+						ORDER BY CONTACTS_NO DESC 
+						) A
+				 )
+		 WHERE RN BETWEEN #{pageStart} AND #{perPageNum}
+	</select>
+	
+		<!-- 중요주소록 갯수 -->
+	<select id="importantListCount" resultType="_int">
+		SELECT COUNT(*)
+  		  FROM CONTACTS
+ 		 WHERE IMPORT_CON = 'Y'
+   		   AND CORP_NO = 999
+   		   AND MNO = 999
+	</select>
+
+	<!-- 중요주소록 리스트 -->
+	<select id="selectImportantAddressList" resultMap="addressResultSet" parameterType="com.kh.itworks.address.model.vo.Criteria">
+		SELECT * 
+		  FROM (
+			    SELECT ROWNUM RN, A.* 
+			  	  FROM (
+			  			SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, T.TAG_NAME
+			  			FROM CONTACTS C
+                        JOIN TAG T USING(TID)
+                        WHERE IMPORT_CON = 'Y'
+                        AND C.CORP_NO = 999
+                        AND C.MNO = 999
+			  			ORDER BY CONTACTS_NO DESC 
+			  			) A
+			  	)
+	     WHERE RN BETWEEN #{pageStart} AND #{perPageNum}
 	</select>
 
 	<!-- 해당 주소록 보기 -->
