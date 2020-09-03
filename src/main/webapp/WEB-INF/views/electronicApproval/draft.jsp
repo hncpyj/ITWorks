@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="<%= request.getContextPath()%>"></c:set>
 <html>
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>ItWorks</title>
 <link rel="icon" href="./resources/images/favicon.ico" type="image/x-icon">
 <style>
@@ -68,6 +71,19 @@
 		border: 1px solid #888;
 		width: 45%; /* Could be more or less, depending on screen size */         
 		height: 50%;                 
+	}
+	.tree {
+	  padding: 20px 0;
+	}
+	
+	.tree::after {
+	  content: '';
+	  display: block;
+	  clear: left;
+	}
+	
+	.tree div {
+	  clear: left;
 	}
 </style>
 
@@ -139,7 +155,49 @@
 		<p style="font-size: 25px; margin-left: 20px; color: #29a2f7;">참조자 지정</p><Br>
 		<table style="margin:auto; width: 600px; height: 280px;">
 			<tr>
-				<td width="270px"><div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;"></div></td>
+				<td width="270px">
+					<div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;">
+						<div class="tree">
+						  <div>
+						    <input class="treebox" id="n-0" type="checkbox">
+						    <label class="treelabel" for="n-0">회사공용문서</label>
+						    <div class="sub">
+						        <a href="#link">공지사항</a>
+						        <div>
+						          <input class="treebox" id="n-0-1" type="checkbox">
+						          <label class="treelabel" for="n-0-1">문서양식</label>
+						          <div class="sub">
+						            <a href="#link">인사관련</a>
+						            <a href="#link">근태관련</a>
+						            <a href="#link">일반기안</a>
+						            <a href="#link">경비처리</a>
+						            <a href="#link">기타양식</a>
+						          </div>
+						        </div>
+						        <a href="#link">전사자료</a>
+						      </div>
+						  </div>
+						  <div>
+						    <input class="treebox" id="n-1" type="checkbox">
+						    <label class="treelabel" for="n-1">사내규정</label>
+						    <div class="sub">
+						      <a href="#link">규정</a>
+						      <a href="#link">규칙</a>
+						      <a href="#link">지침</a>
+						      <a href="#link">보안</a>
+						    </div>
+						  </div>
+						  <div>
+						    <input class="treebox" id="n-2" type="checkbox">
+						    <label class="treelabel" for="n-2">기능속성</label>
+						    <div class="sub">
+						      <a href="#link">기능1</a>
+						      <a href="#link">기능2</a>
+						    </div>
+						  </div>
+						</div>
+					</div>
+				</td>
 				<td width="60px">
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendR.png" style="margin: auto; width: 40px;"><br>
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendL.png" style="margin: auto; width: 40px;">
@@ -225,8 +283,26 @@
 	</script>
 	
 	<!-- 텍스트 에디터 api -->
-	<textarea name="weditor" id="weditor" rows="40" cols="141" style="resize: none; margin-left: 80px;"></textarea>
-	<input type="button" id="writebtn" name="writebtn" value="저장">
+	<form>
+
+	<table width=80%>
+
+	<tr>
+
+	<td><input type="button" onclick="submitContents();" value="전송" /></td>
+
+	</tr>
+
+		<tr>
+
+	<td><textarea id="content" name="content" rows="10" style="width:100%; display:none;"></textarea></td>
+
+	</tr>
+
+	</table>
+
+</form>
+
 	
 	<br>
 	<table style="margin-left: 325px;">
@@ -251,7 +327,7 @@
 	<table style="margin-left: 910px;">
 		<tr>
 			<td><div class="btn" id="lineBtn" onclick="location.href='#'">결재선</div></td>
-			<td><div class="btn1" onclick="location.href='#'">결재요청</div></td>
+			<td><div class="btn1" onclick="location.href='appRequest.ea'">결재요청</div></td>
 			<td><div class="btn" onclick="temSave();">임시저장</div></td>
 			<td><div class="btn" onclick="cancel();">취소</div></td>
 		</tr>
@@ -329,7 +405,7 @@
 	</script>
 
 	<script type="text/javascript" src="${contextPath }/resources/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		var oEditors = [];
 		nhn.husky.EZCreator.createInIFrame({
 		    oAppRef: oEditors,
@@ -357,7 +433,36 @@
 			}
 		}
 	
-	</script>
+	</script> -->
+	
+	<script type="text/javascript">
+	
+	var oEditors = [];
+
+	nhn.husky.EZCreator.createInIFrame({
+
+	 	 oAppRef: oEditors,
+
+	 	 elPlaceHolder: document.getElementById('content'), // html editor가 들어갈 textarea id
+
+	  	 sSkinURI: "${contextPath}/resources/smarteditor/SmartEditor2Skin.html",  // html editor가 skin url
+
+	     fCreator: "createSEditor2"	
+
+	 });
+
+
+
+	function submitContents() {
+
+	    oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됨
+
+	    alert(document.getElementById("content").value);
+
+	}
+
+</script>
+
 
 </body>
 </html>
