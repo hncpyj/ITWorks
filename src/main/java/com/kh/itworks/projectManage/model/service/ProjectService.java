@@ -3,6 +3,7 @@ package com.kh.itworks.projectManage.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.exception.SelectAllProjectListException;
@@ -53,5 +54,7 @@ public interface ProjectService {
 	int selectNewProjectPno(int mno);
 
 	int insertProjectMember(HashMap<String, Object> projectMember) throws InsertProjectException;
+
+	int insertFile(ArrayList<FileBox> fileArr) throws InsertProjectException;
 
 }

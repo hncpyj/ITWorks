@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 
+import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.dao.ProjectDao;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
@@ -124,6 +125,11 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public int insertProjectMember(HashMap<String, Object> projectMember) throws InsertProjectException {
 		return projectDao.insertProjectMember(sqlSession, projectMember);
+	}
+
+	@Override
+	public int insertFile(ArrayList<FileBox> fileArr) throws InsertProjectException {
+		return projectDao.insertFile(sqlSession, fileArr);
 	}
 
 

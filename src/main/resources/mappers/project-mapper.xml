@@ -567,4 +567,14 @@
    		</if>
    		SELECT * FROM DUAL
    </insert>
+   
+   <update id="insertFile" parameterType="java.util.ArrayList">
+   		INSERT ALL
+   		<foreach collection="list" item="item">
+   		INTO ATTACHMENTS VALUES
+   		(get_seq_fileNo, #{item.originName}, #{item.changeName}, #{item.filePath}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), TO_CHAR(SYSDATE + 9/24,'hh24:mi:ss'), 
+   		#{item.fileSize}, #{item.fileRole}, 'PROJECT', NULL, NULL, #{item.mno}, NULL, #{item.pno}, NULL, NULL, #{item.corp_no}, #{item.ext})
+   		</foreach>
+   		SELECT * FROM DUAL
+   </update>
 </mapper>

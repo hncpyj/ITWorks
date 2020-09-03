@@ -50,7 +50,7 @@
         border-collapse: collapse;
         margin: auto;
     }
-    article:nth-child(2)>form>table input, article:nth-child(2)>form>table textarea, article:nth-child(2)>form>table select {
+    article:nth-child(2)>form>table input, article:nth-child(2)>form>table textarea, article:nth-child(2)>form>table select, #selectedFileList {
         margin-left: 10px;
         border: 1px solid #929292;
         box-shadow: 1px 2px 4px lightgray inset;
@@ -198,7 +198,7 @@
 
         <!--프로젝트 정보 입력 폼-->
         <article>
-            <form action="insertProject.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
+            <form id="projectInfoForm" action="insertProject.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
                 <table>
                     <tr>
                     	
@@ -262,7 +262,9 @@
                         <th>첨부파일</th>
                         <td colspan="6">
                             <input multiple="multiple" type="file" id="files" name="files" style="width: 480px; border: none; box-shadow: none;"/>
-                            <!--file drag and drop 더 알아보기-->
+                            <div id="selectedFileList" style="width: 850px; height: 80px;border: 1px solid #929292; margin: auto; margin-top: 5px; margin-bottom: 5px; padding: 5px; font-size: 12px; overflow: auto;">
+                            
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -467,8 +469,6 @@
         	var pstartDate = $("input[name='pstartDate']").val();
         	var pendDate = $("input[name='pendDate']").val();
         	
-        	console.log(pstartDate > pendDate);
-        	
         	if(!pname) {
         		alert("프로젝트명을 입력 해 주세요.");
         		$("input[name='pname']").focus();
@@ -490,6 +490,16 @@
         		return true;
         	}
         }
+        
+        $("#files").change(function() {
+        	var fileList = $("#files")[0].files;
+        	
+        	for(var i = 0; i < fileList.length; i++) {
+        		$("#selectedFileList").wrapInner().append("<div><img src='${contextPath}/resources/projectManageImages/projectFileIcon.png'>&nbsp;&nbsp;"
+        											+ fileList[i].name + "</div>");
+        		console.log(fileList[i].name);
+        	}
+        });
 
     </script>
 </body>

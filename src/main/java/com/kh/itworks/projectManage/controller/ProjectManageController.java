@@ -2,6 +2,7 @@ package com.kh.itworks.projectManage.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -17,14 +18,15 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.common.CommonUtils;
 import com.kh.itworks.common.Pagination;
+import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.service.ProjectService;
 import com.kh.itworks.projectManage.model.vo.Project;
-import com.kh.itworks.projectManage.model.vo.ProjectMember;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 
@@ -274,7 +276,7 @@ public class ProjectManageController {
 	}
 	
 	@RequestMapping("insertProject.pm")
-	public String insertProject(Model model, Project project, MultipartHttpServletRequest request, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) throws InsertProjectException {
+	public String insertProject(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) throws InsertProjectException, IOException {
 		System.out.println("담당자 : " + request.getParameter("chargeMno"));
 		System.out.println("참여자 : " + request.getParameter("participantMno"));
 		System.out.println("열람권한 : " + request.getParameter("perusalMno"));
@@ -329,6 +331,10 @@ public class ProjectManageController {
 		}
 		
 		//프로젝트 첨부파일 업로드 및 ATTACHMENT 테이블 insert
+		
+		ArrayList<FileBox> fileArr = new ArrayList<FileBox>();
+		FileBox file = null;
+		
 		if(!files[0].isEmpty()) {
 			//저장할 경로 지정(톰캣이 가지고 있는 webapp 폴더 밑 resources 폴더의 절대경로를 가져와라). 톰캣에서 관리하는 폴더는 하위폴더를 구분할 때 역슬러쉬(\)를 사용한다.
 			String root = request.getSession().getServletContext().getRealPath("resources");
@@ -340,6 +346,8 @@ public class ProjectManageController {
 					
 			for(int i = 0; i < files.length; i++) {
 				
+				file = new FileBox();
+				
 				String originFileName = files[i].getOriginalFilename();
 				//확장자만 따로 저장하기
 				String ext = originFileName.substring(originFileName.lastIndexOf("."));
@@ -348,17 +356,45 @@ public class ProjectManageController {
 				
 				Long size = files[i].getSize();
 				
+				file.setFileRole("999");
+				file.setFilePath(filePath);
+				file.setFileSize(size);
+				file.setMno(loginUser.getMno());
+				file.setPno(Integer.toString(newPno));
+				file.setCorp_no(loginUser.getCorpNo());
+				file.setExt(ext);
+				file.setOriginName(originFileName);
+				file.setChangeName(changeName);
+				
+				fileArr.add(file);
+				
 				try {
 					files[i].transferTo(new File(filePath + "\\" + changeName + ext));
-					
+
 				} catch (IllegalStateException | IOException e) {
 					//익셉션 발생할 경우 파일 삭제
 					new File(filePath + "\\" + changeName + ext).delete();
 				}
 			}
-		}
 
-		return "";
+			int insertFile = projectService.insertFile(fileArr);
+		}
+		
+		HashMap<String, Object> projectDetail = projectService.selectOneProject(newPno);
+		
+		model.addAttribute("projectInfo", projectDetail);
+
+//		//페이지 이동 시 alert창 출력
+//		response.setContentType("text/html; charset=UTF-8");
+//		 
+//		PrintWriter out = response.getWriter();
+//		 
+//		out.println("<script>alert('프로젝트 등록이 완료되었습니다.');</script>");
+//		 
+//		out.flush();
+
+		
+		return "projectManage/projectDetail";
 	}
 	
 	@RequestMapping("searchPerson.pm")

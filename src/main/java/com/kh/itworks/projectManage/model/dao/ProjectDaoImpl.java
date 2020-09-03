@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.itworks.dept.model.vo.Dept;
+import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.vo.Project;
@@ -295,6 +296,17 @@ public class ProjectDaoImpl implements ProjectDao{
 		}
 		
 		return insertProjectMemberResult;
+	}
+
+	@Override
+	public int insertFile(SqlSessionTemplate sqlSession, ArrayList<FileBox> fileArr) throws InsertProjectException {
+		int insertFileResult = sqlSession.insert("Project.insertFile", fileArr);
+		
+		if(insertFileResult == 0) {
+			throw new InsertProjectException("파일등록실패");
+		}
+		
+		return insertFileResult;
 	}
 
 }
