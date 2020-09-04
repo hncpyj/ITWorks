@@ -62,9 +62,9 @@ public class ATManagementDaoImpl implements ATManagementDao {
 
 	@Override
 	public int deleteWorkingStatus(SqlSessionTemplate sqlSession, String dwNo) throws DeleteUpdateInsertException {
-		
+		System.out.println("dwNoDAO : "+dwNo);
 		int delWS = sqlSession.delete("ATManagement.deleteWorkingStatus", dwNo);
-		
+		System.out.println("delWS : " + delWS);
 		if(delWS == 0) {
 			
 			throw new DeleteUpdateInsertException("근태 상태 삭제 실패");
@@ -75,7 +75,7 @@ public class ATManagementDaoImpl implements ATManagementDao {
 
 	@Override
 	public int deleteWorkTimeSet(SqlSessionTemplate sqlSession, String dtNo) throws DeleteUpdateInsertException {
-		
+		System.out.println("dtNoDAO : "+dtNo);
 		int delWTS = sqlSession.delete("ATManagement.deleteWorkTimeSet", dtNo);
 		
 		if(delWTS == 0) {
@@ -88,19 +88,91 @@ public class ATManagementDaoImpl implements ATManagementDao {
 
 	@Override
 	public int updateWorkingStatus(SqlSessionTemplate sqlSession, ArrayList<ATManagement> worklist) throws DeleteUpdateInsertException {
-		int[] updateWS = null;
+		int updateWS = 0;
 		for(int i = 0; i < worklist.size(); i++) {
-			updateWS[i] = sqlSession.update("ATManagement.updateWorkingStatus", worklist.get(i));
+			updateWS += sqlSession.update("ATManagement.updateWorkingStatus", worklist.get(i));
 			
 		}
 		int result = 0;
-		if(updateWS.length == 0) {
+		if(updateWS == 0) {
 			throw new DeleteUpdateInsertException("근태 상태 수정 실패");
 		} else {
 			result = 1;
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int updateWorkTimeSet(SqlSessionTemplate sqlSession, ArrayList<ATManagement> workTimelist) throws DeleteUpdateInsertException {
+		System.out.println("workTimelist : " + workTimelist.get(0));
+		int updateWT = 0;
+		for(int i = 0; i < workTimelist.size();i++) {
+			updateWT += sqlSession.update("ATManagement.updateWorkTimeSet", workTimelist.get(i));
+		}
+		int result = 0;
+		if(updateWT == 0) {
+			throw new DeleteUpdateInsertException("근무 기본 시간 수정 실패");
+		} else {
+			result = 1;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateAttendence(SqlSessionTemplate sqlSession, ATManagement at) throws DeleteUpdateInsertException {
+		
+		int upAt = sqlSession.update("ATManagement.updateAttendence", at);
+		
+		if(upAt == 0) {
+			throw new DeleteUpdateInsertException("근무 기본 정보 수정 실패");
+		}
+		
+		return upAt;
+	}
+
+	@Override
+	public int insertWorkTimeSet(SqlSessionTemplate sqlSession, ArrayList<ATManagement> insertWTlist) throws DeleteUpdateInsertException {
+		
+		int iwt = 0;
+		for(int i = 0; i < insertWTlist.size();i++) {
+		iwt += sqlSession.insert("ATManagement.insertWorkTimeSet", insertWTlist.get(i));
+		}
+		int result = 0;
+		if(iwt == 0) {
+			throw new DeleteUpdateInsertException("근무 시간 생성 실패");
+		} else {
+			result = 1;
+		}
+		return result;
+	}
+
+	@Override
+	public int insertWorkingStatus(SqlSessionTemplate sqlSession, ArrayList<ATManagement> insertWSlist) throws DeleteUpdateInsertException {
+		int iws = 0;
+		for(int i = 0; i < insertWSlist.size();i++) {
+			iws += sqlSession.insert("ATManagement.insertWorkingStatus", insertWSlist.get(i));
+		}
+		int result = 0;
+		if(iws == 0) {
+			throw new DeleteUpdateInsertException("근무 상태 생성 실패");
+		} else {
+			result = 1;
+		}
+		return result;
+	}
+
+	@Override
+	public int updateBreaktime(SqlSessionTemplate sqlSession, ATManagement at) throws DeleteUpdateInsertException {
+
+		int updateBreaktime = sqlSession.update("ATManagement.updateBreaktime", at);
+		
+		if(updateBreaktime == 0) {
+			throw new DeleteUpdateInsertException("휴식 기본 정보 수정 실패");
+		}
+		
+		return updateBreaktime;
 	}
 
 }

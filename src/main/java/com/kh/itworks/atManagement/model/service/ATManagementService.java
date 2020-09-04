@@ -20,4 +20,14 @@ public interface ATManagementService {
 
 	int updateWorkingStatus(ArrayList<ATManagement> worklist) throws DeleteUpdateInsertException;
 
+	int updateWorkTimeSet(ArrayList<ATManagement> workTimelist) throws DeleteUpdateInsertException;
+
+	int updateAttendence(ATManagement at) throws DeleteUpdateInsertException;
+
+	int insertWorkTimeSet(ArrayList<ATManagement> insertWTlist) throws DeleteUpdateInsertException;
+
+	int insertWorkingStatus(ArrayList<ATManagement> insertWSlist) throws DeleteUpdateInsertException;
+
+	int updateBreaktime(ATManagement at) throws DeleteUpdateInsertException;
+
 }

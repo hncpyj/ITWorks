@@ -2,7 +2,7 @@ package com.kh.itworks.atManagement.model.vo;
 
 
 
-public class ATManagement {
+public class ATManagement implements java.io.Serializable {
 	private String workingStatusNo;	//근무상태코드
 	private String workType;		//근무상태종류
 	private String work;			//근무시간포함여부

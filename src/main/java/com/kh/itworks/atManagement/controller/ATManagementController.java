@@ -56,17 +56,28 @@ public class ATManagementController {
 		
 		//delete workingStatus
 		String[] dwNo = request.getParameterValues("deleteWorkingStatusNo");
+		if(dwNo != null) {
+		for(int i = 0; i <dwNo.length; i++) {
+			System.out.println(dwNo[i]);
+		}
+		}
 		
 		//delete workTimeSet
 		String[] dtNo = request.getParameterValues("deleteWorkTimeSetNo");
-		
+		if(dtNo != null) {
+		for(int i = 0; i <dtNo.length; i++) {
+			System.out.println(dtNo[i]);
+		}
+		}
 		//update workingStatus
 				String[] workingStatusNo = at.getWorkingStatusNo().split(",");
 				String[] workType = at.getWorkType().split(",");
 				String[] work = at.getWork().split(",");
-				
+				String[] updatework = request.getParameterValues("updatework");
+				String[] updateworkType = request.getParameterValues("updateworkType");
+				String[] updateWorkingStatusNo = request.getParameterValues("updateWorkingStatusNo");
 				ATManagement workAt = null;
-				
+				System.out.println("updateworkType : " + updateworkType[0]);
 				ArrayList<ATManagement> worklist = new ArrayList<ATManagement>();
 				
 				for(int i = 0; i < workingStatusNo.length; i++) {
@@ -75,26 +86,144 @@ public class ATManagementController {
 					workAt.setWorkType(workType[i]);
 					workAt.setWork(work[i]);
 					workAt.setCorpNo(at.getCorpNo());
-
+					
+					 
 					worklist.add(workAt);
-				}	
+				}
+				if( updatework != null) { 
+					for(int i = 0 ; i < updatework.length; i++) {
+						workAt = new ATManagement();
+						workAt.setWorkingStatusNo(updateWorkingStatusNo[i]);
+						workAt.setWorkType(updateworkType[i]);
+						workAt.setWork(updatework[i]);
+						workAt.setCorpNo(at.getCorpNo());
+						 
+						worklist.add(workAt);
+					}
+					
+				}
+				System.out.println("worklist : " + worklist);
 		//update workTimeSet
+				String[] workingSetNo = request.getParameterValues("workingSetNo");
+				String[] workingTime = at.getWorkingTime().split(",");
+				String[] quittingTime = at.getQuittingTime().split(",");
+				String[] harfOff = at.getHarfOff().split(",");
 				
-		
+				System.out.println("workingSetNo[0] : " + workingSetNo[0]);
+				System.out.println("workingTime[0] : " + workingTime[0]);
+				System.out.println("quittingTime[0] : " + quittingTime[0]);
+				System.out.println("harfOff[0] : " + harfOff[0]);
+				
+				ATManagement workTime = null;
+				
+				ArrayList<ATManagement> workTimelist = new ArrayList<ATManagement>();
+				
+				for(int i = 0; i < workingSetNo.length; i++) {
+					workTime = new ATManagement();
+					workTime.setWorkingSetNo(Integer.parseInt(workingSetNo[i]));
+					workTime.setWorkingTime(workingTime[i]);
+					workTime.setQuittingTime(quittingTime[i]);
+					workTime.setHarfOff(harfOff[i]);
+					workTime.setCorpNo(at.getCorpNo());
+					System.out.println("workTime : " + workTime);
+					workTimelist.add(workTime);
+				}
+				System.out.println("workTimelist : " + workTimelist);
+				//update attendence
+				if(at.getLaborDay() == null) {
+					at.setLaborDay("N");
+				}
+				if(at.getHolidays() == null) {
+					at.setHolidays("N");
+				}
+				if(at.getAlternativeHolidays() == null) {
+					at.setAlternativeHolidays("N");
+				}
+				
+				
+				//insert workTimeSet
+				String[] insertWorkingTime = request.getParameterValues("insertWorkingTime");
+				String[] insertQuittingTime = request.getParameterValues("insertQuittingTime");
+				String[] insertHarfOff = request.getParameterValues("insertHarfOff");
+				String[] insertWorkingSetTime = request.getParameterValues("insertWorkingSetTime");
+				String[] insertDayOfTheWeek = request.getParameterValues("insertDayOfTheWeek");
+				
+				ATManagement insertWT = null;
+				
+				ArrayList<ATManagement> insertWTlist = new ArrayList<ATManagement>();
+				if(insertWorkingTime !=null) {
+					for(int i = 0; i < insertWorkingTime.length; i++) {
+						insertWT = new ATManagement();
+						insertWT.setWorkingTime(insertWorkingTime[i]);
+						insertWT.setQuittingTime(insertQuittingTime[i]);
+						insertWT.setHarfOff(insertHarfOff[i]);
+						insertWT.setWorkingSetTime(insertWorkingSetTime[i]);
+						insertWT.setDayOfTheWeek(insertDayOfTheWeek[i]);
+						insertWT.setCorpNo(at.getCorpNo());
+						
+						insertWTlist.add(insertWT);
+					}
+				}	
+					System.out.println("insertWTlist : " + insertWTlist);
+					//insertWorkingStatus
+					String[] insertWorkType = request.getParameterValues("insertWorkType");
+					String[] insertWork = request.getParameterValues("insertWork");
+					ATManagement insertWS = null;
+					
+					ArrayList<ATManagement> insertWSlist = new ArrayList<ATManagement>();
+					if(insertWorkType != null) {
+						for(int i = 0; i < insertWorkType.length; i++) {
+							insertWS = new ATManagement();
+							insertWS.setWorkType(insertWorkType[i]);
+							insertWS.setWork(insertWork[i]);
+							insertWS.setCorpNo(at.getCorpNo());
+							
+							
+							insertWSlist.add(insertWS);
+						}
+					}	
+						System.out.println("insertWSlist : " + insertWSlist);
 	try {
-			int[] dws = null;
-			int[] dwts = null;
-			for(int i = 0; i < dwNo.length; i++) {
-				dws[i] = as.deleteWorkingStatus(dwNo[i]);
+			int dws = 0;
+			int dwts = 0;
+			if(dwNo != null) {
+				for(int i = 0; i < dwNo.length; i++) {
+					dws += as.deleteWorkingStatus(dwNo[i]);
+					System.out.println("dws[i] : " + dws);
+				}
+				
 			}
-			for(int i = 0; i < dtNo.length; i++) {
-				dwts[i] = as.deleteWorkTimeSet(dtNo[i]);
+			if(dtNo != null) {
+				for(int i = 0; i < dtNo.length; i++) {
+					dwts += as.deleteWorkTimeSet(dtNo[i]);
+					System.out.println("dwts[i] : " + dwts);
+				}
+				
 			}
 			int uws = as.updateWorkingStatus(worklist);
+			int uwt = as.updateWorkTimeSet(workTimelist);
+			int uat = as.updateAttendence(at);
+			int ubt = as.updateBreaktime(at);
+			System.out.println("uws : " + uws);
+			System.out.println("uwt : " + uwt);
+			System.out.println("uat : " + uat);
+			System.out.println("UBT : " + ubt);
 			
+			if(insertWTlist.size() != 0) {
+				int insertwt = as.insertWorkTimeSet(insertWTlist);
+				System.out.println("insertwt : " + insertwt);
+			}
+			if(insertWSlist.size() != 0) {
+				int insertws = as.insertWorkingStatus(insertWSlist);
+				System.out.println("insertws : " + insertws);
+			}
+			
+			return "redirect:selectATManagement.at";
+	
 		} catch (DeleteUpdateInsertException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			request.setAttribute("msg", e.getMessage());
+		
+			return "common/errorPage";
 		}
 		
 		
@@ -103,7 +232,7 @@ public class ATManagementController {
 		
 		
 		
-		return "";
+		//return "";
 	}
 	
 	@RequestMapping("selectAtStatus.at")

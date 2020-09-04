@@ -153,6 +153,47 @@
 		     , WORK = #{work}
 		 WHERE WORKING_STATUS_NO = #{workingStatusNo}
 		   AND CORP_NO = #{corpNo}
-		   
 	</update>
+	<update id="updateWorkTimeSet" parameterType="ATManagement">
+		UPDATE WORK_TIME_SET
+		   SET WORKING_TIME = #{workingTime}
+		     , QUITTING_TIME = #{quittingTime}
+		     , HARF_OFF = #{harfOff}
+		 WHERE WORKING_SET_NO = #{workingSetNo}
+		   AND CORP_NO = #{corpNo}  
+	</update>
+	<update id="updateAttendence" parameterType="ATManagement">
+		UPDATE ATTENDENCE
+		   SET ATTENDENCE = #{attendence}
+		     , WORK_TIME_LIMIT = #{workTimeLimit}
+		     , LABOR_DAY = #{laborDay}
+		     , HOLIDAYS = #{holidays}
+		     , ALTERNATIVE_HOLIDAYS = #{alternativeHolidays}
+		 WHERE CORP_NO = #{corpNo}
+	</update>
+	<update id="updateBreaktime" parameterType="ATManagement">
+		UPDATE BREAKTIME
+		   SET BT_START=#{btStart}
+		     , BT_END=#{btEnd}
+		 WHERE BREAK_TIME_NO = #{breakTimeNo}
+	</update>
+	<insert id="insertWorkTimeSet" parameterType="ATManagement">
+		INSERT 
+		  INTO WORK_TIME_SET
+		VALUES (SEQ_WORKING_SET_NO.NEXTVAL
+		     , #{workingSetTime}
+		     , #{dayOfTheWeek}
+		     , #{workingTime}
+		     , #{quittingTime}
+		     , #{harfOff}
+		     , #{corpNo})		
+	</insert>
+	<insert id="insertWorkingStatus" parameterType="ATManagement">
+		INSERT
+		  INTO WORKING_STATUS
+		VALUES ('WS'||SEQ_WORKING_STATUS_NO.NEXTVAL
+		     , #{workType}
+		     , #{work}
+		     , #{corpNo})
+	</insert>
 </mapper>
