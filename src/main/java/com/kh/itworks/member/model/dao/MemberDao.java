@@ -13,4 +13,6 @@ public interface MemberDao {
 
 	int insertMember(SqlSessionTemplate sqlSession, Member m);
 
+	int corpNoCheck(SqlSessionTemplate sqlSession, int corpNo);
+
 }

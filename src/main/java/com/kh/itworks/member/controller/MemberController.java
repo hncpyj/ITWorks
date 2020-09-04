@@ -53,13 +53,16 @@ public class MemberController {
 		return "join/join";
 	}
 	
-	//중복체크
+	
+	//아이디 중복체크
 	@RequestMapping("duplicationCheck.me")
 	public void duplicationCheck(@RequestParam String userId, HttpServletResponse response) {
 		
 		Member m = ms.duplicationCheck(userId);
 		
+		//임의의 숫자 높게 줌
 		int chk = 3000;
+		//아이디 중복체크는 똑같은게 있으면 안 되는 조건!
 		//중복되는 것이 없을 때  0 (중복체크 통과)
 		if(m == null) {
 			chk = 0;
@@ -73,6 +76,27 @@ public class MemberController {
 			e.printStackTrace();
 		}
 
+	}
+	
+	//회사코드 DB등록여부 체크
+	@RequestMapping("corpNoCheck.me")
+	public void corpNoCheck(@RequestParam int corpNo, HttpServletResponse response) {
+		
+		//return : 나를 호출한 것으로 값을 들고 돌아온 것임
+		//m에는 DB에서 가져온 값 0 또는 1이 들어있다.
+		int m = ms.corpNoCheck(corpNo);
+		
+//		System.out.println(m);
+		
+		//회사코드는 똑같은게 있어야 되는 조건!
+		//중복되는 것이 있을 때 1 (중복체크 통과..)
+		try {
+			response.getWriter().print(m);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	//이용약관

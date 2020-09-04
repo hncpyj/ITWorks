@@ -36,5 +36,12 @@ public class MemberServiceImpl implements MemberService {
 		return md.insertMember(sqlSession, m);
 	}
 
+	//회사코드 DB등록여부 체크
+	@Override
+	public int corpNoCheck(int corpNo) {
+
+		return md.corpNoCheck(sqlSession, corpNo);
+	}
+
 	
 }
