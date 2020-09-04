@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -228,6 +229,7 @@
 </style>
 </head>
 <body>
+	<c:if test="${ !empty sessionScope.loginUser }">
     <jsp:include page="../common/menubar.jsp"/>
     
     <aside>
@@ -296,17 +298,27 @@
         	<div id="filePath">전체 문서함/회사 공용 문서/공지사항</div>
 	        <div id="fileSearch">
 	        	<form action="" method="get">
-	        		<select id="searchSelect">
+	        		<select id="searchSelect" name="searchSelect">
 	        			<option>검색조건</option>
 	        			<option>파일명</option>
 	        			<option>확장자</option>
 	        			<option>문서명</option>
 	        			<option>담당자</option>
 	        		</select>
-	        		<input id="searchText">
-	        		<button id="searchBtn"><i class="fas fa-search"></i></button>
+	        		<input id="searchText" type="search">
+	        		<button id="searchBtn" onclick="searchFile();"><i class="fas fa-search"></i></button>
 	        	</form>
 	        </div>
+	        <script>
+	        	function searchFile(){
+	        		var searchSelect = $("#searchSelect").val();
+	        		var searchText = $("#searchValue").val();
+	        		
+	        		location.href = "search.fb?searchSelect=" + searchSelect +
+	        						"&searchText=" + searchText;
+	        	}
+	        </script>
+	        
         <br><br>
         <div id="fileOption">
         	<button class="fileOptionBtn"><a href="uploadPage.fb">파일 업로드</a></button>
@@ -315,46 +327,92 @@
         	<button class="fileOptionBtn">다운로드</button>
         </div>
             <table id="fileTable">
-                <thead>
-                    <th><input type="checkbox"></th>
-                    <th>No.</th>
-                    <th>문서제목</th>
-                    <th>파일제목</th>
-                    <th>파일종류</th>
-                    <th>담당자</th>
-                    <th>조회수</th>
-                    <th>등록일</th>
-                </thead>
-                <tbody>
-                <%for(int i = 0; i < 10; i++) { %>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>No.</td>
+                    <td>파일명</td>
+                    <td>확장자</td>
+                    <td>파일크기</td>
+                    <td>파일구분</td>
+                    <td>등록일</td>
+                </tr>
+                <%-- <%for(int i = 0; i < 10; i++) { %>
 	                <tr>
 	                    <td><input type="checkbox"></td>
 	                    <td>No.</td>
-	                    <td><a href="selectOne.fb">문서제목</a></td>
-	                    <td>파일제목</td>
-	                    <td>파일종류</td>
-	                    <td>담당자</td>
-	                    <td>조회수</td>
+	                    <td><a href="selectOne.fb">파일명</a></td>
+	                    <td>확장자</td>
+	                    <td>파일크기</td>
+	                    <td>파일구분</td>
 	                    <td>등록일</td>
 	                </tr>
-	              <% } %>
-	              <%-- <% for(Notice n : list) { %>
+	              <% } %> --%>
+	              <c:forEach var="b" items="${ list }">
 					<tr>
-						<td><%= n.getNoticeNo() %></td>
-						<td><%= n.getnTitle() %></td>
-						<td><%= n.getfileName() %></td>
-						<td><%= n.getnType() %></td>
-						<td><%= n.geteName() %></td>
-						<td><%= n.getnViews() %></td>
-						<td><%= n.getnDate() %></td>
+						<td><input type="checkbox"></td>
+						<td><c:out value="${fb.fileNo}"/></td>
+						<td><c:out value="${fb.originName}"/></td>
+						<td><c:out value="${fb.ext}"/></td>
+						<td><c:out value="${fb.fileSize}"/></td>
+						<td><c:out value="${fb.fileType}"/></td>
+						<td><c:out value="${fb.uploadDate}"/></td>
 					</tr>
-				  <% } %> --%>
-                </tbody>
+		         </c:forEach> 
+		             
             </table>
         </div>
     </article>
-    
-    <script>
+    <%-- <div id="pagingArea" align="center">
+		<c:if test="${ pi.currentPage <= 1 }">
+			[이전] &nbsp;
+		</c:if>
+		<c:if test="${ pi.currentPage > 1 }">
+			<c:url var="blistBack" value="selectList.fb">
+				<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+			</c:url>
+			<a href="${ blistBack }">[이전]</a>&nbsp;
+		</c:if>
+		
+		<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+			<c:if test="${ p eq pi.currentPage }">
+				<font color="red" size="4"><b>[${ p }]</b></font>
+			</c:if>
+			<c:if test="${ p ne pi.currentPage }">
+				<c:url var="blistCheck" value="selectList.fb">
+					<c:param name="currentPage" value="${ p }"/>
+				</c:url>
+				<a href="${ blistCheck }">${ p }</a>
+			</c:if>
+		</c:forEach>
+		
+		<c:if test="${ pi.currentPage >= pi.maxPage }">
+			&nbsp; [다음]
+		</c:if>
+		<c:if test="${ pi.currentPage < pi.maxPage }">
+			<c:url var="blistEnd" value="selectList.fb">
+				<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
+			</c:url>
+			&nbsp; <a href="${ blistEnd }">[다음]</a>
+		</c:if>
+		
+	</div> --%>
+	
+	<script>
+		$(function(){
+			$("#fileTableArea").find("td").mouseenter(function(){
+				$(this).parents("tr").css({"background":"lightgray", "cursor":"pointer"});
+			}).mouseout(function(){
+				$(this).parents("tr").css({"background":"white"});
+			}).click(function(){
+				var bid = $(this).parents().children("td").eq(0).text();
+				
+				console.log(bid);
+				
+				location.href="selectOne.fb?fileNo=" + fileNo;
+			});
+		});
+	</script>
+    <%-- <script>
     $(function(){
 	    $("#fileTableArea td").mouseenter(function(){
 	    	$(this).parent().css({"background":"lightgray", "cursor":"pointer"});
@@ -369,7 +427,12 @@
 		});
     });
     
-    </script>
+    </script> --%>
+    </c:if>
+	<c:if test="${ empty sessionScope.loginUser }">
+		<c:set var="message" value="로그인이 필요한 서비스입니다." scope="request"/>
+		<jsp:forward page="error.fb"/>
+	</c:if>
 </body>
 </html>
 

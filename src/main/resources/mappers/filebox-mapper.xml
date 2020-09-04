@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="FileBox">
+
+	<resultMap id="FileResultSet" type="FileBox">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="chgngeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="uploadDate" column="UPLOAD_DATE"/>
+		<result property="uploadTime" column="UPLOAD_TIME"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="fileRole" column="FILE_ROLE"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="apvNo" column="APV_NO"/>
+		<result property="chatNo" column="CHAT_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="noticeNo" column="NOTICE_NO"/>
+		<result property="pno" column="PNO"/>
+		<result property="pNoticeNo" column="PNOTICE_NO"/>
+		<result property="stgNo" column="STG_NO"/>
+		<result property="corp_no" column="CORP_NO"/>
+		<result property="ext" column="EXT"/>
+	</resultMap>
+
+	<!-- 파일 업로드 -->
+	<insert id="uploadFiles" parameterType="FileBox">
+		INSERT INTO ATTACHMENTS(
+			FILE_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			UPLOAD_DATE,
+			UPLOAD_TIME,
+			FILE_SIZE,
+			FILE_ROLE,
+			FILE_TYPE,
+			APV_NO,
+			CHAT_NO,
+			MNO,
+			NOTICE_NO,
+			PNO,
+			PNOTICE_NO,
+			STG_NO,
+			CORP_NO,
+			EXT
+		) VALUES(
+			SEQ_FILE_NO.NEXTVAL,
+			#{originName},
+			#{changeName},
+			#{filePath},
+			TO_CHAR(SYSDATE, 'YYYY/MM/DD'),
+			TO_CHAR (SYSDATE, 'HH24:MI:SS'),
+			#{fileSize},
+			#{fileRole},
+			#{fileType},
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			#{corp_no},
+			#{ext}
+		)
+    </insert>
+	
+	<!-- 페이징을 위한 리스트 갯수 셀렉트 -->
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ATTACHMENT
+	</select>
+	
+	<!-- 파일 리스트로 셀렉트 -->
+	<select id="selectFileList" resultMap="FileResultSet">
+		SELECT *
+		FROM ATTACHMENT
+		ORDER BY BID DESC
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

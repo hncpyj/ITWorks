@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"  %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--     import="com.kh.itworks.notice.model.vo.Notice" 
 <% Notice notice = (Notice) request.getAttribute("notice"); %> --%>
 <!DOCTYPE html>
@@ -416,6 +417,7 @@
 </style>
 </head>
 <body>
+	<c:if test="${ !empty sessionScope.loginUser }">
     <jsp:include page="../common/menubar.jsp"/>
     
     <aside>
@@ -599,7 +601,14 @@
 		</div>
     </article>
     
-    
+    <script>
+    	
+    </script>
+    </c:if>
+	<c:if test="${ empty sessionScope.loginUser }">
+		<c:set var="message" value="로그인이 필요한 서비스입니다." scope="request"/>
+		<jsp:forward page="error.fb"/>
+	</c:if>
 </body>
 </html>
 
