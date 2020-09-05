@@ -1,5 +1,7 @@
 package com.kh.itworks.atManagement.controller;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.service.ATManagementService;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 
@@ -26,7 +29,9 @@ public class ATManagementController {
 	
 	@RequestMapping("selectATManagement.at")
 	public ModelAndView selectATManagement(ATManagement at, ModelAndView mv, HttpSession session) {
-			at.setCorpNo(1);
+			
+		//임시값로그인연결하면바꾸기!!!!!
+		at.setCorpNo(1);
 		
 			ATManagement atbt;
 			try {
@@ -77,7 +82,6 @@ public class ATManagementController {
 				String[] updateworkType = request.getParameterValues("updateworkType");
 				String[] updateWorkingStatusNo = request.getParameterValues("updateWorkingStatusNo");
 				ATManagement workAt = null;
-				System.out.println("updateworkType : " + updateworkType[0]);
 				ArrayList<ATManagement> worklist = new ArrayList<ATManagement>();
 				
 				for(int i = 0; i < workingStatusNo.length; i++) {
@@ -102,17 +106,11 @@ public class ATManagementController {
 					}
 					
 				}
-				System.out.println("worklist : " + worklist);
 		//update workTimeSet
 				String[] workingSetNo = request.getParameterValues("workingSetNo");
 				String[] workingTime = at.getWorkingTime().split(",");
 				String[] quittingTime = at.getQuittingTime().split(",");
 				String[] harfOff = at.getHarfOff().split(",");
-				
-				System.out.println("workingSetNo[0] : " + workingSetNo[0]);
-				System.out.println("workingTime[0] : " + workingTime[0]);
-				System.out.println("quittingTime[0] : " + quittingTime[0]);
-				System.out.println("harfOff[0] : " + harfOff[0]);
 				
 				ATManagement workTime = null;
 				
@@ -125,10 +123,8 @@ public class ATManagementController {
 					workTime.setQuittingTime(quittingTime[i]);
 					workTime.setHarfOff(harfOff[i]);
 					workTime.setCorpNo(at.getCorpNo());
-					System.out.println("workTime : " + workTime);
 					workTimelist.add(workTime);
 				}
-				System.out.println("workTimelist : " + workTimelist);
 				//update attendence
 				if(at.getLaborDay() == null) {
 					at.setLaborDay("N");
@@ -164,7 +160,6 @@ public class ATManagementController {
 						insertWTlist.add(insertWT);
 					}
 				}	
-					System.out.println("insertWTlist : " + insertWTlist);
 					//insertWorkingStatus
 					String[] insertWorkType = request.getParameterValues("insertWorkType");
 					String[] insertWork = request.getParameterValues("insertWork");
@@ -182,40 +177,37 @@ public class ATManagementController {
 							insertWSlist.add(insertWS);
 						}
 					}	
-						System.out.println("insertWSlist : " + insertWSlist);
 	try {
 			int dws = 0;
 			int dwts = 0;
+			//근무종류삭제
 			if(dwNo != null) {
 				for(int i = 0; i < dwNo.length; i++) {
 					dws += as.deleteWorkingStatus(dwNo[i]);
-					System.out.println("dws[i] : " + dws);
 				}
 				
 			}
+			//근태시간삭제
 			if(dtNo != null) {
 				for(int i = 0; i < dtNo.length; i++) {
 					dwts += as.deleteWorkTimeSet(dtNo[i]);
-					System.out.println("dwts[i] : " + dwts);
 				}
 				
 			}
+			//업데이트
 			int uws = as.updateWorkingStatus(worklist);
 			int uwt = as.updateWorkTimeSet(workTimelist);
 			int uat = as.updateAttendence(at);
 			int ubt = as.updateBreaktime(at);
-			System.out.println("uws : " + uws);
-			System.out.println("uwt : " + uwt);
-			System.out.println("uat : " + uat);
-			System.out.println("UBT : " + ubt);
+
 			
 			if(insertWTlist.size() != 0) {
 				int insertwt = as.insertWorkTimeSet(insertWTlist);
-				System.out.println("insertwt : " + insertwt);
+
 			}
 			if(insertWSlist.size() != 0) {
 				int insertws = as.insertWorkingStatus(insertWSlist);
-				System.out.println("insertws : " + insertws);
+
 			}
 			
 			return "redirect:selectATManagement.at";
@@ -226,24 +218,58 @@ public class ATManagementController {
 			return "common/errorPage";
 		}
 		
-		
-		
-		
-		
-		
-		
-		//return "";
 	}
 	
 	@RequestMapping("selectAtStatus.at")
-	public String selectAtStatus() {
+	public ModelAndView selectAtStatus(ModelAndView mv, ATManagement at, HttpServletRequest request) throws UnknownHostException {
+
+		//ip주소 가져오기
+		InetAddress ia = InetAddress.getLocalHost();
+		
+		String ip = ia.getHostAddress();
+		System.out.println("ip : " + ip);
+		//임시번호
+		at.setCorpNo(1);
+		at.setMno("6");
+		
+		try {
+			//회사 출퇴근 정보 조회
+			ArrayList<ATManagement> workTimeList = as.selectWorkTimeSet(at);
+			
+			ArrayList<ATManagement> myTime = as.selectMyWorkTime(at);
+			
+			for(int i = 0; i < workTimeList.size(); i++) {
+				System.out.println("workTimeList : " + workTimeList.get(i));
+			}
+			for(int i = 0; i < myTime.size(); i++) {
+				System.out.println("myTime : " + myTime.get(i));
+			}
+			request.setAttribute("workTimeList", workTimeList);
+			request.setAttribute("myTime", myTime);
+			request.setAttribute("ip", ip);
+			
+			mv.setViewName("atManagement/atStatus");
+		} catch (SelectATManagementFailedException | SelectWorkTimeListException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		
+		
+		
+		
+		return mv;
+	}
+	@RequestMapping("insertAtStatus.at")
+	public String insertATManagement(ModelAndView mv, ATManagement at, HttpServletRequest request) throws UnknownHostException {
+		
+//		InetAddress ia = InetAddress.getLocalHost();
+//		
+//		String ip = ia.getHostAddress();
+		
+		
 		
 		return "atManagement/atStatus";
-	}
-	@RequestMapping("insertATManagement.at")
-	public String insertATManagement() {
-		
-		return "atManagement/atManagement";
 	}
 	@RequestMapping("selectCorrectionList.at")
 	public String selectCorrentionList() {

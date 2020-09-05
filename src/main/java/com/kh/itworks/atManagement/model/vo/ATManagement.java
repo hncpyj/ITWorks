@@ -10,6 +10,7 @@ public class ATManagement implements java.io.Serializable {
 	private String wno;				//근태정보관리코드
 	private String wstatus;			//출근상태
 	private String wstart;			//출근시간
+	private String wend;			//퇴근시간
 	private String ip;				//ip
 	private String outsideWork;		//외근여부
 	private String wdate;				//출퇴근 날짜
@@ -77,16 +78,16 @@ public class ATManagement implements java.io.Serializable {
 
 
 	public ATManagement(String workingStatusNo, String workType, String work, int corpNo, String wno, String wstatus,
-			String wstart, String ip, String outsideWork, String wdate, int eid, String yearAleave, int hireYear,
-			int aleaveCount, int accUnitPeriod, String rwdNo, String rwdName, int rwdPeriod, String otNo, String ptRef,
-			String otDate, String otStart, String otEnd, String otReason, String objNo, String objDate, String objType,
-			String changeDate, String objStatus, String objReason, String rid, String jid, String did, String ename,
-			int eno, String hireDate, String status, String approval, String mno, String dname, String breakTimeNo,
-			String btType, String btStart, String btEnd, String attendence, String workTimeLimit, String laborDay,
-			String holidays, String alternativeHolidays, String fileNo, String originName, String changeName,
-			String filePath, String uploadDate, String uploadTime, int fileSize, String fileRole, String fileType,
-			int workingSetNo, String workingSetTime, String dayOfTheWeek, String workingTime, String quittingTime,
-			String harfOff) {
+			String wstart, String wend, String ip, String outsideWork, String wdate, int eid, String yearAleave,
+			int hireYear, int aleaveCount, int accUnitPeriod, String rwdNo, String rwdName, int rwdPeriod, String otNo,
+			String ptRef, String otDate, String otStart, String otEnd, String otReason, String objNo, String objDate,
+			String objType, String changeDate, String objStatus, String objReason, String rid, String jid, String did,
+			String ename, int eno, String hireDate, String status, String approval, String mno, String dname,
+			String breakTimeNo, String btType, String btStart, String btEnd, String attendence, String workTimeLimit,
+			String laborDay, String holidays, String alternativeHolidays, String fileNo, String originName,
+			String changeName, String filePath, String uploadDate, String uploadTime, int fileSize, String fileRole,
+			String fileType, int workingSetNo, String workingSetTime, String dayOfTheWeek, String workingTime,
+			String quittingTime, String harfOff) {
 		super();
 		this.workingStatusNo = workingStatusNo;
 		this.workType = workType;
@@ -95,6 +96,7 @@ public class ATManagement implements java.io.Serializable {
 		this.wno = wno;
 		this.wstatus = wstatus;
 		this.wstart = wstart;
+		this.wend = wend;
 		this.ip = ip;
 		this.outsideWork = outsideWork;
 		this.wdate = wdate;
@@ -250,6 +252,20 @@ public class ATManagement implements java.io.Serializable {
 
 	public void setWstart(String wstart) {
 		this.wstart = wstart;
+	}
+
+
+
+
+	public String getWend() {
+		return wend;
+	}
+
+
+
+
+	public void setWend(String wend) {
+		this.wend = wend;
 	}
 
 
@@ -1056,19 +1072,19 @@ public class ATManagement implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "ATManagement [workingStatusNo=" + workingStatusNo + ", workType=" + workType + ", work=" + work
-				+ ", corpNo=" + corpNo + ", wno=" + wno + ", wstatus=" + wstatus + ", wstart=" + wstart + ", ip=" + ip
-				+ ", outsideWork=" + outsideWork + ", wdate=" + wdate + ", eid=" + eid + ", yearAleave=" + yearAleave
-				+ ", hireYear=" + hireYear + ", aleaveCount=" + aleaveCount + ", accUnitPeriod=" + accUnitPeriod
-				+ ", rwdNo=" + rwdNo + ", rwdName=" + rwdName + ", rwdPeriod=" + rwdPeriod + ", otNo=" + otNo
-				+ ", ptRef=" + ptRef + ", otDate=" + otDate + ", otStart=" + otStart + ", otEnd=" + otEnd
-				+ ", otReason=" + otReason + ", objNo=" + objNo + ", objDate=" + objDate + ", objType=" + objType
-				+ ", changeDate=" + changeDate + ", objStatus=" + objStatus + ", objReason=" + objReason + ", rid="
-				+ rid + ", jid=" + jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno + ", hireDate=" + hireDate
-				+ ", status=" + status + ", approval=" + approval + ", mno=" + mno + ", dname=" + dname
-				+ ", breakTimeNo=" + breakTimeNo + ", btType=" + btType + ", btStart=" + btStart + ", btEnd=" + btEnd
-				+ ", attendence=" + attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay=" + laborDay
-				+ ", holidays=" + holidays + ", alternativeHolidays=" + alternativeHolidays + ", fileNo=" + fileNo
-				+ ", originName=" + originName + ", changeName=" + changeName + ", filePath=" + filePath
+				+ ", corpNo=" + corpNo + ", wno=" + wno + ", wstatus=" + wstatus + ", wstart=" + wstart + ", wend="
+				+ wend + ", ip=" + ip + ", outsideWork=" + outsideWork + ", wdate=" + wdate + ", eid=" + eid
+				+ ", yearAleave=" + yearAleave + ", hireYear=" + hireYear + ", aleaveCount=" + aleaveCount
+				+ ", accUnitPeriod=" + accUnitPeriod + ", rwdNo=" + rwdNo + ", rwdName=" + rwdName + ", rwdPeriod="
+				+ rwdPeriod + ", otNo=" + otNo + ", ptRef=" + ptRef + ", otDate=" + otDate + ", otStart=" + otStart
+				+ ", otEnd=" + otEnd + ", otReason=" + otReason + ", objNo=" + objNo + ", objDate=" + objDate
+				+ ", objType=" + objType + ", changeDate=" + changeDate + ", objStatus=" + objStatus + ", objReason="
+				+ objReason + ", rid=" + rid + ", jid=" + jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno
+				+ ", hireDate=" + hireDate + ", status=" + status + ", approval=" + approval + ", mno=" + mno
+				+ ", dname=" + dname + ", breakTimeNo=" + breakTimeNo + ", btType=" + btType + ", btStart=" + btStart
+				+ ", btEnd=" + btEnd + ", attendence=" + attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay="
+				+ laborDay + ", holidays=" + holidays + ", alternativeHolidays=" + alternativeHolidays + ", fileNo="
+				+ fileNo + ", originName=" + originName + ", changeName=" + changeName + ", filePath=" + filePath
 				+ ", uploadDate=" + uploadDate + ", uploadTime=" + uploadTime + ", fileSize=" + fileSize + ", fileRole="
 				+ fileRole + ", fileType=" + fileType + ", workingSetNo=" + workingSetNo + ", workingSetTime="
 				+ workingSetTime + ", dayOfTheWeek=" + dayOfTheWeek + ", workingTime=" + workingTime + ", quittingTime="
@@ -1076,12 +1092,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-	
 
-	
-	
-	
-	
+
+
 	
 	
 }

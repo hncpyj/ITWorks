@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 
 @Repository
@@ -174,5 +175,19 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		
 		return updateBreaktime;
 	}
+
+	@Override
+	public ArrayList<ATManagement> selectMyWorkTime(SqlSessionTemplate sqlSession, ATManagement at) throws SelectWorkTimeListException {
+
+		ArrayList<ATManagement> workList = (ArrayList)sqlSession.selectList("ATManagement.selectMyWorkTime", at);
+		
+		if(workList == null) {
+			throw new SelectWorkTimeListException("근무 시간 정보 조회 실패");
+		}
+		
+		return workList;
+	}
+
+
 
 }

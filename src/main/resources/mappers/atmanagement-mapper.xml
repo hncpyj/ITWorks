@@ -196,4 +196,9 @@
 		     , #{work}
 		     , #{corpNo})
 	</insert>
+	<select id="selectMyWorkTime" resultMap="workInfo" parameterType="ATManagement">
+		SELECT *
+		  FROM WORK_INFO
+		 WHERE MNO = ${mno}
+	</select>
 </mapper>

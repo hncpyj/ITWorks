@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 
 public interface ATManagementService {
@@ -29,5 +30,8 @@ public interface ATManagementService {
 	int insertWorkingStatus(ArrayList<ATManagement> insertWSlist) throws DeleteUpdateInsertException;
 
 	int updateBreaktime(ATManagement at) throws DeleteUpdateInsertException;
+
+	ArrayList<ATManagement> selectMyWorkTime(ATManagement at) throws SelectWorkTimeListException;
+
 
 }

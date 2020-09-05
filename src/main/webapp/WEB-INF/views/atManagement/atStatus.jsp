@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -171,24 +172,91 @@ table.calendar td{
             	<label>총 연장 근무 시간 : </label>
             </div>
             <div class="time">
-            	<table>
+            <form action="insertAtStatus.at">
+            
+            	<table id="btnTable">
             		<tr>
-            			<td class="timeText">2020년 8월 14일 금요일</td>
-            			<td><input type="checkbox"><span>외근 출퇴근 시에는 체크박스를 체크해주세요.</span></td>
+            			<td class="timeText" id="todayDay"></td>
+            			<td><input name="outsideWork" type="checkbox"><span>외근 출퇴근 시에는 체크박스를 체크해주세요.</span></td>
             		</tr>
             		<tr>
-            			<td class="timeText">10 : 00 : 00</td>
-            			<td><button class="timeBtn">출근</button><input type="text"></td>
+            			<td class="timeText" id="nowTime"></td>
+            			<td><button class="timeBtn" onclick="startBtn();">출근</button><input type="text"></td>
             			<td><a class="btn" href="insertObjectionForm.at">출/퇴근 이의 신청</a></td>
             		</tr>
             		<tr>
-            			<td class="timeText">현재 접속 IP : 192.168.30.234</td>
-            			<td><button class="timeBtn">퇴근</button><input type="text"></td>
+            			<td class="timeText">현재 접속 IP : ${ip }</td>
+            			<td><button class="timeBtn" onclick="endBtn();">퇴근</button><input type="text"></td>
             			<td><a class="btn" href="insertCorrectionForm.at">연장 근무 신청</a></td>
             		</tr>
             	</table>
+            	<input type="hidden" name="ip" value="${ip }">
+            </form>
             </div>
             </div>
+            <script type="text/javascript">
+            	function startBtn() {
+					$("btnTable").append('');
+				}
+            	
+            	$(document).ready(function() {
+            		clock();
+            		
+            		setInterval(clock, 1000);
+            		
+					
+
+				});
+            	
+            	function clock() {
+            		var now = new Date();
+
+            	    var todayYear= now.getFullYear();
+            	    var todayMon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+            	    var todayDay = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+            	    var week = new Array('일', '월', '화', '수', '목', '금', '토');
+            	    var chan_val = todayYear + '년 ' + todayMon + '월 ' + todayDay + '일 ' + week[now.getDay()] + '요일';
+					$("#todayDay").text(chan_val);
+					
+					var nowHour = now.getHours();
+					var nowMin = now.getMinutes();
+					var nowSecond = now.getSeconds();
+					if (nowHour < 10){ nowHour = "0" + nowHour; }
+					if (nowMin < 10){ nowMin = "0" + nowMin; } 
+					if (nowSecond < 10){ nowSecond = "0" + nowSecond; }
+
+					var nowTime = nowHour + " : " + nowMin + " : " + nowSecond;
+					$("#nowTime").text(nowTime);
+				}
+            </script>
+            
+            <c:forEach begin="0" end="${myTime.size() -1}" var="i">
+            	<c:choose>
+            		<c:when test="${myTime.get(i).wstatus eq '출근' }">
+            			<script type="text/javascript">
+            				console.log('${myTime.get(i).wstart}');
+            				var start = '${myTime.get(i).wstart}';
+            				var sdate = '${myTime.get(i).wdate}'.split("/");
+            				var syear = "20"+sdate[0];
+            				var smon = sdate[1];
+            				var sday = sdate[2] * 1 +"";
+            				
+            				console.log(sday);
+            			</script>
+            		</c:when>
+            		<c:when test="${myTime.get(i).wstatus eq '퇴근' }">
+            			<script type="text/javascript">
+            				var end = '${myTime.get(i).wend}';
+            				var edate = '${myTime.get(i).wdate}'.split("/");
+            				var eyear = "20"+edate[0];
+            				var emon = edate[1];
+            				var eday = edate[2] * 1 +"";
+            			</script>
+            		</c:when>
+            	</c:choose>
+            </c:forEach>
+            
+            
             <!-- 달력 -->
                 <div class="cal_top">
         <a href="#" id="movePrevMonth"><span id="prevMonth" class="cal_tit"><img class="leftArrow" src="${ contextPath }/resources/images/arrow.png"></span></a>
@@ -214,6 +282,7 @@ table.calendar td{
         initDate();
         drawDays();
         drawSche();
+        inputTime();
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
     });
@@ -248,6 +317,7 @@ table.calendar td{
         if(month < 10){month = "0"+month;}
         firstDay = new Date(year,month-1,1);
         lastDay = new Date(year,month,0);
+        
     }
     
     //calendar 날짜표시
@@ -301,6 +371,7 @@ table.calendar td{
         lastDay = new Date(year,month,0);
         drawDays();
         drawSche();
+        inputTime();
     }
     
     //2019-08-27 추가본
@@ -309,8 +380,11 @@ table.calendar td{
     function setData(){
         jsonData = 
         {
-            "2019":{
-                "07":{
+            "2020":{
+            	"05":{
+            		"31":"바다의 날"
+            	}
+                ,"07":{
                     "17":"제헌절"
                 }
                 ,"08":{
@@ -319,13 +393,65 @@ table.calendar td{
                     ,"23":"처서"
                 }
                 ,"09":{
-                    "13":"추석"
-                    ,"23":"추분"
+                    "30":"추석"
+                    ,"22":"추분"
+                }
+                ,"10":{
+                	"01":"추석"
+                	, "02":"추석"
+                }
+                ,"11":{
+                	"07":"입동"
+                }
+            }
+        	
+        }
+    }
+    //출근시간 넣기
+    function inputTime(){
+        var dateMatch = null;
+        for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
+            var txt = "";
+            txt = syear
+            /* txt =selectDate[year];
+            console.log(selectDate[year]); */
+            if(txt == year){
+            	console.log("악");
+                /* txt = selectDate[year][month]; */
+                txt = syear + "/" + smon;
+                if(txt == year + "/" + month){
+                    txt = syear + "/" + smon + "/" + sday;
+                    if(txt == year + "/" + month + "/" + i){
+                    	txt = start;
+	                    dateMatch = firstDay.getDay() + i -1; 
+	                    $tdSche.eq(dateMatch).text("출근 : "+txt);
+                    }
                 }
             }
         }
     }
-    
+  	//퇴근시간 넣기
+    function inputTime(){
+        var dateMatch = null;
+        for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
+            var txt = "";
+            txt = eyear
+            /* txt =selectDate[year];
+            console.log(selectDate[year]); */
+            if(txt == year){
+                /* txt = selectDate[year][month]; */
+                txt = eyear + "/" + emon;
+                if(txt == year + "/" + month){
+                    txt = eyear + "/" + emon + "/" + eday;
+                    if(txt == year + "/" + month + "/" + i){
+                    	txt = end;
+	                    dateMatch = firstDay.getDay() + i -1; 
+	                    $tdSche.eq(dateMatch).html("출근 : "+start+"<br>퇴근 : "+txt);
+                    }
+                }
+            }
+        }
+    }
     //스케줄 그리기
     function drawSche(){
         setData();
@@ -338,7 +464,7 @@ table.calendar td{
                 if(txt){
                     txt = jsonData[year][month][i];
                     dateMatch = firstDay.getDay() + i -1; 
-                    $tdSche.eq(dateMatch).text(txt);
+                    $tdSche.eq(dateMatch).text(txt);               
                 }
             }
         }
