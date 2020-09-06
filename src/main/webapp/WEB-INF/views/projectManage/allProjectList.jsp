@@ -217,8 +217,7 @@
 	</c:if>
 	
 	<script>
-			function showProjectDetail(pno) {
-				console.log(pno);
+			function showProjectDetail(pno, pdept) {
 				location.href="projectDetail.pm?pno=" + pno;
 			}
 		</script>

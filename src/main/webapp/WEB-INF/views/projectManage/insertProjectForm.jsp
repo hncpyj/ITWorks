@@ -225,7 +225,7 @@
                             <input type="text" name="charge" readonly="readonly"><input type="hidden" name="chargeMno" value="">
                             <button onclick="searchPerson(0);" class="selectMemberBtn" type="button">조회</button>
                         </td>
-                        <th>관리부서</th>
+                        <th>관리부서<span>*</span></th>
                         <td id="chrgeDeptTd">
                             <input type="text" name="chargeDept" style="width: 145px;" readonly="readonly"><input type="hidden" name="chargeDid" value="">
                             <button onclick="searchDept();" class="selectMemberBtn" type="button">조회</button>
@@ -261,7 +261,7 @@
                     <tr>
                         <th>첨부파일</th>
                         <td colspan="6">
-                            <input multiple="multiple" type="file" id="files" name="files" style="width: 480px; border: none; box-shadow: none;"/>
+                            <input multiple="multiple" type="file" id="files" name="files" style="width: 480px; border: none; box-shadow: none;">
                             <div id="selectedFileList" style="width: 850px; height: 80px;border: 1px solid #929292; margin: auto; margin-top: 5px; margin-bottom: 5px; padding: 5px; font-size: 12px; overflow: auto;">
                             
                             </div>
@@ -349,6 +349,7 @@
             event.preventDefault();
         } */
 
+        //직원선택 모달창 열기
         function searchPerson(index) {
 			tdNum = index;
 			
@@ -356,17 +357,21 @@
         	jQuery('.searchPerson').fadeIn('slow');
         }
         
+        //직원선택 모달창 닫기
+        function closeSearchPerson() {
+        	jQuery('.searchPerson').fadeOut('slow');
+        }
+        
+        
         function searchDept() {
         	jQuery('.searchDept').fadeIn('slow');
         }
         
-        function closeSearchPerson() {
-        	jQuery('.searchPerson').fadeOut('slow');
-        }
         function closeSearchDept() {
         	jQuery('.searchDept').fadeOut('slow');
         }
         
+        //선택 버튼 누르면 검색창 아래 DIV에 이름 뜨게 하는 코드
         function goSelectArea(mno, ename) {
         	var mno = mno;
         	var ename = ename;
@@ -395,11 +400,13 @@
     		}	
         }
         
+        //선택된 직원 x 누르면 지우는 코드
         function removeMember(selectedMember) {
         	var selectedMember = selectedMember;
         	$(selectedMember).parent().remove();
         }
         
+        //선택된 직원 정보 input 태그 value 값으로 지정하는 코드
         function selectPerson() {
         	console.log(mnoArr);
         	var names = '';
@@ -468,6 +475,7 @@
         	var charge = $("input[name='charge']").val();
         	var pstartDate = $("input[name='pstartDate']").val();
         	var pendDate = $("input[name='pendDate']").val();
+        	var chargeDept = $("input[name='chargeDept']").val();
         	
         	if(!pname) {
         		alert("프로젝트명을 입력 해 주세요.");
@@ -486,11 +494,15 @@
         	} else if(pstartDate > pendDate) {
         		alert("계획종료일은 계획시작일보다 빠를 수 없습니다.");
         		return false;
+        	} else if(!chargeDept) {
+        		alert("관리 부서를 입력하세요.");
+        		return false;
         	} else {
         		return true;
         	}
         }
         
+        //파일 선택 시 div에 파일 제목 목록 출력
         $("#files").change(function() {
         	var fileList = $("#files")[0].files;
         	
@@ -501,6 +513,10 @@
         	}
         });
 
+      //파일선택 클릭 시 파일명 출력 div 초기화
+        $("#files").click(function() {
+        	$("#selectedFileList").empty();
+        })
     </script>
 </body>
 </html>

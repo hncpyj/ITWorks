@@ -57,4 +57,6 @@ public interface ProjectService {
 
 	int insertFile(ArrayList<FileBox> fileArr) throws InsertProjectException;
 
+	HashMap<String, Object> selectOneFile(String fileNo);
+
 }

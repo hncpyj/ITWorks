@@ -215,11 +215,18 @@ public class ProjectDaoImpl implements ProjectDao{
 	public HashMap<String, Object> selectOneProject(SqlSessionTemplate sqlSession, int pno) {
 
 		HashMap<String, Object> projectInfo = new HashMap<String, Object>();
-		Project project = sqlSession.selectOne("Project.selectOneProject", pno);
+		HashMap<String,Object> project = sqlSession.selectOne("Project.selectOneProject", pno);
 		ArrayList<ProjectMember> member = (ArrayList) sqlSession.selectList("Project.selectMemberList", pno);
+		ArrayList<FileBox> files = (ArrayList) sqlSession.selectList("Project.selectFiles", pno);
+		ArrayList<Project> task = (ArrayList) sqlSession.selectList("Project.selectTaskList", pno);
+		ArrayList<Project> subTask = (ArrayList) sqlSession.selectList("Project.selectSubTaskList", pno);
+		System.out.println("subtask : " + subTask);
 		
 		projectInfo.put("project", project);
 		projectInfo.put("member", member);
+		projectInfo.put("files", files);
+		projectInfo.put("task", task);
+		projectInfo.put("subTask", subTask);
 		
 		return projectInfo;
 	}
@@ -307,6 +314,12 @@ public class ProjectDaoImpl implements ProjectDao{
 		}
 		
 		return insertFileResult;
+	}
+
+	@Override
+	public HashMap<String, Object> selectOneFile(SqlSessionTemplate sqlSession, String fileNo) {
+		HashMap<String, Object> file = sqlSession.selectOne("Project.selectOneFile", fileNo);
+		return file;
 	}
 
 }

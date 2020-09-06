@@ -1,12 +1,14 @@
 package com.kh.itworks.projectManage.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.common.CommonUtils;
 import com.kh.itworks.common.Pagination;
@@ -276,7 +277,8 @@ public class ProjectManageController {
 	}
 	
 	@RequestMapping("insertProject.pm")
-	public String insertProject(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) throws InsertProjectException, IOException {
+	public String insertProject(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response
+						, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) throws InsertProjectException, IOException {
 		System.out.println("담당자 : " + request.getParameter("chargeMno"));
 		System.out.println("참여자 : " + request.getParameter("participantMno"));
 		System.out.println("열람권한 : " + request.getParameter("perusalMno"));
@@ -392,7 +394,6 @@ public class ProjectManageController {
 //		out.println("<script>alert('프로젝트 등록이 완료되었습니다.');</script>");
 //		 
 //		out.flush();
-
 		
 		return "projectManage/projectDetail";
 	}
@@ -433,10 +434,72 @@ public class ProjectManageController {
 		
 		return "projectManage/projectDetail";
 	}
+	
+	@RequestMapping("projectFileDownload.pm")
+	public void projectFileDownload(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		String fileNo = request.getParameter("fileNo");
+		
+		HashMap<String, Object> file = projectService.selectOneFile(fileNo);
+		
+		//폴더에서 파일을 읽어들일 때 사용할 스트림 생성
+		BufferedInputStream buf = null;
+				
+		//클라이언트로 내보낼 출력스트림 생성
+		ServletOutputStream downOut = null;
+				
+		downOut = response.getOutputStream();
+				
+		//스트림으로 전송할 파일 객체 생성
+		File downFile = new File((String) file.get("filePath") + "\\" + file.get("changeName") + file.get("ext"));
+				
+		response.setContentType("text/plane; charset=UTF-8");
+				
+		//한글파일명에 대한 인코딩 처리
+		//강제적으로 다운로드 처리(버튼 누르면 바로 다운로드 진행하는 기능, 크롬은 강제다운로드만 진행함)
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + new String(((String) file.get("originName")).getBytes("UTF-8"), "ISO-8859-1") + "\"");
+		//attachment : 강제다운로드방식
+				
+		response.setContentLength((int)downFile.length());
+				
+		FileInputStream fin = new FileInputStream(downFile);
+				
+		buf = new BufferedInputStream(fin);
+				
+		int readBytes = 0;
+				
+		while((readBytes = buf.read()) != -1) {
+			downOut.write(readBytes);
+		}
+			
+		downOut.close();
+		buf.close();
+	}
 
 	@RequestMapping("insertTaskForm.pm")
-	public String showInsertTaskForm() {
+	public String showInsertTaskForm(Model model, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
+		
+		String parentPno = request.getParameter("pno");
+		
+		HashMap<String, Object> allMemberDept = projectService.selectAllMemberDept(loginUser.getCorpNo());
+		
+		model.addAttribute("allMemberDept", allMemberDept);
+		
+		model.addAttribute("parentPno", parentPno);
+		
 		return "projectManage/insertTaskForm";
+	}
+	
+	@RequestMapping("insertTask.pm")
+	public String insertTask(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response
+								, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) {
+		
+		System.out.println(project);
+		String[] uniqueness = request.getParameterValues("uniqueness");
+		System.out.println(uniqueness[0]);
+		System.out.println(uniqueness[1]);
+		
+		return "";
 	}
 	
 	

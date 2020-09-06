@@ -3,6 +3,27 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Project">
+
+	<resultMap type="map" id="projectInfo">
+		<id property="pno" column="PNO"/>
+		<result property="pname" column="PNAME"/>
+		<result property="pdept" column="PDEPT"/>
+		<result property="pstartDate" column="PSTART_DATE"/>
+		<result property="pendDate" column="PEND_DATE"/>
+		<result property="actualEndDate" column="ACTUAL_END_DATE"/>
+		<result property="psummary" column="PSUMMARY"/>
+		<result property="plevel" column="PLEVEL"/>
+		<result property="pcontent" column="PCONTENT"/>
+		<result property="uniqueness" column="UNIQUENESS"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="pstatus" column="P_STATUS"/>
+		<result property="pdate" column="PDATE"/>
+		<result property="ptime" column="PTIME"/>
+		<result property="parentPjt" column="PARENT_PJT"/>
+		<result property="pjtTaskNo" column="PJT_TASK_NO"/>
+		<result property="pprogress" column="PPROGRESS"/>
+		<result property="dname" column="DNAME"/>
+	</resultMap>
 	
 	<resultMap type="Project" id="projectList">
 		<id property="pno" column="PNO"/>
@@ -77,6 +98,29 @@
 		<result property="dlevel" column="DLEVEL"/>
 		<result property="corpNo" column="CORP_NO"/>
 		<result property="deptNo" column="DEPT_NO"/>
+	</resultMap>
+	
+	<resultMap type="map" id="fileBox">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="stgNo" column="STG_NO"/>
+		<result property="ext" column="EXT"/>
+	</resultMap>
+	
+	<resultMap type="Project" id="projectTask">
+		<id property="pno" column="PNO"/>
+		<result property="pname" column="PNAME"/>
+		<result property="pdept" column="PDEPT"/>
+		<result property="pstartDate" column="PSTART_DATE"/>
+		<result property="pendDate" column="PEND_DATE"/>
+		<result property="actualEndDate" column="ACTUAL_END_DATE"/>
+		<result property="plevel" column="PLEVEL"/>
+		<result property="uniqueness" column="UNIQUENESS"/>
+		<result property="pprogress" column="PPROGRESS"/>
+		<result property="pjtTaskNo" column="PJT_TASK_NO"/>
+		<result property="pwriter" column="ENAME"/>
 	</resultMap>
 	
 	<select id="selectListCount" resultType="_int" parameterType="_int">
@@ -484,9 +528,13 @@
          ORDER BY P.PSTART_DATE DESC
    </select>
    
-   <select id="selectOneProject" resultMap="projectList">
-   		SELECT * FROM PROJECT
-   		 WHERE PNO = #{pno}
+   <select id="selectOneProject" resultMap="projectInfo" parameterType="HashMap">
+   		SELECT
+		       P.*
+		     , D.DNAME
+		  FROM PROJECT P
+		  JOIN DEPT D ON(P.PDEPT = D.DID)
+		 WHERE PNO = #{pno}
    </select>
    
    <select id="selectMemberList" resultMap="projectMember">
@@ -532,7 +580,7 @@
    
    <insert id="insertProject" parameterType="Project">
    		INSERT ALL
-   		INTO PROJECT VALUES (SEQ_PNO.NEXTVAL, #{project.pname}, #{project.pdept}, #{project.pstartDate}, #{project.pendDate}, #{project.actualEndDate}, #{project.psummary}, #{project.plevel}, #{project.pcontent}, #{project.uniqueness}, #{project.corpNo}, DEFAULT, '2020/09/03', TO_CHAR(SYSDATE + 9/24,'hh24:mi:ss'), 
+   		INTO PROJECT VALUES (SEQ_PNO.NEXTVAL, #{project.pname}, #{project.pdept}, TO_CHAR(TO_DATE(#{project.pstartDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.pendDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.actualEndDate}), 'YYYY/MM/DD'), #{project.psummary}, #{project.plevel}, #{project.pcontent}, #{project.uniqueness}, #{project.corpNo}, DEFAULT, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_CHAR(SYSDATE + 9/24,'hh24:mi:ss'), 
    				SEQ_PNO.NEXTVAL, #{project.pjtTaskNo}, #{project.pprogress})
    		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer})
    		SELECT *
@@ -577,4 +625,54 @@
    		</foreach>
    		SELECT * FROM DUAL
    </update>
+   
+   <select id="selectFiles" resultMap="fileBox">
+   		SELECT * FROM ATTACHMENTS WHERE PNO = #{pno}
+   </select>
+   
+   <select id="selectOneFile" resultMap="fileBox">
+   		SELECT * FROM ATTACHMENTS WHERE FILE_NO = #{fileNo}
+   </select>
+   
+   <select id="selectTaskList" resultMap="projectTask">
+   		SELECT
+		        P.PNO
+		      , P.PNAME
+		      , P.PPROGRESS
+		      , P.PSTART_DATE
+		      , P.PEND_DATE
+		      , P.ACTUAL_END_DATE
+		      , P.PLEVEL
+		      , P.UNIQUENESS
+		      , E.ENAME
+		      , P.PJT_TASK_NO
+		   FROM PROJECT P
+		   JOIN PMEMBER M ON(P.PNO = M.PNO)
+		   JOIN EMPLOYEE E ON(M.MNO = E.MNO)
+		  WHERE M.PROLE = '담당자'
+		    AND P.P_STATUS = 'Y'
+		    AND P.PARENT_PJT = #{pno}
+		    AND P.PLEVEL = 1
+   </select>
+   
+   <select id="selectSubTaskList" resultMap="projectTask">
+  		 SELECT
+		        P.PNO
+		      , P.PNAME
+		      , P.PPROGRESS
+		      , P.PSTART_DATE
+		      , P.PEND_DATE
+		      , P.ACTUAL_END_DATE
+		      , P.PLEVEL
+		      , P.UNIQUENESS
+		      , E.ENAME
+		      , P.PJT_TASK_NO
+		   FROM PROJECT P
+		   JOIN PMEMBER M ON(P.PNO = M.PNO)
+		   JOIN EMPLOYEE E ON(M.MNO = E.MNO)
+		  WHERE M.PROLE = '담당자'
+		    AND P.P_STATUS = 'Y'
+		    AND P.PARENT_PJT = #{pno}
+		    AND P.PLEVEL = 2
+   </select>
 </mapper>

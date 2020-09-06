@@ -132,5 +132,10 @@ public class ProjectServiceImpl implements ProjectService{
 		return projectDao.insertFile(sqlSession, fileArr);
 	}
 
+	@Override
+	public HashMap<String, Object> selectOneFile(String fileNo) {
+		return projectDao.selectOneFile(sqlSession, fileNo);
+	}
+
 
 }

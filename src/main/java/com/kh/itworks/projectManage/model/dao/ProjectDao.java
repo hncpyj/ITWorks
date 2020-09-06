@@ -61,4 +61,6 @@ public interface ProjectDao {
 
 	int insertFile(SqlSessionTemplate sqlSession, ArrayList<FileBox> fileArr) throws InsertProjectException;
 
+	HashMap<String, Object> selectOneFile(SqlSessionTemplate sqlSession, String fileNo);
+
 }

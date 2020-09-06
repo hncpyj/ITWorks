@@ -1,6 +1,6 @@
 package com.kh.itworks.projectManage.model.vo;
 
-import java.sql.Date;
+import java.util.ArrayList;
 
 public class Project {
 	
@@ -22,7 +22,7 @@ public class Project {
 	private String pjtTaskNo;
 	private String pprogress;
 	private String pwriter;
-	
+
 	public Project() {}
 
 	public Project(String pno, String pname, String pdept, String pstartDate, String pendDate, String actualEndDate,
@@ -201,6 +201,4 @@ public class Project {
 				+ pstatus + ", pdate=" + pdate + ", ptime=" + ptime + ", parentPjt=" + parentPjt + ", pjtTaskNo="
 				+ pjtTaskNo + ", pprogress=" + pprogress + ", pwriter=" + pwriter + "]";
 	}
-
-	
 }

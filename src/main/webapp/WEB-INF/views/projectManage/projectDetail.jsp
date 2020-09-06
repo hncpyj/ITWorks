@@ -252,6 +252,14 @@
     button {
         cursor: pointer;
     }
+    .files {
+    	 color: black;
+    	 text-decoration: none;
+    }
+    .files:hover {
+    	cursor: pointer;
+    	text-decoration: underline;
+    }
 </style>
 </head>
 <body>
@@ -299,24 +307,30 @@
                     	</c:forEach>
                     </td>
                     <th>관리부서</th>
-                    <td><c:out value="${ projectInfo.project.pdept }"/></td>
+                    <td>
+                    	<c:if test="${ !empty projectInfo.project.dname }">
+                    		<c:out value="${ projectInfo.project.dname }"/>
+                    	</c:if>
+                    </td>
                 </tr>
                 <tr>
                     <th>참여자</th>
-                    <td colspan="6">
-						<c:forEach var="m" items="${ projectInfo.member }">
-                    		<c:if test="${ m.prole eq '참여자' }">
-                    			<c:out value="${ m.pmName }"/>
-                    		</c:if>
-                    	</c:forEach>
+                    <td colspan="6" id="participant">
+	                    <c:if test="${ !empty projectInfo.member }">
+							<c:forEach var="m" items="${ projectInfo.member }" varStatus="status">
+	                    		<c:if test="${ m.prole eq '참여자' }">
+	                    			<c:out value="${ m.pmName }"/>, 
+	                    		</c:if>
+	                    	</c:forEach>
+	                    </c:if>
 					</td>
                 </tr>
                 <tr>
                     <th>열람 권한</th>
-                    <td colspan="6">
-                    	<c:forEach var="m" items="${ projectInfo.member }">
+                    <td colspan="6" id="perusal">
+                    	<c:forEach var="m" items="${ projectInfo.member }" varStatus="status">
                     		<c:if test="${ m.prole eq '열람권한' }">
-                    			<c:out value="${ m.pmName }"/>
+                    			<c:out value="${ m.pmName }"/>, 
                     		</c:if>
                     	</c:forEach>
                     </td>
@@ -335,8 +349,17 @@
                 </tr>
                 <tr>
                     <th>첨부파일</th>
-                    <td colspan="6">
-                        첨부파일 1
+                    <td colspan="6" style="padding-top: 5px; padding-left: 5px;">
+                    	<div style="width: 850px; height: 70px; margin: auto; overflow: auto;">
+	                       	<c:forEach var="f" items="${ projectInfo.files }">
+	                       		<div style="margin-bottom: 3px;">
+	                       			<img src="${ contextPath }/resources/projectManageImages/projectFileIcon.png">
+	                       			<a class="files" onclick="fileDownload(${ f.fileNo });">
+	                       				<c:out value="${ f.originName }"/>
+	                       			</a>
+	                       		</div>
+	                       	</c:forEach>
+                       	</div>
                     </td>
                 </tr>
             </table>
@@ -467,7 +490,7 @@
 
         <!--WBS-->
         <article>
-            <div style="color: #004771; font-size: 15px; font-weight: 550;">WBS <button style="cursor: pointer;" onclick="location.href='insertTaskForm.pm'">업무등록</button></div>
+            <div style="color: #004771; font-size: 15px; font-weight: 550;">WBS <button style="cursor: pointer;" onclick="insertTask(${projectInfo.project.pno});">업무등록</button></div>
 
             <div id="wbs">
                 <table>
@@ -534,348 +557,124 @@
                         <th class="date">0</th>
                         <th class="date">0</th>
                     </tr>
-                    <tr class="task">
-                        <td>
-                            <img src="${ contextPath }/resources/projectManageImages/projectTaskIcon.png" style="margin-right: 7px;" onclick="showSubTask();">
-                            <a href="taskDetail.pm">업무명입니다.</a>
-                        </td>
-                        <td>temp</td>
-                        <td>00/00/00</td>
-                        <td>00/00/00</td>
-                        <td></td>
-                        <td>예정</td>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="subTask">
-                        <td>
-                            세부업무명입니다.
-                        </td>
-                        <td>temp</td>
-                        <td>00/00/00</td>
-                        <td>00/00/00</td>
-                        <td></td>
-                        <td>예정</td>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="subTask">
-                        <td>
-                            세부업무명입니다.
-                        </td>
-                        <td>temp</td>
-                        <td>00/00/00</td>
-                        <td>00/00/00</td>
-                        <td></td>
-                        <td>예정</td>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr><tr class="subTask">
-                        <td>
-                            세부업무명입니다.
-                        </td>
-                        <td>temp</td>
-                        <td>00/00/00</td>
-                        <td>00/00/00</td>
-                        <td></td>
-                        <td>예정</td>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="subTask">
-                        <td>
-                            세부업무명입니다.
-                        </td>
-                        <td>temp</td>
-                        <td>00/00/00</td>
-                        <td>00/00/00</td>
-                        <td></td>
-                        <td>예정</td>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="task">
-                        <td>
-                            <img src="${ contextPath }/resources/projectManageImages/projectTaskIcon.png" style="margin-right: 7px;" onclick="showSubTask();">업무명입니다.
-                        </td>
-                        <td>temp</td>
-                        <td>00/00/00</td>
-                        <td>00/00/00</td>
-                        <td></td>
-                        <td>예정</td>
-                        <td></td>
-
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    
+                    <c:forEach var="task" items="${ projectInfo.task }">
+	                    <tr class="task">
+	                        <td>
+	                            <img src="${ contextPath }/resources/projectManageImages/projectTaskIcon.png" style="margin-right: 7px;" onclick="showSubTask();">
+	                            <a href="taskDetail.pm"><c:out value="${ task.pname }"/></a>
+	                        </td>
+	                        <td><c:out value="${ task.pwriter }"/></td>
+	                        <td><c:out value="${fn:substring(task.pstartDate, 2, 10)}"/></td>
+	                        <td><c:out value="${fn:substring(task.pendDate, 2, 10)}"/></td>
+	                        <td><c:out value="${fn:substring(task.actualEndDate, 2, 10)}"/></td>
+	                        <td><c:out value="${ task.pprogress }"/></td>
+	                        <td style="color: red; font-weight: bold;"><c:out value="${ task.uniqueness }"/></td>
+	
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                    </tr>
+	                    <c:forEach var="st" items="${ projectInfo.subTask }">
+		                    <tr class="subTask">
+		                        <td><c:out value="${ st.pname }"/></td>
+		                        <td><c:out value="${ st.pwriter }"/></td>
+		                        <td><c:out value="${ fn:substring(st.pstartDate, 2, 10) }"/></td>
+		                        <td><c:out value="${ fn:substring(st.pendDate, 2, 10) }"/></td>
+		                        <td><c:out value="${ fn:substring(st.actualEndDate, 2, 10)}"/></td>
+		                        <td><c:out value="${ st.pprogress }"/></td>
+		                        <td style="color: red; font-weight: bold;"><c:out value="${ st.uniqueness }"/></td>
+		
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                    </tr>
+		            	</c:forEach>
+	            	</c:forEach>
                 </table>
             </div>
         </article>
@@ -972,24 +771,40 @@
             
             console.log('${progress}');
             
-            if('${progress}' == '진행') {
-            	$("option[value='progress']").attr("selected", true);
-            } else if('${progress}' == '예정') {
-            	${"option[value='schedule']"}.attr("selected", true);
-            } else if('${progress}' == '완료') {
-            	${"option[value='finish']"}.attr("selected", true);
-            } else if('${progress}' == '보류') {
-            	${"option[value='hold']"}.attr("selected", true);
-            } else {
-            	${"option[value='discard']"}.attr("selected", true);
-            }
         }
-        function showSubTask() {
+        
+/*         function showSubTask() {
             if($('.subTask').css('display') == 'none') {
                 $('.subTask').css('display', '');
             } else {
                 $('.subTask').css('display', 'none');
             }
+        } */
+        
+        //프로젝트 참여자, 열람권한 이름 사이에 쉼표 처리
+        $(function() {
+        	var str = $("#participant").text().trim();
+        	var result = str.slice(0, str.length - 1);
+        	
+        	$("#participant").text(result);
+        	
+        	var str2 = $("#perusal").text().trim();
+        	var result2 = str2.slice(0, str2.length - 1);
+        	
+        	$("#perusal").text(result2);
+        });
+        
+        //첨부파일 다운로드
+        function fileDownload(fileNo) {
+        	console.log(fileNo);
+        	
+        	location.href="projectFileDownload.pm?fileNo=" + fileNo;
+        }
+        
+        function insertTask(pno) {
+        	console.log(pno);
+        	
+        	location.href="insertTaskForm.pm?pno=" + pno;
         }
     </script>
 
