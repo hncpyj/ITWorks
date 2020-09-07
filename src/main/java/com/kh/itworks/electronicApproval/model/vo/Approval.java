@@ -4,36 +4,36 @@ import java.sql.Date;
 
 public class Approval implements java.io.Serializable {
 	
-	private int apvNo;
-	private String apvDate;
-	private String apvTime;
-	private int mNo;
-	private String deptNo;
-	private String apvTitle;
-	private String apvType;
-	private String tempStg;
-	private String lInfoNo;
-	private String objNo;
-	private String wNo;
-	private String apvLineNo;
-	private int corpNo;
-	private int spvNo;
-	private String apvLineDate;
-	private String apvLineTime;
-	private String apvLineContent;
-	private String apvMethod;
-	private String apvOrder;
-	private String apvProcess;
-	private String apvFinal; 
-	private String apvProgress;
-	private String formNo;
-	private String fName;
-	private String fDate;
-	private String fTime;
-	private String fContent;
-	private String fType;
-	private String apvReadNo;
-	private String apvReadType;
+	private int apvNo;				//문서번호
+	private String apvDate;			//기안일자
+	private String apvTime;			//기안시간
+	private int mNo;				//회원관리코드
+	private String deptNo;			//기안부서
+	private String apvTitle;		//제목
+	private String apvType;			//분류
+	private String tempStg;			//임시저장여주
+	private String lInfoNo;			//휴가정보관리코드
+	private String objNo;			//이의신청코드
+	private String wNo;				//근태정보관리코드
+	private String apvLineNo;		//결재관리코드
+	private int corpNo;				//회사코드
+	private int spvNo;				//
+	private String apvLineDate;		//처리일
+	private String apvLineTime;		//처리시간
+	private String apvLineContent;	//결재메세지
+	private String apvMethod;		//결재방법
+	private String apvOrder;		//결재순번
+	private String apvProcess;		//처리종류
+	private String apvFinal; 		//결재최종완료여부
+	private String apvProgress;		//결재진형여부
+	private String formNo;			//결재양식관리코드
+	private String fName;			//양식명
+	private String fDate;			//등록일
+	private String fTime;			//등록시간
+	private String fContent;		//양식내용
+	private String fType;			//양식유형
+	private String apvReadNo;		//결재열람참조관리코드
+	private String apvReadType;		//분류
 	
 	public Approval() {
 		
