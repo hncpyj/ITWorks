@@ -6,5 +6,8 @@ import com.kh.itworks.member.model.vo.Member;
 public interface MemberService {
 
 	Member loginMember(Member m) throws LoginFailedException ;
-
+	Member duplicationCheck(String userId);
+	int insertMember(Member m);
+	
+	
 }
