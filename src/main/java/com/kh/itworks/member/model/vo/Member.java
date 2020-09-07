@@ -1,6 +1,26 @@
 package com.kh.itworks.member.model.vo;
 
 public class Member {
+<<<<<<< src/main/java/com/kh/itworks/member/model/vo/Member.java
+	private int corpNo;
+	private String roleNo;
+	private String jobNo;
+	private String deptNo;
+	private String ename;
+	private String epwd;
+	private String phone;
+	private String email;
+	private String address;
+	private String birthday;
+	private int eno;
+	private String hireDate;
+	private String resignationDate;
+	private String status;
+	private String approval;
+	private String internalPhone;
+	private int mno;
+	private String eid;
+=======
 	private int corpNo; 	//회사코드
 	private String roleNo; 	//권한관리코드
 	private String jobNo; 	//직급관리코드
@@ -19,12 +39,18 @@ public class Member {
 	private String internalPhone; 	//사내전화
 	private int mno; 				//회원관리코드
 	private String eid;				//회원ID
+>>>>>>> src/main/java/com/kh/itworks/member/model/vo/Member.java
 	
 	public Member() {}
 
 	public Member(int corpNo, String roleNo, String jobNo, String deptNo, String ename, String epwd, String phone,
+<<<<<<< src/main/java/com/kh/itworks/member/model/vo/Member.java
+			String email, String address, String birthday, int eno, String hireDate, String resignationDate,
+			String status, String approval, String internalPhone, int mno, String eid) {
+=======
 			String email, String address, String birthday, int eno, String hireDate, String resignationDate, String status,
 			String approval, String internalPhone, int mno, String eid) {
+>>>>>>> src/main/java/com/kh/itworks/member/model/vo/Member.java
 		super();
 		this.corpNo = corpNo;
 		this.roleNo = roleNo;
@@ -198,7 +224,7 @@ public class Member {
 				+ resignationDate + ", status=" + status + ", approval=" + approval + ", internalPhone=" + internalPhone
 				+ ", mno=" + mno + ", eid=" + eid + "]";
 	}
-	
+
 	
 	
 	
