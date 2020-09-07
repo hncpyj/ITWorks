@@ -10,8 +10,11 @@ import com.kh.itworks.atManagement.model.dao.ATManagementDao;
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
+import com.kh.itworks.atManagement.model.vo.PageInfo;
 
 @Service
 public class ATManagementServiceImpl implements ATManagementService {
@@ -110,6 +113,41 @@ public class ATManagementServiceImpl implements ATManagementService {
 	public int insertWorkInfo(ATManagement at) throws InsertWorkInfoException {
 
 		return ad.insertWorkInfo(sqlSession, at);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectCorrectionList(ATManagement at, PageInfo pi) throws SelectCorrenctionListException {
+		
+		return ad.selectCorrectionList(sqlSession, at, pi);
+	}
+
+
+	@Override
+	public int getCorrentionListCount(ATManagement at) throws SelectCorrenctionListException {
+
+		return ad.getCorrentionListCount(sqlSession, at);
+	}
+
+
+	@Override
+	public ATManagement selectAtDetail(int objNo) throws SelectCorrenctionListException {
+
+		return ad.selectAtDetail(sqlSession, objNo);
+	}
+
+
+	@Override
+	public int getOvertimeListCount(ATManagement at) throws SelectOvertimeListException {
+
+		return ad.getOvertimeListCount(sqlSession, at);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectOvertimeList(ATManagement at, PageInfo pi) throws SelectOvertimeListException {
+
+		return ad.selectOvertimeList(sqlSession, at, pi);
 	}
 
 

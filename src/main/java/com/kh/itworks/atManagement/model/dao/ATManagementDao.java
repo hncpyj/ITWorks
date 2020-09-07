@@ -7,8 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
+import com.kh.itworks.atManagement.model.vo.PageInfo;
 
 public interface ATManagementDao {
 
@@ -37,6 +40,16 @@ public interface ATManagementDao {
 	ArrayList<ATManagement> selectMyWorkTime(SqlSessionTemplate sqlSession, ATManagement at) throws SelectWorkTimeListException;
 
 	int insertWorkInfo(SqlSessionTemplate sqlSession, ATManagement at) throws InsertWorkInfoException;
+
+	ArrayList<ATManagement> selectCorrectionList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectCorrenctionListException;
+
+	int getCorrentionListCount(SqlSessionTemplate sqlSession, ATManagement at) throws SelectCorrenctionListException;
+
+	ATManagement selectAtDetail(SqlSessionTemplate sqlSession, int objNo) throws SelectCorrenctionListException;
+
+	int getOvertimeListCount(SqlSessionTemplate sqlSession, ATManagement at) throws SelectOvertimeListException;
+
+	ArrayList<ATManagement> selectOvertimeList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectOvertimeListException;
 
 
 	

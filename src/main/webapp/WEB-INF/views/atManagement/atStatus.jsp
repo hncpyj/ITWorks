@@ -251,12 +251,11 @@ table.calendar td{
             </script> -->
            <c:forEach begin="0" end="${myTime.size() -1}" var="i">
             <input type="hidden" id="wstart${i}" value="${myTime.get(i).wstart }">
+            <input type="hidden" id="wend${i}" value="${myTime.get(i).wend }">
             <input type="hidden" id="wdate${i}" value="${myTime.get(i).wdate }">
+            <input type="hidden" id="wstart${i}" value="${myTime.get(i).wstatus }">
             </c:forEach>
-            <c:forEach begin="0" end="${myTime.size() -1}" var="i">
             
-            	<c:choose>
-            		<c:when test="${myTime.get(i).wstatus eq '출근' }">
             			<script type="text/javascript">
             				var size = ${myTime.size()};
             				var start="";
@@ -269,7 +268,7 @@ table.calendar td{
             				var now = new Date();
         					
         					var todayYear= now.getFullYear();
-                    	    var todayMon = now.getMonth();
+                    	    var todayMon = now.getMonth()+1;
                     	    var todayDay = now.getDate();
                     	    
                     	    var todayDate = todayYear+"/"+todayMon+"/"+todayDay;
@@ -279,21 +278,20 @@ table.calendar td{
             				sdate = startdate.split("/");
             				textdate = "20"+startdate;
             				
-	            				
-	            					syear = "20"+sdate[j][0];
-	            					smon = sdate[j][1];
-	            					sday = sdate[j][2] * 1 +"";
-	            				
-
+	            			syear = "20"+sdate[j][0];
+	            			smon = sdate[j][1];
+	            			sday = sdate[j][2] * 1 +"";
+	            			
             				console.log(textdate);
+            				console.log("today : " + todayDate);
+            				console.log("start : " + start);
                     	    if(textdate == todayDate){
             					$("#startText").val(start);
             				}
             			}
             				
             			</script>
-            		</c:when>
-            		<c:when test="${myTime.get(i).wstatus eq '퇴근' }">
+            		
             			<script type="text/javascript">
             				var end = '${myTime.get(i).wend}';
             				var edate = '${myTime.get(i).wdate}'.split("/");
@@ -312,9 +310,8 @@ table.calendar td{
             					$("#endText").val(end);
             				}
             			</script>
-            		</c:when>
-            	</c:choose>
-            </c:forEach>
+            		
+           
             <!-- 요일별 시간 -->
             			
             		<input type="hidden" id="listSize" value="${workTimeList.size()}">
@@ -328,8 +325,57 @@ table.calendar td{
 		            					var now = new Date();
 		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
 		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					var todayYear= now.getFullYear();
+		                        	    var todayMon = now.getMonth();
+		                        	    var todayDay = now.getDate();
+		                        	    
+		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+		            					var startHour = time[0];
+		            					var startMin = time[1];
+		            					var startSec = time[2];
+		            					
+		            					var time2 = '${workTimeList.get(i).quittingTime}'.split(":");
+		            					var leaveHour = time2[0];
+		            					var leaveMin = time2[1];
+		            					var leaveSec = time2[2];
+		            					
+		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
+		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
 											if(dayOfTheWeek == week[now.getDay()]){
-												console.log(dayOfTheWeek);
+												$("#startBtn").click(function() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('start');
+													now = new Date();
+													var startTime = now-work;
+													var 시 = Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분 = Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초 = Math.floor((startTime % (1000 * 60)) / 1000);
+													
+													if(startTime <= 0){
+														$("#wstatus").val("출근");
+													} else{
+														$("#wstatus").val("지각");
+													}
+													
+													
+												}); 
+												
+												function endBtn() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('end');
+													now = new Date();
+													var leaveTime = now-leave;
+													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
+													if(leaveTime <= 0){
+														$("#wstatus").val("조퇴");
+													} else{
+														$("#wstatus").val("퇴근");
+													}
+													
+												}
+
 											}
 									});
             					</script>
@@ -340,8 +386,57 @@ table.calendar td{
 		            					var now = new Date();
 		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
 		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					var todayYear= now.getFullYear();
+		                        	    var todayMon = now.getMonth();
+		                        	    var todayDay = now.getDate();
+		                        	    
+		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+		            					var startHour = time[0];
+		            					var startMin = time[1];
+		            					var startSec = time[2];
+		            					
+		            					var time2 = '${workTimeList.get(i).quittingTime}'.split(":");
+		            					var leaveHour = time2[0];
+		            					var leaveMin = time2[1];
+		            					var leaveSec = time2[2];
+		            					
+		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
+		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
 											if(dayOfTheWeek == week[now.getDay()]){
-												console.log(dayOfTheWeek);
+												$("#startBtn").click(function() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('start');
+													now = new Date();
+													var startTime = now-work;
+													var 시 = Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분 = Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초 = Math.floor((startTime % (1000 * 60)) / 1000);
+													
+													if(startTime <= 0){
+														$("#wstatus").val("출근");
+													} else{
+														$("#wstatus").val("지각");
+													}
+													
+													
+												}); 
+												
+												function endBtn() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('end');
+													now = new Date();
+													var leaveTime = now-leave;
+													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
+													if(leaveTime <= 0){
+														$("#wstatus").val("조퇴");
+													} else{
+														$("#wstatus").val("퇴근");
+													}
+													
+												}
+
 											}
 									});
             					</script>
@@ -352,8 +447,57 @@ table.calendar td{
 		            					var now = new Date();
 		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
 		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					var todayYear= now.getFullYear();
+		                        	    var todayMon = now.getMonth();
+		                        	    var todayDay = now.getDate();
+		                        	    
+		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+		            					var startHour = time[0];
+		            					var startMin = time[1];
+		            					var startSec = time[2];
+		            					
+		            					var time2 = '${workTimeList.get(i).quittingTime}'.split(":");
+		            					var leaveHour = time2[0];
+		            					var leaveMin = time2[1];
+		            					var leaveSec = time2[2];
+		            					
+		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
+		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
 											if(dayOfTheWeek == week[now.getDay()]){
-												console.log(dayOfTheWeek);
+												$("#startBtn").click(function() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('start');
+													now = new Date();
+													var startTime = now-work;
+													var 시 = Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분 = Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초 = Math.floor((startTime % (1000 * 60)) / 1000);
+													
+													if(startTime <= 0){
+														$("#wstatus").val("출근");
+													} else{
+														$("#wstatus").val("지각");
+													}
+													
+													
+												}); 
+												
+												function endBtn() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('end');
+													now = new Date();
+													var leaveTime = now-leave;
+													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
+													if(leaveTime <= 0){
+														$("#wstatus").val("조퇴");
+													} else{
+														$("#wstatus").val("퇴근");
+													}
+													
+												}
+
 											}
 									});
             					</script>
@@ -364,8 +508,57 @@ table.calendar td{
 		            					var now = new Date();
 		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
 		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					var todayYear= now.getFullYear();
+		                        	    var todayMon = now.getMonth();
+		                        	    var todayDay = now.getDate();
+		                        	    
+		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+		            					var startHour = time[0];
+		            					var startMin = time[1];
+		            					var startSec = time[2];
+		            					
+		            					var time2 = '${workTimeList.get(i).quittingTime}'.split(":");
+		            					var leaveHour = time2[0];
+		            					var leaveMin = time2[1];
+		            					var leaveSec = time2[2];
+		            					
+		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
+		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
 											if(dayOfTheWeek == week[now.getDay()]){
-												console.log(dayOfTheWeek);
+												$("#startBtn").click(function() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('start');
+													now = new Date();
+													var startTime = now-work;
+													var 시 = Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분 = Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초 = Math.floor((startTime % (1000 * 60)) / 1000);
+													
+													if(startTime <= 0){
+														$("#wstatus").val("출근");
+													} else{
+														$("#wstatus").val("지각");
+													}
+													
+													
+												}); 
+												
+												function endBtn() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('end');
+													now = new Date();
+													var leaveTime = now-leave;
+													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
+													if(leaveTime <= 0){
+														$("#wstatus").val("조퇴");
+													} else{
+														$("#wstatus").val("퇴근");
+													}
+													
+												}
+
 											}
 									});
             					</script>
@@ -376,8 +569,57 @@ table.calendar td{
 		            					var now = new Date();
 		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
 		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					var todayYear= now.getFullYear();
+		                        	    var todayMon = now.getMonth();
+		                        	    var todayDay = now.getDate();
+		                        	    
+		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+		            					var startHour = time[0];
+		            					var startMin = time[1];
+		            					var startSec = time[2];
+		            					
+		            					var time2 = '${workTimeList.get(i).quittingTime}'.split(":");
+		            					var leaveHour = time2[0];
+		            					var leaveMin = time2[1];
+		            					var leaveSec = time2[2];
+		            					
+		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
+		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
 											if(dayOfTheWeek == week[now.getDay()]){
-												console.log(dayOfTheWeek);
+												$("#startBtn").click(function() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('start');
+													now = new Date();
+													var startTime = now-work;
+													var 시 = Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분 = Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초 = Math.floor((startTime % (1000 * 60)) / 1000);
+													
+													if(startTime <= 0){
+														$("#wstatus").val("출근");
+													} else{
+														$("#wstatus").val("지각");
+													}
+													
+													
+												}); 
+												
+												function endBtn() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('end');
+													now = new Date();
+													var leaveTime = now-leave;
+													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
+													if(leaveTime <= 0){
+														$("#wstatus").val("조퇴");
+													} else{
+														$("#wstatus").val("퇴근");
+													}
+													
+												}
+
 											}
 									});
             					</script>
@@ -388,8 +630,57 @@ table.calendar td{
 		            					var now = new Date();
 		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
 		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					var todayYear= now.getFullYear();
+		                        	    var todayMon = now.getMonth();
+		                        	    var todayDay = now.getDate();
+		                        	    
+		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+		            					var startHour = time[0];
+		            					var startMin = time[1];
+		            					var startSec = time[2];
+		            					
+		            					var time2 = '${workTimeList.get(i).quittingTime}'.split(":");
+		            					var leaveHour = time2[0];
+		            					var leaveMin = time2[1];
+		            					var leaveSec = time2[2];
+		            					
+		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
+		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
 											if(dayOfTheWeek == week[now.getDay()]){
-												console.log(dayOfTheWeek);
+												$("#startBtn").click(function() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('start');
+													now = new Date();
+													var startTime = now-work;
+													var 시 = Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분 = Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초 = Math.floor((startTime % (1000 * 60)) / 1000);
+													
+													if(startTime <= 0){
+														$("#wstatus").val("출근");
+													} else{
+														$("#wstatus").val("지각");
+													}
+													
+													
+												}); 
+												
+												function endBtn() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('end');
+													now = new Date();
+													var leaveTime = now-leave;
+													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
+													if(leaveTime <= 0){
+														$("#wstatus").val("조퇴");
+													} else{
+														$("#wstatus").val("퇴근");
+													}
+													
+												}
+
 											}
 									});
             					</script>

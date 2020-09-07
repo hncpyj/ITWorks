@@ -22,9 +22,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.service.ATManagementService;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
+import com.kh.itworks.atManagement.model.vo.PageInfo;
+import com.kh.itworks.atManagement.model.vo.Pagination;
+
+
 
 @Controller
 public class ATManagementController {
@@ -297,17 +303,88 @@ public class ATManagementController {
 		
 		//return "atManagement/atStatus";
 	}
+	
 	@RequestMapping("selectCorrectionList.at")
-	public String selectCorrentionList() {
+	public ModelAndView selectCorrentionList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
 		
-		return "atManagement/selectCorrectionList";
+		at.setCorpNo(1);
+		at.setMno("6");
+		int currentPage = 1;
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		try {
+			
+			int listCount = as.getCorrentionListCount(at);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			ArrayList<ATManagement> objection = as.selectCorrectionList(at, pi);
+			System.out.println("objection : " + objection);
+			mv.addObject("objection", objection);
+			mv.addObject("pi", pi);
+			mv.setViewName("atManagement/selectCorrectionList");
+			
+		} catch (SelectCorrenctionListException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
 	}
+	
+	@RequestMapping("selectATDetail.at")
+	public ModelAndView selectATDetail(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+		
+		int objNo = Integer.parseInt(request.getParameter("no"));
+		
+		try {
+			ATManagement atDetail =as.selectAtDetail(objNo);
+			
+			System.out.println("atDetail : " + atDetail);
+			
+			mv.addObject("atDetail" , atDetail);
+			mv.setViewName("atManagement/selectATDetail");
+			
+		} catch (SelectCorrenctionListException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
 	@RequestMapping("selectOvertimeList.at")
-	public String selectOvertimeList() {
+	public ModelAndView selectOvertimeList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
 		
+		at.setCorpNo(1);
+		at.setMno("6");
+		int currentPage = 1;
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
 		
+		try {
+			
+			int listCount = as.getOvertimeListCount(at);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			ArrayList<ATManagement> overTime = as.selectOvertimeList(at, pi);
+			System.out.println("overTime : " + overTime);
+			mv.addObject("overTime", overTime);
+			mv.addObject("pi", pi);
+			mv.setViewName("atManagement/selectOvertimeList");
+			
+		} catch (SelectOvertimeListException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
 		
-		return "atManagement/selectOvertimeList";
+		return mv;
+		
+
 	}
 	@RequestMapping("selectVacationStatus.at")
 	public String selectVacationStatus() {
@@ -369,11 +446,7 @@ public class ATManagementController {
 		
 		return "atManagement/insertRewardVacation";
 	}
-	@RequestMapping("selectATDetail.at")
-	public String selectATDetail() {
-		
-		return "atManagement/selectATDetail";
-	}
+
 	@RequestMapping("selectOvertimeDetail.at")
 	public String selectOvertimeDetail() {
 		

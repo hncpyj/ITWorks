@@ -3,14 +3,18 @@ package com.kh.itworks.atManagement.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
+import com.kh.itworks.atManagement.model.vo.PageInfo;
 
 @Repository
 public class ATManagementDaoImpl implements ATManagementDao {
@@ -199,6 +203,79 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		}
 		
 		return workInfo;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectCorrectionList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectCorrenctionListException {
+
+		ArrayList<ATManagement> selectcl = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		selectcl = (ArrayList)sqlSession.selectList("ATManagement.selectCorrentionList", at, rowBounds);
+		
+		if(selectcl == null) {
+			throw new SelectCorrenctionListException("근태 수정 내역 조회 실패");
+		}
+		
+		return selectcl;
+	}
+
+	@Override
+	public int getCorrentionListCount(SqlSessionTemplate sqlSession, ATManagement at) throws SelectCorrenctionListException {
+
+		int count = sqlSession.selectOne("ATManagement.getCorrentionListCount", at);
+		
+		if(count == 0) {
+			throw new SelectCorrenctionListException("근태 수정 내역 카운드 실패");
+		}
+		
+		return count;
+	}
+
+	@Override
+	public ATManagement selectAtDetail(SqlSessionTemplate sqlSession, int objNo) throws SelectCorrenctionListException {
+
+		ATManagement atDetail = sqlSession.selectOne("ATManagement.selectAtDetail", objNo);
+		
+		if(atDetail == null) {
+			throw new SelectCorrenctionListException("근태 수정 조회 실패");
+		}
+		
+		return atDetail;
+	}
+
+	@Override
+	public int getOvertimeListCount(SqlSessionTemplate sqlSession, ATManagement at) throws SelectOvertimeListException {
+
+		int listCount = sqlSession.selectOne("ATManagement.selectOvertimeListCount", at.getMno());
+		
+		if(listCount == 0) {
+			throw new SelectOvertimeListException("연장 근무 조회 실패");
+		}
+		
+		return listCount;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectOvertimeList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectOvertimeListException {
+
+		ArrayList<ATManagement> selectcl = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		
+		ArrayList<ATManagement> overtimeList = (ArrayList)sqlSession.selectList("ATManagement.selectOvertimeList", at, rowBounds);
+		
+		if(overtimeList == null) {
+			throw new SelectOvertimeListException("연장 근무 리스트 조회 실패");
+		}
+		
+		return overtimeList;
 	}
 
 

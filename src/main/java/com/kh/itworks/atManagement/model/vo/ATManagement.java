@@ -26,14 +26,16 @@ public class ATManagement implements java.io.Serializable {
 	private String ptRef;			//연장근무참조
 	private String otDate;			//연장근무일
 	private String otStart;			//연장시작시간
-	private String otEnd;				//연장종료시간
+	private String otEnd;			//연장종료시간
 	private String otReason;		//연장근무사유
+	private String otStatus;		//연장근무확인여부
 	private String objNo;			//이의신청코드
 	private String objDate;			//이의신청날짜
 	private String objType;			//이의종류
 	private String changeDate;		//이의변경시간
 	private String objStatus;		//이의신청변경상태
 	private String objReason;		//이의신청사유
+	private String checkStatus;		//이의신청확인여부
 	private String rid;			//권한코드
 	private String jid;			//직급코드
 	private String did;			//부서코드
@@ -80,14 +82,14 @@ public class ATManagement implements java.io.Serializable {
 	public ATManagement(String workingStatusNo, String workType, String work, int corpNo, String wno, String wstatus,
 			String wstart, String wend, String ip, String outsideWork, String wdate, int eid, String yearAleave,
 			int hireYear, int aleaveCount, int accUnitPeriod, String rwdNo, String rwdName, int rwdPeriod, String otNo,
-			String ptRef, String otDate, String otStart, String otEnd, String otReason, String objNo, String objDate,
-			String objType, String changeDate, String objStatus, String objReason, String rid, String jid, String did,
-			String ename, int eno, String hireDate, String status, String approval, String mno, String dname,
-			String breakTimeNo, String btType, String btStart, String btEnd, String attendence, String workTimeLimit,
-			String laborDay, String holidays, String alternativeHolidays, String fileNo, String originName,
-			String changeName, String filePath, String uploadDate, String uploadTime, int fileSize, String fileRole,
-			String fileType, int workingSetNo, String workingSetTime, String dayOfTheWeek, String workingTime,
-			String quittingTime, String harfOff) {
+			String ptRef, String otDate, String otStart, String otEnd, String otReason, String otStatus, String objNo,
+			String objDate, String objType, String changeDate, String objStatus, String objReason, String checkStatus,
+			String rid, String jid, String did, String ename, int eno, String hireDate, String status, String approval,
+			String mno, String dname, String breakTimeNo, String btType, String btStart, String btEnd,
+			String attendence, String workTimeLimit, String laborDay, String holidays, String alternativeHolidays,
+			String fileNo, String originName, String changeName, String filePath, String uploadDate, String uploadTime,
+			int fileSize, String fileRole, String fileType, int workingSetNo, String workingSetTime,
+			String dayOfTheWeek, String workingTime, String quittingTime, String harfOff) {
 		super();
 		this.workingStatusNo = workingStatusNo;
 		this.workType = workType;
@@ -114,12 +116,14 @@ public class ATManagement implements java.io.Serializable {
 		this.otStart = otStart;
 		this.otEnd = otEnd;
 		this.otReason = otReason;
+		this.otStatus = otStatus;
 		this.objNo = objNo;
 		this.objDate = objDate;
 		this.objType = objType;
 		this.changeDate = changeDate;
 		this.objStatus = objStatus;
 		this.objReason = objReason;
+		this.checkStatus = checkStatus;
 		this.rid = rid;
 		this.jid = jid;
 		this.did = did;
@@ -509,6 +513,20 @@ public class ATManagement implements java.io.Serializable {
 
 
 
+	public String getOtStatus() {
+		return otStatus;
+	}
+
+
+
+
+	public void setOtStatus(String otStatus) {
+		this.otStatus = otStatus;
+	}
+
+
+
+
 	public String getObjNo() {
 		return objNo;
 	}
@@ -588,6 +606,20 @@ public class ATManagement implements java.io.Serializable {
 
 	public void setObjReason(String objReason) {
 		this.objReason = objReason;
+	}
+
+
+
+
+	public String getCheckStatus() {
+		return checkStatus;
+	}
+
+
+
+
+	public void setCheckStatus(String checkStatus) {
+		this.checkStatus = checkStatus;
 	}
 
 
@@ -1077,21 +1109,20 @@ public class ATManagement implements java.io.Serializable {
 				+ ", yearAleave=" + yearAleave + ", hireYear=" + hireYear + ", aleaveCount=" + aleaveCount
 				+ ", accUnitPeriod=" + accUnitPeriod + ", rwdNo=" + rwdNo + ", rwdName=" + rwdName + ", rwdPeriod="
 				+ rwdPeriod + ", otNo=" + otNo + ", ptRef=" + ptRef + ", otDate=" + otDate + ", otStart=" + otStart
-				+ ", otEnd=" + otEnd + ", otReason=" + otReason + ", objNo=" + objNo + ", objDate=" + objDate
-				+ ", objType=" + objType + ", changeDate=" + changeDate + ", objStatus=" + objStatus + ", objReason="
-				+ objReason + ", rid=" + rid + ", jid=" + jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno
-				+ ", hireDate=" + hireDate + ", status=" + status + ", approval=" + approval + ", mno=" + mno
-				+ ", dname=" + dname + ", breakTimeNo=" + breakTimeNo + ", btType=" + btType + ", btStart=" + btStart
-				+ ", btEnd=" + btEnd + ", attendence=" + attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay="
-				+ laborDay + ", holidays=" + holidays + ", alternativeHolidays=" + alternativeHolidays + ", fileNo="
-				+ fileNo + ", originName=" + originName + ", changeName=" + changeName + ", filePath=" + filePath
-				+ ", uploadDate=" + uploadDate + ", uploadTime=" + uploadTime + ", fileSize=" + fileSize + ", fileRole="
-				+ fileRole + ", fileType=" + fileType + ", workingSetNo=" + workingSetNo + ", workingSetTime="
-				+ workingSetTime + ", dayOfTheWeek=" + dayOfTheWeek + ", workingTime=" + workingTime + ", quittingTime="
-				+ quittingTime + ", harfOff=" + harfOff + "]";
+				+ ", otEnd=" + otEnd + ", otReason=" + otReason + ", otStatus=" + otStatus + ", objNo=" + objNo
+				+ ", objDate=" + objDate + ", objType=" + objType + ", changeDate=" + changeDate + ", objStatus="
+				+ objStatus + ", objReason=" + objReason + ", checkStatus=" + checkStatus + ", rid=" + rid + ", jid="
+				+ jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno + ", hireDate=" + hireDate + ", status="
+				+ status + ", approval=" + approval + ", mno=" + mno + ", dname=" + dname + ", breakTimeNo="
+				+ breakTimeNo + ", btType=" + btType + ", btStart=" + btStart + ", btEnd=" + btEnd + ", attendence="
+				+ attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay=" + laborDay + ", holidays=" + holidays
+				+ ", alternativeHolidays=" + alternativeHolidays + ", fileNo=" + fileNo + ", originName=" + originName
+				+ ", changeName=" + changeName + ", filePath=" + filePath + ", uploadDate=" + uploadDate
+				+ ", uploadTime=" + uploadTime + ", fileSize=" + fileSize + ", fileRole=" + fileRole + ", fileType="
+				+ fileType + ", workingSetNo=" + workingSetNo + ", workingSetTime=" + workingSetTime + ", dayOfTheWeek="
+				+ dayOfTheWeek + ", workingTime=" + workingTime + ", quittingTime=" + quittingTime + ", harfOff="
+				+ harfOff + "]";
 	}
-
-
 
 
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,6 +68,8 @@
     	color: #004771;
     	background-color: #fafafa;
     	margin-top: 20px;
+    	margin-left: auto;
+    	margin-right: auto;
     }
     .approvalTable{
     	border-collapse: collapse;
@@ -104,7 +107,7 @@
             <hr>
             <br>
             </div>
-            <table class="approvalTable">
+            <!-- <table class="approvalTable">
             	<tr>
             		<th rowspan="2">결재 진행</th>
             		<th rowspan="2">신청</th>
@@ -115,7 +118,7 @@
             		<td></td>
             		<td></td>
             	</tr>
-            </table>
+            </table> -->
             <table id="correnctionTable">
                 	<tr>
                 		<th>신청자</th>
@@ -127,34 +130,45 @@
                 	</tr>
                 	<tr>
                 		<th>신청일시</th>
-                		<td>2020/08/21</td>
+                		<td><c:out value="${atDetail.objDate }"/></td>
                 	</tr>
                 	<tr>
                 		<th>기존 시간</th>
-                		<td>9:10</td>
+                		<c:if test="${atDetail.wstatus eq '출근' }">
+                		<td><c:out value="${atDetail.wstart }"/></td>
+                		</c:if>
+                		<c:if test="${atDetail.wstatus eq '지각' }">
+                		<td><c:out value="${atDetail.wstart }"/></td>
+                		</c:if>
+                		<c:if test="${atDetail.wstatus eq '퇴근' }">
+                		<td><c:out value="${atDetail.wend }"/></td>
+                		</c:if>
+                		<c:if test="${atDetail.wstatus eq '야근' }">
+                		<td><c:out value="${atDetail.wend }"/></td>
+                		</c:if>
                 	</tr>
                 	<tr>
                 		<th>변경 시간</th>
-                		<td>9:00</td>
+                		<td><c:out value="${atDetail.changeDate }"/></td>
                 	</tr>
                 	<tr>
                 		<th>종류</th>
-                		<td>출근</td>
+                		<td><c:out value="${atDetail.wstatus}"/></td>
                 	</tr>
                 	<tr>
                 		<th>사유</th>
-                		<td>미등록 반영</td>
+                		<td><c:out value="${atDetail.objReason}"/></td>
                 	</tr>
                 	<tr>
-                		<th>진행 상황</th>
-                		<td>결재중</td>
+                		<th>승인 여부</th>
+                		<td><c:out value="${atDetail.checkStatus }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>첨부파일</th>
                 		<td>첨부파일다운로드</td>
                 	</tr>
                 </table>
-            	<button class="close">닫기</button>
+            	<button class="close" onclick="location.href='selectCorrectionList.at'">닫기</button>
 		</div>
 	</section>
 </body>

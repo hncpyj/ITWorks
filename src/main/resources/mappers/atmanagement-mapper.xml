@@ -65,6 +65,7 @@
 		<result property="objReason" column="OBJ_REASON"/>
 		<result property="wno" column="WNO"/>
 		<result property="corpNo" column="CORP_NO"/>
+		<result property="checkStatus" column="CHECK_STATUS"/>
 	</resultMap>
 	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="overtime">
 		<id property="otNo" column="OT_NO"/>
@@ -76,6 +77,7 @@
 		<result property="otReason" column="OT_REASON"/>
 		<result property="mno" column="MNO"/>
 		<result property="corpNo" column="CORP_NO"/>
+		<result property="otStatus" column="OT_STATUS"/>
 	</resultMap>
 	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="reward">
 		<id property="rwdNo" column="RWD_NO"/>
@@ -88,7 +90,7 @@
 		<result property="wstatus" column="WSTATUS"/>
 		<result property="wstart" column="WSTART"/>
 		<result property="wend" column="WEND"/>
-		<result property="if" column="IF"/>
+		<result property="ip" column="IP"/>
 		<result property="outsideWork" column="OUSIDE_WORK"/>
 		<result property="wdate" column="WDATE"/>
 		<result property="mno" column="MNO"/>
@@ -120,6 +122,62 @@
 		<result property="btType" column="BT_TYPE"/>
 		<result property="btStart" column="BT_START"/>
 		<result property="btEnd" column="BT_END"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="correntionRestulSet">
+		<id property="objNo" column="OBJ_NO"/>
+		<result property="objDate" column="OBJ_DATE"/>
+		<result property="objType" column="OBJ_TYPE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="objStatus" column="OBJ_STATUS"/>
+		<result property="objReason" column="OBJ_REASON"/>
+		<result property="checkStatus" column="CHECK_STATUS"/>
+		<result property="wno" column="WNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="ip" column="IP"/>
+		<result property="outsideWork" column="OUSIDE_WORK"/>
+		<result property="wdate" column="WDATE"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="correntionRestulSet2">
+		<id property="objNo" column="OBJ_NO"/>
+		<result property="objDate" column="OBJ_DATE"/>
+		<result property="objType" column="OBJ_TYPE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="objStatus" column="OBJ_STATUS"/>
+		<result property="objReason" column="OBJ_REASON"/>
+		<result property="checkStatus" column="CHECK_STATUS"/>
+		<result property="wno" column="WNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="ip" column="IP"/>
+		<result property="outsideWork" column="OUSIDE_WORK"/>
+		<result property="wdate" column="WDATE"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.Attachments" id="attachments">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="uploadDate" column="UPLOAD_DATE"/>
+		<result property="uploadTime" column="UPLOAD_TIME"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="fileRole" column="FILE_ROLE"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="apvNo" column="APV_NO"/>
+		<result property="chatNo" column="CHAT_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="noticeNo" column="NOTICE_NO"/>
+		<result property="pno" column="PNO"/>
+		<result property="pnoticeNo" column="PNOTICE_NO"/>
+		<result property="stgNo" column="STG_NO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="ext" column="EXT"/>
 	</resultMap>
 	<select id="selectAtBt" resultMap="atManagementResultSet1" parameterType="_int">
 		SELECT *
@@ -206,12 +264,44 @@
 		  INTO WORK_INFO
 		VALUES (SEQ_WNO.NEXTVAL, #{wstatus},
 		<if test="wstatus == '출근' || wstatus == '지각'">
-			TO_CHAR(SYSDATE, 'HH24:MI:SS'), NULL
+			TO_CHAR(SYSDATE + 9/24,'HH24:MI:SS'), NULL
 		</if>
 		<if test="wstatus == '퇴근'">
-			NULL, TO_CHAR(SYSDATE, 'HH24:MI:SS')
+			NULL, TO_CHAR(SYSDATE + 9/24,'HH24:MI:SS')
 		</if>
 			, #{ip}, #{outsideWork}, TO_CHAR(SYSDATE, 'YY/MM/DD'), #{mno},#{workingSetNo}
 		)
 	</insert>
+	<select id="selectCorrentionList" resultMap="correntionRestulSet" parameterType="ATManagement">
+		SELECT *
+		  FROM OBJECTION O
+		  JOIN WORK_INFO W ON (O.WNO = W.WNO)
+		 WHERE O.CORP_NO = #{corpNo}
+		   AND O.MNO = #{mno}
+		 ORDER BY OBJ_NO DESC
+	</select>
+	<select id="getCorrentionListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM OBJECTION O
+		  JOIN WORK_INFO W ON (O.WNO = W.WNO)
+		 WHERE O.CORP_NO = #{corpNo}
+		   AND O.MNO = #{mno}
+	</select>
+	<select id="selectAtDetail" resultMap="correntionRestulSet" parameterType="_int">
+		SELECT *
+		  FROM OBJECTION O
+		  JOIN WORK_INFO W ON (O.WNO = W.WNO)
+		 WHERE O.OBJ_NO = #{objNo}
+	</select>
+	<select id="selectOvertimeListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM OVERTIME
+		 WHERE MNO = #{mno}
+	</select>
+	<select id="selectOvertimeList" resultMap="overtime" parameterType="ATManagement">
+		SELECT *
+		  FROM OVERTIME
+		 WHERE MNO = #{mno}
+		   AND CORP_NO = #{corpNo}
+	</select>
 </mapper>

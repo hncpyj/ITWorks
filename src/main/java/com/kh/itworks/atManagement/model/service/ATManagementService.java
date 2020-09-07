@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
+import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
+import com.kh.itworks.atManagement.model.vo.PageInfo;
 
 public interface ATManagementService {
 
@@ -35,6 +38,16 @@ public interface ATManagementService {
 	ArrayList<ATManagement> selectMyWorkTime(ATManagement at) throws SelectWorkTimeListException;
 
 	int insertWorkInfo(ATManagement at) throws InsertWorkInfoException;
+
+	ArrayList<ATManagement> selectCorrectionList(ATManagement at, PageInfo pi) throws SelectCorrenctionListException;
+
+	int getCorrentionListCount(ATManagement at) throws SelectCorrenctionListException;
+
+	ATManagement selectAtDetail(int objNo) throws SelectCorrenctionListException;
+
+	int getOvertimeListCount(ATManagement at) throws SelectOvertimeListException;
+
+	ArrayList<ATManagement> selectOvertimeList(ATManagement at, PageInfo pi) throws SelectOvertimeListException;
 
 
 }
