@@ -1,5 +1,6 @@
 package com.kh.itworks.address.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.kh.itworks.address.model.dao.AddressDao;
 import com.kh.itworks.address.model.vo.AddressVO;
 import com.kh.itworks.address.model.vo.Criteria;
+import com.kh.itworks.address.model.vo.PageInfo;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -27,42 +29,47 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public List<Map<String, Object>> pageList(Criteria cri) {
+	public ArrayList<AddressVO> pageList(PageInfo pi) {
 		
-		return ad.pageList(cri);
+		return ad.pageList(sqlSession, pi);
 	}
 
 	@Override
 	public int countAddressList() {
 		
-		return ad.countAddressList();
+		return ad.countAddressList(sqlSession);
 	}
 
 	@Override
-	public List<Map<String, Object>> sharePageList(Criteria cri) {
-				
-		return ad.sharePageList(cri);
+	public ArrayList<AddressVO> sharePageList(PageInfo pi) {
+		
+		return ad.sharePageList(sqlSession, pi);
 	}
 
 	@Override
 	public int countShareAddressList() {
-
-		return ad.countShareAddressList();
+		
+		return ad.countShareAddressList(sqlSession);
 	}
 
 	@Override
-	public List<Map<String, Object>> importPageList(Criteria cri) {
+	public ArrayList<AddressVO> importPageList(PageInfo pi) {
 		
-		return ad.importantPageList(cri);
+		return ad.importantPageList(sqlSession, pi);
 	}
 
 	@Override
 	public int countImportantAddressList() {
 		
-		return ad.countImportantAddressList();
+		return ad.countImportantAddressList(sqlSession);
 	}
 
-	
+//	@Override
+//	public AddressVO selectOneMainAddress(int contactsNo) {
+//
+//		return ad.selectOneMainAddress(sqlSession, contactsNo);
+//	}
+
 //	@Override
 //	public List<BoardDTO> list() {
 //		return boardDAO.list();

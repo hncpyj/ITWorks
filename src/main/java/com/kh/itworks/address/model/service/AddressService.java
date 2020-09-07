@@ -1,10 +1,12 @@
 package com.kh.itworks.address.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.kh.itworks.address.model.vo.AddressVO;
 import com.kh.itworks.address.model.vo.Criteria;
+import com.kh.itworks.address.model.vo.PageInfo;
 
 public interface AddressService {
 
@@ -12,22 +14,25 @@ public interface AddressService {
 	int insertAddress(AddressVO address);
 	
 	//메인 주소록 리스트
-	List<Map<String, Object>> pageList(Criteria cri);
+	ArrayList<AddressVO> pageList(PageInfo pi);
 	
 	//메인 주소록 카운트
 	public int countAddressList();
 	
 	//공유 주소록 리스트
-	List<Map<String, Object>> sharePageList(Criteria cri);
+	ArrayList<AddressVO> sharePageList(PageInfo pi);
 	
 	//공유 주소록 카운트
 	public int countShareAddressList();
 	
 	//중요 주소록 리스트
-	List<Map<String, Object>> importPageList(Criteria cri);
+	ArrayList<AddressVO> importPageList(PageInfo pi);
 	
 	//중요 주소록 카운트
 	public int countImportantAddressList();
+	
+	//메인 주소록 조회
+	///AddressVO selectOneMainAddress(int contactsNo);
 	
 	
 //	public void delete(BoardDTO boardDTO);

@@ -9,7 +9,6 @@
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
-
 .switch {
   width: 180px;
   height: 30px;
@@ -254,14 +253,19 @@ input {
 			<div id="asideMenuTitle">
 				<a href="importantAddress.ad">중요 주소록</a>
 			</div>
-			<div id="asideMenuTitle">개인 주소록</div>
+			<div id="asideMenuTitle">
+				<a href="mainAddress.ad">개인 주소록</a>
+			</div>
 			<ul>
 				<li><a href="mainAddress.ad" class="asideMenu">- 전체 주소록</a></li>
-				<li><a href="#" class="asideMenu">- 태그명</a></li>
+			<!-- 	<li><a href="#" class="asideMenu">- 태그명</a></li>  -->
 			</ul>
 			<div id="asideMenuTitle">
 				<a href="shareAddress.ad">공유 주소록</a>
 			</div>
+			<ul>
+				<li><a href="shareAddress.ad" class="asideMenu">- 전체 주소록</a></li>
+			</ul>		
 		</div>
 	</aside>
 	<section>

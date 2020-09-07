@@ -97,7 +97,7 @@
 						<td style="width:560px;"></td>
 						<td>
 							<label>중요 주소록</label>&nbsp;
-							<label id="addressCount"><c:out value="${sessionScope.importantList.size()}"></c:out></label>&nbsp;
+							<label id="addressCount"><c:out value="${listCount}"/></label>&nbsp;
 							<label>개</label>&nbsp;&nbsp;&nbsp;
 						</td>
 						<td>
@@ -117,22 +117,75 @@
 					<th style="width: 10%;">회사
 						<button id="toggleBtn" type="button"></button>
 					</th>
-					<th style="width: 25%;">태그</th>
+					<th style="width:24%;">태그</th>
+					<th style="width:1%;"></th>
 				</tr>
-				<c:forEach var="i" begin="0" end="${sessionScope.importantList.size()-1 }">
+				<c:forEach var ="important" items="${ list }">
 				<tr>
 					<td style="width: 5%;"><input type="checkbox" id="checkAddress"></td>
 						<td style="width: 5%;" id="importantAdr"><img
 							src="./resources/images/star.png" id="star"></td>
-						<td style="width: 10%;"><c:out value="${sessionScope.importantList.get(i).conName }"></c:out></td>
-						<td style="width: 30%;"><c:out value="${sessionScope.importantList.get(i).email }"></c:out></td>
-						<td style="width: 15%;"><c:out value="${sessionScope.importantList.get(i).conPhone }"></c:out></td>
-						<td style="width: 10%;"><c:out value="${sessionScope.importantList.get(i).conCorp }"></c:out></td>
-						<td style="width: 25%;"><c:out value="${sessionScope.importantList.get(i).tagName }"></c:out></td>
+						<td style="width: 10%;"><c:out value="${important.conName }"></c:out></td>
+						<td style="width: 30%;"><c:out value="${important.email }"></c:out></td>
+						<td style="width: 15%;"><c:out value="${important.conPhone }"></c:out></td>
+						<td style="width: 10%;"><c:out value="${important.conCorp }"></c:out></td>
+						<td style="width: 24%;"><c:out value="${important.tagName }"></c:out></td>
+						<td style="width: 1%;"><input type="hidden" value="${important.contactsNo }"></td>
 				</tr>
 				</c:forEach>				
 			</table>
+			<!-- 페이징 처리 영역 -->
+			<div id="pagingArea" align="center">
+				<c:if test="${ pi.currentPage <= 1 }">
+            [이전] &nbsp;
+         </c:if>
+				<c:if test="${ pi.currentPage > 1 }">
+					<c:url var="prvBack" value="importantAddress.ad">
+						<c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
+					</c:url>
+					<a href="${ prvBack }">[이전]</a> &nbsp;
+         </c:if>
+
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:if test="${ p eq pi.currentPage }">
+						<font color="red" size="4"><b>[${ p }]</b></font>
+					</c:if>
+					<c:if test="${ p ne pi.currentPage }">
+						<c:url var="prvListCheck" value="importantAddress.ad">
+							<c:param name="currentPage" value="${ p }"></c:param>
+						</c:url>
+						<a href="${prvListCheck }">${ p }</a>
+					</c:if>
+				</c:forEach>
+
+				<c:if test="${ pi.currentPage >= pi.maxPage }">
+            &nbsp; [다음]
+         </c:if>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+					<c:url var="prvListEnd" value="importantAddress.ad">
+						<c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
+					</c:url>
+            &nbsp; <a href="${ prvListEnd }">[다음]</a>
+				</c:if>
+			</div>
+			<!-- 페이징 영역 끝 -->		
 		</div>
 	</section>
 </body>
+<script>
+$(function() {
+	$("#addressTable td").mouseover(function() {
+		$(this).parent().css({
+			"background" : "#E4E4E4",
+			"cursor" : "pointer"
+		});
+	}).mouseleave(function() {
+		$(this).parent().css({
+			"background" : "#fafafa"
+		});
+	}).click(function() {
+		var num = $(this).parent().children().eq(0).text();
+	});
+});
+</script>
 </html>
