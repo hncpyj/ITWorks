@@ -201,4 +201,17 @@
 		  FROM WORK_INFO
 		 WHERE MNO = ${mno}
 	</select>
+	<insert id="insertWorkInfo" parameterType="ATManagement">
+		INSERT
+		  INTO WORK_INFO
+		VALUES (SEQ_WNO.NEXTVAL, #{wstatus},
+		<if test="wstatus == '출근' || wstatus == '지각'">
+			TO_CHAR(SYSDATE, 'HH24:MI:SS'), NULL
+		</if>
+		<if test="wstatus == '퇴근'">
+			NULL, TO_CHAR(SYSDATE, 'HH24:MI:SS')
+		</if>
+			, #{ip}, #{outsideWork}, TO_CHAR(SYSDATE, 'YY/MM/DD'), #{mno},#{workingSetNo}
+		)
+	</insert>
 </mapper>

@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,9 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
+import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.service.ATManagementService;
@@ -219,7 +224,7 @@ public class ATManagementController {
 		}
 		
 	}
-	
+	@ResponseBody
 	@RequestMapping("selectAtStatus.at")
 	public ModelAndView selectAtStatus(ModelAndView mv, ATManagement at, HttpServletRequest request) throws UnknownHostException {
 
@@ -227,10 +232,12 @@ public class ATManagementController {
 		InetAddress ia = InetAddress.getLocalHost();
 		
 		String ip = ia.getHostAddress();
-		System.out.println("ip : " + ip);
+		
 		//임시번호
-		at.setCorpNo(1);
-		at.setMno("6");
+		int corpNo = 1;
+		String mno = "6";
+		at.setCorpNo(corpNo);
+		at.setMno(mno);
 		
 		try {
 			//회사 출퇴근 정보 조회
@@ -244,10 +251,20 @@ public class ATManagementController {
 			for(int i = 0; i < myTime.size(); i++) {
 				System.out.println("myTime : " + myTime.get(i));
 			}
-			request.setAttribute("workTimeList", workTimeList);
-			request.setAttribute("myTime", myTime);
-			request.setAttribute("ip", ip);
 			
+			  request.setAttribute("workTimeList", workTimeList);
+			  request.setAttribute("myTime", myTime);
+			  request.setAttribute("ip", ip);
+			 
+//			  Map<String, Object> retVal = new HashMap<String, Object>();
+//			  retVal.put("workTimeList", workTimeList);
+//			  retVal.put("myTime", myTime);
+//			  mv.addAllObjects(retVal);
+			 
+			//mv.addObject("workTimeList", workTimeList);
+			//mv.addObject("myTime", myTime);
+			//mv.addObject("ip", ip);
+//			mv.setViewName("jsonView");
 			mv.setViewName("atManagement/atStatus");
 		} catch (SelectATManagementFailedException | SelectWorkTimeListException e) {
 			mv.addObject("msg", e.getMessage());
@@ -255,21 +272,30 @@ public class ATManagementController {
 		}
 		
 		
-		
-		
-		
 		return mv;
 	}
 	@RequestMapping("insertAtStatus.at")
-	public String insertATManagement(ModelAndView mv, ATManagement at, HttpServletRequest request) throws UnknownHostException {
+	public String insertATManagement(ATManagement at, HttpServletRequest request) throws UnknownHostException {
 		
-//		InetAddress ia = InetAddress.getLocalHost();
-//		
-//		String ip = ia.getHostAddress();
+		System.out.println("insert : " + at);
+		if(at.getOutsideWork() != null) {
+			at.setOutsideWork("Y");
+		} else {
+			at.setOutsideWork("N");
+		}
+		
+		try {
+			as.insertWorkInfo(at);
+			
+			return "redirect:selectAtStatus.at";
+		} catch (InsertWorkInfoException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
 		
 		
-		
-		return "atManagement/atStatus";
+		//return "atManagement/atStatus";
 	}
 	@RequestMapping("selectCorrectionList.at")
 	public String selectCorrentionList() {
@@ -278,6 +304,8 @@ public class ATManagementController {
 	}
 	@RequestMapping("selectOvertimeList.at")
 	public String selectOvertimeList() {
+		
+		
 		
 		return "atManagement/selectOvertimeList";
 	}

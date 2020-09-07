@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
+import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -186,6 +187,18 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		}
 		
 		return workList;
+	}
+
+	@Override
+	public int insertWorkInfo(SqlSessionTemplate sqlSession, ATManagement at) throws InsertWorkInfoException {
+		
+		int workInfo = sqlSession.insert("ATManagement.insertWorkInfo", at);
+		
+		if(workInfo == 0) {
+			throw new InsertWorkInfoException("출퇴근 정보 입력 실패");
+		}
+		
+		return workInfo;
 	}
 
 

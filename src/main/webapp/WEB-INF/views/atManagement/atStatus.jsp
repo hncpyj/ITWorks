@@ -181,36 +181,35 @@ table.calendar td{
             		</tr>
             		<tr>
             			<td class="timeText" id="nowTime"></td>
-            			<td><button class="timeBtn" onclick="startBtn();">출근</button><input type="text"></td>
+            			<td><button id="startBtn" class="timeBtn">출근</button><input id="startText" type="text" disabled></td>
             			<td><a class="btn" href="insertObjectionForm.at">출/퇴근 이의 신청</a></td>
             		</tr>
             		<tr>
             			<td class="timeText">현재 접속 IP : ${ip }</td>
-            			<td><button class="timeBtn" onclick="endBtn();">퇴근</button><input type="text"></td>
+            			<td><button id="endBtn" class="timeBtn">퇴근</button><input id="endText" type="text" disabled></td>
             			<td><a class="btn" href="insertCorrectionForm.at">연장 근무 신청</a></td>
             		</tr>
             	</table>
             	<input type="hidden" name="ip" value="${ip }">
+            	<input type="hidden" name="wstatus" id="wstatus">
+            	<input type="hidden" name="status" id="status">
+            	<input type="hidden" name="workingSetNo" id="workingSetNo">
+            	<input type="hidden" name="mno" value="${myTime.get(0).mno }">
             </form>
             </div>
             </div>
             <script type="text/javascript">
-            	function startBtn() {
-					$("btnTable").append('');
-				}
+            	
             	
             	$(document).ready(function() {
+            		//시계, 날짜
             		clock();
-            		
             		setInterval(clock, 1000);
-            		
-					
-
 				});
             	
             	function clock() {
             		var now = new Date();
-
+            		
             	    var todayYear= now.getFullYear();
             	    var todayMon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
             	    var todayDay = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
@@ -224,24 +223,74 @@ table.calendar td{
 					if (nowHour < 10){ nowHour = "0" + nowHour; }
 					if (nowMin < 10){ nowMin = "0" + nowMin; } 
 					if (nowSecond < 10){ nowSecond = "0" + nowSecond; }
-
+					
 					var nowTime = nowHour + " : " + nowMin + " : " + nowSecond;
 					$("#nowTime").text(nowTime);
 				}
             </script>
-            
+            <!-- 달력에 출퇴근 출력하기 -->
+            <!-- <script type="text/javascript">
+            var mno = '6';
+            var corpNo = 1;
+            $(document).ready(function() {
+				console.log(mno);
+				console.log(corpNo);
+			
+            	$.ajax({
+            		url: "selectAtStatus.at",
+            		type: "post",
+            		dataType: "json",
+            		success: function() {
+						console.log("악");
+					},
+					error: function(){
+						console.log("에러");
+					}
+            	});
+            });
+            </script> -->
+           <c:forEach begin="0" end="${myTime.size() -1}" var="i">
+            <input type="hidden" id="wstart${i}" value="${myTime.get(i).wstart }">
+            <input type="hidden" id="wdate${i}" value="${myTime.get(i).wdate }">
+            </c:forEach>
             <c:forEach begin="0" end="${myTime.size() -1}" var="i">
+            
             	<c:choose>
             		<c:when test="${myTime.get(i).wstatus eq '출근' }">
             			<script type="text/javascript">
-            				console.log('${myTime.get(i).wstart}');
-            				var start = '${myTime.get(i).wstart}';
-            				var sdate = '${myTime.get(i).wdate}'.split("/");
-            				var syear = "20"+sdate[0];
-            				var smon = sdate[1];
-            				var sday = sdate[2] * 1 +"";
+            				var size = ${myTime.size()};
+            				var start="";
+            				var startdate="";
+            				var sdate = "";
+            				var textdate = "";
+            				var syear = "";
+            				var smon = "";
+            				var sday = "";
+            				var now = new Date();
+        					
+        					var todayYear= now.getFullYear();
+                    	    var todayMon = now.getMonth();
+                    	    var todayDay = now.getDate();
+                    	    
+                    	    var todayDate = todayYear+"/"+todayMon+"/"+todayDay;
+            				for(var j = 0; j < size; j++){
+            				start = $("#wstart"+j).val();
+            				startdate = $("#wdate"+j).val();
+            				sdate = startdate.split("/");
+            				textdate = "20"+startdate;
             				
-            				console.log(sday);
+	            				
+	            					syear = "20"+sdate[j][0];
+	            					smon = sdate[j][1];
+	            					sday = sdate[j][2] * 1 +"";
+	            				
+
+            				console.log(textdate);
+                    	    if(textdate == todayDate){
+            					$("#startText").val(start);
+            				}
+            			}
+            				
             			</script>
             		</c:when>
             		<c:when test="${myTime.get(i).wstatus eq '퇴근' }">
@@ -251,11 +300,168 @@ table.calendar td{
             				var eyear = "20"+edate[0];
             				var emon = edate[1];
             				var eday = edate[2] * 1 +"";
+            				
+							var now = new Date();
+        					
+        					var todayYear= now.getFullYear();
+                    	    var todayMon = now.getMonth();
+                    	    var todayDay = now.getDate();
+                    	    
+                    	    var todayDate = todayYear+"/"+todayMon+"/"+todayDay;
+            				if('${myTime.get(i).wdate}' == todayDate){
+            					$("#endText").val(end);
+            				}
             			</script>
             		</c:when>
             	</c:choose>
             </c:forEach>
-            
+            <!-- 요일별 시간 -->
+            			
+            		<input type="hidden" id="listSize" value="${workTimeList.size()}">
+            <c:forEach begin="0" var="i" end="${workTimeList.size()-1 }">
+            	<c:choose>
+            		<c:when test="${workTimeList.get(i).workingSetTime eq '기본'}">
+            			<c:choose>
+            				<c:when test="${workTimeList.get(i).dayOfTheWeek eq '월' }">
+            					<script type="text/javascript">
+		            				$(document).ready(function() {
+		            					var now = new Date();
+		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
+		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+											if(dayOfTheWeek == week[now.getDay()]){
+												console.log(dayOfTheWeek);
+											}
+									});
+            					</script>
+            				</c:when>
+            				<c:when test="${workTimeList.get(i).dayOfTheWeek eq '화' }">
+            					<script type="text/javascript">
+		            				$(document).ready(function() {
+		            					var now = new Date();
+		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
+		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+											if(dayOfTheWeek == week[now.getDay()]){
+												console.log(dayOfTheWeek);
+											}
+									});
+            					</script>
+            				</c:when>
+            				<c:when test="${workTimeList.get(i).dayOfTheWeek eq '수' }">
+            					<script type="text/javascript">
+		            				$(document).ready(function() {
+		            					var now = new Date();
+		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
+		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+											if(dayOfTheWeek == week[now.getDay()]){
+												console.log(dayOfTheWeek);
+											}
+									});
+            					</script>
+            				</c:when>
+            				<c:when test="${workTimeList.get(i).dayOfTheWeek eq '목' }">
+            					<script type="text/javascript">
+		            				$(document).ready(function() {
+		            					var now = new Date();
+		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
+		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+											if(dayOfTheWeek == week[now.getDay()]){
+												console.log(dayOfTheWeek);
+											}
+									});
+            					</script>
+            				</c:when>
+            				<c:when test="${workTimeList.get(i).dayOfTheWeek eq '금' }">
+            					<script type="text/javascript">
+		            				$(document).ready(function() {
+		            					var now = new Date();
+		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
+		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+											if(dayOfTheWeek == week[now.getDay()]){
+												console.log(dayOfTheWeek);
+											}
+									});
+            					</script>
+            				</c:when>
+            				<c:when test="${workTimeList.get(i).dayOfTheWeek eq '토' }">
+            					<script type="text/javascript">
+		            				$(document).ready(function() {
+		            					var now = new Date();
+		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
+		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+											if(dayOfTheWeek == week[now.getDay()]){
+												console.log(dayOfTheWeek);
+											}
+									});
+            					</script>
+            				</c:when>
+            				<c:when test="${workTimeList.get(i).dayOfTheWeek eq '일' }">
+            					<script type="text/javascript">
+		            				$(document).ready(function() {
+		            					var now = new Date();
+		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
+		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					var todayYear= now.getFullYear();
+		                        	    var todayMon = now.getMonth();
+		                        	    var todayDay = now.getDate();
+		                        	    
+		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+		            					var startHour = time[0];
+		            					var startMin = time[1];
+		            					var startSec = time[2];
+		            					
+		            					var time2 = '${workTimeList.get(i).quittingTime}'.split(":");
+		            					var leaveHour = time2[0];
+		            					var leaveMin = time2[1];
+		            					var leaveSec = time2[2];
+		            					
+		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
+		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
+											if(dayOfTheWeek == week[now.getDay()]){
+												$("#startBtn").click(function() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('start');
+													now = new Date();
+													var startTime = now-work;
+													var 시 = Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분 = Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초 = Math.floor((startTime % (1000 * 60)) / 1000);
+													
+													if(startTime <= 0){
+														$("#wstatus").val("출근");
+													} else{
+														$("#wstatus").val("지각");
+													}
+													
+													
+												}); 
+												
+												function endBtn() {
+													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
+													$('#status').val('end');
+													now = new Date();
+													var leaveTime = now-leave;
+													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
+													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
+													if(leaveTime <= 0){
+														$("#wstatus").val("조퇴");
+													} else{
+														$("#wstatus").val("퇴근");
+													}
+													
+												}
+
+											}
+									});
+            					</script>
+            				</c:when>
+            			</c:choose>
+            		</c:when>
+            		<c:when test="${workTimeList.get(i).workingSetTime eq '자율' }">
+            		
+            		</c:when>
+            	</c:choose>
+            </c:forEach>
             
             <!-- 달력 -->
                 <div class="cal_top">
@@ -412,11 +618,11 @@ table.calendar td{
         var dateMatch = null;
         for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
             var txt = "";
-            txt = syear
+            txt = syear;
             /* txt =selectDate[year];
             console.log(selectDate[year]); */
             if(txt == year){
-            	console.log("악");
+
                 /* txt = selectDate[year][month]; */
                 txt = syear + "/" + smon;
                 if(txt == year + "/" + month){

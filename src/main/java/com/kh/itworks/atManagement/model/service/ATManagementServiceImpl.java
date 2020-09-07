@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.itworks.atManagement.model.dao.ATManagementDao;
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
+import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -102,6 +103,13 @@ public class ATManagementServiceImpl implements ATManagementService {
 	public ArrayList<ATManagement> selectMyWorkTime(ATManagement at) throws SelectWorkTimeListException {
 		
 		return ad.selectMyWorkTime(sqlSession, at);
+	}
+
+
+	@Override
+	public int insertWorkInfo(ATManagement at) throws InsertWorkInfoException {
+
+		return ad.insertWorkInfo(sqlSession, at);
 	}
 
 

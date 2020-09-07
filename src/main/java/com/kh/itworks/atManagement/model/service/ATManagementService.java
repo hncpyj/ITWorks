@@ -3,6 +3,7 @@ package com.kh.itworks.atManagement.model.service;
 import java.util.ArrayList;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
+import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -32,6 +33,8 @@ public interface ATManagementService {
 	int updateBreaktime(ATManagement at) throws DeleteUpdateInsertException;
 
 	ArrayList<ATManagement> selectMyWorkTime(ATManagement at) throws SelectWorkTimeListException;
+
+	int insertWorkInfo(ATManagement at) throws InsertWorkInfoException;
 
 
 }
