@@ -99,21 +99,6 @@ public class MemberController {
 		
 	}
 	
-	//이용약관
-	@RequestMapping("/TermsOfUse.me")
-	public String showTermsOfUse() {
-		
-		return "join/termsOfUse";
-	}
-	
-	//개인정보 수집/이용
-	@RequestMapping("/PrivacyPolicy.me")
-	public String showPrivacyPolicy() {
-		
-		return "join/privacyPolicy";
-	}
-	
-	
 	
 	
 	//회원가입 insert 
@@ -122,8 +107,7 @@ public class MemberController {
 		
 		ms.insertMember(m);
 		
-		
-		return "main/main";
+		return "login/login";
 	}
 	
 	
