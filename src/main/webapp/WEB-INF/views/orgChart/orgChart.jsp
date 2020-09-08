@@ -10,13 +10,13 @@
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico"
 	type="image/x-icon">
 <style>
+
 section {
 	display: inline-block;
 	width: 75%;
 	margin-left: 50px;
 	margin-top: 30px;
 }
-
 #middleSection {
 	width: 100%;
 }
@@ -60,10 +60,6 @@ section {
 tr {
 	border-bottom: 0.5px solid #9F9F9F;
 	border-top: 0.5px solid #9F9F9F;
-	
-}
-#orgTable {
-	background:#EEF3FA;
 }
 #orgTable td:first-of-type{
 	width:400px;
@@ -81,9 +77,8 @@ tr {
 }
 tr.dept {
     display : table-row;
-}
-tr.open {
-    display : table-row;
+    cursor : pointer;
+	background:#EEF3FA;
 }
 #ortTable a {
 	text-decoration: none;
@@ -91,6 +86,12 @@ tr.open {
 }
 a:hover {
 	text-decoration: underline;}
+}
+tr.upper {
+	background:#fafafa;
+}
+.high>p {
+	margin-left:100px;
 }
 </style>
 </head>
@@ -109,43 +110,45 @@ a:hover {
 							id="searchBox"></td>
 					</tr>
 				</table>
-			</div>
-			
+			</div>			
 			<!-- 본문 시작 -->
 			<div class="orgChart">
 				<table id="orgTable">
 					<tr class="dept">
-						<td><p>부서1(5)</p></td>
+						<td><p><c:out value="${ org.dName }"/></p></td>
 						<td></td>
 					</tr>
-					<tr id="rowdept">
+					<tr class="upper">
 						<td><p>아래팀(4)</p></td>
-						<td></td>
-					</tr>					<tr>
+						<td><p>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</p></td>
+					</tr>					
+					<tr class="high">
 						<td><p>아아래팀(1)</p></td>
-						<td></td>
+						<td id="high">여기임,이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
 					</tr>					
 					<tr  class="dept">
 						<td><p>부서1(5)</p></td>
 						<td></td>
-					</tr>					<tr>
+					</tr>					
+					<tr class="upper">
 						<td><p>팀(1)</p></td>
-						<td></td>
-					</tr>					<tr>
+						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
+					</tr>					
+					<tr class="upper">
 						<td><p>파덕이네팀(4)</p></td>
-						<td></td>
+						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
 					</tr>					
 					<tr class="dept">
 						<td><p>부서1(5)</p></td>
 						<td></td>
 					</tr>					
-					<tr>
+					<tr class="upper">
 						<td><p>팀팀(1)</p></td>
-						<td></td>
+						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
 					</tr>					
-					<tr>
+					<tr class="upper">
 						<td><p>팀팀팀(4)</p></td>
-						<td></td>
+						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
 					</tr>					
 					<tr  class="dept">
 						<td><p>부서1(5)</p></td>
@@ -155,11 +158,11 @@ a:hover {
 						<td><p>부서1(5)</p></td>
 						<td></td>
 					</tr>					
-					<tr>
+					<tr class="upper">
 						<td><p>수경팀(5)</p></td>
-						<td></td>
+						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
 					</tr>					
-					<tr>
+					<tr class="upper">
 						<td><p>뚜뚜팀(5)</p></td>
 						<td></td>
 					</tr>
@@ -169,25 +172,9 @@ a:hover {
 	</section>
 </body>
 <script>
-document.getElementById("orgTable").addEventListener("click", function(e) {
-    if (e.target.tagName === "A") {
-        e.preventDefault();
-        var row = e.target.parentNode.parentNode;
-        while ((row = nextTr(row)) && !/\bparent\b/.test(row.className))
-            toggle_it(row);
-    }
-});
-
-function nextTr(row) {
-    while ((row = row.nextSibling) && row.nodeType != 1);
-    return row;
-}
-
-function toggle_it(item){ 
-     if (/\bopen\b/.test(item.className))
-         item.className = item.className.replace(/\bopen\b/," ");
-     else
-         item.className += " open";
- } 
+$('.dept').click(function(){
+	    $(this).nextUntil('tr.dept').slideToggle(100, function(){
+	    });
+	});
 </script>
 </html>

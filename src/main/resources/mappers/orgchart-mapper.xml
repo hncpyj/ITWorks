@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrgChart">
+	<resultMap type="OrgChart" id="orgResultSet">
+		<id property="dId" column="DID"/>
+		<result property="deptNo" column="DEPT_NO"/>
+		<result property="dName" column="DNAME"/>
+		<result property="dLevel" column="DLEVEL"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	
+	<select id="selectOrg" resultMap="orgResultSet">
+		SELECT DEPT_NO, DNAME, DLEVEL, CORP_NO, DID
+          FROM DEPT
+         WHERE CORP_NO = 1
+	</select>
+
+</mapper>
