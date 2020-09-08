@@ -6,10 +6,11 @@ import java.util.HashMap;
 import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
-import com.kh.itworks.projectManage.model.exception.SelectAllProjectListException;
+import com.kh.itworks.projectManage.model.exception.InsertReplyException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
+import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
 
 public interface ProjectService {
 
@@ -58,5 +59,13 @@ public interface ProjectService {
 	int insertFile(ArrayList<FileBox> fileArr) throws InsertProjectException;
 
 	HashMap<String, Object> selectOneFile(String fileNo);
+
+	int insertTask(HashMap<String, Object> projectInfo) throws InsertProjectException;
+
+	HashMap<String, Object> selectOneTask(String pno);
+
+	int insertReply(ProjectTaskReply replyInfo) throws InsertReplyException;
+
+	int deleteReply(String tno);
 
 }

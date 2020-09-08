@@ -2,36 +2,38 @@ package com.kh.itworks.projectManage.model.vo;
 
 public class ProjectTaskReply {
 	
-	private String tackReplyNo;
+	private String taskReplyNo;
 	private String tcontent;
 	private String tdate;
 	private String ttime;
 	private String tstatus;
 	private String pmemberId;
-	private String pmemberName;
+	private String ename;
 	private String pno;
+	private int writerMno;
 	
 	public ProjectTaskReply() {}
 
-	public ProjectTaskReply(String tackReplyNo, String tcontent, String tdate, String ttime, String tstatus,
-			String pmemberId, String pmemberName, String pno) {
+	public ProjectTaskReply(String taskReplyNo, String tcontent, String tdate, String ttime, String tstatus,
+			String pmemberId, String ename, String pno, int writerMno) {
 		super();
-		this.tackReplyNo = tackReplyNo;
+		this.taskReplyNo = taskReplyNo;
 		this.tcontent = tcontent;
 		this.tdate = tdate;
 		this.ttime = ttime;
 		this.tstatus = tstatus;
 		this.pmemberId = pmemberId;
-		this.pmemberName = pmemberName;
+		this.ename = ename;
 		this.pno = pno;
+		this.writerMno = writerMno;
 	}
 
-	public String getTackReplyNo() {
-		return tackReplyNo;
+	public String getTaskReplyNo() {
+		return taskReplyNo;
 	}
 
-	public void setTackReplyNo(String tackReplyNo) {
-		this.tackReplyNo = tackReplyNo;
+	public void setTaskReplyNo(String taskReplyNo) {
+		this.taskReplyNo = taskReplyNo;
 	}
 
 	public String getTcontent() {
@@ -74,12 +76,12 @@ public class ProjectTaskReply {
 		this.pmemberId = pmemberId;
 	}
 
-	public String getPmemberName() {
-		return pmemberName;
+	public String getEname() {
+		return ename;
 	}
 
-	public void setPmemberName(String pmemberName) {
-		this.pmemberName = pmemberName;
+	public void setEname(String ename) {
+		this.ename = ename;
 	}
 
 	public String getPno() {
@@ -90,10 +92,18 @@ public class ProjectTaskReply {
 		this.pno = pno;
 	}
 
+	public int getWriterMno() {
+		return writerMno;
+	}
+
+	public void setWriterMno(int writerMno) {
+		this.writerMno = writerMno;
+	}
+
 	@Override
 	public String toString() {
-		return "ProjectTaskReply [tackReplyNo=" + tackReplyNo + ", tcontent=" + tcontent + ", tdate=" + tdate
-				+ ", ttime=" + ttime + ", tstatus=" + tstatus + ", pmemberId=" + pmemberId + ", pmemberName="
-				+ pmemberName + ", pno=" + pno + "]";
+		return "ProjectTaskReply [taskReplyNo=" + taskReplyNo + ", tcontent=" + tcontent + ", tdate=" + tdate
+				+ ", ttime=" + ttime + ", tstatus=" + tstatus + ", pmemberId=" + pmemberId + ", ename=" + ename
+				+ ", pno=" + pno + ", writerMno=" + writerMno + "]";
 	}
 }

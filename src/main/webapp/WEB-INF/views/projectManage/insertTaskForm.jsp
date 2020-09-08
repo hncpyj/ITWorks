@@ -111,10 +111,6 @@
     #personList tr:hover {
     	background: rgba(0, 71, 113, 0.2);
     }
-    #deptList tr:hover {
-    	background: rgba(0, 71, 113, 0.2);
-    	cursor: pointer;
-    }
     .searchModal {
      	position: fixed; 
      	left: 0; 
@@ -211,7 +207,12 @@
             <form action="insertTask.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
                 <table>
                     <tr>
-                        <th>업무명<span>*</span><input type="hidden" name="parentPjt" value="${ parentPno }"></th>
+                        <th>
+                        	업무명<span>*</span>
+                        	<input type="hidden" name="parentPjt" value="${ parentPno }">
+                        	<input type="hidden" name="plevel" value="1">
+                        	<input type="hidden" name="corpNo" value="${ loginUser.corpNo }">
+                        </th>
                         <td colspan="3"><input type="text" name="pname" style="width: 528px;"></td>
                         <th>작성자</th>
                         <td><input type="text" name="pwriter" value="${ loginUser.ename }" readonly="readonly" style="border: none; box-shadow: none;"></td>
@@ -305,11 +306,6 @@
     </section>
 
     <script>
-        //file drag and arop
-        var dropFile = function(event) {
-            event.preventDefault();
-        }
-        
         $(function() {
         	console.log($("input[name='parentPno']").val());
         })

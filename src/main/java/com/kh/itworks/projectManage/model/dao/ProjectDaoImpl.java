@@ -12,10 +12,12 @@ import com.kh.itworks.dept.model.vo.Dept;
 import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
+import com.kh.itworks.projectManage.model.exception.InsertReplyException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectMember;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
+import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao{
@@ -320,6 +322,60 @@ public class ProjectDaoImpl implements ProjectDao{
 	public HashMap<String, Object> selectOneFile(SqlSessionTemplate sqlSession, String fileNo) {
 		HashMap<String, Object> file = sqlSession.selectOne("Project.selectOneFile", fileNo);
 		return file;
+	}
+
+	@Override
+	public int insertTask(SqlSessionTemplate sqlSession, HashMap<String, Object> projectInfo) throws InsertProjectException {
+		
+		int insertTaskResult = sqlSession.insert("Project.insertTask", projectInfo);
+		
+		if(insertTaskResult == 0) {
+			throw new InsertProjectException("파일등록실패");
+		}
+		
+		return insertTaskResult;
+	}
+
+	@Override
+	public HashMap<String, Object> selectOntTask(SqlSessionTemplate sqlSession, String pno) {
+		
+		HashMap<String, Object> taskInfo = new HashMap<String, Object>();
+		
+		HashMap<String, Object> task = sqlSession.selectOne("Project.selectOneTask", pno);
+		ArrayList<ProjectMember> taskMember = (ArrayList) sqlSession.selectList("Project.selectMemberList", pno);
+		ArrayList<ProjectTaskReply> reply = (ArrayList) sqlSession.selectList("Project.selectReply", pno);
+		ArrayList<Project> subTask = (ArrayList) sqlSession.selectList("Project.selectSubTaskList2", pno);
+		ArrayList<FileBox> files = (ArrayList) sqlSession.selectList("Project.selectFiles", pno);
+		
+		taskInfo.put("task", task);
+		taskInfo.put("member", taskMember);
+		taskInfo.put("reply", reply);
+		taskInfo.put("subTask", subTask);
+		taskInfo.put("files", files);
+		
+		return taskInfo;
+	}
+
+	@Override
+	public int insertReply(SqlSessionTemplate sqlSession, ProjectTaskReply replyInfo) throws InsertReplyException {
+		
+		ArrayList<Integer> pmemberId = (ArrayList) sqlSession.selectList("Project.selectPmemberId", replyInfo);
+		
+		replyInfo.setPmemberId(Integer.toString(pmemberId.get(0)));
+
+		int insertReplyResult = sqlSession.insert("Project.insertReply", replyInfo);
+
+		if(insertReplyResult == 0) {
+			throw new InsertReplyException("댓글 입력 실패");
+		}
+		
+		return insertReplyResult;
+	}
+
+	@Override
+	public int deleteReply(SqlSessionTemplate sqlSession, String tno) {
+		int deleteResult = sqlSession.update("Project.deleteReply", tno);
+		return deleteResult;
 	}
 
 }

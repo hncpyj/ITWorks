@@ -252,13 +252,17 @@
     button {
         cursor: pointer;
     }
-    .files {
-    	 color: black;
-    	 text-decoration: none;
+    .files, a {
+    	color: black;
+    	text-decoration: none;
+    	cursor: pointer;
     }
     .files:hover {
     	cursor: pointer;
     	text-decoration: underline;
+    }
+    span {
+    	color: red;
     }
 </style>
 </head>
@@ -270,8 +274,23 @@
         <article style="margin-top: 30px;">
             <div class="menuTitle">
                 <span>프로젝트 상세보기</span>
-                <button style="margin-left: 65%; cursor: pointer;" onclick="showModifyForm();">수정</button>
-                <button onclick="location.href='selectAllProjectList.pm'">목록으로</button>
+                <c:forEach var="m" items="${ projectInfo.member }">
+                	<c:if test="${ m.prole eq '담당자'}">
+                		<c:set var="chargeMno" value="${ m.mno }"/>
+                	</c:if>
+                	<c:if test="${ m.prole eq '작성자' }">
+                		<c:set var="writerMno" value="${ m.mno }"/>
+                	</c:if>
+                </c:forEach>
+                <c:if test="${ loginUser.mno eq chargeMno || loginUser.mno eq writerMno }">
+                	<button style="margin-left: 60%; cursor: pointer;" onclick="showModifyForm();">수정</button>
+                </c:if>
+                <c:if test="${ loginUser.mno eq chargeMno || loginUser.mno eq writerMno }">
+                	<button onclick="location.href='selectAllProjectList.pm'">목록으로</button>
+                </c:if>
+                <c:if test="${ loginUser.mno ne chargeMno && loginUser.mno ne writerMno }">
+                	<button style="margin-left: 70%;" onclick="location.href='selectAllProjectList.pm'">목록으로</button>
+                </c:if>
                 <hr style="width: 95%; margin-top: 10px; color: #929292;">
             </div>
         </article>
@@ -558,123 +577,138 @@
                         <th class="date">0</th>
                     </tr>
                     
-                    <c:forEach var="task" items="${ projectInfo.task }">
-	                    <tr class="task">
-	                        <td>
-	                            <img src="${ contextPath }/resources/projectManageImages/projectTaskIcon.png" style="margin-right: 7px;" onclick="showSubTask();">
-	                            <a href="taskDetail.pm"><c:out value="${ task.pname }"/></a>
-	                        </td>
-	                        <td><c:out value="${ task.pwriter }"/></td>
-	                        <td><c:out value="${fn:substring(task.pstartDate, 2, 10)}"/></td>
-	                        <td><c:out value="${fn:substring(task.pendDate, 2, 10)}"/></td>
-	                        <td><c:out value="${fn:substring(task.actualEndDate, 2, 10)}"/></td>
-	                        <td><c:out value="${ task.pprogress }"/></td>
-	                        <td style="color: red; font-weight: bold;"><c:out value="${ task.uniqueness }"/></td>
-	
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                    </tr>
-	                    <c:forEach var="st" items="${ projectInfo.subTask }">
-		                    <tr class="subTask">
-		                        <td><c:out value="${ st.pname }"/></td>
-		                        <td><c:out value="${ st.pwriter }"/></td>
-		                        <td><c:out value="${ fn:substring(st.pstartDate, 2, 10) }"/></td>
-		                        <td><c:out value="${ fn:substring(st.pendDate, 2, 10) }"/></td>
-		                        <td><c:out value="${ fn:substring(st.actualEndDate, 2, 10)}"/></td>
-		                        <td><c:out value="${ st.pprogress }"/></td>
-		                        <td style="color: red; font-weight: bold;"><c:out value="${ st.uniqueness }"/></td>
-		
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                    </tr>
-		            	</c:forEach>
-	            	</c:forEach>
+                    <c:choose>
+	                    <c:when test="${ !empty projectInfo.task }">
+		                    <c:forEach var="task" items="${ projectInfo.task }">
+			                    <tr class="task">
+			                        <td>
+			                            <img src="${ contextPath }/resources/projectManageImages/projectTaskIcon.png" style="margin-right: 7px;" onclick="showSubTask();">
+			                            <a onclick="goTaskDetail(${task.pno});"><c:out value="${ task.pname }"/></a>
+			                        </td>
+			                        <td><c:out value="${ task.pwriter }"/></td>
+			                        <td><c:out value="${fn:substring(task.pstartDate, 2, 10)}"/></td>
+			                        <td><c:out value="${fn:substring(task.pendDate, 2, 10)}"/></td>
+			                        <td><c:out value="${fn:substring(task.actualEndDate, 2, 10)}"/></td>
+			                        <td><c:out value="${ task.pprogress }"/></td>
+			                        <td style="color: red; font-weight: bold;"><c:out value="${ task.uniqueness }"/></td>
+			
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                    </tr>
+			                    <c:forEach var="st" items="${ projectInfo.subTask }">
+			                    	<c:if test="${ task.pno eq st.pjtTaskNo }">
+					                    <tr class="subTask">
+					                        <td>
+					                        	<a onclick="goTaskDetail('${st.pno}');">
+			                    					<c:out value="${ st.pname }"/>
+			                    				</a>
+					                        <%-- <c:out value="${ st.pname }"/> --%></td>
+					                        <td><c:out value="${ st.pwriter }"/></td>
+					                        <td><c:out value="${ fn:substring(st.pstartDate, 2, 10) }"/></td>
+					                        <td><c:out value="${ fn:substring(st.pendDate, 2, 10) }"/></td>
+					                        <td><c:out value="${ fn:substring(st.actualEndDate, 2, 10)}"/></td>
+					                        <td><c:out value="${ st.pprogress }"/></td>
+					                        <td style="color: red; font-weight: bold;"><c:out value="${ st.uniqueness }"/></td>
+					
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                        <td></td>
+					                    </tr>
+					            	</c:if>
+				            	</c:forEach>
+			            	</c:forEach>
+		            	</c:when>
+		            	<%-- <c:otherwise>
+		            		<tr>
+		            			<td></td>
+		            		</tr>
+		            	</c:otherwise> --%>
+	            	</c:choose>
                 </table>
             </div>
         </article>
@@ -685,73 +719,73 @@
             <form action="">
                 <table>
                     <tr>
-                        <th>프로젝트명</th>
-                        <td colspan="7"><input type="text" name="projectName" style="width: 850px;" value="${ projectInfo.project.pname }"></td>
+                        <th>
+                        	프로젝트명<span>*</span>
+                        	<input type="hidden" name="pno" value="${ projectInfo.project.pno }">
+                        </th>
+                        <td colspan="7"><input type="text" name="pname" style="width: 850px;" value="${ projectInfo.project.pname }"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
                         <td colspan="3" style="font-size: 13px; padding-left: 13px;">
-                        	<c:forEach var="m" items="${ projectInfo.member }">
-                    		<c:if test="${ m.prole eq '작성자' }">
-                    			<c:out value="${ m.pmName }"/>
-                    		</c:if>
-                    	</c:forEach>
+                        	<input type="text" name="pwriter" value="${ loginUser.ename }" readonly="readonly" style="border: none; box-shadow: none;">
                         </td>
-                        <th>상태</th>
+                        <th>상태<span>*</span></th>
                         <td>
-                            <select name="pprogress" id="pprogress" style="width: 179px; height: 25px;">
-			                    <option value="schedule">예정</option>
-			                    <option value="progress">진행</option>
-			                    <option value="finish">완료</option>
-			                    <option value="hold">보류</option>
-			                    <option value="discard">폐기</option>
-		                </select>
+                            <select name="pprogress" id="pprogress" style="width: 100px;">
+                                <option value="예정">예정</option>
+                                <option value="진행">진행</option>
+                                <option value="완료">완료</option>
+                                <option value="보류">보류</option>
+                                <option value="폐기">폐기</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
-                        <th>담당자</th>
-                        <td colspan="3">
-                            <input type="text">
-                            <button onclick="" class="selectMemberBtn">조회</button>
+                        <th>담당자<span>*</span></th>
+                        <td colspan="3" id="chargeTd">
+                            <input type="text" name="charge" readonly="readonly"><input type="hidden" name="chargeMno" value="">
+                            <button onclick="searchPerson(0);" class="selectMemberBtn" type="button">조회</button>
                         </td>
-                        <th>관리부서</th>
-                        <td>
-                            <input type="text" style="width: 145px;">
-                            <button onclick="" class="selectMemberBtn">조회</button>
+                        <th>관리부서<span>*</span></th>
+                        <td id="chrgeDeptTd">
+                            <input type="text" name="chargeDept" style="width: 145px;" readonly="readonly"><input type="hidden" name="chargeDid" value="">
+                            <button onclick="searchDept();" class="selectMemberBtn" type="button">조회</button>
                         </td>
                     </tr>
                     <tr>
                         <th>참여자</th>
-                        <td colspan="6">
-                            <input type="text" style="width: 520px;">
-                            <button onclick="" class="selectMemberBtn">조회</button>
+                        <td colspan="6" id="participantTd">
+                            <input type="text" name="participant" style="width: 520px;" readonly="readonly"><input type="hidden" name="participantMno" value="">
+                            <button onclick="searchPerson(1);" class="selectMemberBtn" type="button">조회</button>
                         </td>
                     </tr>
                     <tr>
                         <th>열람 권한</th>
-                        <td colspan="6">
-                            <input type="text" style="width: 520px;">
-                            <button onclick="" class="selectMemberBtn">조회</button>
+                        <td colspan="6" id="perusalTd">
+                            <input type="text" name="perusal" style="width: 520px;" readonly="readonly"><input type="hidden" name="perusalMno" value="">
+                            <button onclick="searchPerson(2);" class="selectMemberBtn" type="button">조회</button>
 
                         </td>
                     </tr>
                     <tr>
-                        <th>계획 시작일</th>
-                        <td><input type="date"></td>
-                        <th>계획 종료일</th>
-                        <td><input type="date"></td>
+                        <th>계획 시작일<span>*</span></th>
+                        <td><input type="date" name="pstartDate"></td>
+                        <th>계획 종료일<span>*</span></th>
+                        <td><input type="date" name="pendDate"></td>
                         <th>실제 종료일</th>
-                        <td><input type="date"></td>
+                        <td><input type="date" name="actualEndDate"></td>
                     </tr>
                     <tr>
                         <th>프로젝트 개요</th>
-                        <td colspan="6"><textarea name="" id="" cols="118" rows="5" style="resize: none; margin-top: 5px;"></textarea></td>
+                        <td colspan="6"><textarea name="psummary" id="psummary" cols="118" rows="5" style="resize: none; margin-top: 5px;"></textarea></td>
                     </tr>
                     <tr>
                         <th>첨부파일</th>
                         <td colspan="6">
-                            <input multiple="multiple"  type="file" name="filename[]" style="width: 480px; border: none; box-shadow: none;"/>
-                            <!--file drag and drop 더 알아보기-->
+                            <input multiple="multiple" type="file" id="files" name="files" style="width: 480px; border: none; box-shadow: none;">
+                            <div id="selectedFileList" style="width: 850px; height: 80px;border: 1px solid #929292; margin: auto; margin-top: 5px; margin-bottom: 5px; padding: 5px; font-size: 12px; overflow: auto;">
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -805,6 +839,12 @@
         	console.log(pno);
         	
         	location.href="insertTaskForm.pm?pno=" + pno;
+        }
+        
+        function goTaskDetail(pno) {
+        	console.log(pno);
+        	
+        	location.href="taskDetail.pm?pno=" + pno;
         }
     </script>
 

@@ -15,21 +15,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.common.CommonUtils;
 import com.kh.itworks.common.Pagination;
 import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
+import com.kh.itworks.projectManage.model.exception.InsertReplyException;
 import com.kh.itworks.projectManage.model.service.ProjectService;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
+import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
 
 
 @Controller
@@ -494,24 +498,190 @@ public class ProjectManageController {
 	public String insertTask(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response
 								, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) {
 		
-		System.out.println(project);
-		String[] uniqueness = request.getParameterValues("uniqueness");
-		System.out.println(uniqueness[0]);
-		System.out.println(uniqueness[1]);
+		//업무 정보 셋팅
+		String[] uniqueArr = request.getParameterValues("uniqueness");
+		String writer = Integer.toString(loginUser.getMno());
 		
-		return "";
+		String uniqueness = "";
+		if(uniqueArr != null) {
+			for(int i = 0; i < uniqueArr.length; i++) {
+				uniqueness += uniqueArr[i];
+				if(i != uniqueArr.length - 1) {
+					uniqueness += ", ";
+				}
+			}
+			project.setUniqueness(uniqueness);
+		}
+		HashMap<String, Object> projectInfo = new HashMap<String, Object>();
+		projectInfo.put("project", project);
+		projectInfo.put("writer", writer);
+		
+		System.out.println("projectInfo : " + projectInfo);
+		
+		try {
+			int insertTaskResult = projectService.insertTask(projectInfo);
+			System.out.println("insertTask : " + insertTaskResult);
+		} catch (InsertProjectException e1) {
+			e1.printStackTrace();
+		}
+		
+		//신규등록한 프로젝트 pno 가져오기
+		int newPno = projectService.selectNewProjectPno(loginUser.getMno());
+		System.out.println("find new pno : " + newPno);
+		
+		//프로젝트멤버 정보 셋팅
+		String charge = request.getParameter("chargeMno");
+		HashMap<String, Object> projectMember = new HashMap<String, Object>();
+		projectMember.put("pno", newPno);
+		projectMember.put("charge", charge);
+		
+		//파일 업로드 정보 셋팅
+		ArrayList<FileBox> fileArr = new ArrayList<FileBox>();
+		FileBox file = null;
+		
+		if(!files[0].isEmpty()) {
+			String root = request.getSession().getServletContext().getRealPath("resources");
+					
+			String filePath = root + "\\uploadFiles\\project";
+					
+			for(int i = 0; i < files.length; i++) {
+				
+				file = new FileBox();
+				
+				String originFileName = files[i].getOriginalFilename();
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));
+				String changeName = CommonUtils.getRandomString();
+				Long size = files[i].getSize();
+				
+				file.setFileRole("999");
+				file.setFilePath(filePath);
+				file.setFileSize(size);
+				file.setMno(loginUser.getMno());
+				file.setPno(Integer.toString(newPno));
+				file.setCorp_no(loginUser.getCorpNo());
+				file.setExt(ext);
+				file.setOriginName(originFileName);
+				file.setChangeName(changeName);
+				
+				fileArr.add(file);
+				
+				try {
+					files[i].transferTo(new File(filePath + "\\" + changeName + ext));
+				} catch (IllegalStateException | IOException e) {
+					//익셉션 발생할 경우 파일 삭제
+					new File(filePath + "\\" + changeName + ext).delete();
+				}
+			}
+			int insertFileResult;
+			try {
+				insertFileResult = projectService.insertFile(fileArr);
+				System.out.println("insertFile : " + insertFileResult);
+			} catch (InsertProjectException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {
+			int insertProjectMemberResult = projectService.insertProjectMember(projectMember);
+			System.out.println("insertProjectMember : " + insertProjectMemberResult);
+			
+		} catch (InsertProjectException e) {
+			e.printStackTrace();
+		}
+		
+//		HashMap<String, Object> taskInfo = projectService.selectOneTask(Integer.toString(newPno));
+//		model.addAttribute("taskInfo", taskInfo);
+//		
+//		HashMap<String, Object> taskarr = (HashMap<String, Object>) taskInfo.get("task");
+//		int plevel = Integer.parseInt(String.valueOf(taskarr.get("plevel")));
+		
+		return "redirect:taskDetail.pm?pno=" + newPno;
+
 	}
 	
 	
 	@RequestMapping("taskDetail.pm")
-	public String showTaskDetail() {
-		return "projectManage/taskDetail";
+	public String showTaskDetail(Model model, HttpServletRequest request) {
+		
+		String pno = request.getParameter("pno");
+		System.out.println("taskDetail pno : " + pno);
+		
+		HashMap<String, Object> task = projectService.selectOneTask(pno);
+		
+		System.out.println(task);
+		
+		model.addAttribute("taskInfo", task);
+		
+		
+		HashMap<String, Object> taskInfo = (HashMap<String, Object>) task.get("task");
+		System.out.println(taskInfo);
+		int plevel = Integer.parseInt(String.valueOf(taskInfo.get("plevel")));
+		System.out.println("plevel : " + plevel);
+		
+		if(plevel == 1) {
+			return "projectManage/taskDetail";
+		} else {
+			return "projectManage/subTaskDetail";
+		}
 	}
 	
+	@RequestMapping("insertReply.pm")
+	public String insertReply(Model model, ProjectTaskReply reply, HttpServletRequest request
+												, @SessionAttribute("loginUser") Member loginUser) {
+		int writerMno = loginUser.getMno();
+		
+		reply.setWriterMno(writerMno);
+		
+		try {
+			int insertReplyResult = projectService.insertReply(reply);
+		} catch (InsertReplyException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		HashMap<String, Object> task = projectService.selectOneTask(reply.getPno());
+		
+		model.addAttribute("taskInfo", task);
+		
+		return "redirect:taskDetail.pm?pno=" + reply.getPno();
+	}
+	
+	@PostMapping("deleteReply.pm")
+	public ModelAndView deleteReply(HttpServletRequest request, ModelAndView mv) {
+		
+		String tno = request.getParameter("taskNo");
+
+		int deleteReplyResult = projectService.deleteReply(tno);
+		
+		mv.addObject("result", deleteReplyResult);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+
 	@RequestMapping("insertSubTaskForm.pm")
-	public String showInsertSubTaskForm() {
+	public String showInsertSubTaskForm(Model model, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
+		
+		String pjtTaskNo = request.getParameter("pno");
+		
+		HashMap<String, Object> allMemberDept = projectService.selectAllMemberDept(loginUser.getCorpNo());
+		
+		model.addAttribute("allMemberDept", allMemberDept);
+		
+		model.addAttribute("pjtTaskNo", pjtTaskNo);
+		
 		return "projectManage/insertSubTaskForm";
 	}
+	
+//	@RequestMapping("insertSubTask.pm")
+//	public String insertSubTask(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response
+//			, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) {
+//		
+//		
+//		
+//		
+//		return "projectManage/insertSubTaskForm";
+//	}
 	
 	@RequestMapping("subTaskDetail.pm")
 	public String showSubTaskDetail() {

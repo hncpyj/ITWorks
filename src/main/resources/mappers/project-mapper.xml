@@ -123,6 +123,17 @@
 		<result property="pwriter" column="ENAME"/>
 	</resultMap>
 	
+	<resultMap type="ProjectTaskReply" id="taskReply">
+		<id property="taskReplyNo" column="TASK_REPLY_NO"/>
+		<result property="tcontent" column="TCONTENT"/>
+		<result property="tdate" column="TDATE"/>
+		<result property="ttime" column="TTIME"/>
+		<result property="tstatus" column="TSTATUS"/>
+		<result property="pmemberId" column="PMEMBER_ID"/>
+		<result property="ename" column="ename"/>
+		<result property="writerMno" column="mno"/>
+	</resultMap>
+	
 	<select id="selectListCount" resultType="_int" parameterType="_int">
 		SELECT COUNT(*)
           FROM PROJECT P
@@ -150,7 +161,7 @@
            AND P.P_STATUS = 'Y'
            AND P.PLEVEL = 0  
            AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{ loginUser.getMno() })
-         ORDER BY P.PSTART_DATE DESC
+         ORDER BY P.PSTART_DATE, P.PEND_DATE
    </select>
    
    <select id="selectAdminProjectList" resultMap="projectList2">
@@ -163,7 +174,7 @@
          WHERE P.P_STATUS = 'Y' 
            AND P.PLEVEL = 0
            AND M.PROLE = '작성자'
-         ORDER BY P.PSTART_DATE DESC
+         ORDER BY P.PSTART_DATE, P.PEND_DATE
    </select>
    
    <select id="selectAdminSearchListCount" resultType="_int" parameterType="ProjectSearchCondition">
@@ -291,7 +302,7 @@
            AND P.PLEVEL = 0
            AND M.PROLE = '작성자'
            AND P.PPROGRESS = '진행'
-         ORDER BY P.PSTART_DATE DESC
+         ORDER BY P.PSTART_DATE, P.PEND_DATE
    </select>
    
    <select id="selectOngoingProjectList" resultMap="projectList2">
@@ -306,7 +317,7 @@
              AND P.PLEVEL = 0
            AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{ loginUser.getMno() })
            AND P.PPROGRESS = '진행'
-         ORDER BY P.PSTART_DATE DESC
+         ORDER BY P.PSTART_DATE, P.PEND_DATE
    </select>
    
    <select id="selectAdminSearchOngoingListCount" resultType="_int">
@@ -424,7 +435,7 @@
            AND M.PROLE = '작성자'
            AND P.PLEVEL = 0
            AND P.PPROGRESS = '완료'
-         ORDER BY P.PSTART_DATE DESC
+         ORDER BY P.PSTART_DATE, P.PEND_DATE
    </select>
    
    <select id="selectFinishProjectList" resultMap="projectList2">
@@ -439,7 +450,7 @@
            AND P.P_STATUS = 'Y'
            AND P.PNO IN (SELECT DISTINCT PNO FROM PMEMBER WHERE MNO = #{ loginUser.getMno() })
            AND P.PPROGRESS = '완료'
-         ORDER BY P.PSTART_DATE DESC
+         ORDER BY P.PSTART_DATE, P.PEND_DATE
    </select>
    
    <select id="selectAdminSearchFinishListCount" resultType="_int">
@@ -528,13 +539,14 @@
          ORDER BY P.PSTART_DATE DESC
    </select>
    
-   <select id="selectOneProject" resultMap="projectInfo" parameterType="HashMap">
+   <select id="selectOneProject" resultMap="projectInfo">
    		SELECT
 		       P.*
 		     , D.DNAME
 		  FROM PROJECT P
 		  JOIN DEPT D ON(P.PDEPT = D.DID)
 		 WHERE PNO = #{pno}
+		   AND P.P_STATUS = 'Y'
    </select>
    
    <select id="selectMemberList" resultMap="projectMember">
@@ -580,7 +592,7 @@
    
    <insert id="insertProject" parameterType="Project">
    		INSERT ALL
-   		INTO PROJECT VALUES (SEQ_PNO.NEXTVAL, #{project.pname}, #{project.pdept}, TO_CHAR(TO_DATE(#{project.pstartDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.pendDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.actualEndDate}), 'YYYY/MM/DD'), #{project.psummary}, #{project.plevel}, #{project.pcontent}, #{project.uniqueness}, #{project.corpNo}, DEFAULT, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_CHAR(SYSDATE + 9/24,'hh24:mi:ss'), 
+   		INTO PROJECT VALUES (SEQ_PNO.NEXTVAL, #{project.pname}, #{project.pdept}, TO_CHAR(TO_DATE(#{project.pstartDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.pendDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.actualEndDate}), 'YYYY/MM/DD'), #{project.psummary}, #{project.plevel}, #{project.pcontent}, #{project.uniqueness}, #{project.corpNo}, DEFAULT, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss'), 
    				SEQ_PNO.NEXTVAL, #{project.pjtTaskNo}, #{project.pprogress})
    		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer})
    		SELECT *
@@ -620,7 +632,7 @@
    		INSERT ALL
    		<foreach collection="list" item="item">
    		INTO ATTACHMENTS VALUES
-   		(get_seq_fileNo, #{item.originName}, #{item.changeName}, #{item.filePath}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), TO_CHAR(SYSDATE + 9/24,'hh24:mi:ss'), 
+   		(get_seq_fileNo, #{item.originName}, #{item.changeName}, #{item.filePath}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss'), 
    		#{item.fileSize}, #{item.fileRole}, 'PROJECT', NULL, NULL, #{item.mno}, NULL, #{item.pno}, NULL, NULL, #{item.corp_no}, #{item.ext})
    		</foreach>
    		SELECT * FROM DUAL
@@ -653,6 +665,7 @@
 		    AND P.P_STATUS = 'Y'
 		    AND P.PARENT_PJT = #{pno}
 		    AND P.PLEVEL = 1
+		  ORDER BY PSTART_DATE, PEND_DATE
    </select>
    
    <select id="selectSubTaskList" resultMap="projectTask">
@@ -674,5 +687,103 @@
 		    AND P.P_STATUS = 'Y'
 		    AND P.PARENT_PJT = #{pno}
 		    AND P.PLEVEL = 2
+		  ORDER BY PSTART_DATE, PEND_DATE
    </select>
+   
+   <select id="selectSubTaskList2" resultMap="projectTask">
+  		 SELECT
+		        P.PNO
+		      , P.PNAME
+		      , P.PPROGRESS
+		      , P.PSTART_DATE
+		      , P.PEND_DATE
+		      , P.ACTUAL_END_DATE
+		      , P.PLEVEL
+		      , P.UNIQUENESS
+		      , E.ENAME
+		      , P.PJT_TASK_NO
+		   FROM PROJECT P
+		   JOIN PMEMBER M ON(P.PNO = M.PNO)
+		   JOIN EMPLOYEE E ON(M.MNO = E.MNO)
+		  WHERE M.PROLE = '담당자'
+		    AND P.P_STATUS = 'Y'
+		    AND P.PJT_TASK_NO = #{pno}
+		    AND P.PLEVEL = 2
+		  ORDER BY PSTART_DATE, PEND_DATE
+   </select>
+   
+   <insert id="insertTask" parameterType="Project">
+   		INSERT ALL
+   		INTO PROJECT VALUES (SEQ_PNO.NEXTVAL, #{project.pname}, NULL, TO_CHAR(TO_DATE(#{project.pstartDate}), 'YYYY/MM/DD')
+   				, TO_CHAR(TO_DATE(#{project.pendDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.actualEndDate}), 'YYYY/MM/DD')
+   				, #{project.psummary}, #{project.plevel}, #{project.pcontent}, #{project.uniqueness}, #{project.corpNo}
+   				, DEFAULT, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss')
+   				, 
+   				<choose>
+   					<when test="project.parentPjt != null">
+   						#{project.parentPjt},
+   					</when>
+   					<otherwise>
+   						(SELECT P1.PNO 
+   						   FROM PROJECT P1
+						   JOIN PROJECT P2 ON (P1.PNO = P2.PARENT_PJT)
+						  WHERE P2.PNO = #{project.pjtTaskNo}),
+   					</otherwise>
+   				</choose>
+   				#{project.pjtTaskNo}, #{project.pprogress})
+   		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer})
+   		SELECT *
+   		FROM DUAL
+   </insert>
+   
+<!--    <select id="selectOneTask" resultType="map">
+   		SELECT
+		       P.*
+		     , E.ENAME
+		  FROM PROJECT P
+		  JOIN PMEMBER M ON (P.PNO = M.PNO)
+          JOIN EMPLOYEE E ON (M.MNO = E.MNO)
+		 WHERE P.PNO = #{pno}
+           AND M.PROLE = '담당자'
+           AND P.P_STATUS = 'Y'
+   </select> -->
+   
+   <select id="selectOneTask" resultMap="projectInfo">
+   		SELECT
+		       *
+		  FROM PROJECT
+		 WHERE PNO = #{pno}
+		   AND P_STATUS = 'Y'
+   </select>
+   
+   <select id="selectReply" resultMap="taskReply">
+   		SELECT
+   		        T.*
+   		      , E.ENAME
+   		  FROM TASK_REPLY T
+   		  JOIN PMEMBER M ON (T.PMEMBER_ID = M.PMEMBER_ID)
+   		  JOIN EMPLOYEE E ON (M.MNO = E.MNO)
+   		 WHERE T.PNO = #{pno}
+   		   AND T.TSTATUS = 'Y'
+   		 ORDER BY T.TDATE DESC, T.TTIME DESC
+   </select>
+   
+   <select id="selectPmemberId" parameterType="ProjectTaskReply" resultType="_int">
+   		SELECT PMEMBER_ID FROM PMEMBER
+		 WHERE MNO=#{writerMno}
+		   AND PNO=(SELECT PARENT_PJT FROM PROJECT
+		            WHERE PNO = #{pno})
+   </select>
+   
+   <insert id="insertReply" parameterType="ProjectTaskReply">
+   		INSERT INTO TASK_REPLY
+		VALUES(SEQ_TASK_REPLY_NO.NEXTVAL, #{tcontent}, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss'), 'Y', #{pmemberId}, #{pno}) 
+   </insert>
+   
+   <update id="deleteReply">
+   		UPDATE TASK_REPLY
+   		SET TSTATUS = 'N'
+   		WHERE TASK_REPLY_NO = #{tno}
+   </update>
+   
 </mapper>

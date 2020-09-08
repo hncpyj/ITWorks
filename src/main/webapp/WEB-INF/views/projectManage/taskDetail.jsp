@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ITWorks!</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
     /*메뉴 타이틀 관련 css 설정*/
@@ -55,7 +56,7 @@
     }
     article:nth-child(2)>table {
         width: 983px;
-        height: 370px;
+        /* height: 370px; */
         border-top: 2px solid #929292;
         border-bottom: 2px solid #929292;
         background: white;
@@ -67,6 +68,7 @@
         background: #f4f4f4;
         font-size: 14px;
         border-bottom: 1px solid #929292;
+        height: 36px;
     }
     article:nth-child(2)>table td {
         height: 30px;
@@ -240,6 +242,20 @@
         margin-left: 940px;
     }
     /* 업무 정보 수정 폼 종료 */
+    
+    #taskInfoTable td {
+    	font-size: 13px;
+    	padding-left: 15px;
+    }
+    .files, a {
+    	color: black;
+    	text-decoration: none;
+    	cursor: pointer;
+    }
+    .files:hover {
+    	cursor: pointer;
+    	text-decoration: underline;
+    }
 </style>
 </head>
 <body>
@@ -251,9 +267,24 @@
         <article style="margin-top: 30px;">
             <div id="menuTitle">
                 <span>프로젝트 업무 정보</span>
-                <button style="margin-left: 59%; background: lightgray; color: black;" onclick="deleteTask();">삭제</button>
-                <button onclick="showModifyForm();">수정</button>
-                <button onclick="history.go(-1)">이전으로</button>
+                <c:forEach var="m" items="${ taskInfo.member }">
+                	<c:if test="${ m.prole eq '담당자'}">
+                		<c:set var="chargeMno" value="${ m.mno }"/>
+                	</c:if>
+                	<c:if test="${ m.prole eq '작성자' }">
+                		<c:set var="writerMno" value="${ m.mno }"/>
+                	</c:if>
+                </c:forEach>
+                <c:if test="${ loginUser.mno eq chargeMno || loginUser.mno eq writerMno }">
+	                <button style="margin-left: 54.5%; background: lightgray; color: black;" onclick="deleteTask();">삭제</button>
+	                <button onclick="showModifyForm();">수정</button>
+                </c:if>
+                <c:if test="${ loginUser.mno eq chargeMno || loginUser.mno eq writerMno }">
+	                <button onclick="history.go(-1)">이전으로</button>
+                </c:if>
+                <c:if test="${ loginUser.mno ne chargeMno && loginUser.mno ne writerMno }">
+	                <button onclick="history.go(-1)" style="margin-left: 70%;">이전으로</button>
+                </c:if>
                 <hr style="width: 95%; margin-top: 10px; color: #929292;">
             </div>
         </article>
@@ -261,42 +292,71 @@
 
         <!-- 업무 정보 -->
         <article>
-            <table>
+            <table id="taskInfoTable">
                 <tr>
                     <th>업무명</th>
-                    <td colspan="3"></td>
+                    <td colspan="3" style="width: 500px; min-width: 500px;"><c:out value="${ taskInfo.task.pname }"/></td>
                     <th>작성자</th>
-                    <td></td>
+                    <td style="width: 200px;'">
+                    	<c:forEach var="m" items="${ taskInfo.member }">
+                    		<c:if test="${ m.prole eq '작성자' }">
+                    			<c:out value="${ m.pmName }"/>
+                    		</c:if>
+                    	</c:forEach>
+                    </td>
                 </tr>
                 <tr>
                     <th>담당자</th>
-                    <td colspan="3"></td>
+                    <td colspan="3">
+                    	<c:forEach var="m" items="${ taskInfo.member }">
+                    		<c:if test="${ m.prole eq '담당자' }">
+                    			<c:out value="${ m.pmName }"/>
+                    		</c:if>
+                    	</c:forEach>
+                    </td>
                     <th>상태</th>
-                    <td></td>
+                    <td><c:out value="${ taskInfo.task.pprogress }"/></td>
                 </tr>
                 <tr>
                     <th>계획 시작일</th>
-                    <td></td>
+                    <td><c:out value="${ taskInfo.task.pstartDate }"/></td>
                     <th>계획 종료일</th>
-                    <td></td>
+                    <td><c:out value="${ taskInfo.task.pendDate }"/></td>
                     <th>실제 종료일</th>
-                    <td></td>
+                    <td><c:out value="${ taskInfo.task.actualEndDate }"/></td>
                 </tr>
                 <tr>
                     <th>업무 개요</th>
-                    <td colspan="5"></td>
+                    <td colspan="5">
+                    	<c:out value="${ taskInfo.task.psummary }"/>
+                    </td>
                 </tr>
                 <tr>
                     <th>특이사항</th>
-                    <td colspan="5"></td>
+                    <td colspan="5" style="color: red; font-weight: bold;">
+                    	<c:out value="${ taskInfo.task.uniqueness }"/>
+                    </td>
                 </tr>
                 <tr>
                     <th>첨부파일</th>
-                    <td colspan="6"></td>
+                    <td colspan="6" style="padding-top: 5px; padding-left: 5px;">
+                    	<div style="width: 850px; height: 70px; margin: auto; overflow: auto;">
+	                       	<c:forEach var="f" items="${ taskInfo.files }">
+	                       		<div style="margin-bottom: 3px;">
+	                       			<img src="${ contextPath }/resources/projectManageImages/projectFileIcon.png">
+	                       			<a class="files" onclick="fileDownload(${ f.fileNo });">
+	                       				<c:out value="${ f.originName }"/>
+	                       			</a>
+	                       		</div>
+	                       	</c:forEach>
+                       	</div>
+                    </td>
                 </tr>
                 <tr>
                     <th>내용</th>
-                    <td colspan="5"><textarea name="" id="" cols="119" rows="8" style="resize: none; margin-top: 5px; border: none; box-shadow: none;" readonly></textarea></td>
+                    <td colspan="5">
+                    	<c:out value="${ taskInfo.task.pcontent }"/>
+                    </td>
                 </tr>
             </table>
         </article>
@@ -304,32 +364,48 @@
 
         <!-- 댓글 영역 -->
         <article>
-            <div class="subTitle">댓글()</div>
-            <table>
-                <tr>
-                    <td style="width: 40px;"><div class="commentProfile"></div></td>
-                    <th width="80px" style="font-size: 13px;">임직원명</th>
-                    <td style="font-size: 13px; word-break:break-all;">덧글내용ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg<br>gg<br>gg</td>
-                    <td style="width: 140px; font-size: 12px; color:#929292; text-align: center;">yyyy/mm/dd hh:mm:ss</td>
-                </tr>
-                <tr>
-                    <td style="width: 40px;"><div class="commentProfile"></div></td>
-                    <th width="80px" style="font-size: 13px;">임직원명</th>
-                    <td style="font-size: 13px; word-break:break-all;">덧글내용</td>
-                    <td style="width: 140px; font-size: 12px; color:#929292; text-align: center;">yyyy/mm/dd hh:mm:ss</td>
-                </tr>
-                <tr height="10px"></tr>
+            <div class="subTitle">댓글(<c:out value="${ taskInfo.reply.size() }"/>)</div>
+            <table id="replyArea">
+	            <c:if test="${ !empty taskInfo.reply }">
+		            <c:forEach var="r" items="${ taskInfo.reply }">
+		                <tr>
+		                	<td style="width: 20px;"></td>
+		                    <td style="width: 40px;"><div class="commentProfile"></div></td>
+		                    <th width="80px" style="font-size: 13px;">
+		                    	<c:out value="${ r.ename }"/>
+		                    </th>
+		                    <td style="font-size: 13px; word-break:break-all;">
+		                    	<c:out value="${ r.tcontent }"/>
+		                    </td>
+		                    <td style="width: 140px; font-size: 12px; color:#929292; text-align: center;">
+		                    	<c:out value="${ r.tdate }"/>&nbsp;&nbsp;<c:out value="${ r.ttime }"/>
+		                    </td>
+		                    <td style="width: 20px;">
+			                    <c:if test="${ r.ename eq loginUser.ename }">
+			                    	<img src="${ contextPath }/resources/projectManageImages/closeBtn3.png" style="width:10px; height: 10px; cursor: pointer;" onclick="deleteReply('${ r.taskReplyNo }');">
+			                    </c:if>
+		                    </td>
+		                </tr>
+		            </c:forEach>
+		        </c:if>
+		        <c:if test="${ empty taskInfo.reply }">
+		        	<tr>
+		        		<td colspan="6" style="text-align: center; color: #929292; font-size: 13px;">등록된 댓글이 없습니다.</td>
+		        	</tr>
+		        </c:if>
+                <tr height="5px"></tr>
             </table>
             <div id="insertComment">
-                <form action="">
+                <form action="insertReply.pm" method="post">
                     <table>
-                        <td>
-                            <textarea name="" id="" cols="123" rows="4" style="resize: none; border: 1px solid #929292; border-radius: 5px 5px 5px 5px;"></textarea>
-                        </td>
-                        <td style="padding-bottom: 8px;">
-                            <input type="submit" value="등록">
-                        </td>
-                        
+                    	<tr>
+	                        <td style="padding: 0px;"><input type="hidden" value="${ taskInfo.task.pno }" name="pno"/>
+	                            <textarea name="tcontent"cols="122" rows="4" style="resize: none; border: 1px solid #929292; border-radius: 5px 5px 5px 5px;"></textarea>
+	                        </td>
+	                        <td style="padding: 0px; padding-bottom: 8px;">
+	                            <input type="submit" value="등록">
+	                        </td>
+                        </tr>
                     </table>
                 </form>
             </div>
@@ -340,29 +416,43 @@
         <article>
             <div class="subTitle">
                 세부 업무
-                <button onclick="location.href='insertSubTaskForm.pm'">세부 업무 추가</button>
+                <button onclick="insertSubTaskForm('${taskInfo.task.pno}');">세부 업무 추가</button>
             </div>
             <table>
                 <tr>
                     <th width="430px">세부업무명</th>
                     <th width="80px">담당자</th>
-                    <th width="40px">상태</th>
+                    <th width="70px">상태</th>
                     <th width="100px">특이사항</th>
-                    <th>진행률</th>
                     <th>계획 시작일</th>
                     <th>계획 종료일</th>
                     <th>실제 종료일</th>
                 </tr>
-                <tr>
-                    <td style="text-align: left; padding-left: 10px;"><a href="subTaskDetail.pm">세부업무명입니다.dddddddddddddddddddddddddddddddddddddddddd</a></td>
-                    <td>김갑동</td>
-                    <td>예정</td>
-                    <td>이슈 발생, 긴급</td>
-                    <td>0</td>
-                    <td>yy/mm/dd</td>
-                    <td>yy/mm/dd</td>
-                    <td>yy/mm/dd</td>
-                </tr>
+                
+                <c:choose>
+	                <c:when test="${ !empty taskInfo.subTask }">
+		                <c:forEach var="s" items="${ taskInfo.subTask }">
+			                <tr>
+			                    <td style="text-align: left; padding-left: 15px;">
+			                    	<a onclick="subTaskDetail('${s.pno}');">
+			                    		<c:out value="${ s.pname }"/>
+			                    	</a>
+			                    </td>
+			                    <td><c:out value="${ s.pwriter }"/></td>
+			                    <td><c:out value="${ s.pprogress }"/></td>
+			                    <td style="color: red; font-weight: bold;"><c:out value="${ s.uniqueness }"/></td>
+			                    <td><c:out value="${ s.pstartDate }"/></td>
+			                    <td><c:out value="${ s.pendDate }"/></td>
+			                    <td><c:out value="${ s.actualEndDate }"/></td>
+			                </tr>
+		                </c:forEach>
+	                </c:when>
+	                <c:otherwise>
+	                	<tr>
+	                		<td colspan="7" style="color: #929292; text-align: center;">등록된 세부 업무가 없습니다.</td>
+	                	</tr>
+	                </c:otherwise>
+                </c:choose>
             </table>
         </article>
         <!-- 세부업무 리스트 내역 종료 -->
@@ -441,7 +531,41 @@
         }
 
         function deleteTask() {
-
+			
+        }
+        
+        function fileDownload(fileNo) {
+        	location.href="projectFileDownload.pm?fileNo=" + fileNo;
+        }
+        
+        function deleteReply(tno) {
+        	var taskNo = tno;
+        	
+        	$.ajax({
+        		url: "deleteReply.pm",
+        		data: {taskNo: taskNo},
+        		type: "POST",
+        		success: function(data) {
+        			if(data.result > 0) {
+        				alert("댓글이 삭제되었습니다.");
+        			} else {
+        				alert("!에러 발생! 다시 시도 해 주세요.");
+        			}
+        			location.href="taskDetail.pm?pno=" + ${taskInfo.task.pno};
+        		},
+        		error: function(request, error) {
+        			//에러 내용 출력 코드
+        			console.log("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+        		}
+        	});
+        }
+        
+        function insertSubTaskForm(pno) {
+        	location.href="insertSubTaskForm.pm?pno=" + pno;
+        }
+        
+        function subTaskDetail(pno) {
+        	location.href="taskDetail.pm?pno=" + pno;
         }
     </script>
 </body>

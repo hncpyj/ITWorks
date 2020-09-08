@@ -12,9 +12,11 @@ import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.dao.ProjectDao;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
+import com.kh.itworks.projectManage.model.exception.InsertReplyException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
+import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
 
 @Service
 public class ProjectServiceImpl implements ProjectService{
@@ -135,6 +137,26 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public HashMap<String, Object> selectOneFile(String fileNo) {
 		return projectDao.selectOneFile(sqlSession, fileNo);
+	}
+
+	@Override
+	public int insertTask(HashMap<String, Object> projectInfo) throws InsertProjectException {
+		return projectDao.insertTask(sqlSession, projectInfo);
+	}
+
+	@Override
+	public HashMap<String, Object> selectOneTask(String pno) {
+		return projectDao.selectOntTask(sqlSession, pno);
+	}
+
+	@Override
+	public int insertReply(ProjectTaskReply replyInfo) throws InsertReplyException {
+		return projectDao.insertReply(sqlSession, replyInfo);
+	}
+
+	@Override
+	public int deleteReply(String tno) {
+		return projectDao.deleteReply(sqlSession, tno);
 	}
 
 
