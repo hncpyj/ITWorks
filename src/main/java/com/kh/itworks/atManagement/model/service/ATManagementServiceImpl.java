@@ -151,6 +151,20 @@ public class ATManagementServiceImpl implements ATManagementService {
 	}
 
 
+	@Override
+	public ATManagement selectOvertimeDetail(int otNo) throws SelectOvertimeListException {
+
+		return ad.selectOvertimeDetail(sqlSession, otNo);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectDateEmpWork(ATManagement date) {
+
+		return ad.selectDateEmpWork(sqlSession, date);
+	}
+
+
 	
 
 }

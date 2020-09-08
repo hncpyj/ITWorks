@@ -4,11 +4,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.RequestWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -386,6 +388,135 @@ public class ATManagementController {
 		
 
 	}
+	
+	@RequestMapping("selectOvertimeDetail.at")
+	public ModelAndView selectOvertimeDetail(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+		
+		int otNo = Integer.parseInt(request.getParameter("no"));
+		
+		try {
+			ATManagement overtimeOne = as.selectOvertimeDetail(otNo);
+			
+			mv.addObject("overtime", overtimeOne);
+			mv.setViewName("atManagement/selectOvertimeDetail");
+		} catch (SelectOvertimeListException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping("employeeWorkManagement.at")
+	public ModelAndView employeeWorkManagement(ModelAndView mv, ATManagement at) {
+		Calendar c = Calendar.getInstance();
+ 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yy/MM/dd");
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+ 		String mon = formatter.format(c.getTime());
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
+ 		String tue = formatter.format(c.getTime());
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
+ 		String wed = formatter.format(c.getTime());
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
+ 		String thu = formatter.format(c.getTime());
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
+ 		String fri = formatter.format(c.getTime());
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+ 		String sat = formatter.format(c.getTime());
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+ 		c.add(c.DATE,7);
+ 		String sun = formatter.format(c.getTime());
+ 		
+ 		String[] dayArr = {mon, tue, wed, thu, fri, sat, sun};
+ 		ATManagement day = null;
+		ArrayList<ATManagement> date = new ArrayList<ATManagement>();
+		for(int i = 0 ; i < dayArr.length; i++) {
+			day = new ATManagement();
+			System.out.println("dayArr : "+dayArr[i]);
+			day.setWdate(dayArr[i]);
+			day.setCorpNo(1);
+			
+			date.add(day);
+		}
+		System.out.println(date);
+		ArrayList<ATManagement> empworklist = new ArrayList<ATManagement>();
+		ArrayList<ATManagement> empWork = new ArrayList<ATManagement>();
+		ATManagement empwork = null;
+		for(int i = 0 ; i < dayArr.length; i++) {
+			System.out.println("date : " + date.get(i));
+			empWork = as.selectDateEmpWork(date.get(i));
+			
+			
+			for(int j = 0; j < empWork.size(); j++) {
+				System.out.println("뭔데");
+				empwork = new ATManagement();
+				empwork = empWork.get(j);
+				System.out.println("empwork : " + empwork);
+				empworklist.add(empwork);
+				
+			}
+			
+			
+		}
+		
+		System.out.println("empworklist : " + empworklist);
+		mv.addObject("empworklist", empworklist);
+		mv.setViewName("atManagement/employeeWorkManagement");
+		
+		return mv;
+	}
+	
+	@RequestMapping("selectDateEmpWork.at")
+	public ModelAndView selectDateEmpWork(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+		
+		String mon = request.getParameter("mon");
+		String tue = request.getParameter("tue");
+		String wed = request.getParameter("wed");
+		String thu = request.getParameter("thu");
+		String fri = request.getParameter("fri");
+		String sat = request.getParameter("sat");
+		String sun = request.getParameter("sun");
+		String[] dayArr = {mon, tue, wed, thu, fri, sat, sun};
+		ATManagement day = null;
+		ArrayList<ATManagement> date = new ArrayList<ATManagement>();
+		for(int i = 0 ; i < dayArr.length; i++) {
+			day = new ATManagement();
+			System.out.println("dayArr : "+dayArr[i]);
+			day.setWdate(dayArr[i]);
+			day.setCorpNo(1);
+			
+			date.add(day);
+		}
+		System.out.println(date);
+		ArrayList<ATManagement> empWorklist = new ArrayList<ATManagement>();
+		ArrayList<ATManagement> empWork = new ArrayList<ATManagement>();
+		ATManagement empwork = null;
+		for(int i = 0 ; i < dayArr.length; i++) {
+			System.out.println("date : " + date.get(i));
+			empWork = as.selectDateEmpWork(date.get(i));
+			
+			
+			for(int j = 0; j < empWork.size(); j++) {
+				System.out.println("뭔데");
+				empwork = new ATManagement();
+				empwork = empWork.get(j);
+				System.out.println("empwork : " + empwork);
+				empWorklist.add(empwork);
+				
+			}
+			
+			
+		}
+		
+		System.out.println("enpWorklist : " + empWorklist);
+		mv.addObject("empWorklist", empWorklist);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	
+	
 	@RequestMapping("selectVacationStatus.at")
 	public String selectVacationStatus() {
 		
@@ -421,11 +552,7 @@ public class ATManagementController {
 		
 		return "atManagement/updateEmpAt";
 	}
-	@RequestMapping("employeeWorkManagement.at")
-	public String employeeWorkManagement() {
-		
-		return "atManagement/employeeWorkManagement";
-	}
+	
 	@RequestMapping("vacationManagement.at")
 	public String vacationManagement() {
 		
@@ -447,9 +574,5 @@ public class ATManagementController {
 		return "atManagement/insertRewardVacation";
 	}
 
-	@RequestMapping("selectOvertimeDetail.at")
-	public String selectOvertimeDetail() {
-		
-		return "atManagement/selectOvertimeDetail";
-	}
+	
 }

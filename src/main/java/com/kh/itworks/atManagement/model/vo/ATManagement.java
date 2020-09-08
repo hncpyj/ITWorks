@@ -55,15 +55,6 @@ public class ATManagement implements java.io.Serializable {
 	private String laborDay;		//근로자의날 휴무여부
 	private String holidays;		//공휴일휴무여부
 	private String alternativeHolidays;	//대체공휴일휴무여부
-	private String fileNo;				//첨부파일관리코드
-	private String originName;			//원본파일명
-	private String changeName;			//변환파일명
-	private String filePath;			//파일경로
-	private String uploadDate;			//등록일
-	private String uploadTime;			//등록시간
-	private int fileSize;				//파일크기
-	private String fileRole;			//파일권한
-	private String fileType;			//파일종류
 	private int workingSetNo;			//근태기본시간코드
 	private String workingSetTime;		//근태시간설정종류
 	private String dayOfTheWeek;		//근무요일
@@ -87,9 +78,8 @@ public class ATManagement implements java.io.Serializable {
 			String rid, String jid, String did, String ename, int eno, String hireDate, String status, String approval,
 			String mno, String dname, String breakTimeNo, String btType, String btStart, String btEnd,
 			String attendence, String workTimeLimit, String laborDay, String holidays, String alternativeHolidays,
-			String fileNo, String originName, String changeName, String filePath, String uploadDate, String uploadTime,
-			int fileSize, String fileRole, String fileType, int workingSetNo, String workingSetTime,
-			String dayOfTheWeek, String workingTime, String quittingTime, String harfOff) {
+			int workingSetNo, String workingSetTime, String dayOfTheWeek, String workingTime, String quittingTime,
+			String harfOff) {
 		super();
 		this.workingStatusNo = workingStatusNo;
 		this.workType = workType;
@@ -143,15 +133,6 @@ public class ATManagement implements java.io.Serializable {
 		this.laborDay = laborDay;
 		this.holidays = holidays;
 		this.alternativeHolidays = alternativeHolidays;
-		this.fileNo = fileNo;
-		this.originName = originName;
-		this.changeName = changeName;
-		this.filePath = filePath;
-		this.uploadDate = uploadDate;
-		this.uploadTime = uploadTime;
-		this.fileSize = fileSize;
-		this.fileRole = fileRole;
-		this.fileType = fileType;
 		this.workingSetNo = workingSetNo;
 		this.workingSetTime = workingSetTime;
 		this.dayOfTheWeek = dayOfTheWeek;
@@ -891,132 +872,6 @@ public class ATManagement implements java.io.Serializable {
 
 
 
-	public String getFileNo() {
-		return fileNo;
-	}
-
-
-
-
-	public void setFileNo(String fileNo) {
-		this.fileNo = fileNo;
-	}
-
-
-
-
-	public String getOriginName() {
-		return originName;
-	}
-
-
-
-
-	public void setOriginName(String originName) {
-		this.originName = originName;
-	}
-
-
-
-
-	public String getChangeName() {
-		return changeName;
-	}
-
-
-
-
-	public void setChangeName(String changeName) {
-		this.changeName = changeName;
-	}
-
-
-
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-
-
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-
-
-
-	public String getUploadDate() {
-		return uploadDate;
-	}
-
-
-
-
-	public void setUploadDate(String uploadDate) {
-		this.uploadDate = uploadDate;
-	}
-
-
-
-
-	public String getUploadTime() {
-		return uploadTime;
-	}
-
-
-
-
-	public void setUploadTime(String uploadTime) {
-		this.uploadTime = uploadTime;
-	}
-
-
-
-
-	public int getFileSize() {
-		return fileSize;
-	}
-
-
-
-
-	public void setFileSize(int fileSize) {
-		this.fileSize = fileSize;
-	}
-
-
-
-
-	public String getFileRole() {
-		return fileRole;
-	}
-
-
-
-
-	public void setFileRole(String fileRole) {
-		this.fileRole = fileRole;
-	}
-
-
-
-
-	public String getFileType() {
-		return fileType;
-	}
-
-
-
-
-	public void setFileType(String fileType) {
-		this.fileType = fileType;
-	}
-
-
-
-
 	public int getWorkingSetNo() {
 		return workingSetNo;
 	}
@@ -1116,14 +971,10 @@ public class ATManagement implements java.io.Serializable {
 				+ status + ", approval=" + approval + ", mno=" + mno + ", dname=" + dname + ", breakTimeNo="
 				+ breakTimeNo + ", btType=" + btType + ", btStart=" + btStart + ", btEnd=" + btEnd + ", attendence="
 				+ attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay=" + laborDay + ", holidays=" + holidays
-				+ ", alternativeHolidays=" + alternativeHolidays + ", fileNo=" + fileNo + ", originName=" + originName
-				+ ", changeName=" + changeName + ", filePath=" + filePath + ", uploadDate=" + uploadDate
-				+ ", uploadTime=" + uploadTime + ", fileSize=" + fileSize + ", fileRole=" + fileRole + ", fileType="
-				+ fileType + ", workingSetNo=" + workingSetNo + ", workingSetTime=" + workingSetTime + ", dayOfTheWeek="
-				+ dayOfTheWeek + ", workingTime=" + workingTime + ", quittingTime=" + quittingTime + ", harfOff="
-				+ harfOff + "]";
+				+ ", alternativeHolidays=" + alternativeHolidays + ", workingSetNo=" + workingSetNo
+				+ ", workingSetTime=" + workingSetTime + ", dayOfTheWeek=" + dayOfTheWeek + ", workingTime="
+				+ workingTime + ", quittingTime=" + quittingTime + ", harfOff=" + harfOff + "]";
 	}
-
 
 
 	

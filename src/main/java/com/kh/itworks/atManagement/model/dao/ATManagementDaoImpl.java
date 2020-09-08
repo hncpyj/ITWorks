@@ -278,6 +278,29 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		return overtimeList;
 	}
 
+	@Override
+	public ATManagement selectOvertimeDetail(SqlSessionTemplate sqlSession, int otNo) throws SelectOvertimeListException {
+
+		ATManagement selectOvertimeOne = sqlSession.selectOne("ATManagement.selectOvertiemDetail", otNo);
+		
+		if(selectOvertimeOne == null) {
+			throw new SelectOvertimeListException("연장 근무 상세 조회 실패");
+		}
+		
+		return selectOvertimeOne;
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectDateEmpWork(SqlSessionTemplate sqlSession, ATManagement date) {
+		
+		ArrayList<ATManagement> empwork = (ArrayList)sqlSession.selectList("ATManagement.selectDateEmpWork", date);
+		
+		return empwork;
+	}
+
+	
+
 
 
 }

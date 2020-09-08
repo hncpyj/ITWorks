@@ -178,6 +178,20 @@
 		<result property="stgNo" column="STG_NO"/>
 		<result property="corpNo" column="CORP_NO"/>
 		<result property="ext" column="EXT"/>
+		<result property="fStatus" column="F_STATUS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="dateEmpWork">
+		<id property="mno" column="MNO"/>
+		<result property="dname" column="DNAME"/>
+		<result property="did" column="DID"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="wdate" column="WDATE"/>
+		<result property="wno" column="WNO"/>
+		<result property="workingSetNo" column="WORKING_SET_NO"/>
+		<result property="dayOfTheWeek" column="DAY_OF_THE_WEEK"/>
 	</resultMap>
 	<select id="selectAtBt" resultMap="atManagementResultSet1" parameterType="_int">
 		SELECT *
@@ -264,10 +278,10 @@
 		  INTO WORK_INFO
 		VALUES (SEQ_WNO.NEXTVAL, #{wstatus},
 		<if test="wstatus == '출근' || wstatus == '지각'">
-			TO_CHAR(SYSDATE + 9/24,'HH24:MI:SS'), NULL
+			TO_CHAR(SYSDATE,'HH24:MI:SS'), NULL
 		</if>
 		<if test="wstatus == '퇴근'">
-			NULL, TO_CHAR(SYSDATE + 9/24,'HH24:MI:SS')
+			NULL, TO_CHAR(SYSDATE,'HH24:MI:SS')
 		</if>
 			, #{ip}, #{outsideWork}, TO_CHAR(SYSDATE, 'YY/MM/DD'), #{mno},#{workingSetNo}
 		)
@@ -303,5 +317,30 @@
 		  FROM OVERTIME
 		 WHERE MNO = #{mno}
 		   AND CORP_NO = #{corpNo}
+	</select>
+	<select id="selectOvertiemDetail" resultMap="overtime" parameterType="_int">
+		SELECT *
+		  FROM OVERTIME
+		 WHERE OT_NO = #{otNo}
+	</select>
+	<select id="selectDateEmpWork" resultMap="dateEmpWork" parameterType="ATManagement">
+		SELECT 
+		       E.ENAME
+		     , D.DNAME
+		     , E.MNO
+		     , D.DID
+		     , W.WNO
+		     , W.WSTART
+		     , W.WEND
+		     , W.WSTATUS
+		     , W.WDATE
+		     , S.WORKING_SET_NO
+		     , S.DAY_OF_THE_WEEK
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON (E.DID = D.DID)
+		  JOIN WORK_INFO W ON (E.MNO = W.MNO)
+		  JOIN WORK_TIME_SET S ON(W.WORKING_SET_NO = S.WORKING_SET_NO)
+		  WHERE E.CORP_NO = #{corpNo}
+		    AND W.WDATE = #{wdate}
 	</select>
 </mapper>

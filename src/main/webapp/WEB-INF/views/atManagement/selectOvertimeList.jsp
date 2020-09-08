@@ -99,7 +99,7 @@
                 		<th>소속</th>
                 		<th>연장근무일</th>
                 		<th>시간</th>
-                		<th>상태</th>
+                		<th>승인여부</th>
                 		<th>상세</th>
                 	</tr>
                 	<c:forEach begin="0" end="${overTime.size()-1 }" var="i">

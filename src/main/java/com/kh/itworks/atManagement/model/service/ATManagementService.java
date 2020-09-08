@@ -49,5 +49,11 @@ public interface ATManagementService {
 
 	ArrayList<ATManagement> selectOvertimeList(ATManagement at, PageInfo pi) throws SelectOvertimeListException;
 
+	ATManagement selectOvertimeDetail(int otNo) throws SelectOvertimeListException;
+
+	ArrayList<ATManagement> selectDateEmpWork(ATManagement date);
+
+
+
 
 }

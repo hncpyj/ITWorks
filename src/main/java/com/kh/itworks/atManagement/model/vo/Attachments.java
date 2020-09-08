@@ -20,12 +20,13 @@ public class Attachments {
 	private String stgNo;
 	private String corpNo;
 	private String ext;
+	private String fStatus;
 	
 	public Attachments() {}
 
 	public Attachments(String fileNo, String originName, String changeName, String filePath, String uploadDate,
 			String uploadTime, String fileSize, String fileRole, String fileType, int apvNo, String chatNo, int mno,
-			String noticeNo, String pno, String pnoticeNo, String stgNo, String corpNo, String ext) {
+			String noticeNo, String pno, String pnoticeNo, String stgNo, String corpNo, String ext, String fStatus) {
 		super();
 		this.fileNo = fileNo;
 		this.originName = originName;
@@ -45,6 +46,7 @@ public class Attachments {
 		this.stgNo = stgNo;
 		this.corpNo = corpNo;
 		this.ext = ext;
+		this.fStatus = fStatus;
 	}
 
 	public String getFileNo() {
@@ -191,16 +193,24 @@ public class Attachments {
 		this.ext = ext;
 	}
 
+	public String getfStatus() {
+		return fStatus;
+	}
+
+	public void setfStatus(String fStatus) {
+		this.fStatus = fStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "Attachments [fileNo=" + fileNo + ", originName=" + originName + ", changeName=" + changeName
 				+ ", filePath=" + filePath + ", uploadDate=" + uploadDate + ", uploadTime=" + uploadTime + ", fileSize="
 				+ fileSize + ", fileRole=" + fileRole + ", fileType=" + fileType + ", apvNo=" + apvNo + ", chatNo="
 				+ chatNo + ", mno=" + mno + ", noticeNo=" + noticeNo + ", pno=" + pno + ", pnoticeNo=" + pnoticeNo
-				+ ", stgNo=" + stgNo + ", corpNo=" + corpNo + ", ext=" + ext + "]";
+				+ ", stgNo=" + stgNo + ", corpNo=" + corpNo + ", ext=" + ext + ", fStatus=" + fStatus + "]";
 	}
-	
-	
+
+
 	
 	
 }

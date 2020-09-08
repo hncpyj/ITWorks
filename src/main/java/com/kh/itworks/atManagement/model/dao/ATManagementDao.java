@@ -51,6 +51,10 @@ public interface ATManagementDao {
 
 	ArrayList<ATManagement> selectOvertimeList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectOvertimeListException;
 
+	ATManagement selectOvertimeDetail(SqlSessionTemplate sqlSession, int otNo) throws SelectOvertimeListException;
+
+	ArrayList<ATManagement> selectDateEmpWork(SqlSessionTemplate sqlSession, ATManagement date);
+
 
 	
 

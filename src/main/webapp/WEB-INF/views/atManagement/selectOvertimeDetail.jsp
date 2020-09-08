@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -104,7 +105,7 @@
             <hr>
             <br>
             </div>
-            <table class="approvalTable">
+<!--             <table class="approvalTable">
             	<tr>
             		<th rowspan="2">결재 진행</th>
             		<th rowspan="2">신청</th>
@@ -115,7 +116,7 @@
             		<td></td>
             		<td></td>
             	</tr>
-            </table>
+            </table> -->
             <table id="overtimeTable">
                 	<tr>
                 		<th>신청자</th>
@@ -127,23 +128,24 @@
                 	</tr>
                 	<tr>
                 		<th>신청일시</th>
-                		<td>2020/08/21</td>
+                		<td><c:out value="${overtime.otDate }"/></td>
                 	</tr>
                 	<tr>
                 		<th>연장 시간</th>
-                		<td>18 : 00 ~ 20 : 00(2시간 00분)</td>
+                		<td><c:out value="${overtime.otStart }"/> ~ <c:out value="${overtime.otEnd }"/></td>
                 	</tr>
                 	<tr>
                 		<th>사유</th>
-                		<td>추가작업</td>
+                		<td><c:out value="${overtime.otReason }"/></td>
                 	</tr>
                 	<tr>
-                		<th>진행 상황</th>
-                		<td>결재중</td>
+                		<th>승인여부</th>
+                		<td><c:out value="${overtime.otStatus }"/></td>
                 	</tr>
                 </table>
-            	<button class="close">닫기</button>
+            	<button class="close" onclick="location.href='selectOvertimeList.at'">닫기</button>
 		</div>
 	</section>
+	
 </body>
 </html>
