@@ -7,16 +7,21 @@ public class ProjectNotice {
 	private String pnoticeNo;
 	private String pnoticeName;
 	private String pnoticeContent;
-	private Date pnoticeDate;
-	private Date pnoticeTime;
+	private String pnoticeDate;
+	private String pnoticeTime;
 	private String pno;
 	private String pnoticeStatus;
-	private int eid;
+	private String pmemberId;
+	private String ename;
+	private int count;
+	
+	private String writerMno;
 	
 	public ProjectNotice() {}
 
-	public ProjectNotice(String pnoticeNo, String pnoticeName, String pnoticeContent, Date pnoticeDate,
-			Date pnoticeTime, String pno, String pnoticeStatus, int eid) {
+	public ProjectNotice(String pnoticeNo, String pnoticeName, String pnoticeContent, String pnoticeDate,
+			String pnoticeTime, String pno, String pnoticeStatus, String pmemberId, String ename, int count,
+			String writerMno) {
 		super();
 		this.pnoticeNo = pnoticeNo;
 		this.pnoticeName = pnoticeName;
@@ -25,7 +30,10 @@ public class ProjectNotice {
 		this.pnoticeTime = pnoticeTime;
 		this.pno = pno;
 		this.pnoticeStatus = pnoticeStatus;
-		this.eid = eid;
+		this.pmemberId = pmemberId;
+		this.ename = ename;
+		this.count = count;
+		this.writerMno = writerMno;
 	}
 
 	public String getPnoticeNo() {
@@ -52,19 +60,19 @@ public class ProjectNotice {
 		this.pnoticeContent = pnoticeContent;
 	}
 
-	public Date getPnoticeDate() {
+	public String getPnoticeDate() {
 		return pnoticeDate;
 	}
 
-	public void setPnoticeDate(Date pnoticeDate) {
+	public void setPnoticeDate(String pnoticeDate) {
 		this.pnoticeDate = pnoticeDate;
 	}
 
-	public Date getPnoticeTime() {
+	public String getPnoticeTime() {
 		return pnoticeTime;
 	}
 
-	public void setPnoticeTime(Date pnoticeTime) {
+	public void setPnoticeTime(String pnoticeTime) {
 		this.pnoticeTime = pnoticeTime;
 	}
 
@@ -84,18 +92,45 @@ public class ProjectNotice {
 		this.pnoticeStatus = pnoticeStatus;
 	}
 
-	public int getEid() {
-		return eid;
+	public String getPmemberId() {
+		return pmemberId;
 	}
 
-	public void setEid(int eid) {
-		this.eid = eid;
+	public void setPmemberId(String pmemberId) {
+		this.pmemberId = pmemberId;
+	}
+
+	public String getEname() {
+		return ename;
+	}
+
+	public void setEname(String ename) {
+		this.ename = ename;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public String getWriterMno() {
+		return writerMno;
+	}
+
+	public void setWriterMno(String writerMno) {
+		this.writerMno = writerMno;
 	}
 
 	@Override
 	public String toString() {
-		return "projectNotice [pnoticeNo=" + pnoticeNo + ", pnoticeName=" + pnoticeName + ", pnoticeContent="
+		return "ProjectNotice [pnoticeNo=" + pnoticeNo + ", pnoticeName=" + pnoticeName + ", pnoticeContent="
 				+ pnoticeContent + ", pnoticeDate=" + pnoticeDate + ", pnoticeTime=" + pnoticeTime + ", pno=" + pno
-				+ ", pnoticeStatus=" + pnoticeStatus + ", eid=" + eid + "]";
+				+ ", pnoticeStatus=" + pnoticeStatus + ", pmemberId=" + pmemberId + ", ename=" + ename + ", count="
+				+ count + ", writerMno=" + writerMno + "]";
 	}
+
+	
 }

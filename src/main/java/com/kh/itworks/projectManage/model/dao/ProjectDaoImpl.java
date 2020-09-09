@@ -13,8 +13,10 @@ import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.exception.InsertReplyException;
+import com.kh.itworks.projectManage.model.exception.PnoticeException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectMember;
+import com.kh.itworks.projectManage.model.vo.ProjectNotice;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
@@ -376,6 +378,106 @@ public class ProjectDaoImpl implements ProjectDao{
 	public int deleteReply(SqlSessionTemplate sqlSession, String tno) {
 		int deleteResult = sqlSession.update("Project.deleteReply", tno);
 		return deleteResult;
+	}
+
+	@Override
+	public int updateProject(SqlSessionTemplate sqlSession, HashMap<String, Object> updateInfo) {
+		
+		int result = 0;
+		
+		//ArrayList<FileBox> files = (ArrayList<FileBox>) updateInfo.get("files");
+		
+		int updateProject = sqlSession.update("Project.updateProject", updateInfo.get("project"));
+		int updatePmember = sqlSession.update("Project.updateSetStatusN", updateInfo.get("projectMember"));
+		int updatePmember2 = sqlSession.insert("Project.insertProjectMember", updateInfo.get("projectMember"));
+		
+		System.out.println("파일 : " + updateInfo.get("files"));
+		
+		if(updateInfo.get("files").toString().length() > 2) {
+			int fileUpdate = sqlSession.update("Project.updateSetStatusNFile", updateInfo.get("pno"));
+			int fileUpdate2 = sqlSession.insert("Project.insertFile", updateInfo.get("files"));
+		}
+		if(updatePmember == 1) {
+			System.out.println("성공!");
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public int deleteTask(SqlSessionTemplate sqlSession, String pno) {
+		int result = sqlSession.update("Project.deleteTask", pno);
+		return result;
+	}
+
+	@Override
+	public ArrayList<ProjectMember> selectWriterChargeMno(SqlSessionTemplate sqlSession, String pno) {
+		ArrayList<ProjectMember> member = (ArrayList) sqlSession.selectList("Project.selectMemberList", pno);
+		
+		for(int i = 0; i < member.size(); i++) {
+			if(member.get(i).getProle().equals("열람권한") || member.get(i).getProle().equals("참여자")) {
+				member.remove(i);
+			}
+		}
+		
+		System.out.println(member);
+		
+		return member;
+	}
+
+	@Override
+	public ArrayList<ProjectNotice> selectNoticeList(SqlSessionTemplate sqlSession, String pno) {
+		
+		ArrayList<ProjectNotice> notice = (ArrayList) sqlSession.selectList("Project.selectNoticeList", pno);
+		return notice;
+	}
+
+	@Override
+	public int getPnoticeListCount(SqlSessionTemplate sqlSession, String pno) {
+		int result = sqlSession.selectOne("Project.getPnoticeListCount", pno);
+		return result;
+	}
+
+	@Override
+	public ProjectNotice selectOneNotice(SqlSessionTemplate sqlSession, String nno) {
+		ProjectNotice notice = sqlSession.selectOne("Project.selectOneNotice", nno);
+		System.out.println("selectOneNotice : " + notice);
+		return notice;
+	}
+
+	@Override
+	public int updateCount(SqlSessionTemplate sqlSession, String nno) throws PnoticeException {
+
+		int updateCountResult = sqlSession.update("Project.updateCount", nno);
+		
+		if(updateCountResult <= 0) {
+			throw new PnoticeException("게시물 조회수 증가 실패");
+		}
+		return updateCountResult;
+	}
+
+	@Override
+	public ArrayList<FileBox> selectPnoticeFiles(SqlSessionTemplate sqlSession, String nno) {
+		ArrayList<FileBox> files = (ArrayList)sqlSession.selectList("Project.selectPnoticeFiles", nno);
+		return files;
+	}
+
+	@Override
+	public String selectPmemberId(SqlSessionTemplate sqlSession, ProjectNotice notice) {
+		String pmemberId = sqlSession.selectOne("Project.selectNoticePmemberId", notice);
+		return pmemberId;
+	}
+
+	@Override
+	public int insertNotice(SqlSessionTemplate sqlSession, ProjectNotice notice) {
+		int result = sqlSession.insert("Project.insertProjectNotice", notice);
+		return result;
+	}
+
+	@Override
+	public String selectnewNno(SqlSessionTemplate sqlSession) {
+		String nno = sqlSession.selectOne("Project.selectNewNno");
+		return nno;
 	}
 
 }

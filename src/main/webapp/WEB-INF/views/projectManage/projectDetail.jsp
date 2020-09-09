@@ -264,6 +264,92 @@
     span {
     	color: red;
     }
+    #personList {
+    	border-collapse: collapse;
+    }
+    #personList tr:hover {
+    	background: rgba(0, 71, 113, 0.2);
+    }
+    #deptList tr:hover {
+    	background: rgba(0, 71, 113, 0.2);
+    	cursor: pointer;
+    }
+    .searchModal {
+     	position: fixed; 
+     	left: 0; 
+     	top: 0; 
+     	width: 100%; 
+     	height: 100%; 
+     	z-index: 1000; 
+     	display: none;
+    }
+    .onclickBackground {
+    	 position: absolute; 
+    	 width: 100%; 
+    	 height: 100%; 
+    	 background: black; 
+    	 filter: alpha(opacity=60); 
+    	 opacity: .6;
+    }
+    .searchBox {
+    	position: relative; 
+    	top: 20%; 
+    	background: white; 
+    	margin: auto; 
+    	border-radius: 5px; 
+    	border: 1px solid #929292; 
+    	filter: none; 
+    	opacity: 100;
+    }
+    .selectBtn {
+    	 width: 100px; 
+    	 height: 30px; 
+    	 border-radius: 7px; 
+    	 background: #004771; 
+    	 color: white; 
+    	 margin-top: 15px; 
+    	 border: none;"
+    }
+    .selectPersonBtn {
+    	 background: lightgray; 
+    	 border: none; 
+    	 border-radius: 7px; 
+    	 width: 45px; 
+    	 height: 25px;
+    }
+    .selectedMember {
+    	 font-size: 13px; 
+    	 width: 80px; 
+    	 height: 25px; 
+    	 background: #0095ED; 
+    	 color: white;
+    	 border-radius: 10px;
+    	 margin-left: 10px;
+    	 border-spacing: 8px;
+    	 text-align: right;
+		 min-width: 90px;
+		 float: left;
+		 line-height: 25px;
+		 margin-top: 8px;
+    }
+    #selectArea {
+    	 border-radius: 7px; 
+    	 background: rgb(242, 242, 242); 
+    	 width: 325px; 
+    	 height: 45px; 
+    	 margin: auto; 
+    	 text-align: left;
+    	 overflow: auto;
+    }
+    .selectedMember>img {
+    	width: 10px; 
+    	height: 10px; 
+    	margin-right: 7px; 
+    	margin-left: 10px;
+    }
+    .selectedMember>img:hover {
+    	cursor: pointer;
+    }
 </style>
 </head>
 <body>
@@ -716,18 +802,19 @@
 
         <!-- 프로젝트 정보 수정 폼 -->
         <article id="modifyProjectForm" style="display: none;">
-            <form action="">
+            <form action="updateProject.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
                 <table>
                     <tr>
                         <th>
                         	프로젝트명<span>*</span>
                         	<input type="hidden" name="pno" value="${ projectInfo.project.pno }">
+                        	<input type="hidden" name="corpNo" value="${ loginUser.corpNo }">
                         </th>
                         <td colspan="7"><input type="text" name="pname" style="width: 850px;" value="${ projectInfo.project.pname }"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td colspan="3" style="font-size: 13px; padding-left: 13px;">
+                        <td colspan="3" style="font-size: 13px; padding-left: 5px;">
                         	<input type="text" name="pwriter" value="${ loginUser.ename }" readonly="readonly" style="border: none; box-shadow: none;">
                         </td>
                         <th>상태<span>*</span></th>
@@ -744,12 +831,18 @@
                     <tr>
                         <th>담당자<span>*</span></th>
                         <td colspan="3" id="chargeTd">
-                            <input type="text" name="charge" readonly="readonly"><input type="hidden" name="chargeMno" value="">
+                        <c:forEach var="e" items="${ projectInfo.member }">
+                        	<c:if test="${ e.prole eq '담당자' }">
+                        		<c:set var="chargeName" value="${ e.pmName }"/>
+                        		<c:set var="chargeMnos" value="${ e.mno }"/>
+                        	</c:if>
+                       	</c:forEach>
+                            <input type="text" name="charge" readonly="readonly" value="${ chargeName }"><input type="hidden" name="chargeMno" value="${ chargeMno }">
                             <button onclick="searchPerson(0);" class="selectMemberBtn" type="button">조회</button>
                         </td>
                         <th>관리부서<span>*</span></th>
                         <td id="chrgeDeptTd">
-                            <input type="text" name="chargeDept" style="width: 145px;" readonly="readonly"><input type="hidden" name="chargeDid" value="">
+                            <input type="text" name="chargeDept" style="width: 145px;" readonly="readonly" value="${ projectInfo.project.dname }"><input type="hidden" name="pdept" value="${ projectInfo.project.pdept }">
                             <button onclick="searchDept();" class="selectMemberBtn" type="button">조회</button>
                         </td>
                     </tr>
@@ -778,13 +871,16 @@
                     </tr>
                     <tr>
                         <th>프로젝트 개요</th>
-                        <td colspan="6"><textarea name="psummary" id="psummary" cols="118" rows="5" style="resize: none; margin-top: 5px;"></textarea></td>
+                        <td colspan="6">
+	                        <textarea name="psummary" id="psummary" cols="118" rows="5" style="resize: none; margin-top: 5px;"><c:out value="${ projectInfo.project.psummary }"/></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <th>첨부파일</th>
                         <td colspan="6">
                             <input multiple="multiple" type="file" id="files" name="files" style="width: 480px; border: none; box-shadow: none;">
                             <div id="selectedFileList" style="width: 850px; height: 80px;border: 1px solid #929292; margin: auto; margin-top: 5px; margin-bottom: 5px; padding: 5px; font-size: 12px; overflow: auto;">
+                            	
                             </div>
                         </td>
                     </tr>
@@ -792,6 +888,74 @@
                 <input type="button" onclick="history.go(0)" value="취소">
                 <input type="submit" value="등록">
             </form>
+            
+            <!-- 직원선택창 -->
+            <div class="searchModal searchPerson">
+            	<div class="onclickBackground" onclick="closeSearchPerson();"></div>
+            	<div class="searchBox" align="center" style="width: 400px; height: 500px;">
+            		<div style="background: #004771; border-top-left-radius: 5px; border-top-right-radius: 5px; height: 35px; margin: 0; width: 400px; display: table-cell; vertical-align: middle;">
+            			<span style="color: white; padding-left: 15px; margin-top: 15px; font-size: 14px;">검색</span>
+            			<button onclick="closeSearchPerson();" style="background: white; color: black; width: 20px; height: 20px; border: none; border-radius: 5px; margin-left: 323px; font-weight: bold;">X</button>
+            		</div>
+            		<div align="center" style="margin-top: 10px; margin-bottom: 15px;">
+	            		<input type="text" name="searchName" style="width: 250px; border: 1px solid #929292; margin-left: 5px;" placeholder="검색하고자 하는 이름을 입력하세요.">
+	            		<button type="button" style="width: 50px; height: 25px; border-radius: 7px; background: #004771; border: nond; color: white; margin-left: 5px; font-size: 13px; border: none;">검색</button>
+            		</div>
+            		<div id="selectArea"></div>
+            		<div style="width: 325px; height: 290px; border: 1px solid #929292; margin-top: 15px; overflow: auto;" align="center">
+            			<table style="width: 100%; font-size: 13px; text-align: center;" id="personList">
+            				<c:forEach var="p" items="${ allMemberDept.allMember }">
+	            				<c:if test="${ !empty p }">
+		            				<tr>
+		            					<td><div style="display: inline-block; width: 38px; height: 38px; border-radius: 50%; background: gray; margin-top: 5px;"></div></td>
+		            					<td style="padding-left: 10px; width: 80px;"><c:out value="${ p.ename }"/></td>
+		            					<td><c:out value="${ p.jname }"/></td>
+		            					<td style="color: #929292; width: 100px;"><c:out value="${ p.dname }"/></td>
+		            					<td><button class="selectPersonBtn" onclick="goSelectArea(${ p.mno }, '${ p.ename }');">선택</button></td>
+		            				</tr>
+		            			</c:if>
+            				</c:forEach>
+            			</table>
+            		</div>
+            		<button class="selectBtn" onclick="selectPerson();">선택 완료</button>
+            	</div>
+            </div>
+            <!-- 직원 선택창 끝 -->
+            
+            <!-- 부서 선택창 -->
+            <div class="searchModal searchDept">
+            	<div class="onclickBackground" onclick="closeSearchDept();"></div>
+            	<div class="searchBox" align="center" style="width: 300px; height: 400px;">
+            		<div style="background: #004771; border-top-left-radius: 5px; border-top-right-radius: 5px; height: 35px; margin: 0; width: 300px; display: table-cell; vertical-align: middle;">
+            			<span style="color: white; padding-left: 15px; margin-top: 15px; font-size: 14px;">검색</span>
+            			<button onclick="closeSearchDept();" type="button" style="background: white; color: black; width: 20px; height: 20px; border: none; border-radius: 5px; margin-left: 220px; font-weight: bold;">X</button>
+            		</div>
+            		<div align="center" style="margin-top: 10px;">
+	            		<form action="searchPerson.pm">
+	            			<input type="text" name="searchName" style="width: 150px; border: 1px solid #929292; margin-left: 5px;" placeholder="부서명을 입력하세요.">
+	            			<button type="button" style="width: 50px; height: 25px; border-radius: 7px; background: #004771; border: nond; color: white; margin-left: 5px; font-size: 13px; border: none;">검색</button>
+	            		</form>
+            		</div>
+            		<div style="width: 230px; height: 280px; border: 1px solid #929292; margin-top: 15px; overflow: auto;" align="center">
+            			<table style="width: 100%; font-size: 13px;" id="deptList">
+            				<c:forEach var="p" items="${ allMemberDept.allDept }">
+	            				<c:if test="${ !empty p }">
+		            				<tr onclick="selectDept(${ p.did }, '${ p.dname }');">
+		            					<td><img src="${ contextPath }/resources/projectManageImages/deptIcon.png" style="height: 20px; float: left; padding-left: 15px; margin-right: 10px;">
+		            					<c:out value="${ p.dname }"/></td>
+		            				</tr>
+		            			</c:if>
+		            			<c:if test="${ empty p }">
+		            				<tr>
+		            					<td style="text-align: center; color: #929292; font-size: 13px;">표시할 내용이 없습니다.</td>
+		            				</tr>
+		            			</c:if>
+            				</c:forEach>
+            			</table>
+            		</div>
+            	</div>
+            </div>
+            <!-- 부서선택창 끝 -->
         </article>
         <!-- 프로젝트 정보 수정 폼 종료 -->
     </section>
@@ -802,10 +966,44 @@
             $('#modifyProjectForm').css('display', 'block');
             $('.menuTitle>span').text('프로젝트 수정');
             $('.menuTitle>button').hide();
-            
-            console.log('${progress}');
-            
         }
+        
+        $(function() {
+        	$("#pprogress>option[value='${projectInfo.project.pprogress}']").attr("selected", "selected");
+        	
+        	var startDate = '${projectInfo.project.pstartDate}';
+        	var endDate = '${projectInfo.project.pendDate}';
+        	var actualDate = '${projectInfo.project.actualEndDate}';
+        	
+        	var pstartDate = startDate.replaceAll('/', '-');
+        	var pendDate = endDate.replaceAll('/', '-');
+        	var actualEndDate = actualDate.replaceAll('/', '-');
+        	
+        	$("input[name='pstartDate']").val(pstartDate);
+        	$("input[name='pendDate']").val(pendDate);
+        	$("input[name='actualEndDate']").val(actualEndDate);
+        	
+        	var participantMnos = "";
+        	var perusalMnos = "";
+
+        	<c:forEach var="m" items="${projectInfo.member}" varStatus="status">
+        		<c:if test="${m.prole eq '참여자'}">
+	        		participantMnos += '${m.mno}';
+	        		participantMnos += ', ';
+        		</c:if>
+        		<c:if test="${m.prole eq '열람권한'}">
+        			perusalMnos += '${m.mno}';
+        			perusalMnos += ', ';
+        		</c:if>
+        	</c:forEach>
+        	
+        	var partiResult = participantMnos.slice(0, participantMnos.length - 2);
+        	var peruResult = perusalMnos.slice(0, perusalMnos.length - 2);
+        	
+        	$("input[name='participantMno']").val(partiResult);
+        	$("input[name='perusalMno']").val(peruResult);
+        	
+        });
         
 /*         function showSubTask() {
             if($('.subTask').css('display') == 'none') {
@@ -826,6 +1024,9 @@
         	var result2 = str2.slice(0, str2.length - 1);
         	
         	$("#perusal").text(result2);
+        	$("input[name='participant']").val(result.replace(/(\s*)/g,""));
+        	$("input[name='perusal']").val(result2.replace(/(\s*)/g,""));
+        	
         });
         
         //첨부파일 다운로드
@@ -846,6 +1047,182 @@
         	
         	location.href="taskDetail.pm?pno=" + pno;
         }
+        
+      //직원선택 모달창 열기
+        function searchPerson(index) {
+			tdNum = index;
+			
+        	$(".selectedMember").remove();
+        	jQuery('.searchPerson').fadeIn('slow');
+        }
+        
+        //직원선택 모달창 닫기
+        function closeSearchPerson() {
+        	jQuery('.searchPerson').fadeOut('slow');
+        }
+        
+        
+        function searchDept() {
+        	jQuery('.searchDept').fadeIn('slow');
+        }
+        
+        function closeSearchDept() {
+        	jQuery('.searchDept').fadeOut('slow');
+        }
+        
+        //선택 버튼 누르면 검색창 아래 DIV에 이름 뜨게 하는 코드
+        function goSelectArea(mno, ename) {
+        	var mno = mno;
+        	var ename = ename;
+        	
+        	console.log(mno + ', ' + ename);
+        	
+        	if($(".selectedMember").length == 0) {
+        		$("#selectArea").wrapInner("<div class='selectedMember'>" + ename + 
+        			"<img src='${contextPath}/resources/projectManageImages/closeBtn4.png' onclick='removeMember(this);'><input type='hidden' name='tempMno' value='" + mno +"'></div>");
+        	} else {
+        		if(tdNum == 0) {
+        			alert("담당자는 1명만 선택 가능합니다.");
+        			return;
+        		} else {
+	        		$(".selectedMember:last-child").after("<div class='selectedMember'>" + ename +
+	        			"<img src='${contextPath}/resources/projectManageImages/closeBtn4.png' onclick='removeMember(this);'><input type='hidden' name='tempMno' value='" + mno +"'></div>");
+        		}
+        	}
+        	
+        	mnoArr = "";
+    		for(var i = 0; i < $("input[name=tempMno]").length; i++) {
+    			mnoArr += $("input[name=tempMno]")[i].value;
+    			if(i < $("input[name=tempMno]").length - 1) {
+    					mnoArr += ", ";
+    			}
+    		}	
+        }
+        
+        //선택된 직원 x 누르면 지우는 코드
+        function removeMember(selectedMember) {
+        	var selectedMember = selectedMember;
+        	$(selectedMember).parent().remove();
+        }
+        
+        //선택된 직원 정보 input 태그 value 값으로 지정하는 코드
+        function selectPerson() {
+        	console.log(mnoArr);
+        	var names = '';
+        	
+        	for(var i = 0; i < $(".selectedMember").length; i++) {
+        		names += $(".selectedMember").eq(i).text();
+        		if(i != $(".selectedMember").length - 1) {
+        			names += ", ";
+        		}
+        	}
+        	
+        	if(tdNum == 0) {
+	        	$("input[name='charge']").val(names);
+	        	$("input[name='chargeMno']").val(mnoArr);
+	        	console.log("담당mnoArr : " + mnoArr);
+	        	mnoArr = "";
+	        	console.log("담당자 : " + $("input[name='chargeMno']").val());
+        	} else if(tdNum == 1) {
+        		$("input[name='participant']").val(names);
+        		$("input[name='participantMno']").val(mnoArr);
+        		console.log("참여mnoArr : " + mnoArr);
+        		mnoArr = "";
+	        	console.log("초기화 후 : " + mnoArr);
+	        	console.log("참여자 : " + $("input[name='participantMno']").val());
+        	} else {
+        		$("input[name='perusal']").val(names);
+        		$("input[name='perusalMno']").val(mnoArr);
+        		console.log("열람mnoArr : " + mnoArr);
+        		mnoArr = "";
+	        	console.log("열람권한 : " + $("input[name='perusalMno']").val());
+        	}
+
+        	jQuery('.searchPerson').fadeOut('slow');
+        	
+        }
+        
+/*         function searchPersonAjax() {
+        	var searchName = $("input[name='searchName']").val();
+       	
+        	$.ajax({
+        		url: "searchPerson.pm",
+        		type: "get",
+        		data: {searchName: searchName},
+        		success: function(data) {
+        			console.log('${requestScope.allMemberDept.allMember}');
+        		},
+        		error: function(data) {
+        			console.log("실패");
+        		}
+        	});    
+        } */
+        
+        function selectDept(did, dname) {
+        	console.log(did + ", " + dname);
+        	
+        	$("input[name='chargeDept']").val(dname);
+        	$("input[name='pdept']").val(did);
+        	console.log("담당부서명 : " + $("input[name=chargeDept]").val());
+        	console.log("담당부서코드 : " + $("input[name=pdept]").val());
+        	
+        	jQuery('.searchDept').fadeOut('slow');
+        }
+        
+        function checkNull() {
+        	var pname = $("input[name='pname']").val();
+        	var charge = $("input[name='charge']").val();
+        	var pstartDate = $("input[name='pstartDate']").val();
+        	var pendDate = $("input[name='pendDate']").val();
+        	var chargeDept = $("input[name='chargeDept']").val();
+        	
+        	if(!pname) {
+        		alert("프로젝트명을 입력 해 주세요.");
+        		$("input[name='pname']").focus();
+        		return false;
+        	} else if(!charge) {
+        		alert("담당자를 등록 해 주세요.");
+        		$("input[name='charge']").focus();
+        		return false;
+        	} else if(!pstartDate) {
+        		alert("계획시작일을 입력 해 주세요.");
+        		return false;
+        	} else if(!pendDate) {
+        		alert("계획종료일을 입력 해 주세요.");
+        		return false;
+        	} else if(pstartDate > pendDate) {
+        		alert("계획종료일은 계획시작일보다 빠를 수 없습니다.");
+        		return false;
+        	} else if(!chargeDept) {
+        		alert("관리 부서를 입력하세요.");
+        		return false;
+        	} else {
+        		return true;
+        	}
+        }
+        
+        //파일 선택 시 div에 파일 제목 목록 출력
+        $("#files").change(function() {
+        	var fileList = $("#files")[0].files;
+        	
+        	for(var i = 0; i < fileList.length; i++) {
+        		$("#selectedFileList").wrapInner().append("<div><img src='${contextPath}/resources/projectManageImages/projectFileIcon.png'>&nbsp;&nbsp;"
+        											+ fileList[i].name + "</div>");
+        		console.log(fileList[i].name);
+        	}
+        });
+
+      //파일선택 클릭 시 파일명 출력 div 초기화
+        $("#files").click(function() {
+        	$("#selectedFileList").empty();
+        });
+      
+        function goProjectDetail() {
+	    	location.href="projectDetail.pm?pno=" + ${ projectInfo.project.pno };
+	    }
+	    function goProjectNotice() {
+	    	location.href="projectNoticeList.pm?pno=" + ${ projectInfo.project.pno };
+	    }
     </script>
 
 </body>

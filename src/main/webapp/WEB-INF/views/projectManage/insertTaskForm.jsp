@@ -105,7 +105,7 @@
     	margin-left: 5px;
     }
     
-        #personList {
+    #personList {
     	border-collapse: collapse;
     }
     #personList tr:hover {

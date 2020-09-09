@@ -7,7 +7,10 @@ import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.exception.InsertReplyException;
+import com.kh.itworks.projectManage.model.exception.PnoticeException;
 import com.kh.itworks.projectManage.model.vo.Project;
+import com.kh.itworks.projectManage.model.vo.ProjectMember;
+import com.kh.itworks.projectManage.model.vo.ProjectNotice;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
@@ -67,5 +70,21 @@ public interface ProjectService {
 	int insertReply(ProjectTaskReply replyInfo) throws InsertReplyException;
 
 	int deleteReply(String tno);
+
+	int updateProject(HashMap<String, Object> updateInfo);
+
+	int deleteTask(String pno);
+
+	ArrayList<ProjectMember> selectWriterChargeMno(String pno);
+
+	ArrayList<ProjectNotice> selectNoticeList(String pno);
+
+	int getPnoticeListCount(String pno);
+
+	HashMap<String, Object> selectOneNotice(String nno) throws PnoticeException;
+
+	int insertNotice(ProjectNotice notice);
+
+	String selectNewNoticeNno();
 
 }

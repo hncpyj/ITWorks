@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,6 +101,15 @@
         cursor: pointer;
     }
     /* 공지사항 수정 폼 종료 */
+    .files, a {
+    	color: black;
+    	text-decoration: none;
+    	cursor: pointer;
+    }
+    .files:hover {
+    	cursor: pointer;
+    	text-decoration: underline;
+    }
 </style>
 </head>
 <body>
@@ -117,31 +127,46 @@
 
         <!-- 공지사항 폼 -->
         <article>
-            <button onclick="modifyNotice();">수정하기</button>
-            <button>삭제하기</button>
+        	<c:if test="${ noticeInfo.notice.writerMno eq loginUser.mno}">
+            	<button onclick="modifyNotice();">수정하기</button>
+	            <button>삭제하기</button>
+            </c:if>
             <table>
                 <tr>
-                    <th>No</th>
-                    <td width="650px">00</td>
-                    <th>조회수</th>
-                    <td>00</td>
-                </tr>
-                <tr>
                     <th>제목</th>
-                    <td colspan="3">공지사항 제목</td>
+                    <td style="width: 650px;"><c:out value="${ noticeInfo.notice.pnoticeName }"/></td>
+                    <th>조회수</th>
+                    <td style="text-align: center;"><c:out value="${ noticeInfo.notice.count }"/></td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>김갑동</td>
+                    <td><c:out value="${ noticeInfo.notice.ename }"/></td>
                     <th>작성일</th>
-                    <td style="text-align: center; padding-left: 0;">yyyy/mm/dd hh:MM:ss</td>
+                    <td style="text-align: center; padding-left: 0;">
+						<c:out value="${ noticeInfo.notice.pnoticeDate }"/>&nbsp;&nbsp;<c:out value="${ noticeInfo.notice.pnoticeTime }"/>
+					</td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="height: 400px;"></td>
+                    <td colspan="4" style="height: 400px;">
+                    <textarea name="pnoticeContent" id="" cols="125" rows="20" style="resize: none; margin-left: 7px; margin-top: 5px; border: none;">
+                    	<c:out value="${ noticeInfo.notice.pnoticeContent }"/>
+                    </textarea>
+                    </td>
                 </tr>
                 <tr>
                     <th>첨부파일</th>
-                    <td colspan="3"></td>
+                    <td colspan="3" style="padding: 0;">
+                    	<div style="width: 900px; height: 70px; margin: auto; overflow: auto;">
+	                       	<c:forEach var="f" items="${ noticeInfo.files }">
+	                       		<div style="margin-bottom: 5px; margin-top: 5px;">
+	                       			<img src="${ contextPath }/resources/projectManageImages/projectFileIcon.png">
+	                       			<a class="files" onclick="fileDownload(${ f.fileNo });">
+	                       				<c:out value="${ f.originName }"/>
+	                       			</a>
+	                       		</div>
+	                       	</c:forEach>
+                       	</div>
+                    </td>
                 </tr>
             </table>
             <button onclick="history.go(-1);">목록으로</button>
@@ -189,6 +214,13 @@
             $('#modifyNoticeForm').css('display', 'block');
             $('#menuTitle>span').text('프로젝트 공지사항 수정');
             $('#menuTitle>button').hide();
+        }
+        
+      //첨부파일 다운로드
+        function fileDownload(fileNo) {
+        	console.log(fileNo);
+        	
+        	location.href="projectFileDownload.pm?fileNo=" + fileNo;
         }
     </script>
 </body>

@@ -9,7 +9,10 @@ import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.exception.InsertReplyException;
+import com.kh.itworks.projectManage.model.exception.PnoticeException;
 import com.kh.itworks.projectManage.model.vo.Project;
+import com.kh.itworks.projectManage.model.vo.ProjectMember;
+import com.kh.itworks.projectManage.model.vo.ProjectNotice;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
@@ -72,5 +75,27 @@ public interface ProjectDao {
 	int insertReply(SqlSessionTemplate sqlSession, ProjectTaskReply replyInfo) throws InsertReplyException;
 
 	int deleteReply(SqlSessionTemplate sqlSession, String tno);
+
+	int updateProject(SqlSessionTemplate sqlSession, HashMap<String, Object> updateInfo);
+
+	int deleteTask(SqlSessionTemplate sqlSession, String pno);
+
+	ArrayList<ProjectMember> selectWriterChargeMno(SqlSessionTemplate sqlSession, String pno);
+
+	ArrayList<ProjectNotice> selectNoticeList(SqlSessionTemplate sqlSession, String pno);
+
+	int getPnoticeListCount(SqlSessionTemplate sqlSession, String pno);
+
+	ProjectNotice selectOneNotice(SqlSessionTemplate sqlSession, String nno);
+
+	int updateCount(SqlSessionTemplate sqlSession, String nno) throws PnoticeException;
+
+	ArrayList<FileBox> selectPnoticeFiles(SqlSessionTemplate sqlSession, String nno);
+
+	String selectPmemberId(SqlSessionTemplate sqlSession, ProjectNotice notice);
+
+	int insertNotice(SqlSessionTemplate sqlSession, ProjectNotice notice);
+
+	String selectnewNno(SqlSessionTemplate sqlSession);
 
 }

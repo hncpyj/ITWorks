@@ -102,6 +102,7 @@
 	
 	<resultMap type="map" id="fileBox">
 		<id property="fileNo" column="FILE_NO"/>
+		<result property="pno" column="PNO"/>
 		<result property="originName" column="ORIGIN_NAME"/>
 		<result property="changeName" column="CHANGE_NAME"/>
 		<result property="filePath" column="FILE_PATH"/>
@@ -133,6 +134,21 @@
 		<result property="ename" column="ename"/>
 		<result property="writerMno" column="mno"/>
 	</resultMap>
+	
+	<resultMap type="ProjectNotice" id="notice">
+			<id property="pnoticeNo" column="PNOTICE_NO"/>
+			<result property="pnoticeName" column="PNOTICE_NAME"/>
+			<result property="pnoticeContent" column="PNOTICE_COTENT"/>
+			<result property="pnoticeDate" column="PNOTICE_DATE"/>
+			<result property="pnoticeTime" column="PNOTICE_TIME"/>
+			<result property="pno" column="PNO"/>
+			<result property="pmemberId" column="PMEMBER_ID"/>
+			<result property="pnoticeStatus" column="PNOTICE_STATUS"/>
+			<result property="ename" column="ENAME"/>
+			<result property="count" column="COUNT"/>
+			<result property="writerMno" column="MNO"/>
+	</resultMap>
+
 	
 	<select id="selectListCount" resultType="_int" parameterType="_int">
 		SELECT COUNT(*)
@@ -553,6 +569,7 @@
    		SELECT M.*, E.ENAME FROM PMEMBER M
    		JOIN EMPLOYEE E ON(M.MNO = E.MNO)
    		 WHERE PNO = #{pno}
+   		   AND M.STATUS = 'Y'
    </select>
    
    <select id="selectAllMember" resultMap="member">
@@ -594,7 +611,7 @@
    		INSERT ALL
    		INTO PROJECT VALUES (SEQ_PNO.NEXTVAL, #{project.pname}, #{project.pdept}, TO_CHAR(TO_DATE(#{project.pstartDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.pendDate}), 'YYYY/MM/DD'), TO_CHAR(TO_DATE(#{project.actualEndDate}), 'YYYY/MM/DD'), #{project.psummary}, #{project.plevel}, #{project.pcontent}, #{project.uniqueness}, #{project.corpNo}, DEFAULT, TO_CHAR(SYSDATE,'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss'), 
    				SEQ_PNO.NEXTVAL, #{project.pjtTaskNo}, #{project.pprogress})
-   		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer})
+   		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer}, DEFAULT)
    		SELECT *
    		FROM DUAL
    </insert>
@@ -614,15 +631,15 @@
 
    <insert id="insertProjectMember" parameterType="HashMap">
    		INSERT ALL
-   		INTO PMEMBER VALUES(get_seq, '담당자', #{pno}, #{charge})
+   		INTO PMEMBER VALUES(get_seq, '담당자', #{pno}, #{charge}, DEFAULT)
    		<if test="participant != null">
 	   		<foreach collection="participant" item="item">
-	   		INTO PMEMBER VALUES(get_seq, '참여자', #{pno}, #{item})	
+	   		INTO PMEMBER VALUES(get_seq, '참여자', #{pno}, #{item}, DEFAULT)	
 	   		</foreach>
    		</if>
    		<if test="perusal != null">
 	   		<foreach collection="perusal" item="item">
-	   		INTO PMEMBER VALUES(get_seq, '열람권한', #{pno}, #{item})
+	   		INTO PMEMBER VALUES(get_seq, '열람권한', #{pno}, #{item}, DEFAULT)
 	   		</foreach>
    		</if>
    		SELECT * FROM DUAL
@@ -633,13 +650,13 @@
    		<foreach collection="list" item="item">
    		INTO ATTACHMENTS VALUES
    		(get_seq_fileNo, #{item.originName}, #{item.changeName}, #{item.filePath}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss'), 
-   		#{item.fileSize}, #{item.fileRole}, 'PROJECT', NULL, NULL, #{item.mno}, NULL, #{item.pno}, NULL, NULL, #{item.corp_no}, #{item.ext})
+   		#{item.fileSize}, #{item.fileRole}, 'PNOTICE', NULL, NULL, #{item.mno}, NULL, #{item.pno}, #{item.pNoticeNo}, NULL, #{item.corp_no}, #{item.ext}, DEFAULT)
    		</foreach>
    		SELECT * FROM DUAL
    </update>
    
    <select id="selectFiles" resultMap="fileBox">
-   		SELECT * FROM ATTACHMENTS WHERE PNO = #{pno}
+   		SELECT * FROM ATTACHMENTS WHERE PNO = #{pno} AND F_STATUS = 'Y'
    </select>
    
    <select id="selectOneFile" resultMap="fileBox">
@@ -663,6 +680,7 @@
 		   JOIN EMPLOYEE E ON(M.MNO = E.MNO)
 		  WHERE M.PROLE = '담당자'
 		    AND P.P_STATUS = 'Y'
+		    AND M.STATUS = 'Y'
 		    AND P.PARENT_PJT = #{pno}
 		    AND P.PLEVEL = 1
 		  ORDER BY PSTART_DATE, PEND_DATE
@@ -685,6 +703,7 @@
 		   JOIN EMPLOYEE E ON(M.MNO = E.MNO)
 		  WHERE M.PROLE = '담당자'
 		    AND P.P_STATUS = 'Y'
+		    AND M.STATUS = 'Y'
 		    AND P.PARENT_PJT = #{pno}
 		    AND P.PLEVEL = 2
 		  ORDER BY PSTART_DATE, PEND_DATE
@@ -707,6 +726,7 @@
 		   JOIN EMPLOYEE E ON(M.MNO = E.MNO)
 		  WHERE M.PROLE = '담당자'
 		    AND P.P_STATUS = 'Y'
+		    AND M.STATUS = 'Y'
 		    AND P.PJT_TASK_NO = #{pno}
 		    AND P.PLEVEL = 2
 		  ORDER BY PSTART_DATE, PEND_DATE
@@ -731,7 +751,7 @@
    					</otherwise>
    				</choose>
    				#{project.pjtTaskNo}, #{project.pprogress})
-   		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer})
+   		INTO PMEMBER VALUES(SEQ_PMEMBER_ID.NEXTVAL, '작성자', SEQ_PNO.NEXTVAL, #{writer}, DEFAULT)
    		SELECT *
    		FROM DUAL
    </insert>
@@ -786,4 +806,90 @@
    		WHERE TASK_REPLY_NO = #{tno}
    </update>
    
+   <update id="updateProject" parameterType="Project">
+   		UPDATE PROJECT
+   		   SET PNAME = #{pname},
+   		       PDEPT = #{pdept},
+   		       PSTART_DATE = TO_CHAR(TO_DATE(#{pstartDate}), 'YYYY/MM/DD'),
+   		       PEND_DATE = TO_CHAR(TO_DATE(#{pendDate}), 'YYYY/MM/DD'),
+   		       ACTUAL_END_DATE = TO_CHAR(TO_DATE(#{actualEndDate}), 'YYYY/MM/DD'),
+   		       PSUMMARY = #{psummary},
+   		       PPROGRESS = #{pprogress},
+   		       UNIQUENESS = #{uniqueness},
+   		       PCONTENT = #{pcontent}
+   		 WHERE PNO = #{pno}
+   </update>
+   
+   <update id="updateSetStatusN" parameterType="Map">
+   		UPDATE PMEMBER 
+   		   SET STATUS = 'N'
+   		 WHERE PNO = #{pno}
+   		   AND PROLE != '작성자'
+   </update>
+   
+   <update id="updateSetStatusNFile">
+   		UPDATE ATTACHMENTS
+   		   SET F_STATUS = 'N'
+   		 WHERE PNO = #{pno}
+   </update>
+   
+   <update id="deleteTask">
+   		UPDATE PROJECT
+   		   SET P_STATUS = 'N'
+   		 WHERE PNO = #{pno}
+   </update>
+   
+   <select id="selectNoticeList" resultMap="notice">
+   		SELECT 
+   			   N.*
+   			 , E.ENAME
+   		  FROM PNOTICE N
+   		  JOIN PMEMBER M ON (N.PMEMBER_ID = M.PMEMBER_ID)
+   		  JOIN EMPLOYEE E ON (M.MNO = E.MNO)
+   		 WHERE N.PNO = #{pno}
+   		 ORDER BY PNOTICE_DATE DESC, PNOTICE_TIME DESC
+   </select>
+   
+   <select id="getPnoticeListCount" resultType="_int">
+		SELECT COUNT(*)
+          FROM PNOTICE
+         WHERE PNOTICE_STATUS = 'Y'
+           AND PNO = #{pno}
+   </select>
+   
+   <select id="selectOneNotice" resultMap="notice">
+   		SELECT N.*, M.MNO, E.ENAME
+   		  FROM PNOTICE N 
+   		  JOIN PMEMBER M ON (N.PMEMBER_ID = M.PMEMBER_ID)
+   		  JOIN EMPLOYEE E ON (M.MNO = E.MNO)
+   		 WHERE PNOTICE_NO = #{nno}
+   </select>
+   
+   <update id="updateCount">
+   		UPDATE PNOTICE
+   		   SET COUNT = (SELECT COUNT FROM PNOTICE WHERE PNOTICE_NO = #{nno}) + 1
+   		 WHERE PNOTICE_NO = #{nno}
+   </update>
+   
+   <select id="selectPnoticeFiles" resultMap="fileBox">
+   		SELECT * FROM ATTACHMENTS WHERE PNOTICE_NO = #{nno}
+   </select>
+   
+   <select id="selectNoticePmemberId" parameterType="ProjectNotice" resultType="java.lang.String">
+   		SELECT PMEMBER_ID FROM PMEMBER WHERE PNO = #{pno} AND PROLE = '담당자' AND MNO = #{writerMno} AND STATUS = 'Y'
+   </select>
+   
+   <select id="insertProjectNotice" parameterType="ProjectNotice">
+   		INSERT INTO PNOTICE
+   		VALUES(SEQ_PNOTICE.NEXTVAL, #{pnoticeName}, #{pnoticeContent}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), TO_CHAR(SYSDATE, 'HH24:MI:SS'), DEFAULT, #{pmemberId}, #{pno}, DEFAULT)
+   </select>
+   
+   <select id="selectNewNno" resultType="java.lang.String">
+   		SELECT * 
+          FROM (SELECT *
+                  FROM PNOTICE
+                 WHERE PNOTICE_STATUS = 'Y' 
+                 ORDER BY PNOTICE_DATE DESC, PNOTICE_TIME DESC) 
+         WHERE ROWNUM = 1
+   </select>
 </mapper>

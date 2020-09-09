@@ -29,8 +29,11 @@ import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.exception.InsertReplyException;
+import com.kh.itworks.projectManage.model.exception.PnoticeException;
 import com.kh.itworks.projectManage.model.service.ProjectService;
 import com.kh.itworks.projectManage.model.vo.Project;
+import com.kh.itworks.projectManage.model.vo.ProjectMember;
+import com.kh.itworks.projectManage.model.vo.ProjectNotice;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
@@ -281,7 +284,7 @@ public class ProjectManageController {
 	}
 	
 	@RequestMapping("insertProject.pm")
-	public String insertProject(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response
+	public String insertProject(Model model, Project project, MultipartHttpServletRequest request
 						, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) throws InsertProjectException, IOException {
 		System.out.println("담당자 : " + request.getParameter("chargeMno"));
 		System.out.println("참여자 : " + request.getParameter("participantMno"));
@@ -289,9 +292,9 @@ public class ProjectManageController {
 		System.out.println("관리부서코드 : " + request.getParameter("chargeDid"));
 		
 		//프로젝트 insert
+		String writer = Integer.toString(loginUser.getMno());
 		project.setCorpNo(loginUser.getCorpNo());
 		project.setPdept(request.getParameter("chargeDid"));
-		String writer = Integer.toString(loginUser.getMno());
 		
 		HashMap<String, Object> projectInfo = new HashMap<String, Object>();
 		projectInfo.put("project", project);
@@ -386,10 +389,6 @@ public class ProjectManageController {
 			int insertFile = projectService.insertFile(fileArr);
 		}
 		
-		HashMap<String, Object> projectDetail = projectService.selectOneProject(newPno);
-		
-		model.addAttribute("projectInfo", projectDetail);
-
 //		//페이지 이동 시 alert창 출력
 //		response.setContentType("text/html; charset=UTF-8");
 //		 
@@ -399,7 +398,7 @@ public class ProjectManageController {
 //		 
 //		out.flush();
 		
-		return "projectManage/projectDetail";
+		return "redirect:projectDetail.pm?pno=" + newPno;
 	}
 	
 	@RequestMapping("searchPerson.pm")
@@ -412,9 +411,6 @@ public class ProjectManageController {
 		
 		HashMap<String, Object> allMemberDept = projectService.selectSearchPerson(searchCondition);
 		
-//		mv.addObject("allMemberDept", allMemberDept);
-//		mv.setViewName("projectManage/insertProjectForm");
-		
 		model.addAttribute("allMemberDept", allMemberDept);
 		
 		return "projectManage/insertProjectForm";
@@ -426,13 +422,17 @@ public class ProjectManageController {
 	}
 	
 	@RequestMapping("projectDetail.pm")
-	public String showProjectDetail(Model model, HttpServletRequest request) {
+	public String showProjectDetail(Model model, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
 		
 		int pno = Integer.parseInt(request.getParameter("pno"));
 		System.out.println("pno : " + pno);
 		
 		HashMap<String, Object> projectInfo = projectService.selectOneProject(pno);
 		System.out.println("projectinfo : " + projectInfo);
+		
+		HashMap<String, Object> allMemberDept = projectService.selectAllMemberDept(loginUser.getCorpNo());
+		
+		model.addAttribute("allMemberDept", allMemberDept);
 		
 		model.addAttribute("projectInfo", projectInfo);
 		
@@ -495,12 +495,12 @@ public class ProjectManageController {
 	}
 	
 	@RequestMapping("insertTask.pm")
-	public String insertTask(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response
+	public String insertTask(Model model, Project project, MultipartHttpServletRequest request
 								, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) {
 		
 		//업무 정보 셋팅
-		String[] uniqueArr = request.getParameterValues("uniqueness");
 		String writer = Integer.toString(loginUser.getMno());
+		String[] uniqueArr = request.getParameterValues("uniqueness");
 		
 		String uniqueness = "";
 		if(uniqueArr != null) {
@@ -589,19 +589,13 @@ public class ProjectManageController {
 			e.printStackTrace();
 		}
 		
-//		HashMap<String, Object> taskInfo = projectService.selectOneTask(Integer.toString(newPno));
-//		model.addAttribute("taskInfo", taskInfo);
-//		
-//		HashMap<String, Object> taskarr = (HashMap<String, Object>) taskInfo.get("task");
-//		int plevel = Integer.parseInt(String.valueOf(taskarr.get("plevel")));
-		
 		return "redirect:taskDetail.pm?pno=" + newPno;
 
 	}
 	
 	
 	@RequestMapping("taskDetail.pm")
-	public String showTaskDetail(Model model, HttpServletRequest request) {
+	public String showTaskDetail(Model model, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
 		
 		String pno = request.getParameter("pno");
 		System.out.println("taskDetail pno : " + pno);
@@ -610,13 +604,15 @@ public class ProjectManageController {
 		
 		System.out.println(task);
 		
+		HashMap<String, Object> allMemberDept = projectService.selectAllMemberDept(loginUser.getCorpNo());
+		
+		model.addAttribute("allMemberDept", allMemberDept);
+		
 		model.addAttribute("taskInfo", task);
 		
 		
 		HashMap<String, Object> taskInfo = (HashMap<String, Object>) task.get("task");
-		System.out.println(taskInfo);
 		int plevel = Integer.parseInt(String.valueOf(taskInfo.get("plevel")));
-		System.out.println("plevel : " + plevel);
 		
 		if(plevel == 1) {
 			return "projectManage/taskDetail";
@@ -638,10 +634,6 @@ public class ProjectManageController {
 			model.addAttribute("msg", e.getMessage());
 			return "common/errorPage";
 		}
-		
-		HashMap<String, Object> task = projectService.selectOneTask(reply.getPno());
-		
-		model.addAttribute("taskInfo", task);
 		
 		return "redirect:taskDetail.pm?pno=" + reply.getPno();
 	}
@@ -673,28 +665,248 @@ public class ProjectManageController {
 		return "projectManage/insertSubTaskForm";
 	}
 	
-//	@RequestMapping("insertSubTask.pm")
-//	public String insertSubTask(Model model, Project project, MultipartHttpServletRequest request, HttpServletResponse response
-//			, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) {
-//		
-//		
-//		
-//		
-//		return "projectManage/insertSubTaskForm";
-//	}
-	
-	@RequestMapping("subTaskDetail.pm")
-	public String showSubTaskDetail() {
-		return "projectManage/subTaskDetail";
+	@RequestMapping("updateProject.pm")
+	public String updateProject(Model model, Project project, MultipartHttpServletRequest request
+									, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser) {
+		
+		//프로젝트 정보
+		System.out.println("업데이트 프로젝트 정보 : " + project);
+
+		//프로젝트멤버
+		String charge = request.getParameter("chargeMno");
+		
+		HashMap<String, Object> projectMember = new HashMap<String, Object>();
+		projectMember.put("pno", project.getPno());
+		projectMember.put("charge", charge);
+		
+		if(project.getPlevel() == 0) {
+			String participant = request.getParameter("participantMno");
+			ArrayList<Integer> participantArr = new ArrayList<Integer>();
+			StringTokenizer participantSt = new StringTokenizer(participant, ", ");
+			while(participantSt.hasMoreTokens()) {
+				participantArr.add(Integer.parseInt(participantSt.nextToken()));
+			}
+			projectMember.put("participant", participantArr);
+			
+			String perusal = request.getParameter("perusalMno");
+			ArrayList<Integer> perusalArr = new ArrayList<Integer>();
+			StringTokenizer perusalSt = new StringTokenizer(perusal, ", ");
+			while(perusalSt.hasMoreTokens()) {
+				perusalArr.add(Integer.parseInt(perusalSt.nextToken()));
+			}
+			projectMember.put("perusal", perusalArr);
+		} else {
+			String[] uniqueArr = request.getParameterValues("uniqueness");
+			
+			String uniqueness = "";
+			if(uniqueArr != null) {
+				for(int i = 0; i < uniqueArr.length; i++) {
+					uniqueness += uniqueArr[i];
+					if(i != uniqueArr.length - 1) {
+						uniqueness += ", ";
+					}
+				}
+				project.setUniqueness(uniqueness);
+			}
+		}
+		
+		
+		System.out.println(projectMember);
+		
+		//프로젝트 첨부파일 업로드 및 ATTACHMENT 테이블 insert
+		
+		ArrayList<FileBox> fileArr = new ArrayList<FileBox>();
+		FileBox file = null;
+				
+		if(!files[0].isEmpty()) {
+			//저장할 경로 지정(톰캣이 가지고 있는 webapp 폴더 밑 resources 폴더의 절대경로를 가져와라). 톰캣에서 관리하는 폴더는 하위폴더를 구분할 때 역슬러쉬(\)를 사용한다.
+			String root = request.getSession().getServletContext().getRealPath("resources");
+							
+			System.out.println(root);
+							
+			//이스케이프 문자 주의할 것
+			String filePath = root + "\\uploadFiles\\project";
+							
+			for(int i = 0; i < files.length; i++) {
+						
+				file = new FileBox();
+						
+				String originFileName = files[i].getOriginalFilename();
+				//확장자만 따로 저장하기
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));
+						
+				String changeName = CommonUtils.getRandomString();
+				
+				Long size = files[i].getSize();
+						
+				file.setFileRole("999");
+				file.setFilePath(filePath);
+				file.setFileSize(size);
+				file.setMno(loginUser.getMno());
+				file.setPno(project.getPno());
+				file.setCorp_no(loginUser.getCorpNo());
+				file.setExt(ext);
+				file.setOriginName(originFileName);
+				file.setChangeName(changeName);
+						
+				fileArr.add(file);
+						
+				try {
+					files[i].transferTo(new File(filePath + "\\" + changeName + ext));
+
+				} catch (IllegalStateException | IOException e) {
+					//익셉션 발생할 경우 파일 삭제
+					new File(filePath + "\\" + changeName + ext).delete();
+				}
+			}
+		}
+			
+		HashMap<String, Object> updateInfo = new HashMap<String, Object>();
+		updateInfo.put("project", project);
+		updateInfo.put("projectMember", projectMember);
+		updateInfo.put("files", fileArr);
+		updateInfo.put("pno", project.getPno());
+		
+		int updateResult = projectService.updateProject(updateInfo);
+		
+		if(project.getPlevel() == 0) {
+			return "redirect:projectDetail.pm?pno=" + project.getPno();
+		} else {
+			return "redirect:taskDetail.pm?pno=" + project.getPno();
+		}
 	}
 	
-	@RequestMapping("insertProjectNotice.pm")
-	public String showInsertProjectNoticeForm() {
+	@RequestMapping("deleteTask.pm")
+	public ModelAndView deleteTask(ModelAndView mv, HttpServletRequest request) {
+		
+		String pno = request.getParameter("pno");
+		
+		int result = projectService.deleteTask(pno);
+		
+		mv.addObject("result", result);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+//	@RequestMapping("subTaskDetail.pm")
+//	public String showSubTaskDetail() {
+//		return "projectManage/subTaskDetail";
+//	}
+	
+	@RequestMapping("projectNoticeList.pm")
+	public String projectNoticeList(HttpServletRequest request, Model model) {
+		
+		String pno = request.getParameter("pno");
+		System.out.println("notice pno : " + pno);
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int listCount = projectService.getPnoticeListCount(pno);
+		
+		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<ProjectMember> member = projectService.selectWriterChargeMno(pno);
+		ArrayList<ProjectNotice> notice = projectService.selectNoticeList(pno);
+		
+		model.addAttribute("listCount", listCount);
+		model.addAttribute("pi", pi);
+		
+		model.addAttribute("pno", pno);
+		model.addAttribute("member", member);
+		model.addAttribute("notice", notice);
+		
+		return "projectManage/projectNoticeList";
+	}
+	
+	@RequestMapping("insertProjectNoticeForm.pm")
+	public String showInsertProjectNoticeForm(Model model, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
+		
+		String pno = request.getParameter("pno");
+		
+		model.addAttribute("pno", pno);
+		
 		return "projectManage/insertProjectNoticeForm";
 	}
 	
+	@RequestMapping("insertProjectNotice.pm")
+	public String insertProjectNotice(Model model, ProjectNotice notice, MultipartFile[] files, @SessionAttribute("loginUser") Member loginUser, MultipartHttpServletRequest request) {
+		
+		int insertNoticeResult = projectService.insertNotice(notice);
+		String newNno = projectService.selectNewNoticeNno();
+		
+		ArrayList<FileBox> fileArr = new ArrayList<FileBox>();
+		FileBox file = null;
+				
+		if(!files[0].isEmpty()) {
+			//저장할 경로 지정(톰캣이 가지고 있는 webapp 폴더 밑 resources 폴더의 절대경로를 가져와라). 톰캣에서 관리하는 폴더는 하위폴더를 구분할 때 역슬러쉬(\)를 사용한다.
+			String root = request.getSession().getServletContext().getRealPath("resources");
+							
+			System.out.println(root);
+							
+			//이스케이프 문자 주의할 것
+			String filePath = root + "\\uploadFiles\\projectNotice";
+							
+			for(int i = 0; i < files.length; i++) {
+						
+				file = new FileBox();
+						
+				String originFileName = files[i].getOriginalFilename();
+				//확장자만 따로 저장하기
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));
+						
+				String changeName = CommonUtils.getRandomString();
+				
+				Long size = files[i].getSize();
+						
+				file.setFileRole("999");
+				file.setFilePath(filePath);
+				file.setFileSize(size);
+				file.setMno(loginUser.getMno());
+				file.setpNoticeNo(newNno);
+				file.setCorp_no(loginUser.getCorpNo());
+				file.setExt(ext);
+				file.setOriginName(originFileName);
+				file.setChangeName(changeName);
+						
+				fileArr.add(file);
+						
+				try {
+					files[i].transferTo(new File(filePath + "\\" + changeName + ext));
+
+				} catch (IllegalStateException | IOException e) {
+					//익셉션 발생할 경우 파일 삭제
+					new File(filePath + "\\" + changeName + ext).delete();
+				}
+			}
+		}
+		
+		try {
+			int result = projectService.insertFile(fileArr);
+		} catch (InsertProjectException e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:projectNoticeList.pm?pno=" + notice.getPno();
+	}
+	
 	@RequestMapping("noticeDetail.pm")
-	public String showNoticeDetail() {
+	public String showNoticeDetail(Model model, HttpServletRequest request) {
+		
+		String nno = request.getParameter("nno");
+		
+		try {
+			HashMap<String, Object> noticeInfo = projectService.selectOneNotice(nno);
+			model.addAttribute("noticeInfo", noticeInfo);
+			
+			System.out.println(noticeInfo);
+		} catch (PnoticeException e) {
+			e.printStackTrace();
+		}
+		
 		return "projectManage/noticeDetail";
 	}
 }

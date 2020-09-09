@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,25 +100,29 @@
 
         <!-- 공지사항 입력 폼 -->
         <article>
-            <form action="">
+            <form  action="insertProjectNotice.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
                 <table>
                     <tr>
-                        <th>제목</th>
-                        <td><input type="text" style="width: 900px;"></td>
+                        <th>제목<input type="hidden" value="${ pno }" name="pno"/><input type="hidden" name="writerMno" value="${ loginUser.mno }"/></th>
+                        <td><input type="text" name="pnoticeName" style="width: 900px;"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td></td>
+                        <td><c:out value="${ loginUser.ename }"/></td>
                     </tr>
                     <tr>
                         <th>내용</th>
                         <td>
-                            <textarea name="" id="" cols="126" rows="20" style="resize: none; margin-top: 5px;"></textarea>
+                            <textarea name="pnoticeContent" id="" cols="125" rows="20" style="resize: none; margin-left: 7px; margin-top: 5px;"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <th>첨부파일</th>
-                        <td><input type="file"></td>
+                        <td>
+	                        <input multiple="multiple" type="file" id="files" name="files" style="width: 480px; border: none; box-shadow: none; margin-top: 5px;">
+                            <div id="selectedFileList" style="width: 890px; height: 80px; border: 1px solid #929292; margin: auto; margin-top: 5px; margin-bottom: 5px; padding: 5px; font-size: 12px; overflow: auto;">
+                            </div>
+                        </td>
                     </tr>
                 </table>
                 <input type="submit" value="등록하기">
@@ -125,5 +130,41 @@
         </article>
         <!-- 공지사항 입력 폼 종료-->
     </section>
+    
+    <script>
+	  //파일 선택 시 div에 파일 제목 목록 출력
+	    $("#files").change(function() {
+	    	var fileList = $("#files")[0].files;
+	    	
+	    	for(var i = 0; i < fileList.length; i++) {
+	    		$("#selectedFileList").wrapInner().append("<div><img src='${contextPath}/resources/projectManageImages/projectFileIcon.png'>&nbsp;&nbsp;"
+	    											+ fileList[i].name + "</div>");
+	    		console.log(fileList[i].name);
+	    	}
+	    });
+	
+	  //파일선택 클릭 시 파일명 출력 div 초기화
+	    $("#files").click(function() {
+	    	$("#selectedFileList").empty();
+	    });
+	  
+	    function goProjectDetail() {
+	    	location.href="projectDetail.pm?pno=" + ${pno};
+	    }
+	    function goProjectNotice() {
+	    	location.href="projectNoticeList.pm?pno=" + ${pno};
+	    }
+	    function checkNull() {
+        	var pnoticeName = $("input[name='pnoticeName']").val();
+        	
+        	if(!pnoticeName) {
+        		alert("제목을 입력 해 주세요.");
+        		$("input[name='pnoticeName']").focus();
+        		return false;
+        	} else {
+        		return true;
+        	}
+        }
+    </script>
 </body>
 </html>

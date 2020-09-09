@@ -13,7 +13,10 @@ import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.dao.ProjectDao;
 import com.kh.itworks.projectManage.model.exception.InsertProjectException;
 import com.kh.itworks.projectManage.model.exception.InsertReplyException;
+import com.kh.itworks.projectManage.model.exception.PnoticeException;
 import com.kh.itworks.projectManage.model.vo.Project;
+import com.kh.itworks.projectManage.model.vo.ProjectMember;
+import com.kh.itworks.projectManage.model.vo.ProjectNotice;
 import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
@@ -157,6 +160,66 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public int deleteReply(String tno) {
 		return projectDao.deleteReply(sqlSession, tno);
+	}
+
+	@Override
+	public int updateProject(HashMap<String, Object> updateInfo) {
+		return projectDao.updateProject(sqlSession, updateInfo);
+	}
+
+	@Override
+	public int deleteTask(String pno) {
+		int result = projectDao.deleteTask(sqlSession, pno);
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<ProjectMember> selectWriterChargeMno(String pno) {
+		return projectDao.selectWriterChargeMno(sqlSession, pno);
+	}
+
+	@Override
+	public ArrayList<ProjectNotice> selectNoticeList(String pno) {
+		return projectDao.selectNoticeList(sqlSession, pno);
+	}
+
+	@Override
+	public int getPnoticeListCount(String pno) {
+		return projectDao.getPnoticeListCount(sqlSession, pno);
+	}
+
+	@Override
+	public HashMap<String, Object> selectOneNotice(String nno) throws PnoticeException {
+		HashMap<String, Object> noticeInfo = new HashMap<String, Object>();
+		
+		int updateCountResult = projectDao.updateCount(sqlSession, nno);
+		
+		ProjectNotice notice = projectDao.selectOneNotice(sqlSession, nno);
+		ArrayList<FileBox> files = projectDao.selectPnoticeFiles(sqlSession, nno);
+		
+		noticeInfo.put("notice", notice);
+		noticeInfo.put("files", files);
+		
+		return noticeInfo;
+	}
+
+	@Override
+	public int insertNotice(ProjectNotice notice){
+		
+		String pmemberId = projectDao.selectPmemberId(sqlSession, notice);
+		
+		notice.setPmemberId(pmemberId);
+		
+		int insertNotice = projectDao.insertNotice(sqlSession, notice);
+		
+		return 0;
+	}
+
+	@Override
+	public String selectNewNoticeNno() {
+		String nno = projectDao.selectnewNno(sqlSession);
+		return nno;
 	}
 
 

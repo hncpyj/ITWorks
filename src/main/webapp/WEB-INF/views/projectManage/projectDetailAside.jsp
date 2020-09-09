@@ -41,19 +41,11 @@
         <div id="asideBack">
             <div id="asideMenuTitle">프로젝트 상세보기</div>
             <ul>
-                <li><a onclick="goProjectDetail(${projectInfo.project.pno});" class="asideMenu">- 프로젝트 정보</a></li>
-                <li><a onclick="goProjectNotice(${projectInfo.project.pno});" class="asideMenu">- 프로젝트 공지사항</a></li>
+                <li><a onclick="goProjectDetail();" class="asideMenu">- 프로젝트 정보</a></li>
+                <li><a onclick="goProjectNotice();" class="asideMenu">- 프로젝트 공지사항</a></li>
             </ul>
         </div>
     </aside>
     
-    <script>
-	    function goProjectDetail(pno) {
-	    	location.href="projectDetail.pm?pno=" + pno;
-	    }
-	    function goProjectNotice(pno) {
-	    	console.log(pno);
-	    }
-    </script>
 </body>
 </html>

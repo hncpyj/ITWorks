@@ -516,7 +516,7 @@
       //파일선택 클릭 시 파일명 출력 div 초기화
         $("#files").click(function() {
         	$("#selectedFileList").empty();
-        })
+        });
     </script>
 </body>
 </html>
