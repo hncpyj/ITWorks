@@ -115,7 +115,7 @@ tr.upper {
 			<div class="orgChart">
 				<table id="orgTable">
 					<tr class="dept">
-						<td><p><c:out value="${ org.dName }"/></p></td>
+						<td><p><c:out value="${ org.get(1).dName }"/></p></td>
 						<td></td>
 					</tr>
 					<tr class="upper">
