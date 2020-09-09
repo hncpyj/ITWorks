@@ -49,7 +49,7 @@
     
     #text1 {
         color: #004771;
-        margin-left: 20px;
+        margin: 10px;
         font-family: "Noto Sans KR";
         
     }
@@ -429,8 +429,7 @@
             </ul>
         </div>
     </aside>
-        <h1 id="text1">파일보관함</h1>
-        <br>
+        <h1 id="text1">&nbsp;&nbsp;&nbsp;파일보관함</h1>
         <hr>
         <br>
     <section>

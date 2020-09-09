@@ -306,7 +306,7 @@
     </section>
     <article>
         <div class="tableArea">
-        	<div id="filePath">전체 문서함/회사 공용 문서/공지사항</div>
+        	<div id="filePath">전체 문서함/회사 공용 문서/전사자료</div>
 		        <div id="fileSearch">
 		        	<form action="" method="get">
 		        		<select id="searchSelect">

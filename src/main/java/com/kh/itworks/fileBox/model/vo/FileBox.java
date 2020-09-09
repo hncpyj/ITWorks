@@ -8,6 +8,7 @@ public class FileBox implements java.io.Serializable{
 	private String uploadDate;							//등록일
 	private String uploadTime;							//등록시간
 	private Long fileSize;								//파일크기
+	private String ext;									//확장자
 	private String fileRole;							//권한
 	private String fileType;							//파일종류
 	private int apvNo;									//문서번호
@@ -18,7 +19,6 @@ public class FileBox implements java.io.Serializable{
 	private String pNoticeNo;							//프로젝트공지사항관리코드
 	private String stgNo;								//파일보관함관리코드
 	private int corp_no;								//회사코드
-	private String ext;									//확장자
 	
 	public FileBox() {}
 
@@ -45,6 +45,8 @@ public class FileBox implements java.io.Serializable{
 		this.stgNo = stgNo;
 		this.corp_no = corp_no;
 	}
+
+
 
 	public String getFileNo() {
 		return fileNo;
