@@ -23,7 +23,7 @@
 		<id property="leaveNo" column="LEAVE_NO"/>
 		<result property="lname" column="LNAME"/>
 		<result property="luse" column="LUSE"/>
-		<result property="aleaveDeduction" column="ALEVE_DEDUCTION"/>
+		<result property="aleaveDeduction" column="ALEAVE_DEDUCTION"/>
 		<result property="harfLeave" column="HARF_LEAVE"/>
 		<result property="corpNo" column="CORP_NO"/>
 		<result property="lcategory" column="LCOTEGORY"/>
@@ -54,6 +54,13 @@
 		<result property="lcreationCondition" column="LCREATION_CONDITION"/>
 		<result property="lcreationDate" column="LCREATION_DATE"/>
 		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="yearAleave">
+		<id property="yearAleave" column="YEAR_ALEAVE"/>
+		<result property="hireYear" column="HIREYEAR"/>
+		<result property="aleaveCount" column="ALEAVE_COUNT"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="accUnitPeriod" column="ACC_UNIT_PERIOD"/>
 	</resultMap>
 	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="objection">
 		<id property="objNo" column="OBJ_NO"/>
@@ -192,6 +199,9 @@
 		<result property="wno" column="WNO"/>
 		<result property="workingSetNo" column="WORKING_SET_NO"/>
 		<result property="dayOfTheWeek" column="DAY_OF_THE_WEEK"/>
+		<result property="otDate" column="OT_DATE"/>
+		<result property="otStart" column="OT_START"/>
+		<result property="otEnd" column="OT_END"/>
 	</resultMap>
 	<select id="selectAtBt" resultMap="atManagementResultSet1" parameterType="_int">
 		SELECT *
@@ -329,18 +339,76 @@
 		     , D.DNAME
 		     , E.MNO
 		     , D.DID
-		     , W.WNO
 		     , W.WSTART
 		     , W.WEND
 		     , W.WSTATUS
 		     , W.WDATE
+             , W.WNO
 		     , S.WORKING_SET_NO
 		     , S.DAY_OF_THE_WEEK
+             , W.OT_START
+             , W.OT_END
 		  FROM EMPLOYEE E
 		  JOIN DEPT D ON (E.DID = D.DID)
-		  JOIN WORK_INFO W ON (E.MNO = W.MNO)
+		  JOIN ( SELECT
+       W1.WDATE
+     , W1.MNO
+     , W1.WNO
+     , W1.WSTATUS
+     , W1.WORKING_SET_NO
+     , W1.WSTART
+     , W2.WEND
+     , O.OT_START
+     , O.OT_END
+  FROM WORK_INFO W1
+      , WORK_INFO W2
+  LEFT OUTER JOIN OVERTIME O
+  ON(W2.WDATE = O.OT_DATE AND W2.MNO = O.MNO AND O.OT_STATUS = 'Y')
+    WHERE W1.MNO = W2.MNO
+      AND W1.WDATE = W2.WDATE
+      AND NOT W1.WSTART IS NULL
+      AND NOT W2.WEND IS NULL) W ON (E.MNO = W.MNO)
 		  JOIN WORK_TIME_SET S ON(W.WORKING_SET_NO = S.WORKING_SET_NO)
 		  WHERE E.CORP_NO = #{corpNo}
 		    AND W.WDATE = #{wdate}
 	</select>
+	<select id="selectLeaveSetting" resultMap="leaveSetting" parameterType="_int">
+		SELECT *
+		  FROM LEAVE_SETTING
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<select id="selectYearAleave" resultMap="yearAleave" parameterType="ATManagement">
+		SELECT *
+		  FROM YEAR_ALEAVE
+		 WHERE CORP_NO =#{corpNo}
+		 ORDER BY TO_NUMBER(SUBSTR(YEAR_ALEAVE, 3))
+	</select>
+	<select id="selectLeave" resultMap="leave" parameterType="ATManagement">
+		SELECT *
+		  FROM LEAVE
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<update id="updateLeaveList" parameterType="ATManagement">
+		UPDATE LEAVE
+		   SET LUSE = #{luse}
+		     , ALEAVE_DEDUCTION = #{aleaveDeduction}
+		     , HARF_LEAVE = #{harfLeave}
+		 WHERE LEAVE_NO = #{leaveNo}
+	</update>
+	<update id="updateYearAleave" parameterType="ATManagement">
+		UPDATE YEAR_ALEAVE
+		   SET ALEAVE_COUNT = #{aleaveCount}
+		 WHERE YEAR_ALEAVE = #{yearAleave}
+	</update>
+	<update id="updateLeaveSettion" parameterType="ATManagement">
+		UPDATE LEAVE_SETTING
+		   SET LEAVE_FUNC = #{leaveFunc}
+		     , LCREATION_CONDITION = #{lcreationCondition}
+		     , LCREATION_DATE = #{lcreationDate}
+		 WHERE CORP_NO = #{corpNo}
+	</update>
+	<insert id="insertLeaveList" parameterType="ATManagement">
+		INSERT INTO LEAVE
+		VALUES ('LN'||SEQ_LEAVE_NO.NEXTVAL, #{lname}, #{luse}, #{aleaveDeduction}, #{harfLeave}, #{corpNo}, '정기휴가')
+	</insert>
 </mapper>

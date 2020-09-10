@@ -8,8 +8,10 @@ import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
+import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
 
@@ -54,6 +56,22 @@ public interface ATManagementDao {
 	ATManagement selectOvertimeDetail(SqlSessionTemplate sqlSession, int otNo) throws SelectOvertimeListException;
 
 	ArrayList<ATManagement> selectDateEmpWork(SqlSessionTemplate sqlSession, ATManagement date);
+
+	ArrayList<ATManagement> selectEmployeeATManagement(SqlSessionTemplate sqlSession, ATManagement at);
+
+	ATManagement selectLeaveSetting(SqlSessionTemplate sqlSession, ATManagement at) throws SelectLeaveException;
+
+	ArrayList<ATManagement> selectYearAleave(SqlSessionTemplate sqlSession, ATManagement at) throws SelectLeaveException;
+
+	ArrayList<ATManagement> selectLeave(SqlSessionTemplate sqlSession, ATManagement at) throws SelectLeaveException;
+
+	int updateLeaveList(SqlSessionTemplate sqlSession, ArrayList<ATManagement> updateLeave) throws UpdateInsertLeaveException;
+
+	int updateYearAleave(SqlSessionTemplate sqlSession, ArrayList<ATManagement> updateAleave) throws UpdateInsertLeaveException;
+
+	int updateLeaveSettion(SqlSessionTemplate sqlSession, ATManagement at) throws UpdateInsertLeaveException;
+
+	int insertLeaveList(SqlSessionTemplate sqlSession, ArrayList<ATManagement> insertLeave) throws UpdateInsertLeaveException;
 
 
 	

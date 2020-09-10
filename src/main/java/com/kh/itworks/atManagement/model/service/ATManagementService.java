@@ -6,8 +6,10 @@ import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
+import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
 
@@ -52,6 +54,22 @@ public interface ATManagementService {
 	ATManagement selectOvertimeDetail(int otNo) throws SelectOvertimeListException;
 
 	ArrayList<ATManagement> selectDateEmpWork(ATManagement date);
+
+	ArrayList<ATManagement> selectEmployeeATManagement(ATManagement at);
+
+	ATManagement selectLeaveSetting(ATManagement at) throws SelectLeaveException;
+
+	ArrayList<ATManagement> selectYearAleave(ATManagement at) throws SelectLeaveException;
+
+	ArrayList<ATManagement> selectLeave(ATManagement at) throws SelectLeaveException;
+
+	int updateLeaveList(ArrayList<ATManagement> updateLeave) throws UpdateInsertLeaveException;
+
+	int updateYearAleave(ArrayList<ATManagement> updateAleave) throws UpdateInsertLeaveException;
+
+	int updateLeaveSetting(ATManagement at) throws UpdateInsertLeaveException;
+
+	int insertLeaveList(ArrayList<ATManagement> insertLeave) throws UpdateInsertLeaveException;
 
 
 

@@ -15,22 +15,27 @@ import javax.xml.ws.RequestWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
+import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.service.ATManagementService;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
 import com.kh.itworks.atManagement.model.vo.Pagination;
+import com.kh.itworks.member.model.vo.Member;
 
 
 
@@ -507,20 +512,142 @@ public class ATManagementController {
 			
 			
 		}
-		
-		System.out.println("enpWorklist : " + empWorklist);
+		System.out.println("empWorklist.size : " + empWorklist.size());
+		System.out.println("empWorklist : " + empWorklist);
 		mv.addObject("empWorklist", empWorklist);
 		mv.setViewName("jsonView");
 		
 		return mv;
 	}
 	
+	@RequestMapping("selectEmployeeATManagement.at")
+	public ModelAndView selectEmployeeATManagement(ModelAndView mv, ATManagement at) {
+		
+		
+		
+		at.setCorpNo(1);
+		
+		ArrayList<ATManagement> emplist = as.selectEmployeeATManagement(at);
+		
+		
+		
+		mv.setViewName("atManagement/employeeATManagement");
+		
+		return mv;
+	}
 	
+	//,  @SessionAttribute("loginUser") Member loginUser
+	@RequestMapping("vacationManagement.at")
+	public ModelAndView vacationManagement(ModelAndView mv, ATManagement at) {
+		
+		/*
+		 * at.setCorpNo(loginUser.getCorpNo());
+		 * System.out.println("corpNo : "+at.getCorpNo());
+		 */
+		at.setCorpNo(1);
+		try {
+			ATManagement leaveSetting = as.selectLeaveSetting(at);
+			ArrayList<ATManagement> yearAleave = as.selectYearAleave(at);
+			
+			ArrayList<ATManagement> leave = as.selectLeave(at);
+			mv.addObject("leaveSetting", leaveSetting);
+			mv.addObject("yearAleave", yearAleave);
+			mv.addObject("leave", leave);
+			mv.setViewName("atManagement/vacationManagement");
+			
+		} catch (SelectLeaveException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		
+		
+		return mv;
+	}
+	
+	@RequestMapping("updateVacationManagement.at")
+	public String updateVacationManagement(ATManagement at, HttpServletRequest request) {
+		
+		int corpNo = 1;
+		
+		at.setCorpNo(corpNo);
+		
+		ArrayList<ATManagement> insertLeave = new ArrayList<ATManagement>();
+		String[] insertLname = request.getParameterValues("insertLname");
+		String[] insertLuse = request.getParameterValues("insertLuse");
+		String[] insertAleaveDeduction = request.getParameterValues("insertAleaveDeduction");
+		String[] insertHarfLeave = request.getParameterValues("insertHarfLeave");
+		ATManagement insertle = null;
+		
+		if(insertLname != null) {
+			for(int i = 0; i < insertLname.length; i++) {
+				insertle = new ATManagement();
+				insertle.setLname(insertLname[i]);
+				insertle.setLuse(insertLuse[i]);
+				insertle.setAleaveDeduction(insertAleaveDeduction[i]);
+				insertle.setHarfLeave(insertHarfLeave[i]);
+				insertle.setCorpNo(corpNo);
+				insertLeave.add(insertle);
+				
+			}
+		}
+
+		ATManagement aleave = null;
+		ArrayList<ATManagement> updateAleave = new ArrayList<ATManagement>();
+		String[] leaveNo = at.getLeaveNo().split(",");
+		String[] aleaveDeduction = at.getAleaveDeduction().split(",");
+		String[] harfLeave = at.getHarfLeave().split(",");
+		String[] luse = at.getLuse().split(",");
+		ATManagement leave = null;
+		ArrayList<ATManagement> updateLeave = new ArrayList<ATManagement>();
+		for(int j = 0 ; j < leaveNo.length; j++) {
+			leave = new ATManagement();
+			leave.setLeaveNo(leaveNo[j]);
+			leave.setHarfLeave(harfLeave[j]);
+			leave.setLuse(luse[j]);
+			leave.setCorpNo(corpNo);
+			leave.setAleaveDeduction(aleaveDeduction[j]);
+			updateLeave.add(leave);
+	}
+		String[] yearAleave = at.getYearAleave().split(",");
+		String[] aleaveCount = request.getParameterValues("aleaveCount");
+		for(int i = 0 ; i < aleaveCount.length; i++) {
+			aleave = new ATManagement();
+			aleave.setYearAleave(yearAleave[i]);
+			aleave.setAleaveCount(Integer.parseInt(aleaveCount[i]));
+			aleave.setCorpNo(corpNo);
+			updateAleave.add(aleave);
+		}
+		try {
+			as.updateLeaveList(updateLeave);
+			as.updateYearAleave(updateAleave);
+			as.updateLeaveSetting(at);
+			if(insertLeave != null) {
+				as.insertLeaveList(insertLeave);
+				
+			}
+			return "redirect:vacationManagement.at";
+		} catch (UpdateInsertLeaveException e) {
+			request.setAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+		
+		
+
+	}
 	
 	@RequestMapping("selectVacationStatus.at")
-	public String selectVacationStatus() {
+	public ModelAndView selectVacationStatus(ModelAndView mv, ATManagement at, HttpServletRequest request) {
 		
-		return "atManagement/vacationStatus";
+		int corpNo = 1;
+		String mno = "32";
+		
+		at.setCorpNo(corpNo);
+		at.setMno(mno);
+		
+		mv.setViewName("atManagement/vacationStatus");
+		return mv;
 	}
 	@RequestMapping("insertVacation.at")
 	public String insertVacation() {
@@ -542,22 +669,14 @@ public class ATManagementController {
 		
 		return "atManagement/takeTimeOffList";
 	}
-	@RequestMapping("selectEmployeeATManagement.at")
-	public String selectEmployeeATManagement() {
-		
-		return "atManagement/employeeATManagement";
-	}
+	
 	@RequestMapping("updateEmpAt.at")
 	public String updateEmpAt() {
 		
 		return "atManagement/updateEmpAt";
 	}
 	
-	@RequestMapping("vacationManagement.at")
-	public String vacationManagement() {
-		
-		return "atManagement/vacationManagement";
-	}
+
 	@RequestMapping("employeeVacation.at")
 	public String employeeVacation() {
 		

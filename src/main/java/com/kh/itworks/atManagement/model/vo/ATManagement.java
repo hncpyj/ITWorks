@@ -37,6 +37,7 @@ public class ATManagement implements java.io.Serializable {
 	private String objReason;		//이의신청사유
 	private String checkStatus;		//이의신청확인여부
 	private String rid;			//권한코드
+	private String roleNo;
 	private String jid;			//직급코드
 	private String did;			//부서코드
 	private String ename;			//이름
@@ -61,13 +62,28 @@ public class ATManagement implements java.io.Serializable {
 	private String workingTime;			//근무기본출근시간
 	private String quittingTime;		//근무기본퇴근시간
 	private String harfOff;				//반차시간
-	
-	
+	private String leaveNo;				//휴가종류코드
+	private String lname;				//휴가명
+	private String luse;				//사용여부
+	private String aleaveDeduction;		//연차차감여부
+	private String harfLeave;			//반차허용여부
+	private String lcategory;			//휴가카테고리
+	private String lInfoNo;				//휴가정보관리코드
+	private String lstartDay;			//휴가신청날짜
+	private String lendDay;				//휴가끝날짜
+	private String lref;				//휴가참조
+	private String lreason;				//휴가사유
+	private String lhistoryNo;			//휴가사용이력관리코드
+	private String lstartDate;			//휴가시작날짜
+	private String lendDate;			//휴가종료날짜
+	private int apvNo;
+	private String apvlineNo;
+	private String leaveFunc;
+	private String lcreationCondition;
+	private int lcreationDate;
 
-	
+
 	public ATManagement() {}
-
-
 
 
 	public ATManagement(String workingStatusNo, String workType, String work, int corpNo, String wno, String wstatus,
@@ -75,11 +91,14 @@ public class ATManagement implements java.io.Serializable {
 			int hireYear, int aleaveCount, int accUnitPeriod, String rwdNo, String rwdName, int rwdPeriod, String otNo,
 			String ptRef, String otDate, String otStart, String otEnd, String otReason, String otStatus, String objNo,
 			String objDate, String objType, String changeDate, String objStatus, String objReason, String checkStatus,
-			String rid, String jid, String did, String ename, int eno, String hireDate, String status, String approval,
-			String mno, String dname, String breakTimeNo, String btType, String btStart, String btEnd,
+			String rid, String roleNo, String jid, String did, String ename, int eno, String hireDate, String status,
+			String approval, String mno, String dname, String breakTimeNo, String btType, String btStart, String btEnd,
 			String attendence, String workTimeLimit, String laborDay, String holidays, String alternativeHolidays,
 			int workingSetNo, String workingSetTime, String dayOfTheWeek, String workingTime, String quittingTime,
-			String harfOff) {
+			String harfOff, String leaveNo, String lname, String luse, String aleaveDeduction, String harfLeave,
+			String lcategory, String lInfoNo, String lstartDay, String lendDay, String lref, String lreason,
+			String lhistoryNo, String lstartDate, String lendDate, int apvNo, String apvlineNo, String leaveFunc,
+			String lcreationCondition, int lcreationDate) {
 		super();
 		this.workingStatusNo = workingStatusNo;
 		this.workType = workType;
@@ -115,6 +134,7 @@ public class ATManagement implements java.io.Serializable {
 		this.objReason = objReason;
 		this.checkStatus = checkStatus;
 		this.rid = rid;
+		this.roleNo = roleNo;
 		this.jid = jid;
 		this.did = did;
 		this.ename = ename;
@@ -139,9 +159,26 @@ public class ATManagement implements java.io.Serializable {
 		this.workingTime = workingTime;
 		this.quittingTime = quittingTime;
 		this.harfOff = harfOff;
+		this.leaveNo = leaveNo;
+		this.lname = lname;
+		this.luse = luse;
+		this.aleaveDeduction = aleaveDeduction;
+		this.harfLeave = harfLeave;
+		this.lcategory = lcategory;
+		this.lInfoNo = lInfoNo;
+		this.lstartDay = lstartDay;
+		this.lendDay = lendDay;
+		this.lref = lref;
+		this.lreason = lreason;
+		this.lhistoryNo = lhistoryNo;
+		this.lstartDate = lstartDate;
+		this.lendDate = lendDate;
+		this.apvNo = apvNo;
+		this.apvlineNo = apvlineNo;
+		this.leaveFunc = leaveFunc;
+		this.lcreationCondition = lcreationCondition;
+		this.lcreationDate = lcreationDate;
 	}
-
-
 
 
 	public String getWorkingStatusNo() {
@@ -149,13 +186,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWorkingStatusNo(String workingStatusNo) {
 		this.workingStatusNo = workingStatusNo;
 	}
-
-
 
 
 	public String getWorkType() {
@@ -163,13 +196,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWorkType(String workType) {
 		this.workType = workType;
 	}
-
-
 
 
 	public String getWork() {
@@ -177,13 +206,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWork(String work) {
 		this.work = work;
 	}
-
-
 
 
 	public int getCorpNo() {
@@ -191,13 +216,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setCorpNo(int corpNo) {
 		this.corpNo = corpNo;
 	}
-
-
 
 
 	public String getWno() {
@@ -205,13 +226,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWno(String wno) {
 		this.wno = wno;
 	}
-
-
 
 
 	public String getWstatus() {
@@ -219,13 +236,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWstatus(String wstatus) {
 		this.wstatus = wstatus;
 	}
-
-
 
 
 	public String getWstart() {
@@ -233,13 +246,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWstart(String wstart) {
 		this.wstart = wstart;
 	}
-
-
 
 
 	public String getWend() {
@@ -247,13 +256,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWend(String wend) {
 		this.wend = wend;
 	}
-
-
 
 
 	public String getIp() {
@@ -261,13 +266,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-
-
 
 
 	public String getOutsideWork() {
@@ -275,13 +276,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setOutsideWork(String outsideWork) {
 		this.outsideWork = outsideWork;
 	}
-
-
 
 
 	public String getWdate() {
@@ -289,13 +286,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWdate(String wdate) {
 		this.wdate = wdate;
 	}
-
-
 
 
 	public int getEid() {
@@ -303,13 +296,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setEid(int eid) {
 		this.eid = eid;
 	}
-
-
 
 
 	public String getYearAleave() {
@@ -317,13 +306,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setYearAleave(String yearAleave) {
 		this.yearAleave = yearAleave;
 	}
-
-
 
 
 	public int getHireYear() {
@@ -331,13 +316,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setHireYear(int hireYear) {
 		this.hireYear = hireYear;
 	}
-
-
 
 
 	public int getAleaveCount() {
@@ -345,13 +326,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setAleaveCount(int aleaveCount) {
 		this.aleaveCount = aleaveCount;
 	}
-
-
 
 
 	public int getAccUnitPeriod() {
@@ -359,13 +336,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setAccUnitPeriod(int accUnitPeriod) {
 		this.accUnitPeriod = accUnitPeriod;
 	}
-
-
 
 
 	public String getRwdNo() {
@@ -373,13 +346,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setRwdNo(String rwdNo) {
 		this.rwdNo = rwdNo;
 	}
-
-
 
 
 	public String getRwdName() {
@@ -387,13 +356,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setRwdName(String rwdName) {
 		this.rwdName = rwdName;
 	}
-
-
 
 
 	public int getRwdPeriod() {
@@ -401,13 +366,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setRwdPeriod(int rwdPeriod) {
 		this.rwdPeriod = rwdPeriod;
 	}
-
-
 
 
 	public String getOtNo() {
@@ -415,13 +376,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setOtNo(String otNo) {
 		this.otNo = otNo;
 	}
-
-
 
 
 	public String getPtRef() {
@@ -429,13 +386,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setPtRef(String ptRef) {
 		this.ptRef = ptRef;
 	}
-
-
 
 
 	public String getOtDate() {
@@ -443,13 +396,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setOtDate(String otDate) {
 		this.otDate = otDate;
 	}
-
-
 
 
 	public String getOtStart() {
@@ -457,13 +406,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setOtStart(String otStart) {
 		this.otStart = otStart;
 	}
-
-
 
 
 	public String getOtEnd() {
@@ -471,13 +416,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setOtEnd(String otEnd) {
 		this.otEnd = otEnd;
 	}
-
-
 
 
 	public String getOtReason() {
@@ -485,13 +426,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setOtReason(String otReason) {
 		this.otReason = otReason;
 	}
-
-
 
 
 	public String getOtStatus() {
@@ -499,13 +436,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setOtStatus(String otStatus) {
 		this.otStatus = otStatus;
 	}
-
-
 
 
 	public String getObjNo() {
@@ -513,13 +446,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setObjNo(String objNo) {
 		this.objNo = objNo;
 	}
-
-
 
 
 	public String getObjDate() {
@@ -527,13 +456,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setObjDate(String objDate) {
 		this.objDate = objDate;
 	}
-
-
 
 
 	public String getObjType() {
@@ -541,13 +466,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setObjType(String objType) {
 		this.objType = objType;
 	}
-
-
 
 
 	public String getChangeDate() {
@@ -555,13 +476,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setChangeDate(String changeDate) {
 		this.changeDate = changeDate;
 	}
-
-
 
 
 	public String getObjStatus() {
@@ -569,13 +486,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setObjStatus(String objStatus) {
 		this.objStatus = objStatus;
 	}
-
-
 
 
 	public String getObjReason() {
@@ -583,13 +496,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setObjReason(String objReason) {
 		this.objReason = objReason;
 	}
-
-
 
 
 	public String getCheckStatus() {
@@ -597,13 +506,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setCheckStatus(String checkStatus) {
 		this.checkStatus = checkStatus;
 	}
-
-
 
 
 	public String getRid() {
@@ -611,13 +516,19 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setRid(String rid) {
 		this.rid = rid;
 	}
 
 
+	public String getRoleNo() {
+		return roleNo;
+	}
+
+
+	public void setRoleNo(String roleNo) {
+		this.roleNo = roleNo;
+	}
 
 
 	public String getJid() {
@@ -625,13 +536,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setJid(String jid) {
 		this.jid = jid;
 	}
-
-
 
 
 	public String getDid() {
@@ -639,13 +546,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setDid(String did) {
 		this.did = did;
 	}
-
-
 
 
 	public String getEname() {
@@ -653,13 +556,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setEname(String ename) {
 		this.ename = ename;
 	}
-
-
 
 
 	public int getEno() {
@@ -667,13 +566,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setEno(int eno) {
 		this.eno = eno;
 	}
-
-
 
 
 	public String getHireDate() {
@@ -681,13 +576,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setHireDate(String hireDate) {
 		this.hireDate = hireDate;
 	}
-
-
 
 
 	public String getStatus() {
@@ -695,13 +586,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-
 
 
 	public String getApproval() {
@@ -709,13 +596,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setApproval(String approval) {
 		this.approval = approval;
 	}
-
-
 
 
 	public String getMno() {
@@ -723,13 +606,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setMno(String mno) {
 		this.mno = mno;
 	}
-
-
 
 
 	public String getDname() {
@@ -737,13 +616,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setDname(String dname) {
 		this.dname = dname;
 	}
-
-
 
 
 	public String getBreakTimeNo() {
@@ -751,13 +626,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setBreakTimeNo(String breakTimeNo) {
 		this.breakTimeNo = breakTimeNo;
 	}
-
-
 
 
 	public String getBtType() {
@@ -765,13 +636,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setBtType(String btType) {
 		this.btType = btType;
 	}
-
-
 
 
 	public String getBtStart() {
@@ -779,13 +646,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setBtStart(String btStart) {
 		this.btStart = btStart;
 	}
-
-
 
 
 	public String getBtEnd() {
@@ -793,13 +656,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setBtEnd(String btEnd) {
 		this.btEnd = btEnd;
 	}
-
-
 
 
 	public String getAttendence() {
@@ -807,13 +666,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setAttendence(String attendence) {
 		this.attendence = attendence;
 	}
-
-
 
 
 	public String getWorkTimeLimit() {
@@ -821,13 +676,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWorkTimeLimit(String workTimeLimit) {
 		this.workTimeLimit = workTimeLimit;
 	}
-
-
 
 
 	public String getLaborDay() {
@@ -835,13 +686,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setLaborDay(String laborDay) {
 		this.laborDay = laborDay;
 	}
-
-
 
 
 	public String getHolidays() {
@@ -849,13 +696,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setHolidays(String holidays) {
 		this.holidays = holidays;
 	}
-
-
 
 
 	public String getAlternativeHolidays() {
@@ -863,13 +706,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setAlternativeHolidays(String alternativeHolidays) {
 		this.alternativeHolidays = alternativeHolidays;
 	}
-
-
 
 
 	public int getWorkingSetNo() {
@@ -877,13 +716,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWorkingSetNo(int workingSetNo) {
 		this.workingSetNo = workingSetNo;
 	}
-
-
 
 
 	public String getWorkingSetTime() {
@@ -891,13 +726,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWorkingSetTime(String workingSetTime) {
 		this.workingSetTime = workingSetTime;
 	}
-
-
 
 
 	public String getDayOfTheWeek() {
@@ -905,13 +736,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setDayOfTheWeek(String dayOfTheWeek) {
 		this.dayOfTheWeek = dayOfTheWeek;
 	}
-
-
 
 
 	public String getWorkingTime() {
@@ -919,13 +746,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setWorkingTime(String workingTime) {
 		this.workingTime = workingTime;
 	}
-
-
 
 
 	public String getQuittingTime() {
@@ -933,13 +756,9 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setQuittingTime(String quittingTime) {
 		this.quittingTime = quittingTime;
 	}
-
-
 
 
 	public String getHarfOff() {
@@ -947,13 +766,199 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-
-
 	public void setHarfOff(String harfOff) {
 		this.harfOff = harfOff;
 	}
 
 
+	public String getLeaveNo() {
+		return leaveNo;
+	}
+
+
+	public void setLeaveNo(String leaveNo) {
+		this.leaveNo = leaveNo;
+	}
+
+
+	public String getLname() {
+		return lname;
+	}
+
+
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+
+
+	public String getLuse() {
+		return luse;
+	}
+
+
+	public void setLuse(String luse) {
+		this.luse = luse;
+	}
+
+
+	public String getAleaveDeduction() {
+		return aleaveDeduction;
+	}
+
+
+	public void setAleaveDeduction(String aleaveDeduction) {
+		this.aleaveDeduction = aleaveDeduction;
+	}
+
+
+	public String getHarfLeave() {
+		return harfLeave;
+	}
+
+
+	public void setHarfLeave(String harfLeave) {
+		this.harfLeave = harfLeave;
+	}
+
+
+	public String getLcategory() {
+		return lcategory;
+	}
+
+
+	public void setLcategory(String lcategory) {
+		this.lcategory = lcategory;
+	}
+
+
+	public String getlInfoNo() {
+		return lInfoNo;
+	}
+
+
+	public void setlInfoNo(String lInfoNo) {
+		this.lInfoNo = lInfoNo;
+	}
+
+
+	public String getLstartDay() {
+		return lstartDay;
+	}
+
+
+	public void setLstartDay(String lstartDay) {
+		this.lstartDay = lstartDay;
+	}
+
+
+	public String getLendDay() {
+		return lendDay;
+	}
+
+
+	public void setLendDay(String lendDay) {
+		this.lendDay = lendDay;
+	}
+
+
+	public String getLref() {
+		return lref;
+	}
+
+
+	public void setLref(String lref) {
+		this.lref = lref;
+	}
+
+
+	public String getLreason() {
+		return lreason;
+	}
+
+
+	public void setLreason(String lreason) {
+		this.lreason = lreason;
+	}
+
+
+	public String getLhistoryNo() {
+		return lhistoryNo;
+	}
+
+
+	public void setLhistoryNo(String lhistoryNo) {
+		this.lhistoryNo = lhistoryNo;
+	}
+
+
+	public String getLstartDate() {
+		return lstartDate;
+	}
+
+
+	public void setLstartDate(String lstartDate) {
+		this.lstartDate = lstartDate;
+	}
+
+
+	public String getLendDate() {
+		return lendDate;
+	}
+
+
+	public void setLendDate(String lendDate) {
+		this.lendDate = lendDate;
+	}
+
+
+	public int getApvNo() {
+		return apvNo;
+	}
+
+
+	public void setApvNo(int apvNo) {
+		this.apvNo = apvNo;
+	}
+
+
+	public String getApvlineNo() {
+		return apvlineNo;
+	}
+
+
+	public void setApvlineNo(String apvlineNo) {
+		this.apvlineNo = apvlineNo;
+	}
+
+
+	public String getLeaveFunc() {
+		return leaveFunc;
+	}
+
+
+	public void setLeaveFunc(String leaveFunc) {
+		this.leaveFunc = leaveFunc;
+	}
+
+
+	public String getLcreationCondition() {
+		return lcreationCondition;
+	}
+
+
+	public void setLcreationCondition(String lcreationCondition) {
+		this.lcreationCondition = lcreationCondition;
+	}
+
+
+	public int getLcreationDate() {
+		return lcreationDate;
+	}
+
+
+	public void setLcreationDate(int lcreationDate) {
+		this.lcreationDate = lcreationDate;
+	}
 
 
 	@Override
@@ -966,17 +971,25 @@ public class ATManagement implements java.io.Serializable {
 				+ rwdPeriod + ", otNo=" + otNo + ", ptRef=" + ptRef + ", otDate=" + otDate + ", otStart=" + otStart
 				+ ", otEnd=" + otEnd + ", otReason=" + otReason + ", otStatus=" + otStatus + ", objNo=" + objNo
 				+ ", objDate=" + objDate + ", objType=" + objType + ", changeDate=" + changeDate + ", objStatus="
-				+ objStatus + ", objReason=" + objReason + ", checkStatus=" + checkStatus + ", rid=" + rid + ", jid="
-				+ jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno + ", hireDate=" + hireDate + ", status="
-				+ status + ", approval=" + approval + ", mno=" + mno + ", dname=" + dname + ", breakTimeNo="
-				+ breakTimeNo + ", btType=" + btType + ", btStart=" + btStart + ", btEnd=" + btEnd + ", attendence="
-				+ attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay=" + laborDay + ", holidays=" + holidays
-				+ ", alternativeHolidays=" + alternativeHolidays + ", workingSetNo=" + workingSetNo
-				+ ", workingSetTime=" + workingSetTime + ", dayOfTheWeek=" + dayOfTheWeek + ", workingTime="
-				+ workingTime + ", quittingTime=" + quittingTime + ", harfOff=" + harfOff + "]";
+				+ objStatus + ", objReason=" + objReason + ", checkStatus=" + checkStatus + ", rid=" + rid + ", roleNo="
+				+ roleNo + ", jid=" + jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno + ", hireDate="
+				+ hireDate + ", status=" + status + ", approval=" + approval + ", mno=" + mno + ", dname=" + dname
+				+ ", breakTimeNo=" + breakTimeNo + ", btType=" + btType + ", btStart=" + btStart + ", btEnd=" + btEnd
+				+ ", attendence=" + attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay=" + laborDay
+				+ ", holidays=" + holidays + ", alternativeHolidays=" + alternativeHolidays + ", workingSetNo="
+				+ workingSetNo + ", workingSetTime=" + workingSetTime + ", dayOfTheWeek=" + dayOfTheWeek
+				+ ", workingTime=" + workingTime + ", quittingTime=" + quittingTime + ", harfOff=" + harfOff
+				+ ", leaveNo=" + leaveNo + ", lname=" + lname + ", luse=" + luse + ", aleaveDeduction="
+				+ aleaveDeduction + ", harfLeave=" + harfLeave + ", lcategory=" + lcategory + ", lInfoNo=" + lInfoNo
+				+ ", lstartDay=" + lstartDay + ", lendDay=" + lendDay + ", lref=" + lref + ", lreason=" + lreason
+				+ ", lhistoryNo=" + lhistoryNo + ", lstartDate=" + lstartDate + ", lendDate=" + lendDate + ", apvNo="
+				+ apvNo + ", apvlineNo=" + apvlineNo + ", leaveFunc=" + leaveFunc + ", lcreationCondition="
+				+ lcreationCondition + ", lcreationDate=" + lcreationDate + "]";
 	}
 
-
+	
+	
+	
 	
 	
 }

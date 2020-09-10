@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -123,7 +124,7 @@
             	<tr>
                 		<th>이름</th>
                 		<th>소속</th>
-                		<th>누적시간</th>
+                		<th>근무시간</th>
                 		<th>월</th>
                 		<th>화</th>
                 		<th>수</th>
@@ -135,186 +136,147 @@
                 	<c:forEach begin="0" end="${empworklist.size()-1 }" var="i">
                 	<input type="hidden" value="${empworklist.get(i).wstart }">
                 	<tr>
-                		<c:forEach begin="0" end="${empworklist.size()-1 }" var="j">
-                		<c:if test="${empworklist.get(i).mno eq empworklist.get(j).mno && empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' &&empworklist.get(j).wstatus eq '퇴근'}">
-                		<td rowspan="3"><c:out value="${empworklist.get(j).ename }"></c:out></td>
-                		<td rowspan="3"><c:out value="${empworklist.get(j).dname }"></c:out></td>
-                		</c:if>
-                		</c:forEach>
+                		<td rowspan="3"><c:out value="${empworklist.get(i).ename }"></c:out></td>
+                		<td rowspan="3"><c:out value="${empworklist.get(i).dname }"></c:out></td>
+                		
                 		<td>출근 시간</td>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '월' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<c:if test="${not empty empworklist.get(i).wstart}">
-	                			<td><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
-	                			</c:if>
-                			</c:if>
-	                		<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="startmon"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '월' }">
+	                		<td id="startmon">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '화' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<c:if test="${not empty empworklist.get(i).wstart}">
-	                			<td><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="starttue"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '화' }">
+	                		<td id="starttue">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '수' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<c:if test="${not empty empworklist.get(i).wstart}">
-	                			<td><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="startwed"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '수' }">
+	                		<td id="startwed">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '목' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<c:if test="${not empty empworklist.get(i).wstart}">
-	                			<td><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="startthu"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '목' }">
+	                		<td id="startthu">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '금' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<c:if test="${not empty empworklist.get(i).wstart}">
-	                			<td><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="startfri"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '금' }">
+	                		<td id="startfri">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '토' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<c:if test="${not empty empworklist.get(i).wstart}">
-	                			<td class="sat"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td class="sat" id="startsat"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '토' }">
+	                		<td class="sat" id="startsat">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '일' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<c:if test="${not empty empworklist.get(i).wstart}">
-	                			<td class="sun"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td class="sun" id="startsun"><c:out value="${empworklist.get(i).wstart }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '일' }">
+	                		<td class="sun" id="startsun">00:00:00</td>                		                			
                 		</c:if>
                 	</tr>
                 	<tr>
                 		<td>퇴근 시간</td>
-                		<%-- <c:forEach begin="0" end="${empworklist.size()-1 }" var="j">
-                		<c:if test="${empworklist.get(i).mno eq empworklist.get(j).mno }"> --%>
-                		
+
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '월' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<c:if test="${not empty empworklist.get(i).wend}">
-	                			<td><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="endmon"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '월' }">
+	                		<td id="endmon">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '화' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근' }">
-	                			<c:if test="${not empty empworklist.get(i).wend}">
-	                			<td><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="endtue"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '화' }">
+	                		<td id="endtue">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '수' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근' }">
-	                			<c:if test="${not empty empworklist.get(i).wend }">
-	                			<td><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="endwed"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '수' }">
+	                		<td id="endwed">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '목' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<c:if test="${not empty empworklist.get(i).wend}">
-	                			<td><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="endthu"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '목' }">
+	                		<td id="endthu">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '금' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<c:if test="${not empty empworklist.get(i).wend }">
-	                			<td><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td id="endfri"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '금' }">
+	                		<td id="endfri">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '토' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근'}">
-	                			<c:if test="${not empty empworklist.get(i).wend}">
-	                			<td class="sat"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td class="sat" id="endsat"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '토' }">
+	                		<td class="sat" id="endsat">00:00:00</td>                		                			
                 		</c:if>
                 		<c:if test="${empworklist.get(i).dayOfTheWeek eq '일' }">
-                			<c:if test="${empworklist.get(i).wstatus eq '퇴근' }">
-	                			<c:if test="${not empty empworklist.get(i).wend }">
-	                			<td class="sun"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
-	                			</c:if>
-	                			
-                			</c:if>
-                			<c:if test="${empworklist.get(i).wstatus eq '출근' || empworklist.get(i).wstatus eq '지각' }">
-	                			<td>00:00:00</td>
-	                		</c:if>
+	                		<td class="sun" id="endsun"><c:out value="${empworklist.get(i).wend }"></c:out></td>                		                			
                 		</c:if>
-                		<%-- </c:if>
-                			                	
-                		</c:forEach> --%>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '일' }">
+	                		<td class="sun" id="endsun">00:00:00</td>                		                			
+                		</c:if>
                 	</tr>
+                		
+                	
                 	<tr>
                 		<td>연장 근무</td>
-                		<td>6시간</td>
-                		<td>6시간</td>
-                		<td>6시간</td>
-                		<td>6시간</td>
-                		<td>6시간</td>
-                		<td class="sat">6시간</td>
-                		<td class="sun">0시간</td>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek eq '월' }">
+	                		<td id="otmon"><c:out value="${fn:split(empworklist.get(i).otEnd, ':')[0]-fn:split(empworklist.get(i).otStart, ':')[0]}"></c:out>시간</td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '월' }">
+	                		<td id="otmon">0시간</td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek eq '화' }">
+	                		<td id="ottue"><c:out value="${fn:split(empworklist.get(i).otEnd, ':')[0]-fn:split(empworklist.get(i).otStart, ':')[0]}"></c:out>시간</td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '화' }">
+	                		<td id="ottue">0시간</td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek eq '수' }">
+	                		<td id="otwed"><c:out value="${fn:split(empworklist.get(i).otEnd, ':')[0]-fn:split(empworklist.get(i).otStart, ':')[0]}"></c:out>시간</td>              		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '수' }">
+	                		<td id="otwed">0시간</td>         		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek eq '목' }">
+	                		<td id="otthu"><c:out value="${fn:split(empworklist.get(i).otEnd, ':')[0]-fn:split(empworklist.get(i).otStart, ':')[0]}"></c:out>시간</td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '목' }">
+	                		<td id="otthu">0시간</td>          		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek eq '금' }">
+	                		<td id="otfri"><c:out value="${fn:split(empworklist.get(i).otEnd, ':')[0]-fn:split(empworklist.get(i).otStart, ':')[0]}"></c:out>시간</td>		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '금' }">
+	                		<td id="otfri">0시간</td>               		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek eq '토' }">
+	                		<td class="sat" id="otsat"><c:out value="${fn:split(empworklist.get(i).otEnd, ':')[0]-fn:split(empworklist.get(i).otStart, ':')[0]}"></c:out>시간</td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '토' }">
+	                		<td class="sat" id="otsat">0시간</td>                		                			
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek eq '일' }">
+	                		<td class="sun" id="otsun"><c:out value="${fn:split(empworklist.get(i).otEnd, ':')[0]-fn:split(empworklist.get(i).otStart, ':')[0]}"></c:out>시간</td>
+                		</c:if>
+                		<c:if test="${empworklist.get(i).dayOfTheWeek ne '일' }">
+	                		<td class="sun" id="otsun">0시간</td>                		                			
+                		</c:if>
                 	</tr>
+
                 	</c:forEach>
             </table>
 		</div>
@@ -355,6 +317,8 @@
 					sun: thisWeek[6]},
 				method: "get",
 				success: function(data) {
+					
+					console.log(data.empWorklist.length);
 					console.log(data.empWorklist[0].wdate);
 				},
 				error: function() {

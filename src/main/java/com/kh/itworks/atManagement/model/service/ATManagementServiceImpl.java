@@ -11,8 +11,10 @@ import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
+import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
 
@@ -162,6 +164,63 @@ public class ATManagementServiceImpl implements ATManagementService {
 	public ArrayList<ATManagement> selectDateEmpWork(ATManagement date) {
 
 		return ad.selectDateEmpWork(sqlSession, date);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectEmployeeATManagement(ATManagement at) {
+
+		return ad.selectEmployeeATManagement(sqlSession, at);
+	}
+
+
+	@Override
+	public ATManagement selectLeaveSetting(ATManagement at) throws SelectLeaveException {
+
+		
+		return ad.selectLeaveSetting(sqlSession, at);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectYearAleave(ATManagement at) throws SelectLeaveException {
+
+		return ad.selectYearAleave(sqlSession, at);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectLeave(ATManagement at) throws SelectLeaveException {
+
+		return ad.selectLeave(sqlSession, at);
+	}
+
+
+	@Override
+	public int updateLeaveList(ArrayList<ATManagement> updateLeave) throws UpdateInsertLeaveException {
+
+		return ad.updateLeaveList(sqlSession, updateLeave);
+	}
+
+
+	@Override
+	public int updateYearAleave(ArrayList<ATManagement> updateAleave) throws UpdateInsertLeaveException {
+
+		return ad.updateYearAleave(sqlSession, updateAleave);
+	}
+
+
+	@Override
+	public int updateLeaveSetting(ATManagement at) throws UpdateInsertLeaveException {
+
+		return ad.updateLeaveSettion(sqlSession, at);
+	}
+
+
+	@Override
+	public int insertLeaveList(ArrayList<ATManagement> insertLeave) throws UpdateInsertLeaveException {
+
+		return ad.insertLeaveList(sqlSession, insertLeave);
 	}
 
 

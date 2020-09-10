@@ -11,8 +11,10 @@ import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
 import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedException;
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
+import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
+import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
 
@@ -297,6 +299,105 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		ArrayList<ATManagement> empwork = (ArrayList)sqlSession.selectList("ATManagement.selectDateEmpWork", date);
 		
 		return empwork;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectEmployeeATManagement(SqlSessionTemplate sqlSession, ATManagement at) {
+
+		
+		
+		
+		return null;
+	}
+
+	@Override
+	public ATManagement selectLeaveSetting(SqlSessionTemplate sqlSession, ATManagement at) throws SelectLeaveException {
+
+		
+		ATManagement leaveSetting = sqlSession.selectOne("ATManagement.selectLeaveSetting", at.getCorpNo());
+		
+		if(leaveSetting == null) {
+			throw new SelectLeaveException("휴가 기능 사용 여부 조회 실패");
+		}
+		
+		return leaveSetting;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectYearAleave(SqlSessionTemplate sqlSession, ATManagement at) throws SelectLeaveException {
+
+		ArrayList<ATManagement> yearAleave = (ArrayList)sqlSession.selectList("ATManagement.selectYearAleave", at);
+		
+		if(yearAleave == null) {
+			throw new SelectLeaveException("휴가 근속 연수 연차 관리 조회 실패");
+		}
+		return yearAleave;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectLeave(SqlSessionTemplate sqlSession, ATManagement at) throws SelectLeaveException {
+
+		ArrayList<ATManagement> leave = (ArrayList)sqlSession.selectList("ATManagement.selectLeave", at);
+		
+		if(leave == null) {
+			throw new SelectLeaveException("휴가 정보 관리 조회 실패");
+		}
+		
+		return leave;
+
+	}
+
+	@Override
+	public int updateLeaveList(SqlSessionTemplate sqlSession, ArrayList<ATManagement> updateLeave) throws UpdateInsertLeaveException {
+		int result = 0;
+		for(int i = 0; i < updateLeave.size(); i++) {
+			result = sqlSession.update("ATManagement.updateLeaveList", updateLeave.get(i));
+			
+		}
+		System.out.println("leave : " + result);
+		if(result == 0) {
+			throw new UpdateInsertLeaveException("휴가 정보 수정 실패");
+		}
+		return result;
+	}
+
+	@Override
+	public int updateYearAleave(SqlSessionTemplate sqlSession, ArrayList<ATManagement> updateAleave) throws UpdateInsertLeaveException {
+		int result = 0;
+		for(int i = 0; i < updateAleave.size(); i++) {
+			result = sqlSession.update("ATManagement.updateYearAleave", updateAleave.get(i));
+			
+		}
+		System.out.println("year : " + result);
+		if(result == 0) {
+			throw new UpdateInsertLeaveException("년수 연차 수정 실패");
+		}
+		return result;
+	}
+
+	@Override
+	public int updateLeaveSettion(SqlSessionTemplate sqlSession, ATManagement at) throws UpdateInsertLeaveException {
+
+		int result = sqlSession.update("ATManagement.updateLeaveSettion", at);
+		if(result == 0) {
+			throw new UpdateInsertLeaveException("휴가 기본 정보 수정 실패");
+		}
+		System.out.println("setting : " + result);
+		return result;
+	}
+
+	@Override
+	public int insertLeaveList(SqlSessionTemplate sqlSession, ArrayList<ATManagement> insertLeave) throws UpdateInsertLeaveException {
+		int result = 0;
+		for(int i = 0; i < insertLeave.size(); i++) {
+			result = sqlSession.insert("ATManagement.insertLeaveList", insertLeave.get(i));
+			
+		}
+		System.out.println("insert : " + result);
+		if(result == 0) {
+			throw new UpdateInsertLeaveException("휴가 정보 생성 실패");
+		}
+		return result;
 	}
 
 	
