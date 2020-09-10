@@ -25,13 +25,14 @@ public class Notice implements java.io.Serializable {
 	private int mno;			//회원관리코드
 	private int rId;			//권한관리코드
 	private int corpNo;			//회사코드
+	private String eName;		//이름
 	
 	public Notice() {
 		
 	}
 
 	public Notice(String noticeNo, int cId, String nTitle, String nDate, String nTime, String nViews, String nContent,
-			String nStatus, int mno, int rId, int corpNo) {
+			String nStatus, int mno, int rId, int corpNo, String eName) {
 		super();
 		this.noticeNo = noticeNo;
 		this.cId = cId;
@@ -44,6 +45,7 @@ public class Notice implements java.io.Serializable {
 		this.mno = mno;
 		this.rId = rId;
 		this.corpNo = corpNo;
+		this.eName = eName;
 	}
 
 	public String getNoticeNo() {
@@ -134,11 +136,19 @@ public class Notice implements java.io.Serializable {
 		this.corpNo = corpNo;
 	}
 
+	public String geteName() {
+		return eName;
+	}
+
+	public void seteName(String eName) {
+		this.eName = eName;
+	}
+
 	@Override
 	public String toString() {
 		return "Notice [noticeNo=" + noticeNo + ", cId=" + cId + ", nTitle=" + nTitle + ", nDate=" + nDate + ", nTime="
 				+ nTime + ", nViews=" + nViews + ", nContent=" + nContent + ", nStatus=" + nStatus + ", mno=" + mno
-				+ ", rId=" + rId + ", corpNo=" + corpNo + "]";
+				+ ", rId=" + rId + ", corpNo=" + corpNo + ", eName=" + eName + "]";
 	}
 	
 }

@@ -17,11 +17,27 @@
 		<result property="mno" column="MNO"/>
 		<result property="rId" column="RID"/>
 		<result property="corpNo" column="CORP_NO"/>
+		<result property="eName" column="ENAME"/>
 	</resultMap>
 
 	<insert id="insertNo" parameterType="Notice">
 		INSERT INTO NOTICE
 		VALUES (SEQ_NOTICE_NO.NEXTVAL, 1, #{nTitle}, SYSDATE, TO_CHAR(SYSDATE, 'hh24:mi:ss'), '0', #{nContent}, DEFAULT, #{mno}, 999, #{corpNo})
 	</insert>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		  FROM NOTICE
+		 WHERE NSTATUS = 'Y'
+	</select>
+	
+	<select id="selectNoticeList" resultMap="noticeResultSet">
+		SELECT N.*
+		     , E.ENAME
+		  FROM NOTICE N
+		  JOIN EMPLOYEE E ON (E.MNO = N.MNO)
+		 WHERE NSTATUS = 'Y'
+		   AND N.CORP_NO = #{corpNo}
+	</select>
 
 </mapper>

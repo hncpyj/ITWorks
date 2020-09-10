@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>ItWorks</title>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
@@ -154,39 +156,75 @@
                     <th width="100px">작성일</th>
                     <th width="50px">조회수</th>
                 </tr>
-                <tr>
-                    <td>00</td>
-                    <td><a href="noticeDetail.no">공지사항 제목입니다.</a></td>
-                    <td>최재영</td>
-                    <td>YYYY/MM/DD</td>
-                    <td>00</td>
-                </tr>
-                <tr>
-                    <td>00</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>최재영</td>
-                    <td>YYYY/MM/DD</td>
-                    <td>00</td>
-                </tr>
-                <tr>
-                    <td>00</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>최재영</td>
-                    <td>YYYY/MM/DD</td>
-                    <td>00</td>
-                </tr>
-                <tr>
-                    <td>00</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>최재영</td>
-                    <td>YYYY/MM/DD</td>
-                    <td>00</td>
-                </tr>
+                <c:forEach var="n" items="${ list }">
+                	<tr>
+                		<td><c:out value="${ n.noticeNo }"/></td>
+	                    <td><a href="noticeDetail.no"><c:out value="${ n.nTitle }"/></a></td>
+	                    <td><c:out value="${ n.eName }"/></td>
+	                    <td><c:out value="${ n.nDate }"/></td>
+	                    <td><c:out value="${ n.nViews }"/></td>
+                	</tr>
+                </c:forEach>
             </table>
+	        <!-- 공지사항 리스트 종료 -->
+	        
+	        <!-- 페이징 시작 -->
+	        <div id="pagingArea" align="center">
+			<c:if test="${ pi.currentPage <= 1 }">
+				[이전] &nbsp;
+			</c:if>
+			<c:if test="${ pi.currentPage > 1 }">
+				<c:url var="blistBack" value="/noticeList.no">
+					<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+				</c:url>
+				<a href="${ blistBack }">[이전]</a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+				<c:if test="${ p eq pi.currentPage }">
+					<font color="red" size="4"><b>[${ p }]</b></font>
+				</c:if>
+				<c:if test="${ p ne pi.currentPage }">
+					<c:url var="blistCheck" value="noticeList.no">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ blistCheck }">${ p }</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:if test="${ pi.currentPage >= pi.maxPage }">
+				&nbsp; [다음]
+			</c:if>
+			<c:if test="${ pi.currentPage < pi.maxPage }">
+				<c:url var="blistEnd" value="noticeList.no">
+					<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
+				</c:url>
+				&nbsp; <a href="${ blistEnd }">[다음]</a>
+			</c:if>
+			</div>
+	        <!-- 페이징 끝 -->
         </article>
-        <!-- 공지사항 리스트 종료 -->
     </section>
 	
 	 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
