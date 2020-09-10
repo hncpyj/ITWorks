@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,20 +101,20 @@
 
         <!-- 공지사항 입력 폼 -->
         <article>
-            <form action="">
+            <form action="insertNo.no" method="post" enctype="multipart/form-data">
                 <table>
                     <tr>
                         <th>제목</th>
-                        <td><input type="text" style="width: 900px;"></td>
+                        <td><input name="nTitle" type="text" style="width: 900px;"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td></td>
+                        <td><c:out value="${ notice.mNo }"/></td>
                     </tr>
                     <tr>
                         <th>내용</th>
                         <td>
-                            <textarea name="" id="" cols="126" rows="20" style="resize: none; margin-top: 5px;"></textarea>
+                            <textarea name="nContent" id="nContent" cols="126" rows="20" style="resize: none; margin-top: 5px;"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -121,7 +122,7 @@
                         <td><input type="file"></td>
                     </tr>
                 </table>
-                <input type="submit" value="등록하기">
+                <input type="submit" value="등록하기" onclick="location.href='insertNo.no'">
             </form>
         </article>
         <!-- 공지사항 입력 폼 종료-->

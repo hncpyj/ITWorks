@@ -6,13 +6,22 @@
 <mapper namespace="Notice">
 
 	<resultMap type="com.kh.itworks.notice.model.vo.Notice" id="noticeResultSet">
-		<id property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
+		<id property="noticeNo" column="NOTICE_NO"/>
+		<result property="cId" column="CID"/>
+		<result property="nTitle" column="NTITLE"/>
+		<result property="nDate" column="NDATE"/>
+		<result property="nTime" column="NTIME"/>
+		<result property="nViews" column="NVIEWS"/>
+		<result property="nContent" column="NCONTENT"/>
+		<result property="nStatus" column="NSTATUS"/>
+		<result property="mno" column="MNO"/>
+		<result property="rId" column="RID"/>
+		<result property="corpNo" column="CORP_NO"/>
 	</resultMap>
+
+	<insert id="insertNo" parameterType="Notice">
+		INSERT INTO NOTICE
+		VALUES (SEQ_NOTICE_NO.NEXTVAL, 1, #{nTitle}, SYSDATE, TO_CHAR(SYSDATE, 'hh24:mi:ss'), '0', #{nContent}, DEFAULT, #{mno}, 999, #{corpNo})
+	</insert>
 
 </mapper>

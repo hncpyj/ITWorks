@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -118,8 +119,8 @@
 
         <!-- 공지사항 폼 -->
         <article>
-            <button onclick="modifyNotice();">수정하기</button>
-            <button>삭제하기</button>
+            <button onclick="">수정하기</button>
+            <button onclick="">삭제하기</button>
             <table>
                 <tr>
                     <th>No</th>
@@ -129,13 +130,13 @@
                 </tr>
                 <tr>
                     <th>제목</th>
-                    <td colspan="3">공지사항 제목</td>
+                    <td colspan="3"><p><c:out value="${ notice.nContent }"/></p></td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>최재영</td>
+                    <td><p><c:out value="${ notice.mNo }"/></p></td>
                     <th>작성일</th>
-                    <td style="text-align: center; padding-left: 0;">YYYY/MM/DD hh:MM:ss</td>
+                    <td style="text-align: center; padding-left: 0;"><p><c:out value="${ notice.nDate }"/></p></td>
                 </tr>
                 <tr>
                     <td colspan="4" style="height: 400px;"></td>

@@ -14,24 +14,24 @@ public class Notice implements java.io.Serializable {
 //	RID				NUMBER(20,0)			권한관리코드
 //	CORP_NO			NUMBER(30,0)			회사코드
 	
-	private String noticeNo;
-	private int cId;
-	private String nTitle;
-	private String nDate;
-	private String nTime;
-	private String nViews;
-	private String nContent;
-	private String nStatus;
-	private int mNo;
-	private int rId;
-	private int corpNo;
+	private String noticeNo;	//공지번호관리코드
+	private int cId;			//카테고리관리코드
+	private String nTitle;		//제목
+	private String nDate;		//작성일
+	private String nTime;		//작성시간
+	private String nViews;		//조회수
+	private String nContent;	//내용
+	private String nStatus;		//공개여부
+	private int mno;			//회원관리코드
+	private int rId;			//권한관리코드
+	private int corpNo;			//회사코드
 	
 	public Notice() {
 		
 	}
 
 	public Notice(String noticeNo, int cId, String nTitle, String nDate, String nTime, String nViews, String nContent,
-			String nStatus, int mNo, int rId, int corpNo) {
+			String nStatus, int mno, int rId, int corpNo) {
 		super();
 		this.noticeNo = noticeNo;
 		this.cId = cId;
@@ -41,7 +41,7 @@ public class Notice implements java.io.Serializable {
 		this.nViews = nViews;
 		this.nContent = nContent;
 		this.nStatus = nStatus;
-		this.mNo = mNo;
+		this.mno = mno;
 		this.rId = rId;
 		this.corpNo = corpNo;
 	}
@@ -110,12 +110,12 @@ public class Notice implements java.io.Serializable {
 		this.nStatus = nStatus;
 	}
 
-	public int getmNo() {
-		return mNo;
+	public int getMno() {
+		return mno;
 	}
 
-	public void setmNo(int mNo) {
-		this.mNo = mNo;
+	public void setMno(int mno) {
+		this.mno = mno;
 	}
 
 	public int getrId() {
@@ -137,7 +137,7 @@ public class Notice implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "Notice [noticeNo=" + noticeNo + ", cId=" + cId + ", nTitle=" + nTitle + ", nDate=" + nDate + ", nTime="
-				+ nTime + ", nViews=" + nViews + ", nContent=" + nContent + ", nStatus=" + nStatus + ", mNo=" + mNo
+				+ nTime + ", nViews=" + nViews + ", nContent=" + nContent + ", nStatus=" + nStatus + ", mno=" + mno
 				+ ", rId=" + rId + ", corpNo=" + corpNo + "]";
 	}
 	
