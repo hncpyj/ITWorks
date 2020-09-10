@@ -64,6 +64,12 @@ public class AddressServiceImpl implements AddressService {
 		return ad.countImportantAddressList(sqlSession);
 	}
 
+	@Override
+	public void deleteMainAddress(int contactsNo) {
+		
+		ad.deleteMainAddress(contactsNo);
+	}
+
 //	@Override
 //	public AddressVO selectOneMainAddress(int contactsNo) {
 //

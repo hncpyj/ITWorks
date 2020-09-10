@@ -33,11 +33,8 @@ public interface AddressDao {
 	//중요 주소록 개수
 	public int countImportantAddressList(SqlSessionTemplate sqlSession);
 	
-	//메인 주소록 조회
-//	public AddressVO selectOneMainAddress(SqlSessionTemplate sqlSession, int contactsNo);
-	
-//	//주소록 삭제
-//	public void delete(AddressVO address);
+	//주소록 삭제
+	public void deleteMainAddress(int contactsNo);
 //	
 //	//주소록 수정
 //	public int update(AddressVO address);

@@ -223,7 +223,7 @@ input {
 
 .firstLabel {
 	width: 50px;
-	font-size: 12px;
+	font-size: 16px;
 }
 
 .secondInput {
@@ -343,7 +343,7 @@ input {
 				</table>	
 				<hr>	
 				<input type="hidden" value="999" name="corpNo">
-				<input type="hidden" value="T6" name="tagId">
+				<input type="hidden" value="T10" name="tagId">
 				<input type="hidden" value="999" name="mNo">
 				<input type="hidden" value="999" name="roleNo">
 				

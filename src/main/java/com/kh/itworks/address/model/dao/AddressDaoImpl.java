@@ -92,6 +92,14 @@ public class AddressDaoImpl implements AddressDao{
 		return list;
 	}
 
+	@Override
+	public void deleteMainAddress(int contactsNo) {
+		
+		System.out.println(contactsNo);
+		
+		sqlSession.delete("Address.deleteMainAddress", contactsNo);
+	}
+
 //	@Override
 //	public AddressVO selectOneMainAddress(SqlSessionTemplate sqlSession, int contactsNo) {
 //

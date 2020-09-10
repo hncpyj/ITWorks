@@ -33,7 +33,6 @@ public class AddressController {
 
 		int result = as.insertAddress(address);
 
-	
 		return "redirect:mainAddress.ad";
 		
 	}
@@ -105,17 +104,43 @@ public class AddressController {
 		
 		return "address/shareAddress";
 	}
+
+	@RequestMapping("/delete.ad")
+	public String deleteAddress(HttpServletRequest request, HttpServletResponse response) {
+		
+		String num = request.getParameter("checkboxs");
+		int contactsNo = Integer.parseInt(num.substring(4));		
+		as.deleteMainAddress(contactsNo);
+			
+		return "redirect:mainAddress.ad";
+	}
 	
-//	@RequestMapping("/addressDetail.ad")
-//	public String addressDetail(HttpServletRequest request, HttpServletResponse response) {
-//		
-//		int contactsNo = Integer.parseInt(request.getParameter("aNo"));
-//				
-//		AddressVO address = as.selectOneMainAddress(contactsNo);
-//		
-//		request.setAttribute("address", address);
-//				System.out.println(address);
-//		return "address/mainAddress";
-//	}
+	@RequestMapping("/importDelete.ad")
+	public String deleteImportAddress(HttpServletRequest request, HttpServletResponse response) {
+		
+		String num = request.getParameter("checkboxs");
+		int contactsNo = Integer.parseInt(num.substring(4));
+		
+		as.deleteMainAddress(contactsNo);
+		
+		return "redirect:importantAddress.ad";
+	}
+	
+	@RequestMapping("/shareDelete.ad")
+	public String deleteShareAddress(HttpServletRequest request, HttpServletResponse response) {
+		
+		String num = request.getParameter("checkboxs");
+		int contactsNo = Integer.parseInt(num.substring(4));
+		
+		as.deleteMainAddress(contactsNo);
+		
+		return "redirect:shareAddress.ad";
+	}
+	
+	@RequestMapping("/search.ad")
+	public String searchValue(HttpServletRequest request, HttpServletResponse response) {
+		
+		return "";
+	}
 	
 }

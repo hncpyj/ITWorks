@@ -46,7 +46,7 @@
  	<!-- 회사별 직원별 내 개인주소록 리스트 불러오기  -->
 	<select id="selectMainAddressList" resultMap="addressResultSet">
 		SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, C.CON_HOMEPAGE, 
-               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO
+               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO,C.IMPORT_CON
 		  FROM CONTACTS C
           JOIN TAG T USING(TID)
          WHERE C.CON_TYPE = 'PRV'
@@ -66,7 +66,7 @@
 	<!-- 공유주소록 리스트 -->
 	<select id="selectShareAddressList" resultMap="addressResultSet">
 		SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, C.CON_HOMEPAGE, 
-               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO
+               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO,C.IMPORT_CON
 		  FROM CONTACTS C
           JOIN TAG T USING(TID)
          WHERE C.CON_TYPE = 'SHR'
@@ -86,7 +86,7 @@
 	<!-- 중요주소록 리스트 -->
 	<select id="selectImportantAddressList" parameterType="_int" resultMap="addressResultSet">
 		SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, C.CON_HOMEPAGE, 
-               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO
+               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO,C.IMPORT_CON
 		  FROM CONTACTS C
           JOIN TAG T USING(TID)
          WHERE IMPORT_CON = 'Y'
@@ -95,17 +95,12 @@
 		 ORDER BY CONTACTS_NO DESC 
 	</select>
 
-	<!-- 해당 주소록 보기
-    <select id="selectOneMainAddress" parameterType="_int" resultMap="addressResultSet">
-		SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, C.CON_HOMEPAGE, C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS
- 		  FROM CONTACTS C
- 		  JOIN TAG T USING(TID)
- 		 WHERE C.CON_TYPE = 'PRV'
-  		   AND C.CORP_NO = 999
-  		   AND C.MNO = 999
-   		   AND SUBSTR(C.CONTACTS_NO, 5) = #{contactsNo}
-	</select> -->
-	
+	<!-- 개인주소록 삭제 -->
+	<delete id="deleteMainAddress" parameterType="_int">
+		DELETE 
+		  FROM CONTACTS 
+		 WHERE CONTACTS_NO = 'CONN'||#{contactsNo}
+	</delete>
 	<!-- 수정 
 	<update id="update" parameterType="boardDTO">
 		UPDATE b_board SET title = #{title},
@@ -113,9 +108,5 @@
 		WHERE num = #{num}
 	</update>-->
 	
-	<!-- 삭제 : 상태값 -->
-<!-- 	<delete id="delete" parameterType="boardDTO">
-
-	</delete> -->
 
 </mapper>

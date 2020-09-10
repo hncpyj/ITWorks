@@ -31,8 +31,8 @@ public interface AddressService {
 	//중요 주소록 카운트
 	public int countImportantAddressList();
 	
-	//메인 주소록 조회
-	///AddressVO selectOneMainAddress(int contactsNo);
+	//메인 주소록 삭제
+	public void deleteMainAddress(int contactsNo); 
 	
 	
 //	public void delete(BoardDTO boardDTO);
