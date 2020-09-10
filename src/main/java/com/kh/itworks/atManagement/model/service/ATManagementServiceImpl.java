@@ -13,6 +13,7 @@ import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedExcep
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
 import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
+import com.kh.itworks.atManagement.model.exception.SelectVacationException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -221,6 +222,48 @@ public class ATManagementServiceImpl implements ATManagementService {
 	public int insertLeaveList(ArrayList<ATManagement> insertLeave) throws UpdateInsertLeaveException {
 
 		return ad.insertLeaveList(sqlSession, insertLeave);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectVacationStatus(ATManagement at, PageInfo pi) throws SelectVacationException {
+
+		return ad.selectVacationStatus(sqlSession, at, pi);
+	}
+
+
+	@Override
+	public String selectVacationEmployee(ATManagement at) throws SelectVacationException {
+
+		return ad.selectVacationEmployee(sqlSession, at);
+	}
+
+
+	@Override
+	public int selectAleaveCount(int hireyear) throws SelectVacationException {
+		
+		return ad.selectAleaveCount(sqlSession, hireyear);
+	}
+	
+	
+	@Override
+	public int selectRewardCount(int mno) throws SelectVacationException {
+		
+		return ad.selectRewardCount(sqlSession, mno);
+	}
+
+
+	@Override
+	public int getVacationListCount(ATManagement at) {
+		
+		return ad.getVacationListCount(sqlSession, at);
+	}
+
+
+	@Override
+	public ATManagement selectVacationDetail(String lInfoNo) throws SelectVacationException {
+
+		return ad.selectVacationDetail(sqlSession, lInfoNo);
 	}
 
 

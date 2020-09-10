@@ -27,7 +27,6 @@
 		<result property="harfLeave" column="HARF_LEAVE"/>
 		<result property="corpNo" column="CORP_NO"/>
 		<result property="lcategory" column="LCOTEGORY"/>
-		<result property="rwdNo" column="RWD_NO"/>
 	</resultMap>
 	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveApply">
 		<id property="lInfoNo" column="L_INFO_NO"/>
@@ -38,6 +37,8 @@
 		<result property="leaveNo" column="LEAVE_NO"/>
 		<result property="mno" column="MNO"/>
 		<result property="corpNo" column="CORP_NO"/>
+		<result property="ldate" column="LDATE"/>
+		<result property="lstatus" column="LSTATUS"/>
 	</resultMap>
 	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveHistory">
 		<id property="lhistoryNo" column="LHISTORY_NO"/>
@@ -91,6 +92,8 @@
 		<result property="rwdName" column="RWD_NAME"/>
 		<result property="rwdPeriod" column="RWD_PERIOD"/>
 		<result property="corpNo" column="CORP_NO"/>
+		<result property="leaveNo" column="LEAVE_NO"/>
+		<result property="mno" column="MNO"/>
 	</resultMap>
 	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="workInfo">
 		<id property="wno" column="WNO"/>
@@ -411,4 +414,50 @@
 		INSERT INTO LEAVE
 		VALUES ('LN'||SEQ_LEAVE_NO.NEXTVAL, #{lname}, #{luse}, #{aleaveDeduction}, #{harfLeave}, #{corpNo}, '정기휴가')
 	</insert>
+	<select id="selectVacationStatus" resultMap="leaveApply" parameterType="ATManagement">
+		SELECT L.*
+             , E.ENAME
+             , D.DNAME
+		     , LE.LNAME
+		  FROM LEAVE_APPLY L
+          JOIN LEAVE LE ON(L.LEAVE_NO = LE.LEAVE_NO)
+          JOIN EMPLOYEE E ON (L.MNO = E.MNO)
+          JOIN DEPT D ON (E.DID = D.DID)
+		 WHERE L.CORP_NO = #{corpNo}
+		   AND L.MNO = #{mno}
+		 ORDER BY TO_NUMBER(SUBSTR(L.L_INFO_NO, 3))
+	</select>
+	<select id="getVacationListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM LEAVE_APPLY
+		 WHERE CORP_NO = #{corpNo}
+		   AND MNO = #{mno}
+	</select>
+	<select id="selectVacationEmployee" resultType="java.lang.String" parameterType="ATManagement">
+		SELECT HIREDATE
+		  FROM EMPLOYEE
+		 WHERE MNO=#{mno}
+	</select>
+	<select id="selectRewardCount" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+		  FROM REWARD
+		 WHERE MNO=#{mno}
+	</select>
+	<select id="selectAleaveCount" resultType="_int" parameterType="_int">
+		SELECT ALEAVE_COUNT
+		  FROM YEAR_ALEAVE
+		 WHERE HIREYEAR=#{hireyear}
+	</select>
+	<select id="selectVacationDetail"  resultMap="leaveApply" parameterType="ATManagement" >
+		SELECT L.*
+             , E.ENAME
+             , D.DNAME
+		     , LE.LNAME
+		  FROM LEAVE_APPLY L
+          JOIN LEAVE LE ON(L.LEAVE_NO = LE.LEAVE_NO)
+          JOIN EMPLOYEE E ON (L.MNO = E.MNO)
+          JOIN DEPT D ON (E.DID = D.DID)
+		 WHERE L.L_INFO_NO = #{lInfoNo}
+		   
+	</select>
 </mapper>

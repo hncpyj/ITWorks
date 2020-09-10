@@ -10,6 +10,7 @@ import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedExcep
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
 import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
+import com.kh.itworks.atManagement.model.exception.SelectVacationException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -72,6 +73,18 @@ public interface ATManagementDao {
 	int updateLeaveSettion(SqlSessionTemplate sqlSession, ATManagement at) throws UpdateInsertLeaveException;
 
 	int insertLeaveList(SqlSessionTemplate sqlSession, ArrayList<ATManagement> insertLeave) throws UpdateInsertLeaveException;
+
+	ArrayList<ATManagement> selectVacationStatus(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectVacationException;
+
+	String selectVacationEmployee(SqlSessionTemplate sqlSession, ATManagement at) throws SelectVacationException;
+
+	int selectRewardCount(SqlSessionTemplate sqlSession, int mno) throws SelectVacationException;
+
+	int selectAleaveCount(SqlSessionTemplate sqlSession, int hireyear) throws SelectVacationException;
+
+	int getVacationListCount(SqlSessionTemplate sqlSession, ATManagement at);
+
+	ATManagement selectVacationDetail(SqlSessionTemplate sqlSession, String lInfoNo)throws SelectVacationException;
 
 
 	

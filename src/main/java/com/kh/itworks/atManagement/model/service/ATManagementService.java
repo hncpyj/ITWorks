@@ -8,6 +8,7 @@ import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedExcep
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
 import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
+import com.kh.itworks.atManagement.model.exception.SelectVacationException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -70,6 +71,18 @@ public interface ATManagementService {
 	int updateLeaveSetting(ATManagement at) throws UpdateInsertLeaveException;
 
 	int insertLeaveList(ArrayList<ATManagement> insertLeave) throws UpdateInsertLeaveException;
+
+	ArrayList<ATManagement> selectVacationStatus(ATManagement at, PageInfo pi) throws SelectVacationException;
+
+	String selectVacationEmployee(ATManagement at) throws SelectVacationException;
+
+	int selectAleaveCount(int hireyear) throws SelectVacationException;
+
+	int selectRewardCount(int mno) throws SelectVacationException;
+
+	int getVacationListCount(ATManagement at);
+
+	ATManagement selectVacationDetail(String lInfoNo)throws SelectVacationException;
 
 
 

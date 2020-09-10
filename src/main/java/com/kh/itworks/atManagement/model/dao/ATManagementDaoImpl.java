@@ -13,6 +13,7 @@ import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedExcep
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
 import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
+import com.kh.itworks.atManagement.model.exception.SelectVacationException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
@@ -264,7 +265,7 @@ public class ATManagementDaoImpl implements ATManagementDao {
 	@Override
 	public ArrayList<ATManagement> selectOvertimeList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectOvertimeListException {
 
-		ArrayList<ATManagement> selectcl = null;
+		
 		
 		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
 		
@@ -398,6 +399,69 @@ public class ATManagementDaoImpl implements ATManagementDao {
 			throw new UpdateInsertLeaveException("휴가 정보 생성 실패");
 		}
 		return result;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectVacationStatus(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectVacationException {
+
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		ArrayList<ATManagement> vacation = (ArrayList)sqlSession.selectList("ATManagement.selectVacationStatus", at, rowBounds);
+		
+		if(vacation == null) {
+			throw new SelectVacationException("휴가 정보 조회 실패");
+		}
+		
+		return vacation;
+	}
+
+	@Override
+	public String selectVacationEmployee(SqlSessionTemplate sqlSession, ATManagement at) throws SelectVacationException {
+
+		String vacationemp = sqlSession.selectOne("ATManagement.selectVacationEmployee", at);
+		if(vacationemp.equals("")) {
+			throw new SelectVacationException("입사일 조회 실패");
+		}
+
+		return vacationemp;
+	}
+
+	@Override
+	public int selectRewardCount(SqlSessionTemplate sqlSession, int mno) throws SelectVacationException {
+
+		int rewardCount = sqlSession.selectOne("ATManagement.selectRewardCount", mno);
+		
+		
+		
+		return rewardCount;
+	}
+
+	@Override
+	public int selectAleaveCount(SqlSessionTemplate sqlSession, int hireyear) throws SelectVacationException {
+
+		int aleaveCount = sqlSession.selectOne("ATManagement.selectAleaveCount", hireyear);
+		
+		return aleaveCount;
+	}
+
+	@Override
+	public int getVacationListCount(SqlSessionTemplate sqlSession, ATManagement at) {
+
+		int count = sqlSession.selectOne("ATManagement.getVacationListCount", at);
+		return count;
+	}
+
+	@Override
+	public ATManagement selectVacationDetail(SqlSessionTemplate sqlSession, String lInfoNo) throws SelectVacationException {
+
+		
+		ATManagement detail = sqlSession.selectOne("ATManagement.selectVacationDetail", lInfoNo);
+		if(detail == null) {
+			throw new SelectVacationException("휴가 상세 조회 실패");
+		}
+		return detail;
 	}
 
 	

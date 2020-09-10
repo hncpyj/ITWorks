@@ -45,7 +45,7 @@ public class ATManagement implements java.io.Serializable {
 	private String hireDate;			//입사일
 	private String status;			//재직여부
 	private String approval;		//승인상태
-	private String mno;				//회원관리코드
+	private int mno;				//회원관리코드
 	private String dname;			//부서명
 	private String breakTimeNo;		//휴게시간관리코드
 	private String btType;			//휴게시간 종류
@@ -81,6 +81,8 @@ public class ATManagement implements java.io.Serializable {
 	private String leaveFunc;
 	private String lcreationCondition;
 	private int lcreationDate;
+	private String ldate;
+	private String lstatus;
 
 
 	public ATManagement() {}
@@ -92,13 +94,13 @@ public class ATManagement implements java.io.Serializable {
 			String ptRef, String otDate, String otStart, String otEnd, String otReason, String otStatus, String objNo,
 			String objDate, String objType, String changeDate, String objStatus, String objReason, String checkStatus,
 			String rid, String roleNo, String jid, String did, String ename, int eno, String hireDate, String status,
-			String approval, String mno, String dname, String breakTimeNo, String btType, String btStart, String btEnd,
+			String approval, int mno, String dname, String breakTimeNo, String btType, String btStart, String btEnd,
 			String attendence, String workTimeLimit, String laborDay, String holidays, String alternativeHolidays,
 			int workingSetNo, String workingSetTime, String dayOfTheWeek, String workingTime, String quittingTime,
 			String harfOff, String leaveNo, String lname, String luse, String aleaveDeduction, String harfLeave,
 			String lcategory, String lInfoNo, String lstartDay, String lendDay, String lref, String lreason,
 			String lhistoryNo, String lstartDate, String lendDate, int apvNo, String apvlineNo, String leaveFunc,
-			String lcreationCondition, int lcreationDate) {
+			String lcreationCondition, int lcreationDate, String ldate, String lstatus) {
 		super();
 		this.workingStatusNo = workingStatusNo;
 		this.workType = workType;
@@ -178,6 +180,8 @@ public class ATManagement implements java.io.Serializable {
 		this.leaveFunc = leaveFunc;
 		this.lcreationCondition = lcreationCondition;
 		this.lcreationDate = lcreationDate;
+		this.ldate = ldate;
+		this.lstatus = lstatus;
 	}
 
 
@@ -601,12 +605,12 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
-	public String getMno() {
+	public int getMno() {
 		return mno;
 	}
 
 
-	public void setMno(String mno) {
+	public void setMno(int mno) {
 		this.mno = mno;
 	}
 
@@ -961,6 +965,26 @@ public class ATManagement implements java.io.Serializable {
 	}
 
 
+	public String getLdate() {
+		return ldate;
+	}
+
+
+	public void setLdate(String ldate) {
+		this.ldate = ldate;
+	}
+
+
+	public String getLstatus() {
+		return lstatus;
+	}
+
+
+	public void setLstatus(String lstatus) {
+		this.lstatus = lstatus;
+	}
+
+
 	@Override
 	public String toString() {
 		return "ATManagement [workingStatusNo=" + workingStatusNo + ", workType=" + workType + ", work=" + work
@@ -984,11 +1008,10 @@ public class ATManagement implements java.io.Serializable {
 				+ ", lstartDay=" + lstartDay + ", lendDay=" + lendDay + ", lref=" + lref + ", lreason=" + lreason
 				+ ", lhistoryNo=" + lhistoryNo + ", lstartDate=" + lstartDate + ", lendDate=" + lendDate + ", apvNo="
 				+ apvNo + ", apvlineNo=" + apvlineNo + ", leaveFunc=" + leaveFunc + ", lcreationCondition="
-				+ lcreationCondition + ", lcreationDate=" + lcreationDate + "]";
+				+ lcreationCondition + ", lcreationDate=" + lcreationDate + ", ldate=" + ldate + ", lstatus=" + lstatus
+				+ "]";
 	}
 
-	
-	
 	
 	
 	

@@ -29,6 +29,7 @@ import com.kh.itworks.atManagement.model.exception.SelectATManagementFailedExcep
 import com.kh.itworks.atManagement.model.exception.SelectCorrenctionListException;
 import com.kh.itworks.atManagement.model.exception.SelectLeaveException;
 import com.kh.itworks.atManagement.model.exception.SelectOvertimeListException;
+import com.kh.itworks.atManagement.model.exception.SelectVacationException;
 import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.service.ATManagementService;
@@ -248,7 +249,7 @@ public class ATManagementController {
 		
 		//임시번호
 		int corpNo = 1;
-		String mno = "6";
+		int mno = 6;
 		at.setCorpNo(corpNo);
 		at.setMno(mno);
 		
@@ -315,7 +316,7 @@ public class ATManagementController {
 	public ModelAndView selectCorrentionList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
 		
 		at.setCorpNo(1);
-		at.setMno("6");
+		at.setMno(6);
 		int currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -366,7 +367,7 @@ public class ATManagementController {
 	public ModelAndView selectOvertimeList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
 		
 		at.setCorpNo(1);
-		at.setMno("6");
+		at.setMno(6);
 		int currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -641,14 +642,79 @@ public class ATManagementController {
 	public ModelAndView selectVacationStatus(ModelAndView mv, ATManagement at, HttpServletRequest request) {
 		
 		int corpNo = 1;
-		String mno = "32";
+		int mno = 32;
 		
 		at.setCorpNo(corpNo);
 		at.setMno(mno);
+		int currentPage = 1;
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
 		
-		mv.setViewName("atManagement/vacationStatus");
+		try {
+			ArrayList<ATManagement> leave = as.selectLeave(at);
+			
+			int listCount = as.getVacationListCount(at);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			ArrayList<ATManagement> vacation = as.selectVacationStatus(at, pi);
+			for(int i = 0; i < vacation.size(); i++) {
+				System.out.println("vacation : " + vacation.get(i));
+			}
+			Calendar cal = Calendar.getInstance();
+
+			int year = cal.get(Calendar.YEAR);
+			System.out.println(year);
+			
+			String hiredate = as.selectVacationEmployee(at);
+			System.out.println("hiredate : " + hiredate);
+			String[] year2 = hiredate.split("/");
+			int year3 = Integer.parseInt(year2[0]);
+			
+			int hireyear = year - year3;
+			int aleaveCount = as.selectAleaveCount(hireyear);
+			int reward = as.selectRewardCount(at.getMno());
+			
+			System.out.println("aleaveCount : " + aleaveCount);
+			System.out.println("reward : " + reward);
+			mv.addObject("leave", leave);
+			mv.addObject("vacation", vacation);
+			mv.addObject("pi", pi);
+			mv.addObject("hiredate", hiredate);
+			mv.addObject("aleaveCount",aleaveCount);
+			mv.addObject("reward", reward);
+			
+			
+			mv.setViewName("atManagement/vacationStatus");
+			
+		} catch (SelectVacationException | SelectLeaveException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
 		return mv;
 	}
+	
+	@RequestMapping("selectVacationDetail.at")
+	public ModelAndView selectVacationDetail(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+		
+		String lInfoNo = request.getParameter("no");
+		
+		try {
+			ATManagement vacation = as.selectVacationDetail(lInfoNo);
+			
+			System.out.println("vacation : " + vacation);
+			mv.addObject("vacation", vacation);
+			mv.setViewName("atManagement/selectVacationDetail");
+		} catch (SelectVacationException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		
+		return mv;
+	}
+	
 	@RequestMapping("insertVacation.at")
 	public String insertVacation() {
 		
