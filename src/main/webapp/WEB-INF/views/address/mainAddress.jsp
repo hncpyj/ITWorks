@@ -100,11 +100,6 @@ section {
 	cursor: pointer;
 	outline: none;
 }
-.pagingArea {
-	
-}
-
-
 .modal-title {
 	margin-bottom: 10px;
 }
@@ -154,9 +149,7 @@ input.modalSection {
 #hiddenText {
 	display:none;
 }
-</style>
-<style>
-#addressWindow {
+.addressWindow {
 	display: none;
 	width: 500px;
 	height: 600px;
@@ -200,14 +193,14 @@ input.modalSection {
 				</tr>
 				<c:forEach var ="prv" items="${ list }">
 					<tr>
-						<td style="width: 5%;"><input type="checkbox" id="checkAddress"></td>
-						<td style="width: 5%;" id="importantAdr"><img src="./resources/images/star.png" id="star"></td>
-						<td style="width: 10%;"><c:out value="${prv.conName }"></c:out></td>
-						<td style="width: 30%;"><c:out value="${prv.email }"></c:out></td>
-						<td style="width: 15%;"><c:out value="${prv.conPhone }"></c:out></td>
-						<td style="width: 10%;"><c:out value="${prv.conCorp }"></c:out></td>
-						<td style="width: 24%;"><c:out value="${prv.tagName }"></c:out></td>
-						<td id="hiddenText" style="width: 1;"><c:out value="${prv.contactsNo }"/></td>						
+						<td class="${prv.contactsNo }" style="width: 5%;"><input type="checkbox" id="checkAddress"></td>
+						<td class="${prv.contactsNo }" style="width: 5%;" id="importantAdr"><img src="./resources/images/star.png" id="star"></td>
+						<td class="${prv.contactsNo }" style="width: 10%;"><c:out value="${prv.conName }"></c:out></td>
+						<td class="${prv.contactsNo }" style="width: 30%;"><c:out value="${prv.email }"></c:out></td>
+						<td class="${prv.contactsNo }" style="width: 15%;"><c:out value="${prv.conPhone }"></c:out></td>
+						<td class="${prv.contactsNo }" style="width: 10%;"><c:out value="${prv.conCorp }"></c:out></td>
+						<td class="${prv.contactsNo }" style="width: 24%;"><c:out value="${prv.tagName }"></c:out></td>
+						<td class="${prv.contactsNo }" id="hiddenText" style="width: 1;"><c:out value="${prv.contactsNo }"/></td>						
 					</tr>
 				</c:forEach>				
 			</table>
@@ -248,10 +241,12 @@ input.modalSection {
 			</div>
 			<!-- 페이징 영역 끝 -->	
 		</div>
-	</section>
+	</section>		
 	<section>
-		<c:forEach var ="address" items="${ list }">	
-		<div id="${ address.contactsNo }" class="addressWindow">
+	<input type="hidden" id="size" value="${list.size() }">
+		<c:forEach var ="address" items="${ list }" varStatus="i">
+		<input type="hidden" id="contacts${i.count}" value="${address.contactsNo }">	
+		<div id="modal${ address.contactsNo }" class="addressWindow">
 			<div class="modal-title">
 				<p><c:out value="${ address.conName }"/></p>
 			</div>
@@ -302,8 +297,8 @@ input.modalSection {
 				</table>
 				<hr>
 				<div style="height: 30px;"></div>
-				<button class="modal_close_btn" type="reset">닫기</button>
-				<button id="updateBtn" type="submit">수정</button>
+				<button class="realmodal_close_btn${ address.contactsNo }" type="button">닫기</button>
+				<button id="updateBtn${ address.contactsNo }" type="submit">수정</button>
 			</form>
 		</div>
 		</c:forEach>
@@ -311,6 +306,7 @@ input.modalSection {
 </body>
 <script>
 	//글 셀렉트원
+<%-- <% for(AddressVO address : list) {%>
 $(function() {
 	$("#addressTable td").mouseover(function() {
 		$(this).parent().css({
@@ -322,30 +318,41 @@ $(function() {
 			"background" : "#fafafa"
 		});
 	}).click(function() {
-		modal('.addressWindow');
+		modalAddressWindow('#modal<%= address.getContactsNo() %>');
+	});		
+});
+<%}%> --%>
+
+
+
+$(function() {
+	$("#addressTable td").mouseover(function() {
+		$(this).parent().css({
+			"background" : "#E4E4E4",
+			"cursor" : "pointer"
+		});
+	}).mouseleave(function() {
+		$(this).parent().css({
+			"background" : "#fafafa"
+		});
+	}).click(function() {
+	var modalclass = $(this).attr('class');
+
+		modalAddressWindow('modal'+modalclass);
+
 	});
 });
-</script>	
-<script>
-   <% for(AddressVO address : list) {%>
-      $("#detail<%= address.getContactsNo()%>").click(function() {
-         $("#modal<%= address.getContactsNo()%>").css("display", "block");
-      });
 
-      $("#modal_close_btn<%= address.getContactsNo() %>").click(function() {
-         $("#modal<%= address.getContactsNo()%>").css("display", "none");
-      });
-      <%}%>
-</script>  
+</script>	
 <script>
 function modalAddressWindow(id) {
 	
 	var zIndex = 9999;
-	var modal = document.getElementById(id);
-
+	var modalAddressWindow = document.getElementById(id);
+console.log(modalAddressWindow);
 	// 모달 div 뒤에 희끄무레한 레이어
 	var bgg = document.createElement('div');
-	bg.setStyle({
+	bgg.setStyle({
 		position : 'fixed',
 		zIndex : zIndex,
 		left : '0px',
@@ -356,17 +363,28 @@ function modalAddressWindow(id) {
 		// 레이어 색갈은 여기서 바꾸면 됨
 		backgroundColor : 'rgba(0,0,0,0.4)'
 	});
-	document.body.append(bg);
-
+	document.body.append(bgg);
+	console.log(bgg);
+	
+	
 	// 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-	modal.querySelector('.modal_close_btn').addEventListener('click',
+	var size = $("#size").val();
+	for (var i = 1; i < size+1; i++) {
+		
+	/* modalAddressWindow.querySelector('.realmodal_close_btn'+$("#contacts"+i).val()).addEventListener('click',
 			function() {
-				bg.remove();
-				modal.style.display = 'none';
-			});
-
-	modal
-			.setStyle({
+				bgg.remove();
+				modalAddressWindow.style('display', 'none');
+				console.log(modalAddressWindow.style('display', 'none'));
+			}); */
+	
+	$('.realmodal_close_btn'+$("#contacts"+i).val()).click(function() {
+		bgg.remove();
+		modalAddressWindow.style.display = 'none';
+	});
+	}
+	
+	modalAddressWindow.setStyle({
 				position : 'fixed',
 				display : 'block',
 				boxShadow : '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
@@ -389,5 +407,8 @@ Element.prototype.setStyle = function(styles) {
 		this.style[k] = styles[k];
 	return this;
 };
+
+
 </script>
+
 </html>

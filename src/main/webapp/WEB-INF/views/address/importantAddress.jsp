@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>ItWorks</title>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
    aside {
         float: left;
@@ -123,14 +124,13 @@
 				<c:forEach var ="important" items="${ list }">
 				<tr>
 					<td style="width: 5%;"><input type="checkbox" id="checkAddress"></td>
-						<td style="width: 5%;" id="importantAdr"><img
-							src="./resources/images/star.png" id="star"></td>
-						<td style="width: 10%;"><c:out value="${important.conName }"></c:out></td>
-						<td style="width: 30%;"><c:out value="${important.email }"></c:out></td>
-						<td style="width: 15%;"><c:out value="${important.conPhone }"></c:out></td>
-						<td style="width: 10%;"><c:out value="${important.conCorp }"></c:out></td>
-						<td style="width: 24%;"><c:out value="${important.tagName }"></c:out></td>
-						<td style="width: 1%;"><input type="hidden" value="${important.contactsNo }"></td>
+					<td style="width: 5%;" id="importantAdr"><img src="./resources/images/star.png" id="star"></td>
+					<td style="width: 10%;"><c:out value="${important.conName }"></c:out></td>
+					<td style="width: 30%;"><c:out value="${important.email }"></c:out></td>
+					<td style="width: 15%;"><c:out value="${important.conPhone }"></c:out></td>
+					<td style="width: 10%;"><c:out value="${important.conCorp }"></c:out></td>
+					<td style="width: 24%;"><c:out value="${important.tagName }"></c:out></td>
+					<td style="width: 1%;"><input type="hidden" value="${important.contactsNo }"></td>
 				</tr>
 				</c:forEach>				
 			</table>

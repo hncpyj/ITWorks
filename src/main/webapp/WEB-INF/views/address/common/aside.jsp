@@ -348,7 +348,7 @@ input {
 				<input type="hidden" value="999" name="roleNo">
 				
 				<div style="height:30px;"></div>	
-				<button class="modal_close_btn" type="reset">취소</button>
+				<button class="modal_cancle_btn" type="reset">취소</button>
 				<button id="saveBtn" type="submit">저장</button>
 			</form>
 
@@ -357,9 +357,9 @@ input {
 </body>
 <script>
 
-	function modal(id) {
+	function modalLayer(id) {
 		var zIndex = 9999;
-		var modal = document.getElementById(id);
+		var modalLayer = document.getElementById(id);
 
 		// 모달 div 뒤에 희끄무레한 레이어
 		var bg = document.createElement('div');
@@ -377,13 +377,13 @@ input {
 		document.body.append(bg);
 
 		// 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-		modal.querySelector('.modal_close_btn').addEventListener('click',
+		modalLayer.querySelector('.modal_cancle_btn').addEventListener('click',
 				function() {
 					bg.remove();
-					modal.style.display = 'none';
+					modalLayer.style.display = 'none';
 				});
 
-		modal
+		modalLayer
 				.setStyle({
 					position : 'fixed',
 					display : 'block',
@@ -411,7 +411,7 @@ input {
 	document.getElementById('addAddressBtn').addEventListener('click',
 			function() {
 				// 모달창 띄우기
-				modal('addAddressWindow');
+				modalLayer('addAddressWindow');
 			});
 </script>
 </html>
