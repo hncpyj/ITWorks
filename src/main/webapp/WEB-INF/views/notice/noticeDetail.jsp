@@ -9,6 +9,7 @@
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
     /*메뉴 타이틀 관련 css 설정*/
     body {
        width: 1420px;
