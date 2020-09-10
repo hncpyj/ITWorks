@@ -100,10 +100,13 @@
 
         <!-- 공지사항 입력 폼 -->
         <article>
-            <form  action="insertProjectNotice.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
+            <form action="insertProjectNotice.pm" method="post" enctype="multipart/form-data" onsubmit="return checkNull();">
                 <table>
                     <tr>
-                        <th>제목<input type="hidden" value="${ pno }" name="pno"/><input type="hidden" name="writerMno" value="${ loginUser.mno }"/></th>
+                        <th>제목
+	                        <input type="hidden" value="${ pno }" name="pno"/>
+	                        <input type="hidden" name="writerMno" value="${ loginUser.mno }"/>
+                        </th>
                         <td><input type="text" name="pnoticeName" style="width: 900px;"></td>
                     </tr>
                     <tr>

@@ -222,5 +222,15 @@ public class ProjectServiceImpl implements ProjectService{
 		return nno;
 	}
 
+	@Override
+	public int updateNotice(ProjectNotice notice, ArrayList<FileBox> fileArr) {
+		return projectDao.updateNotice(sqlSession, notice, fileArr);
+	}
+
+	@Override
+	public int deleteNotice(String nno) {
+		return projectDao.deleteNotice(sqlSession, nno);
+	}
+
 
 }

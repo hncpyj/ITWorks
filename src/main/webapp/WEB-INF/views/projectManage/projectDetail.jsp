@@ -350,6 +350,10 @@
     .selectedMember>img:hover {
     	cursor: pointer;
     }
+    #unique {
+    	width: 88px;
+    	min-width: 88px;
+    }
 </style>
 </head>
 <body>
@@ -676,7 +680,7 @@
 			                        <td><c:out value="${fn:substring(task.pendDate, 2, 10)}"/></td>
 			                        <td><c:out value="${fn:substring(task.actualEndDate, 2, 10)}"/></td>
 			                        <td><c:out value="${ task.pprogress }"/></td>
-			                        <td style="color: red; font-weight: bold;"><c:out value="${ task.uniqueness }"/></td>
+			                        <td style="color: red; font-weight: bold;" id="unique"><c:out value="${ task.uniqueness }"/></td>
 			
 			                        <td></td>
 			                        <td></td>

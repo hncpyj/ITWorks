@@ -109,6 +109,10 @@
     button {
         cursor: pointer;
     }
+    a {
+    	color: black;
+    	text-decoration: none;
+    }
 </style>
 </head>
 <body>
@@ -170,7 +174,7 @@
 					[이전]&nbsp;
 				</c:if>
 				<c:if test="${ pi.currentPage > 1 }">
-					<c:url var="blistBack" value="/selectList.bo">
+					<c:url var="blistBack" value="/finishProjectList.pm">
 						<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
 					</c:url>
 					<a href="${ blistBack }">[이전]</a>&nbsp;
@@ -182,7 +186,7 @@
 					</c:if>
 					
 					<c:if test="${ p ne pi.currentPage }">
-						<c:url var="blistCheck" value="selectList.bo">
+						<c:url var="blistCheck" value="finishProjectList.pm">
 							<c:param name="currentPage" value="${ p }"/>
 						</c:url>
 						<a href="${ blistCheck }">${ p }</a>
@@ -193,7 +197,7 @@
 					&nbsp;[다음]
 				</c:if>
 				<c:if test="${ pi.currentPage < pi.maxPage }">
-					<c:url var="blistEnd" value="selectList.bo">
+					<c:url var="blistEnd" value="finishProjectList.pm">
 						<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
 					</c:url>
 					&nbsp;<a href="${ blistEnd }">[다음]</a>

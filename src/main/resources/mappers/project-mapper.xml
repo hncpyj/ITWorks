@@ -847,6 +847,7 @@
    		  JOIN PMEMBER M ON (N.PMEMBER_ID = M.PMEMBER_ID)
    		  JOIN EMPLOYEE E ON (M.MNO = E.MNO)
    		 WHERE N.PNO = #{pno}
+   		   AND PNOTICE_STATUS = 'Y'
    		 ORDER BY PNOTICE_DATE DESC, PNOTICE_TIME DESC
    </select>
    
@@ -863,16 +864,18 @@
    		  JOIN PMEMBER M ON (N.PMEMBER_ID = M.PMEMBER_ID)
    		  JOIN EMPLOYEE E ON (M.MNO = E.MNO)
    		 WHERE PNOTICE_NO = #{nno}
+   		   AND PNOTICE_STATUS = 'Y'
    </select>
    
    <update id="updateCount">
    		UPDATE PNOTICE
    		   SET COUNT = (SELECT COUNT FROM PNOTICE WHERE PNOTICE_NO = #{nno}) + 1
    		 WHERE PNOTICE_NO = #{nno}
+   		   AND PNOTICE_STATUS = 'Y'
    </update>
    
    <select id="selectPnoticeFiles" resultMap="fileBox">
-   		SELECT * FROM ATTACHMENTS WHERE PNOTICE_NO = #{nno}
+   		SELECT * FROM ATTACHMENTS WHERE PNOTICE_NO = #{nno} AND F_STATUS = 'Y'
    </select>
    
    <select id="selectNoticePmemberId" parameterType="ProjectNotice" resultType="java.lang.String">
@@ -892,4 +895,23 @@
                  ORDER BY PNOTICE_DATE DESC, PNOTICE_TIME DESC) 
          WHERE ROWNUM = 1
    </select>
+   
+   <update id="updateNotice" parameterType="ProjectNotice">
+   		UPDATE PNOTICE
+   		   SET PNOTICE_NAME = #{pnoticeName},
+   		       PNOTICE_COTENT = #{pnoticeContent}
+   		 WHERE PNOTICE_NO = #{pnoticeNo}
+   </update>
+   
+   <update id="updateNoticeSetStatusNFile">
+   		UPDATE ATTACHMENTS
+   		   SET F_STATUS = 'N'
+   		 WHERE PNOTICE_NO = #{pnoticeNo}
+   </update>
+   
+   <update id="deleteNotice">
+   		UPDATE PNOTICE
+   		   SET PNOTICE_STATUS = 'N'
+   		 WHERE PNOTICE_NO = #{nno}
+   </update>
 </mapper>

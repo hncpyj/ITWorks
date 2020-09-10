@@ -87,4 +87,8 @@ public interface ProjectService {
 
 	String selectNewNoticeNno();
 
+	int updateNotice(ProjectNotice notice, ArrayList<FileBox> fileArr);
+
+	int deleteNotice(String nno);
+
 }

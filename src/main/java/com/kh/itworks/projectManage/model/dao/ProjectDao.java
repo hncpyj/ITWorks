@@ -98,4 +98,8 @@ public interface ProjectDao {
 
 	String selectnewNno(SqlSessionTemplate sqlSession);
 
+	int updateNotice(SqlSessionTemplate sqlSession, ProjectNotice notice, ArrayList<FileBox> fileArr);
+
+	int deleteNotice(SqlSessionTemplate sqlSession, String nno);
+
 }

@@ -383,10 +383,6 @@ public class ProjectDaoImpl implements ProjectDao{
 	@Override
 	public int updateProject(SqlSessionTemplate sqlSession, HashMap<String, Object> updateInfo) {
 		
-		int result = 0;
-		
-		//ArrayList<FileBox> files = (ArrayList<FileBox>) updateInfo.get("files");
-		
 		int updateProject = sqlSession.update("Project.updateProject", updateInfo.get("project"));
 		int updatePmember = sqlSession.update("Project.updateSetStatusN", updateInfo.get("projectMember"));
 		int updatePmember2 = sqlSession.insert("Project.insertProjectMember", updateInfo.get("projectMember"));
@@ -396,9 +392,6 @@ public class ProjectDaoImpl implements ProjectDao{
 		if(updateInfo.get("files").toString().length() > 2) {
 			int fileUpdate = sqlSession.update("Project.updateSetStatusNFile", updateInfo.get("pno"));
 			int fileUpdate2 = sqlSession.insert("Project.insertFile", updateInfo.get("files"));
-		}
-		if(updatePmember == 1) {
-			System.out.println("성공!");
 		}
 		
 		return 0;
@@ -478,6 +471,23 @@ public class ProjectDaoImpl implements ProjectDao{
 	public String selectnewNno(SqlSessionTemplate sqlSession) {
 		String nno = sqlSession.selectOne("Project.selectNewNno");
 		return nno;
+	}
+
+	@Override
+	public int updateNotice(SqlSessionTemplate sqlSession, ProjectNotice notice, ArrayList<FileBox> fileArr) {
+		int updateNotice = sqlSession.update("Project.updateNotice", notice);
+		
+		if(!fileArr.isEmpty()) {
+			int fileUpdate = sqlSession.update("Project.updateNoticeSetStatusNFile", fileArr.get(0).getpNoticeNo());
+			int fileUpdate2 = sqlSession.insert("Project.insertFile", fileArr);
+		}
+		return 0;
+	}
+
+	@Override
+	public int deleteNotice(SqlSessionTemplate sqlSession, String nno) {
+		int deleteNotice = sqlSession.update("Project.deleteNotice", nno);
+		return deleteNotice;
 	}
 
 }

@@ -799,6 +799,7 @@ public class ProjectManageController {
 		
 		String pno = request.getParameter("pno");
 		System.out.println("notice pno : " + pno);
+		
 		int currentPage = 1;
 		
 		if(request.getParameter("currentPage") != null) {
@@ -842,12 +843,8 @@ public class ProjectManageController {
 		FileBox file = null;
 				
 		if(!files[0].isEmpty()) {
-			//저장할 경로 지정(톰캣이 가지고 있는 webapp 폴더 밑 resources 폴더의 절대경로를 가져와라). 톰캣에서 관리하는 폴더는 하위폴더를 구분할 때 역슬러쉬(\)를 사용한다.
 			String root = request.getSession().getServletContext().getRealPath("resources");
 							
-			System.out.println(root);
-							
-			//이스케이프 문자 주의할 것
 			String filePath = root + "\\uploadFiles\\projectNotice";
 							
 			for(int i = 0; i < files.length; i++) {
@@ -908,5 +905,68 @@ public class ProjectManageController {
 		}
 		
 		return "projectManage/noticeDetail";
+	}
+	
+	@RequestMapping("updatePnotice.pm")
+	public String updatePnotice(ProjectNotice notice, MultipartFile[] files, MultipartHttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
+		
+		System.out.println("update notice info : " + notice);
+		
+		ArrayList<FileBox> fileArr = new ArrayList<FileBox>();
+		FileBox file = null;
+				
+		if(!files[0].isEmpty()) {
+			String root = request.getSession().getServletContext().getRealPath("resources");
+							
+			String filePath = root + "\\uploadFiles\\projectNotice";
+							
+			for(int i = 0; i < files.length; i++) {
+						
+				file = new FileBox();
+						
+				String originFileName = files[i].getOriginalFilename();
+				//확장자만 따로 저장하기
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));
+						
+				String changeName = CommonUtils.getRandomString();
+				
+				Long size = files[i].getSize();
+						
+				file.setFileRole("999");
+				file.setFilePath(filePath);
+				file.setFileSize(size);
+				file.setMno(loginUser.getMno());
+				file.setpNoticeNo(notice.getPnoticeNo());
+				file.setCorp_no(loginUser.getCorpNo());
+				file.setExt(ext);
+				file.setOriginName(originFileName);
+				file.setChangeName(changeName);
+						
+				fileArr.add(file);
+						
+				try {
+					files[i].transferTo(new File(filePath + "\\" + changeName + ext));
+
+				} catch (IllegalStateException | IOException e) {
+					//익셉션 발생할 경우 파일 삭제
+					new File(filePath + "\\" + changeName + ext).delete();
+				}
+			}
+		}
+
+		int result = projectService.updateNotice(notice, fileArr);
+		
+		return "redirect:noticeDetail.pm?nno=" + notice.getPnoticeNo();
+	}
+	
+	@RequestMapping("deleteNotice.pm")
+	public String deleteNotice(HttpServletRequest request) {
+		
+		String pno = request.getParameter("pno");
+		String nno = request.getParameter("nno");
+		
+		int deleteNotice = projectService.deleteNotice(nno);
+		
+		return "redirect:projectNoticeList.pm?pno=" + pno;
 	}
 }
