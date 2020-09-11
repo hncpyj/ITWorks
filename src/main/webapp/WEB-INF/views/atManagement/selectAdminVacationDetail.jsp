@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	section{
 		width: 75%;
@@ -94,6 +95,7 @@
 		height: 30px;
 		border : 0.5px solid #9F9F9F;
     }
+    
 </style>
 </head>
 <body>
@@ -134,16 +136,32 @@
                 	</tr>
                 	<tr>
                 		<th>승인 여부</th>
-                		<td><c:out value="${vacation.lstatus }"></c:out></td>
+                		<c:if test="${vacation.lstatus eq 'N' }">
+	                		<td>미승인</td>
+                		</c:if>
+                		<c:if test="${vacation.lstatus eq 'Y' }">
+	                		<td>승인</td>
+                		</c:if>
                 	</tr>
                 	<tr>
                 		<th>첨부파일</th>
                 		<td>첨부파일다운로드</td>
                 	</tr>
                 </table>
-            	<button class="close" onclick="location.href='selectVacationStatus.at'">닫기</button>
+                <c:if test="${vacation.lstatus eq 'N' }">
+                <button class="close" onclick="approvalBtn();">승인하기</button>
+                		</c:if>
+                		
+            	<button class="close" onclick="location.href='selectVacationList.at'">닫기</button>
 		</div>
 		</div>
 	</section>
+	<script type="text/javascript">
+		function approvalBtn() {
+			var lInfoNo = "${vacation.lInfoNo}";
+			confirm("휴가를 승인 하시겠습니까?");
+			location.href = "updateVacation.at?no="+lInfoNo;
+		}
+	</script>
 </body>
 </html>

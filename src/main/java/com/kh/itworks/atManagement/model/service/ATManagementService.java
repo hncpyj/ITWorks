@@ -84,6 +84,16 @@ public interface ATManagementService {
 
 	ATManagement selectVacationDetail(String lInfoNo)throws SelectVacationException;
 
+	int getAdminVacationListCount(ATManagement at);
+
+	ArrayList<ATManagement> selectVacationList(ATManagement at, PageInfo pi) throws SelectVacationException;
+
+	int updateVacationApproval(String lInfoNo) throws SelectVacationException;
+
+	ArrayList<ATManagement> selectEmp(int corpNo) throws SelectVacationException;
+
+	ArrayList<ATManagement> selectVacationDate(ATManagement at) throws SelectVacationException;
+
 
 
 

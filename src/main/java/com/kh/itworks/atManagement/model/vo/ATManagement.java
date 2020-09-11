@@ -7,6 +7,7 @@ public class ATManagement implements java.io.Serializable {
 	private String workType;		//근무상태종류
 	private String work;			//근무시간포함여부
 	private int corpNo;				//회사코드
+	private String hiredate;
 	private String wno;				//근태정보관리코드
 	private String wstatus;			//출근상태
 	private String wstart;			//출근시간
@@ -88,24 +89,26 @@ public class ATManagement implements java.io.Serializable {
 	public ATManagement() {}
 
 
-	public ATManagement(String workingStatusNo, String workType, String work, int corpNo, String wno, String wstatus,
-			String wstart, String wend, String ip, String outsideWork, String wdate, int eid, String yearAleave,
-			int hireYear, int aleaveCount, int accUnitPeriod, String rwdNo, String rwdName, int rwdPeriod, String otNo,
-			String ptRef, String otDate, String otStart, String otEnd, String otReason, String otStatus, String objNo,
-			String objDate, String objType, String changeDate, String objStatus, String objReason, String checkStatus,
-			String rid, String roleNo, String jid, String did, String ename, int eno, String hireDate, String status,
-			String approval, int mno, String dname, String breakTimeNo, String btType, String btStart, String btEnd,
-			String attendence, String workTimeLimit, String laborDay, String holidays, String alternativeHolidays,
-			int workingSetNo, String workingSetTime, String dayOfTheWeek, String workingTime, String quittingTime,
-			String harfOff, String leaveNo, String lname, String luse, String aleaveDeduction, String harfLeave,
-			String lcategory, String lInfoNo, String lstartDay, String lendDay, String lref, String lreason,
-			String lhistoryNo, String lstartDate, String lendDate, int apvNo, String apvlineNo, String leaveFunc,
-			String lcreationCondition, int lcreationDate, String ldate, String lstatus) {
+	public ATManagement(String workingStatusNo, String workType, String work, int corpNo, String hiredate, String wno,
+			String wstatus, String wstart, String wend, String ip, String outsideWork, String wdate, int eid,
+			String yearAleave, int hireYear, int aleaveCount, int accUnitPeriod, String rwdNo, String rwdName,
+			int rwdPeriod, String otNo, String ptRef, String otDate, String otStart, String otEnd, String otReason,
+			String otStatus, String objNo, String objDate, String objType, String changeDate, String objStatus,
+			String objReason, String checkStatus, String rid, String roleNo, String jid, String did, String ename,
+			int eno, String hireDate2, String status, String approval, int mno, String dname, String breakTimeNo,
+			String btType, String btStart, String btEnd, String attendence, String workTimeLimit, String laborDay,
+			String holidays, String alternativeHolidays, int workingSetNo, String workingSetTime, String dayOfTheWeek,
+			String workingTime, String quittingTime, String harfOff, String leaveNo, String lname, String luse,
+			String aleaveDeduction, String harfLeave, String lcategory, String lInfoNo, String lstartDay,
+			String lendDay, String lref, String lreason, String lhistoryNo, String lstartDate, String lendDate,
+			int apvNo, String apvlineNo, String leaveFunc, String lcreationCondition, int lcreationDate, String ldate,
+			String lstatus) {
 		super();
 		this.workingStatusNo = workingStatusNo;
 		this.workType = workType;
 		this.work = work;
 		this.corpNo = corpNo;
+		this.hiredate = hiredate;
 		this.wno = wno;
 		this.wstatus = wstatus;
 		this.wstart = wstart;
@@ -141,7 +144,7 @@ public class ATManagement implements java.io.Serializable {
 		this.did = did;
 		this.ename = ename;
 		this.eno = eno;
-		this.hireDate = hireDate;
+		hireDate = hireDate2;
 		this.status = status;
 		this.approval = approval;
 		this.mno = mno;
@@ -222,6 +225,16 @@ public class ATManagement implements java.io.Serializable {
 
 	public void setCorpNo(int corpNo) {
 		this.corpNo = corpNo;
+	}
+
+
+	public String getHiredate() {
+		return hiredate;
+	}
+
+
+	public void setHiredate(String hiredate) {
+		this.hiredate = hiredate;
 	}
 
 
@@ -988,22 +1001,22 @@ public class ATManagement implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "ATManagement [workingStatusNo=" + workingStatusNo + ", workType=" + workType + ", work=" + work
-				+ ", corpNo=" + corpNo + ", wno=" + wno + ", wstatus=" + wstatus + ", wstart=" + wstart + ", wend="
-				+ wend + ", ip=" + ip + ", outsideWork=" + outsideWork + ", wdate=" + wdate + ", eid=" + eid
-				+ ", yearAleave=" + yearAleave + ", hireYear=" + hireYear + ", aleaveCount=" + aleaveCount
-				+ ", accUnitPeriod=" + accUnitPeriod + ", rwdNo=" + rwdNo + ", rwdName=" + rwdName + ", rwdPeriod="
-				+ rwdPeriod + ", otNo=" + otNo + ", ptRef=" + ptRef + ", otDate=" + otDate + ", otStart=" + otStart
-				+ ", otEnd=" + otEnd + ", otReason=" + otReason + ", otStatus=" + otStatus + ", objNo=" + objNo
-				+ ", objDate=" + objDate + ", objType=" + objType + ", changeDate=" + changeDate + ", objStatus="
-				+ objStatus + ", objReason=" + objReason + ", checkStatus=" + checkStatus + ", rid=" + rid + ", roleNo="
-				+ roleNo + ", jid=" + jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno + ", hireDate="
-				+ hireDate + ", status=" + status + ", approval=" + approval + ", mno=" + mno + ", dname=" + dname
-				+ ", breakTimeNo=" + breakTimeNo + ", btType=" + btType + ", btStart=" + btStart + ", btEnd=" + btEnd
-				+ ", attendence=" + attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay=" + laborDay
-				+ ", holidays=" + holidays + ", alternativeHolidays=" + alternativeHolidays + ", workingSetNo="
-				+ workingSetNo + ", workingSetTime=" + workingSetTime + ", dayOfTheWeek=" + dayOfTheWeek
-				+ ", workingTime=" + workingTime + ", quittingTime=" + quittingTime + ", harfOff=" + harfOff
-				+ ", leaveNo=" + leaveNo + ", lname=" + lname + ", luse=" + luse + ", aleaveDeduction="
+				+ ", corpNo=" + corpNo + ", hiredate=" + hiredate + ", wno=" + wno + ", wstatus=" + wstatus
+				+ ", wstart=" + wstart + ", wend=" + wend + ", ip=" + ip + ", outsideWork=" + outsideWork + ", wdate="
+				+ wdate + ", eid=" + eid + ", yearAleave=" + yearAleave + ", hireYear=" + hireYear + ", aleaveCount="
+				+ aleaveCount + ", accUnitPeriod=" + accUnitPeriod + ", rwdNo=" + rwdNo + ", rwdName=" + rwdName
+				+ ", rwdPeriod=" + rwdPeriod + ", otNo=" + otNo + ", ptRef=" + ptRef + ", otDate=" + otDate
+				+ ", otStart=" + otStart + ", otEnd=" + otEnd + ", otReason=" + otReason + ", otStatus=" + otStatus
+				+ ", objNo=" + objNo + ", objDate=" + objDate + ", objType=" + objType + ", changeDate=" + changeDate
+				+ ", objStatus=" + objStatus + ", objReason=" + objReason + ", checkStatus=" + checkStatus + ", rid="
+				+ rid + ", roleNo=" + roleNo + ", jid=" + jid + ", did=" + did + ", ename=" + ename + ", eno=" + eno
+				+ ", hireDate=" + hireDate + ", status=" + status + ", approval=" + approval + ", mno=" + mno
+				+ ", dname=" + dname + ", breakTimeNo=" + breakTimeNo + ", btType=" + btType + ", btStart=" + btStart
+				+ ", btEnd=" + btEnd + ", attendence=" + attendence + ", workTimeLimit=" + workTimeLimit + ", laborDay="
+				+ laborDay + ", holidays=" + holidays + ", alternativeHolidays=" + alternativeHolidays
+				+ ", workingSetNo=" + workingSetNo + ", workingSetTime=" + workingSetTime + ", dayOfTheWeek="
+				+ dayOfTheWeek + ", workingTime=" + workingTime + ", quittingTime=" + quittingTime + ", harfOff="
+				+ harfOff + ", leaveNo=" + leaveNo + ", lname=" + lname + ", luse=" + luse + ", aleaveDeduction="
 				+ aleaveDeduction + ", harfLeave=" + harfLeave + ", lcategory=" + lcategory + ", lInfoNo=" + lInfoNo
 				+ ", lstartDay=" + lstartDay + ", lendDay=" + lendDay + ", lref=" + lref + ", lreason=" + lreason
 				+ ", lhistoryNo=" + lhistoryNo + ", lstartDate=" + lstartDate + ", lendDate=" + lendDate + ", apvNo="
@@ -1012,6 +1025,8 @@ public class ATManagement implements java.io.Serializable {
 				+ "]";
 	}
 
+	
+	
 	
 	
 	

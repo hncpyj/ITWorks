@@ -715,6 +715,124 @@ public class ATManagementController {
 		return mv;
 	}
 	
+	
+	@RequestMapping("selectVacationList.at")
+	public ModelAndView selectVacationList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+		
+		int corpNo = 1;
+		
+		at.setCorpNo(corpNo);
+		
+		int currentPage = 1;
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+
+		
+		try {
+			int listCount = as.getAdminVacationListCount(at);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			ArrayList<ATManagement> vacation = as.selectVacationList(at, pi);
+			System.out.println("vacation : " + vacation);
+			mv.addObject("vacation", vacation);
+			mv.addObject("pi", pi);
+			
+			mv.setViewName("atManagement/vacationList");
+		} catch (SelectVacationException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	@RequestMapping("selectAdminVacationDetail.at")
+	public ModelAndView selectAdminVacationDetail(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+		
+		String lInfoNo = request.getParameter("no");
+		
+		try {
+			ATManagement vacation = as.selectVacationDetail(lInfoNo);
+			
+			System.out.println("vacation : " + vacation);
+			mv.addObject("vacation", vacation);
+			mv.setViewName("atManagement/selectAdminVacationDetail");
+		} catch (SelectVacationException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		
+		return mv;
+	}
+	
+	@RequestMapping("updateVacation.at")
+	public ModelAndView updateVacation(ModelAndView mv, HttpServletRequest request) {
+		
+		String lInfoNo = request.getParameter("no");
+		
+		try {
+			as.updateVacationApproval(lInfoNo);
+			mv.setViewName("redirect:selectVacationList.at");
+		} catch (SelectVacationException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping("employeeVacation.at")
+	public ModelAndView employeeVacation(ModelAndView mv, HttpServletRequest request, ATManagement at) {
+		
+		int corpNo = 1;
+		
+		at.setCorpNo(corpNo);
+		
+		try {
+			ArrayList<ATManagement> emp = as.selectEmp(at.getCorpNo());
+			ArrayList<ATManagement> leave = as.selectLeave(at);
+			
+			ArrayList<ATManagement> vacation = as.selectVacationDate(at);
+			
+			Calendar cal = Calendar.getInstance();
+			
+			int year = cal.get(Calendar.YEAR);
+			System.out.println(year);
+			for(int i = 0; i < emp.size(); i++) {
+				at.setMno(emp.get(i).getMno());
+				String hiredate = as.selectVacationEmployee(at);
+				System.out.println("hiredate : " + hiredate);
+				String[] year2 = hiredate.split("/");
+				int year3 = Integer.parseInt(year2[0]);
+				
+				int hireyear = year - year3;
+				int aleaveCount = as.selectAleaveCount(hireyear);
+				emp.get(i).setAleaveCount(aleaveCount);
+			}
+			
+			System.out.println("emp : " + emp);
+			System.out.println("leave : " + leave);
+			System.out.println("vacation : " + vacation);
+			
+			mv.addObject("emp", emp);
+			mv.addObject("leave", leave);
+			mv.addObject("vacation", vacation);
+			
+			mv.setViewName("atManagement/employeeVacation");
+		} catch (SelectVacationException | SelectLeaveException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		
+		
+		return mv;
+	}
+	
+	
+	
 	@RequestMapping("insertVacation.at")
 	public String insertVacation() {
 		
@@ -743,16 +861,7 @@ public class ATManagementController {
 	}
 	
 
-	@RequestMapping("employeeVacation.at")
-	public String employeeVacation() {
-		
-		return "atManagement/employeeVacation";
-	}
-	@RequestMapping("selectVacationList.at")
-	public String selectVacationList() {
-		
-		return "atManagement/vacationList";
-	}
+	
 	@RequestMapping("insertRewardVacation.at")
 	public String insertRewardVacation() {
 		

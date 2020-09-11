@@ -464,6 +464,70 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		return detail;
 	}
 
+	@Override
+	public int getAdminVacationListCount(SqlSessionTemplate sqlSession, ATManagement at) {
+
+		
+		int listCount = sqlSession.selectOne("ATManagement.getAdminVacationListCount", at.getCorpNo());
+		
+		return listCount;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectVacationList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectVacationException {
+
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		ArrayList<ATManagement> vacationList = (ArrayList)sqlSession.selectList("ATManagement.selectVacationList", at.getCorpNo(), rowBounds);
+		
+		if(vacationList == null) {
+			throw new SelectVacationException("휴가 상세 조회 실패");
+		}
+		
+		return vacationList;
+	}
+
+	@Override
+	public int updateVacationApproval(SqlSessionTemplate sqlSession, String lInfoNo) throws SelectVacationException {
+		
+		int approval = sqlSession.update("ATManagement.updateVacationApproval", lInfoNo);
+		
+		if(approval == 0) {
+			throw new SelectVacationException("휴가 승인 실패");
+		}
+		
+		return approval;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectEmp(SqlSessionTemplate sqlSession, int corpNo) throws SelectVacationException {
+
+		
+		ArrayList<ATManagement> emp = (ArrayList)sqlSession.selectList("ATManagement.selectEmp", corpNo);
+		
+		if(emp == null) {
+			throw new SelectVacationException("휴가 직원 조회 실패");
+		}
+		
+		
+		return emp;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectVacationDate(SqlSessionTemplate sqlSession, ATManagement at) throws SelectVacationException {
+
+		ArrayList<ATManagement> vacation = (ArrayList)sqlSession.selectList("ATManagement.selectVacationDate", at);
+		
+		if(vacation == null) {
+			throw new SelectVacationException("휴가일 조회 실패");
+		}
+		
+		
+		return vacation;
+	}
+
 	
 
 

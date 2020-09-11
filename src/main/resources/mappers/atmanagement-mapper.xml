@@ -206,6 +206,14 @@
 		<result property="otStart" column="OT_START"/>
 		<result property="otEnd" column="OT_END"/>
 	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="employee">
+		<id property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="did" column="DID"/>
+		<result property="ename" column="ENAME"/>
+		<result property="dname" column="DNAME"/>
+		<result property="hiredate" column="HIREDATE"/>
+	</resultMap>
 	<select id="selectAtBt" resultMap="atManagementResultSet1" parameterType="_int">
 		SELECT *
 		  FROM ATTENDENCE A
@@ -457,7 +465,47 @@
           JOIN LEAVE LE ON(L.LEAVE_NO = LE.LEAVE_NO)
           JOIN EMPLOYEE E ON (L.MNO = E.MNO)
           JOIN DEPT D ON (E.DID = D.DID)
-		 WHERE L.L_INFO_NO = #{lInfoNo}
-		   
+		 WHERE L.L_INFO_NO = #{lInfoNo} 
+	</select>
+	<select id="getAdminVacationListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM LEAVE_APPLY
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<select id="selectVacationList" resultMap="leaveApply" parameterType="ATManagement">
+		SELECT L.*
+             , E.ENAME
+             , D.DNAME
+		     , LE.LNAME
+		  FROM LEAVE_APPLY L
+          JOIN LEAVE LE ON(L.LEAVE_NO = LE.LEAVE_NO)
+          JOIN EMPLOYEE E ON (L.MNO = E.MNO)
+          JOIN DEPT D ON (E.DID = D.DID)
+		 WHERE L.CORP_NO = #{corpNo}
+		 ORDER BY TO_NUMBER(SUBSTR(L.L_INFO_NO, 3))
+	</select>
+	<update id="updateVacationApproval" parameterType="java.lang.String">
+		UPDATE LEAVE_APPLY
+		   SET LSTATUS = 'Y'
+		 WHERE L_INFO_NO = #{lInfoNo}
+	</update>
+	<select id="selectEmp" resultMap="employee">
+		SELECT
+		       E.ENAME
+		     , D.DNAME
+		     , E.HIREDATE
+		     , E.MNO
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON(E.DID=D.DID)
+		 WHERE E.CORP_NO = #{corpNo}
+		 ORDER BY E.HIREDATE
+	</select>
+	<select id="selectVacationDate" resultMap="leaveApply">
+		SELECT LA.*
+		     , L.LNAME
+		  FROM LEAVE_APPLY LA
+		  JOIN LEAVE L ON(LA.LEAVE_NO = L.LEAVE_NO)
+		 WHERE LA.CORP_NO = #{corpNo}
+		   AND LA.LSTATUS = 'Y'
 	</select>
 </mapper>

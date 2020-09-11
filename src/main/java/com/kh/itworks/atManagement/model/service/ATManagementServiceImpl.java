@@ -267,6 +267,41 @@ public class ATManagementServiceImpl implements ATManagementService {
 	}
 
 
+	@Override
+	public int getAdminVacationListCount(ATManagement at) {
+
+		return ad.getAdminVacationListCount(sqlSession, at);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectVacationList(ATManagement at, PageInfo pi) throws SelectVacationException {
+		
+		return ad.selectVacationList(sqlSession, at, pi);
+	}
+
+
+	@Override
+	public int updateVacationApproval(String lInfoNo) throws SelectVacationException {
+
+		return ad.updateVacationApproval(sqlSession, lInfoNo);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectEmp(int corpNo) throws SelectVacationException {
+
+		return ad.selectEmp(sqlSession, corpNo);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectVacationDate(ATManagement at) throws SelectVacationException {
+
+		return ad.selectVacationDate(sqlSession, at);
+	}
+
+
 	
 
 }

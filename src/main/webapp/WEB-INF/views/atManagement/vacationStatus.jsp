@@ -266,7 +266,7 @@
 				[이전] &nbsp;
 			</c:if>
 			<c:if test="${ pi.currentPage > 1 }">
-				<c:url var="blistBack" value="selectCorrectionList.at">
+				<c:url var="blistBack" value="selectVacationStatus.at">
 					<c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
 				</c:url>
 				<a href="${ blistBack }">[이전]</a> &nbsp;
@@ -277,7 +277,7 @@
 					<font color="red" size="4"><b>[${ p }]</b></font>
 				</c:if>
 				<c:if test="${ p ne pi.currentPage }">
-					<c:url var="blistCheck" value="selectCorrectionList.at">
+					<c:url var="blistCheck" value="selectVacationStatus.at">
 						<c:param name="currentPage" value="${ p }"></c:param>
 					</c:url>
 					<a href="${blistCheck }">${ p }</a>
@@ -288,7 +288,7 @@
 				&nbsp; [다음]
 			</c:if>
 			<c:if test="${ pi.currentPage < pi.maxPage }">
-				<c:url var="blistEnd" value="selectCorrectionList.at">
+				<c:url var="blistEnd" value="selectVacationStatus.at">
 					<c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
 				</c:url>
 				&nbsp; <a href="${ blistEnd }">[다음]</a>

@@ -86,6 +86,16 @@ public interface ATManagementDao {
 
 	ATManagement selectVacationDetail(SqlSessionTemplate sqlSession, String lInfoNo)throws SelectVacationException;
 
+	int getAdminVacationListCount(SqlSessionTemplate sqlSession, ATManagement at);
+
+	ArrayList<ATManagement> selectVacationList(SqlSessionTemplate sqlSession, ATManagement at, PageInfo pi) throws SelectVacationException;
+
+	int updateVacationApproval(SqlSessionTemplate sqlSession, String lInfoNo) throws SelectVacationException;
+
+	ArrayList<ATManagement> selectEmp(SqlSessionTemplate sqlSession, int corpNo) throws SelectVacationException;
+
+	ArrayList<ATManagement> selectVacationDate(SqlSessionTemplate sqlSession, ATManagement at) throws SelectVacationException;
+
 
 	
 
