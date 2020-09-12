@@ -81,7 +81,7 @@
 		height: 30px;
     }
     .month{
-    	width: 45px;
+    	width: 50px;
     }
     #year{
     	color: #004771;
@@ -227,39 +227,47 @@
                 		<th class="month"><c:out value="${leave.get(i).lname }"/></th>
                 		</c:forEach>
                 		
-                		<th class="month">잔여</th>
+                		
                 	</tr>
                 <c:forEach begin="0" end="${emp.size()-1 }" var="i">
-                	<tr>
+                	<tr class="spanMno${i}" id="${emp.get(i).mno }">
                 		<td><c:out value="${emp.get(i).ename }"/></td>
                 		<td><c:out value="${emp.get(i).dname }"/></td>
                 		<td><c:out value="${emp.get(i).hiredate }"/></td>
                 		<td><%-- <button class="btn" onclick="openModal('modal2${emp.get(i).mno}');">수정</button>/ --%><button class="btn" onclick="openModal('modal1${emp.get(i).mno}');">상세</button></td>
                 		<td class="month2"><c:out value="${emp.get(i).aleaveCount }"/></td>
                 		<c:forEach begin="0" end="${leave.size() -1 }" var="j">
-                		<td class="month2" id="${leave.get(j).leaveNo }"><span class="spanMno${i}" id="${emp.get(i).mno }">0</span></td>
+                		<td class="month2" id="${leave.get(j).leaveNo }">
+                			<span id="span">0</span>
+                		</td>
                 		</c:forEach>
-                		<td class="month2">0</td>
+                		
                 	</tr>
             	</c:forEach>
                 </table>
 		</div>
 	</section>
-	<c:forEach begin="0" end="${leave.size() -1 }" var="j">
-   		<input type="hidden" id="lstart${j}" value="${leave.get(j).lstartDay }">
-   		<input type="hidden" id="lend${j}" value="${leave.get(j).lendDay }">
-   		<input type="hidden" id="leaveNo${j}" value="${leave.get(j).leaveNo }">
-   		<input type="hidden" id="mno${j}" value="${leave.get(j).mno }">
+	<c:forEach begin="0" end="${vacation.size() -1 }" var="j">
+   		<input type="hidden" id="lstart${j}" value="${vacation.get(j).lstartDay }">
+   		<input type="hidden" id="lend${j}" value="${vacation.get(j).lendDay }">
+   		<input type="hidden" id="leaveNo${j}" value="${vacation.get(j).leaveNo }">
+   		<input type="hidden" id="mno${j}" value="${vacation.get(j).mno }">
    </c:forEach>
    		<script type="text/javascript">
    			$(document).ready(function() {
    				var empSize = ${emp.size()};
-   				var leaveSize = ${leave.size()};
+   				var vacationSize = ${vacation.size()};
    				for(var i = 0; i < empSize; i++){
-				var spanClass = $('.spanMno'+i).attr('id');
-				for(var j = 0; j < leaveSize; i++){
-					if(spanClass == $("#mno"+j).val()){
-						console.log(spanClass);
+				for(var j = 0; j < vacationSize; j++){
+					if($('.spanMno'+i).attr('id') == $("#mno"+j).val()){
+						var lendDay = $("#lend"+j).val().split("/");
+						var lstartDay = $("#lstart"+j).val().split("/");
+						var vacationDay = lendDay[2]-lstartDay[2];
+						
+						$('.spanMno'+i).find("#"+$('#leaveNo'+j).val()).find('#span').text($("#span").text()*1+vacationDay*1);
+						
+						 console.log($('.spanMno'+i).find("#"+$('#leaveNo'+j).val()).attr('id'));
+							
 						
 					}
 				}
