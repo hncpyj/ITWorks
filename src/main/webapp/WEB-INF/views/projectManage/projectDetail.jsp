@@ -116,8 +116,8 @@
         border-bottom: 1px solid #929292;
     }
     .date {
-        min-width: 25px;
-        width: 25px;
+        min-width: 30px;
+        width: 30px;
         border-bottom: 2px solid #929292;
     }
     #overallSchedule table tr:first-child th:nth-child(-n+4) {
@@ -354,6 +354,11 @@
     	width: 88px;
     	min-width: 88px;
     }
+    .date>td {
+    	width: 30px;
+    	min-width: 30px;
+    	max-width: 30px;
+    }
 </style>
 </head>
 <body>
@@ -480,117 +485,19 @@
             <div style="color: #004771; font-size: 15px; font-weight: 550;">프로젝트 전체 일정</div>
             <div id="overallSchedule">
                 <table>
-                    <tr>
+                    <tr class="month">
                         <th rowspan="2">계획<br>시작일</th>
                         <th rowspan="2">계획<br>종료일</th>
                         <th rowspan="2">실제<br>종료일</th>
                         <th rowspan="2"><br>상태</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
                     </tr>
-                    <tr>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
+                    <tr class="date">
                     </tr>
-                    <tr>
-                        <td><c:out value="${ fn:substring(projectInfo.project.pstartDate, 2,10) }"/></td>
-                        <td><c:out value="${ fn:substring(projectInfo.project.pendDate, 2, 10) }"/></td>
-                        <td><c:out value="${ fn:substring(projectInfo.project.actualEndDate, 2, 10) }"/></td>
+                    <tr class="schedule">
+                        <td id="pstartDate"><c:out value="${ fn:substring(projectInfo.project.pstartDate, 2,10) }"/></td>
+                        <td id="pendDate"><c:out value="${ fn:substring(projectInfo.project.pendDate, 2, 10) }"/></td>
+                        <td id="actualEndDate"><c:out value="${ fn:substring(projectInfo.project.actualEndDate, 2, 10) }"/></td>
                         <td><c:out value="${ projectInfo.project.pprogress }"/></td>
-
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 </table>
             </div>
@@ -603,7 +510,7 @@
 
             <div id="wbs">
                 <table>
-                    <tr>
+                    <tr class="month">
                         <th rowspan="2" style="min-width: 220px;"><br>업무명</th>
                         <th rowspan="2"><br>담당자</th>
                         <th rowspan="2">계획<br>시작일</th>
@@ -611,183 +518,41 @@
                         <th rowspan="2">실제<br>종료일</th>
                         <th rowspan="2"><br>상태</th>
                         <th rowspan="2"><br>특이사항</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                        <th colspan="7" class="week">00/00/00 ~ 00/00/00</th>
-                    </tr>
-                    <tr>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
-                        <th class="date">0</th>
+					</tr>
+                    <tr class="date">
                     </tr>
                     
                     <c:choose>
 	                    <c:when test="${ !empty projectInfo.task }">
 		                    <c:forEach var="task" items="${ projectInfo.task }">
-			                    <tr class="task">
+			                    <tr class="task taskSchedule">
 			                        <td>
 			                            <img src="${ contextPath }/resources/projectManageImages/projectTaskIcon.png" style="margin-right: 7px;" onclick="showSubTask();">
 			                            <a onclick="goTaskDetail(${task.pno});"><c:out value="${ task.pname }"/></a>
 			                        </td>
 			                        <td><c:out value="${ task.pwriter }"/></td>
-			                        <td><c:out value="${fn:substring(task.pstartDate, 2, 10)}"/></td>
-			                        <td><c:out value="${fn:substring(task.pendDate, 2, 10)}"/></td>
-			                        <td><c:out value="${fn:substring(task.actualEndDate, 2, 10)}"/></td>
+			                        <td class="taskStartDate"><c:out value="${fn:substring(task.pstartDate, 2, 10)}"/></td>
+			                        <td class="taskEndDate"><c:out value="${fn:substring(task.pendDate, 2, 10)}"/></td>
+			                        <td class="taskActualDate"><c:out value="${fn:substring(task.actualEndDate, 2, 10)}"/></td>
 			                        <td><c:out value="${ task.pprogress }"/></td>
 			                        <td style="color: red; font-weight: bold;" id="unique"><c:out value="${ task.uniqueness }"/></td>
 			
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
-			                        <td></td>
+									<!-- <div style="padding: 0; height: 70%; width: 30px; background: #004771;"></div> -->
 			                    </tr>
 			                    <c:forEach var="st" items="${ projectInfo.subTask }">
 			                    	<c:if test="${ task.pno eq st.pjtTaskNo }">
-					                    <tr class="subTask">
+					                    <tr class="subTask subTaskSchedule">
 					                        <td>
 					                        	<a onclick="goTaskDetail('${st.pno}');">
 			                    					<c:out value="${ st.pname }"/>
 			                    				</a>
-					                        <%-- <c:out value="${ st.pname }"/> --%></td>
+					                        </td>
 					                        <td><c:out value="${ st.pwriter }"/></td>
 					                        <td><c:out value="${ fn:substring(st.pstartDate, 2, 10) }"/></td>
 					                        <td><c:out value="${ fn:substring(st.pendDate, 2, 10) }"/></td>
 					                        <td><c:out value="${ fn:substring(st.actualEndDate, 2, 10)}"/></td>
 					                        <td><c:out value="${ st.pprogress }"/></td>
 					                        <td style="color: red; font-weight: bold;"><c:out value="${ st.uniqueness }"/></td>
-					
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
-					                        <td></td>
 					                    </tr>
 					            	</c:if>
 				            	</c:forEach>
@@ -965,6 +730,152 @@
     </section>
 
     <script>
+    	$(function() {
+			//시작일 셋팅
+    		var pstartDate = '20' + $("#pstartDate").text();
+    		var syear = pstartDate.substring(0, 4);
+    		var smonth = pstartDate.substring(5, 7) - 1;
+    		var sday = pstartDate.substring(8, 10);
+    		
+    		//종료일 셋팅
+    		var pendDate = '20' + $("#pendDate").text();
+    		var eyear = pendDate.substring(0, 4);
+    		var emonth = pendDate.substring(5, 7) - 1;
+    		var eday = pendDate.substring(8, 10);
+    		
+    		
+    		var startDate = new Date(syear, smonth , sday);
+    		console.log("시작일 : " + startDate);
+    		var endDate = new Date(eyear, emonth, eday);
+    		console.log("종료일 : " + endDate);
+    		//var result = Math.ceil((endDate - startDate)/(1000 * 3600 * 24)) + 7;
+
+    		
+    		var actualEndDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() + 7);
+    		console.log("진짜끝나는 날 : " + actualEndDate);
+    		
+			var temp = new Date(syear, smonth, sday, 0, 0, 0);
+	    	var monthly = "";
+    		console.log("temp 기본 : " + temp);
+    		console.log("월별 마지막 일 : " + MonthlyLastDay);
+    		
+    		for(var i = 0; temp <= actualEndDate; i++) {
+    			var monthNow = temp.getMonth() + 1;
+    			
+		    	var MonthlyLastDay = new Date(temp.getFullYear(), monthNow, 0);
+    			
+    			//console.log(temp + "////////" + MonthlyLastDay);
+    			if(temp.getMonth() == MonthlyLastDay.getMonth() && temp.getDate() == MonthlyLastDay.getDate()) {
+	    			console.log("말일입니다");
+	    			
+	    			console.log("temp의 달 : " + temp.getMonth());
+	    			console.log("startDate의 달 : " + startDate.getMonth());
+	    			console.log("endDate의 달 : " + endDate.getMonth());
+	    			console.log("월별 마지막 일 : " + MonthlyLastDay);
+	    			
+	    			var monthCalc = 0;
+	    			if(temp.getMonth() == startDate.getMonth()) {
+	    				console.log("첫 달의 말일일 때 ");
+	    				monthCalc = Math.ceil((temp - startDate)/(1000 * 3600 * 24)) + 1;
+	    				console.log("시작일부터 그 달 말일까지 일수 : " + monthCalc);
+	    			} else {
+	    				console.log("그냥 말일일 때");
+	    				monthCalc =  temp.getDate();
+	    				console.log("시작일부터 그 달 말일까지 일수 : " + monthCalc);
+	    			}
+	    			
+	    			monthly = temp.getMonth() + 1;
+	    			if(monthly < 10) {
+	    				monthly = "" + 0 + monthly;
+	    			}
+	    			MonthlyLastDay.setMonth(MonthlyLastDay.getMonth() + 1);
+	    			$(".month").append("<th style='border-bottom: 2px solid #929292; border-right: 1px solid #929292;'>" 
+							+ temp.getFullYear() + "/" + monthly + "</th>");
+					$(".month>th:last-child").attr("colspan", monthCalc);
+					
+    			} else if(temp.getMonth() == actualEndDate.getMonth() && temp.getDate() == actualEndDate.getDate()) {
+    				console.log("마지막 달 마지막 일 : " + MonthlyLastDay);
+    				monthly = temp.getMonth() + 1;
+    				console.log("마지막 달 마지막 Month : " + monthly);
+	    			if(monthly < 10) {
+	    				monthly = "" + 0 + monthly;
+	    				console.log(monthly);
+	    			}
+    				var monthCalc = Math.ceil(endDate - new Date(temp.getFullYear(), temp.getMonth(), 1));
+    				
+    				$(".month").append("<th style='border-bottom: 2px solid #929292; border-right: 1px solid #929292;'>" 
+							+ temp.getFullYear() + "/" + monthly + "</th>");
+					$(".month>th:last-child").attr("colspan", monthCalc);
+    			}
+    			
+    			//프로젝트 전체 일정
+    			var checkSchedule = "";
+    			
+    			if(temp <= endDate) {
+    				checkSchedule = "<div style='padding: 0; height: 70%; width: 30px; background: #004771;'></div>"
+    			}
+    			
+    			if(temp.getDay() == 0) {
+    				$(".date").append("<th style='color: rgb(184, 0, 0);'>" + temp.getDate() + "</th>");
+    			} else if(temp.getDay() == 6) {
+    				$(".date").append("<th style='color: rgb(0, 16, 155);'>" + temp.getDate() + "</th>");
+    			} else {
+    				$(".date").append("<th>" + temp.getDate() + "</th>");
+    			}
+    			
+    			
+    			$(".schedule").append("<td style='padding: 0;'>" + checkSchedule + "</td>");
+    			
+    			
+    			//업무 일정
+    			if(!${projectInfo.task.isEmpty()}) {
+	    			$(".taskSchedule").append("<td style='padding: 0;'></td>");
+	    			
+	    			var taskEndDate = new Date();
+	    			
+	    			<c:forEach var="t" items="${projectInfo.task}" varStatus="status">
+	    				var taskStartDate = new Date('${t.pstartDate}'.substring(0, 4), '${t.pstartDate}'.substring(5, 7) - 1, '${t.pstartDate}'.substring(8, 10));
+						
+						taskEndDate.setFullYear('${t.pendDate}'.substring(0, 4));
+						taskEndDate.setMonth('${t.pendDate}'.substring(5, 7) - 1);
+						taskEndDate.setDate('${t.pendDate}'.substring(8, 10));
+						
+						if(temp >= taskStartDate && temp <= taskEndDate) {
+							$(".taskSchedule").eq(${status.index}).children().eq(7 + i).wrapInner("<div style='padding: 0; height: 70%; width: 30px; background: #004771;'></div>");
+						}
+	    			</c:forEach>
+    			}
+    			
+    			//세부 업무 일정
+    			
+    			if(!${projectInfo.subTask.isEmpty()}) {
+	    			$(".subTaskSchedule").append("<td style='padding: 0;'></td>");
+	    			
+	    			var subTaskEndDate = new Date();
+	    			
+	    			<c:forEach var="t" items="${projectInfo.subTask}" varStatus="status">
+	    				var subTaskStartDate = new Date('${t.pstartDate}'.substring(0, 4), '${t.pstartDate}'.substring(5, 7) - 1, '${t.pstartDate}'.substring(8, 10));
+						
+	    				subTaskEndDate.setFullYear('${t.pendDate}'.substring(0, 4));
+	    				subTaskEndDate.setMonth('${t.pendDate}'.substring(5, 7) - 1);
+	    				subTaskEndDate.setDate('${t.pendDate}'.substring(8, 10));
+						
+						if(temp >= subTaskStartDate && temp <= subTaskEndDate) {
+							$(".subTaskSchedule").eq(${status.index}).children().eq(7 + i).wrapInner("<div style='padding: 0; height: 70%; width: 30px; background: #004771;'></div>");
+						}
+	    			</c:forEach>
+    			}
+    			
+    			
+    			temp.setDate(temp.getDate() + 1);
+    		}
+    		
+    		
+    		
+    	});
+    	
+    	
+    
         function showModifyForm() {
             $('article:nth-child(n+2)').css('display', 'none');
             $('#modifyProjectForm').css('display', 'block');
@@ -991,11 +902,11 @@
         	var perusalMnos = "";
 
         	<c:forEach var="m" items="${projectInfo.member}" varStatus="status">
-        		<c:if test="${m.prole eq '참여자'}">
+        		<c:if test="m.prole eq '참여자'">
 	        		participantMnos += '${m.mno}';
 	        		participantMnos += ', ';
         		</c:if>
-        		<c:if test="${m.prole eq '열람권한'}">
+        		<c:if test="m.prole eq '열람권한'">
         			perusalMnos += '${m.mno}';
         			perusalMnos += ', ';
         		</c:if>

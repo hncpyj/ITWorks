@@ -8,6 +8,7 @@
 <title>ItWorks</title>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style>
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
     * {
         margin: 0px;
         font-family: "Noto Sans KR";
@@ -81,12 +82,11 @@
             <li style="width: 40px;">
                 <div style="display: inline-block; width: 38px; height: 38px; border-radius: 50%; background: gray; margin-top: 5px;"></div>
             </li>
-            <li style="width: 100px; padding-left: 15px;text-align: left;"><a href="myPage.mp" style="color: #606266; font-size: 15px;">temp 님</a></li>
+            <li style="width: 100px; padding-left: 15px;text-align: left;"><a href="myPage.mp" style="color: #606266; font-size: 15px;">${ sessionScope.loginUser.ename } 님</a></li>
         </ul>
         
     </nav>
 
-	<div><a href="join.me">회원가입</a></div>
 
 
 </body>

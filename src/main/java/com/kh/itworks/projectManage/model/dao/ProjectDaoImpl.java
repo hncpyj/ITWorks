@@ -46,7 +46,7 @@ public class ProjectDaoImpl implements ProjectDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		
-		HashMap<String, Object> allProjectInfo = new HashMap<String, Object>();
+//		HashMap<String, Object> allProjectInfo = new HashMap<String, Object>();
 		
 		if(loginUser.getRid().equals("admin")) {
 			allProjectList = (ArrayList) sqlSession.selectList("Project.selectAdminProjectList", null, rowBounds);
