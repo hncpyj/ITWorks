@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,12 +80,16 @@
         margin-top: 40px;
     }
     article:nth-child(3)>table {
-        width: 1030px;
+        width: 950px;
         margin: auto;
         border-collapse: collapse;
         border-top: 2px solid #929292;
         border-bottom: 2px solid #929292;
         text-align: center;
+    }
+    #noticeList tr:nth-child(n+2):hover {
+    	cursor: pointer;
+        background: rgb(221, 221, 221);
     }
     th {
         font-size: 13px;
@@ -120,7 +125,14 @@
         <article style="margin-top: 30px;">
             <div id="menuTitle">
                 <span>프로젝트 공지사항</span>
-                <button onclick="location.href='insertProjectNotice.pm'" style="margin-left: 71%;">작성하기</button>
+                <c:forEach var="m" items="${ member }">
+	                <c:if test="${ m.prole eq '담당자'}">
+	                	<c:set var="pcharge" value="${ m.mno }"/>
+	                </c:if>
+                </c:forEach>
+                <c:if test="${ loginUser.mno eq pcharge }">
+                	<button onclick="insertProjectNotice('${pno}');" style="margin-left: 71%;">작성하기</button>
+                </c:if>
                 <hr style="width: 95%; margin-top: 10px; color: #929292;">
             </div>
         </article>
@@ -141,7 +153,7 @@
 
         <!-- 공지사항 리스트 -->
         <article>
-            <table>
+            <table id="noticeList">
                 <tr>
                     <th width="50px">No</th>
                     <th>제목</th>
@@ -149,37 +161,73 @@
                     <th width="100px">작성일</th>
                     <th width="50px">조회수</th>
                 </tr>
-                <tr>
-                    <td>00</td>
-                    <td><a href="noticeDetail.pm">공지사항 제목입니다.</a></td>
-                    <td>김갑동</td>
-                    <td>yyyy/mm/dd</td>
-                    <td>00</td>
-                </tr>
-                <tr>
-                    <td>00</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>김갑동</td>
-                    <td>yyyy/mm/dd</td>
-                    <td>00</td>
-                </tr>
-                <tr>
-                    <td>00</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>김갑동</td>
-                    <td>yyyy/mm/dd</td>
-                    <td>00</td>
-                </tr>
-                <tr>
-                    <td>00</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>김갑동</td>
-                    <td>yyyy/mm/dd</td>
-                    <td>00</td>
-                </tr>
+                <c:forEach var="n" items="${ notice }" varStatus="status">
+	                <tr onclick="noticeDetail(${n.pnoticeNo});">
+	                    <td><c:out value="${ notice.size() - status.index }"/></td>
+	                    <td><c:out value="${ n.pnoticeName }"/></td>
+	                    <td><c:out value="${ n.ename }"/></td>
+	                    <td><c:out value="${ n.pnoticeDate }"/></td>
+	                    <td><c:out value="${ n.count }"/></td>
+	                </tr>
+                </c:forEach>
             </table>
+            
+            <div id="pagingArea" align="center" style="font-size: 12px; margin-top: 20px;">
+				<c:if test="${ pi.currentPage <= 1 }">
+					[이전]&nbsp;
+				</c:if>
+				<c:if test="${ pi.currentPage > 1 }">
+					<c:url var="blistBack" value="/projectNoticeList.pm">
+						<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+						<c:param name="pno" value="${ pno }"/>
+					</c:url>
+					<a href="${ blistBack }">[이전]</a>&nbsp;
+				</c:if>
+				
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:if test="${ p eq pi.currentPage }">
+						<font style="color: #004771; font-size: 13px;"><b>[${ p }]</b></font>
+					</c:if>
+					
+					<c:if test="${ p ne pi.currentPage }">
+						<c:url var="blistCheck" value="/projectNoticeList.pm">
+							<c:param name="currentPage" value="${ p }"/>
+							<c:param name="pno" value="${ pno }"/>
+						</c:url>
+						<a href="${ blistCheck }">${ p }</a>
+					</c:if>
+				</c:forEach>
+				
+				<c:if test="${ pi.currentPage >= pi.maxPage }">
+					&nbsp;[다음]
+				</c:if>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+					<c:url var="blistEnd" value="/projectNoticeList.pm">
+						<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
+						<c:param name="pno" value="${ pno }"/>
+					</c:url>
+					&nbsp;<a href="${ blistEnd }">[다음]</a>
+				</c:if>
+			</div>
         </article>
         <!-- 공지사항 리스트 종료 -->
     </section>
+    
+    <script>
+	    function goProjectDetail() {
+	    	location.href="projectDetail.pm?pno=" + ${pno};
+	    }
+	    function goProjectNotice() {
+	    	location.href="projectNoticeList.pm?pno=" + ${pno};
+	    }
+	    
+	    function noticeDetail(nno) {
+	    	location.href="noticeDetail.pm?nno=" + nno;
+	    }
+	    
+	    function insertProjectNotice(pno) {
+	    	location.href='insertProjectNoticeForm.pm?pno=' + pno;
+	    }
+    </script>
 </body>
 </html>

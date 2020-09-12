@@ -235,7 +235,7 @@
                     <td>2020/08/21</td>
                 </tr>
             </table>
-            <a href="#" style="padding-left: 450px; color:gray; font-size: 13px;">더보기</a>
+            <a href="#" style="padding-left: 470px; color:gray; font-size: 13px;">더보기</a>
         </article>
 
         <!--진행중인프로젝트-->
@@ -272,7 +272,7 @@
 
         <!--바로가기 버튼영역-->
         <article>
-            <img src="${ contextPath }/resources/mainImages/eaBtn.png" onclick="location.href='#'">
+            <img src="${ contextPath }/resources/mainImages/eaBtn.png" onclick="location.href='approvalIng.ea'">
             <img src="${ contextPath }/resources/mainImages/projectBtn.png" onclick="location.href='#'">
             <img src="${ contextPath }/resources/mainImages/fileBtn.png" onclick="location.href='#'">
             <img src="${ contextPath }/resources/mainImages/addressBtn.png" onclick="location.href='#'">

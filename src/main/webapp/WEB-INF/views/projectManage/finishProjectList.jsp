@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ITWorks!</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
     body {
         width: 1420px;
@@ -37,7 +38,7 @@
     }
     #searchArea {
         width: 1012px; 
-        height: 256px; 
+        height: 186px; 
         border: 0.5px solid #929292; 
         margin-top: 30px;
         margin: 0 auto; 
@@ -64,7 +65,7 @@
         box-shadow: 1px 1px 5px lightgray;
         border-radius: 3px 3px;
     }
-    article:nth-child(2)>button {
+    article:nth-child(2)>form>button {
         width: 65px; 
         height: 30px; 
         background: #004771; 
@@ -75,6 +76,8 @@
     }
     article:last-child table td {
         text-align: center;
+        height: 30px;
+        max-height: 30px;
     }
     #projectList tr td:nth-child(3) {
         text-align: left;
@@ -90,135 +93,130 @@
     #projectList th {
         border-bottom: 3px solid #929292;
         background: white;
+        height: 30px;
+        max-height: 30px;
     }
     #projectList tr {
-        height: 20px;
         border-bottom: 1px solid #929292;
     }
-    #asideBack ul li:last-child {
+    #projectList tr:nth-child(n+2):hover {
+        cursor: pointer;
+        background: rgb(221, 221, 221);
+    }
+    #asideBack ul>li:last-child {
         font-weight: bold;
     }
     button {
         cursor: pointer;
     }
+    a {
+    	color: black;
+    	text-decoration: none;
+    }
 </style>
 </head>
 <body>
+<c:if test="${ !empty loginUser }">
+		<jsp:include page="../common/menubar.jsp"/>
+		<jsp:include page="projectListAside.jsp"/>
+	
+	    <section>
+	        <article style="margin-top: 30px;">
+	            <div id="menuTitle">
+	                <span>완료 프로젝트</span>
+	                <button onclick="location.href='insertProjectForm.pm'">신규</button>
+	                <hr style="width: 95%; margin-top: 10px; color: #929292;">
+	            </div>
+	        </article>
+	
+	        <article style="margin-top: 30px;">
+	            <form action="searchFinish.pm">
+		            <div id="searchArea">
+		                <label>기간</label><input type="date" name="startDate">&nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;<input type="date" name="endDate"><br>
+		                <label>프로젝트명</label><input type="text" style="width: 375px;" name="projectName"><br>
+		                <label>작성자</label><input type="text" name="writer"><button class="memberSearchBtn">조회</button><br>
+		                <label>담당자</label><input type="text" name="charge"><button class="memberSearchBtn">조회</button><br>
+		                <label>참여자</label><input type="text" name="join"><button class="memberSearchBtn">조회</button><br>
+		            </div>
+		            <button type="submit">조회</button>
+	            </form>
+	        </article>
 
-	<jsp:include page="../common/menubar.jsp"/>
-	<jsp:include page="projectListAside.jsp"/>
-
-    <section>
-        <article style="margin-top: 30px;">
-            <div id="menuTitle">
-                <span>완료 프로젝트</span>
-                <button onclick="location.href='insertProjectForm.pm'">신규</button>
-                <hr style="width: 95%; margin-top: 10px; color: #929292;">
-            </div>
-        </article>
-
-        <article style="margin-top: 30px;">
-            <div id="searchArea">
-                <label>기간</label><input type="date">&nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;<input type="date"><br>
-                <label>프로젝트명</label><input type="text" style="width: 375px;"><br>
-                <label style="width: 96px;">진행상태</label>
-                <select name="" id="" style="width: 179px; height: 25px;">
-                    <option value="">예정</option>
-                    <option value="">진행</option>
-                    <option value="">완료</option>
-                    <option value="">보류</option>
-                    <option value="">완료</option>
-                </select><br>
-                <label>작성자</label><input type="text"><button class="memberSearchBtn">조회</button><br>
-                <label>담당자</label><input type="text"><button class="memberSearchBtn">조회</button><br>
-                <label>참여자</label><input type="text"><button class="memberSearchBtn">조회</button><br>
-                <label>담당부서</label><input type="text"><br>
-            </div>
-            <button>조회</button>
-        </article>
-
-        <article style="margin-top: 30px;">
-            <table id="projectList" style="width: 1010px; height: 503px;">
-                <tr>
-                    <th width="60px">No</th>
-                    <th width="100px">상태</th>
-                    <th>프로젝트명</th>
-                    <th width="100px">작성자</th>
-                    <th width="200px">기간</th>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>2020/00/00 ~ 2020/00/00</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                </tr>
-            </table>
-        </article>
-    </section>
+	        <article style="margin-top: 30px;">
+	            <table id="projectList" style="width: 1010px;">
+	                <tr>
+	                    <th width="60px">No</th>
+	                    <th width="100px">상태</th>
+	                    <th>프로젝트명</th>
+	                    <th width="100px">작성자</th>
+	                    <th width="200px">기간</th>
+	                </tr>
+	                <c:if test="${ listCount == 0 }">
+	                		<tr>
+	                			<td colspan="5" style="color: lightgray;">조회 결과가 없습니다.</td>
+	                		</tr>
+	                </c:if>
+	                <c:if test="${ !empty projectList }">
+		                <c:forEach var="p" items="${ projectList }" varStatus="status">
+				        	<tr onclick="showProjectDetail(${p.pno});">
+				            	<td><c:out value="${ projectList.size() - status.index }"/></td>
+				                <td><c:out value="${ p.pprogress }"/></td>
+				                <td><c:out value="${ p.pname }"/></td>
+				                <td><c:out value="${ p.pwriter }"/></td>
+				                <td><c:out value="${ p.pstartDate } ~ ${ p.pendDate }"/></td>
+				            </tr>
+		                </c:forEach>
+		            </c:if>
+	            </table>
+	            
+	            <div id="pagingArea" align="center" style="font-size: 12px; margin-top: 20px;">
+				<c:if test="${ pi.currentPage <= 1 }">
+					[이전]&nbsp;
+				</c:if>
+				<c:if test="${ pi.currentPage > 1 }">
+					<c:url var="blistBack" value="/finishProjectList.pm">
+						<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+					</c:url>
+					<a href="${ blistBack }">[이전]</a>&nbsp;
+				</c:if>
+				
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:if test="${ p eq pi.currentPage }">
+						<font style="color: #004771; font-size: 13px;"><b>[${ p }]</b></font>
+					</c:if>
+					
+					<c:if test="${ p ne pi.currentPage }">
+						<c:url var="blistCheck" value="finishProjectList.pm">
+							<c:param name="currentPage" value="${ p }"/>
+						</c:url>
+						<a href="${ blistCheck }">${ p }</a>
+					</c:if>
+				</c:forEach>
+				
+				<c:if test="${ pi.currentPage >= pi.maxPage }">
+					&nbsp;[다음]
+				</c:if>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+					<c:url var="blistEnd" value="finishProjectList.pm">
+						<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
+					</c:url>
+					&nbsp;<a href="${ blistEnd }">[다음]</a>
+				</c:if>
+			</div>
+	        </article>
+	    </section>
+	</c:if>
+	<c:if test="${ empty loginUser }">
+		<c:set var="message" value="로그인이 필요한 서비스입니다." scope="request"/>
+			<jsp:forward page="../common/errorPage.jsp"/>
+	</c:if>
+	
+	<script>
+			function showProjectDetail(pno) {
+				console.log(pno);
+				location.href="projectDetail.pm?pno=" + pno;
+			}
+		</script>
     <br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>

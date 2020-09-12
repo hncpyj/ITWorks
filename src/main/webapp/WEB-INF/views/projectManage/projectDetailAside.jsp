@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,6 +29,7 @@
         text-decoration: none;
         color: #004771;
         font-size: 14px;
+        cursor: pointer;
     }
     aside {
         float: left;
@@ -39,10 +41,11 @@
         <div id="asideBack">
             <div id="asideMenuTitle">프로젝트 상세보기</div>
             <ul>
-                <li><a href="projectInfo.pm" class="asideMenu">- 프로젝트 정보</a></li>
-                <li><a href="projectNotice.pm" class="asideMenu">- 프로젝트 공지사항</a></li>
+                <li><a onclick="goProjectDetail();" class="asideMenu">- 프로젝트 정보</a></li>
+                <li><a onclick="goProjectNotice();" class="asideMenu">- 프로젝트 공지사항</a></li>
             </ul>
         </div>
     </aside>
+    
 </body>
 </html>
