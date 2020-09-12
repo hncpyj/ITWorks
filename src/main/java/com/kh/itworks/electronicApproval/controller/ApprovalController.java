@@ -1,11 +1,21 @@
 package com.kh.itworks.electronicApproval.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.kh.itworks.electronicApproval.model.service.ApprovalService;
+import com.kh.itworks.electronicApproval.model.vo.Approval;
+
+@SessionAttributes("loginUser")
 @Controller
 public class ApprovalController {
 
+	@Autowired
+	private ApprovalService as;
+	
 	//결재진행함으로 가기
 	@RequestMapping("approvalIng.ea")
 	public String showApprovalIngForm() {
@@ -81,6 +91,22 @@ public class ApprovalController {
 	public String showAppProceForm() {
 		
 		return "electronicApproval/approvalProcessing";
+	}
+	
+	//결재요청 버튼
+	@RequestMapping("appRequest.ea")
+	public String appRequest(Model model, Approval app) {
+		
+		int result = as.insertApproval(app);
+		
+		if(result > 0) {
+			
+			return "main/main";
+		} else {
+			model.addAttribute("msg", "결재문서 인서트 실패");
+			return "electronicApproval/approvalIng";
+		}
+		
 	}
 	
 }

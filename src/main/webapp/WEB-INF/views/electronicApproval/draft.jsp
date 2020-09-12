@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="<%= request.getContextPath()%>"></c:set>
 <html>
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>ItWorks</title>
 <link rel="icon" href="./resources/images/favicon.ico" type="image/x-icon">
 <style>
@@ -66,9 +69,10 @@
 		margin: 10% auto; /* 15% from the top and centered */
 		padding: 20px;
 		border: 1px solid #888;
-		width: 45%; /* Could be more or less, depending on screen size */         
-		height: 50%;                 
+		width: 60%; /* Could be more or less, depending on screen size */         
+		height: 65%;                 
 	}
+
 </style>
 
 </head>
@@ -78,6 +82,7 @@
 	<%@ include file="/WEB-INF/views/electronicApproval/common/electronicApprovalAside.jsp" %>
 	
 	<section>
+	<form action="appRequest.ea" method="post" enctype="multipart/form-data">
 	<br>
  	<table style="margin:auto;">
 		<tr>
@@ -127,7 +132,7 @@
 		</tr>
 		<tr>
 			<Td height="40px" style="background-color: #e5e5e5; text-align: center;">문서제목</Td>
-			<Td colspan="3">&nbsp;&nbsp;회의록어쩌구웅앵</Td>
+			<Td colspan="3">&nbsp;&nbsp;<input type="text" name="apvTitle" style=" width: 765px; height: 30px; border: none; background-color: #fafafa; font-size: 17px;"></Td>
 		</tr>
 	</table>
 	<Br>
@@ -137,15 +142,50 @@
     <!-- Modal content -->
 	<div class="modal-content">
 		<p style="font-size: 25px; margin-left: 20px; color: #29a2f7;">참조자 지정</p><Br>
-		<table style="margin:auto; width: 600px; height: 280px;">
+		<table style="margin:auto; width: 600px; height: 320px;">
 			<tr>
-				<td width="270px"><div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;"></div></td>
+				<td width="500px">
+					<div style="width: 400px; height: 410px; border: 1px solid #c4c4c4;">
+						<!-- 직원선택창 -->
+			            <div class="searchModal searchPerson">
+			               <div class="onclickBackground" onclick="closeSearchPerson();"></div>
+			               <div class="searchBox" align="center" style="width: 400px; height: 500px;">
+			                  <div style="background: #004771; border-top-left-radius: 5px; border-top-right-radius: 5px; height: 35px; margin: 0; width: 400px; display: table-cell; vertical-align: middle;">
+			                     <span style="color: white; padding-left: 15px; margin-top: 15px; font-size: 14px;">검색</span>
+			                     <button onclick="closeSearchPerson();" style="background: white; color: black; width: 20px; height: 20px; border: none; border-radius: 5px; margin-left: 323px; font-weight: bold;">X</button>
+			                  </div>
+			                  <div align="center" style="margin-top: 10px; margin-bottom: 15px;">
+			                     <input type="text" name="searchName" style="width: 250px; border: 1px solid #929292; margin-left: 5px;" placeholder="검색하고자 하는 이름을 입력하세요.">
+			                     <button type="button" style="width: 50px; height: 25px; border-radius: 7px; background: #004771; border: nond; color: white; margin-left: 5px; font-size: 13px; border: none;">검색</button>
+			                  </div>
+			                  <div id="selectArea"></div>
+			                  <div style="width: 325px; height: 290px; border: 1px solid #929292; margin-top: 15px; overflow: auto;" align="center">
+			                     <table style="width: 100%; font-size: 13px; text-align: center;" id="personList">
+			                        <c:forEach var="p" items="${ allMemberDept.allMember }">
+			                           <c:if test="${ !empty p }">
+			                              <tr>
+			                                 <td><div style="display: inline-block; width: 38px; height: 38px; border-radius: 50%; background: gray; margin-top: 5px;"></div></td>
+			                                 <td style="padding-left: 10px; width: 80px;"><c:out value="${ p.ename }"/></td>
+			                                 <td><c:out value="${ p.jname }"/></td>
+			                                 <td style="color: #929292; width: 100px;"><c:out value="${ p.dname }"/></td>
+			                                 <td><button class="selectPersonBtn" onclick="goSelectArea(${ p.mno }, '${ p.ename }');">선택</button></td>
+			                              </tr>
+			                           </c:if>
+			                        </c:forEach>
+			                     </table>
+			                  </div>
+			                  <button class="selectBtn" onclick="selectPerson();">선택 완료</button>
+			               </div>
+			            </div>
+			            <!-- 직원 선택창 끝 -->
+					</div>
+				</td>
 				<td width="60px">
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendR.png" style="margin: auto; width: 40px;"><br>
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendL.png" style="margin: auto; width: 40px;">
 				</td>
 				<td width="270px">
-					<div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;">
+					<div style="width: 270px; height: 410px; border: 1px solid #c4c4c4;">
 						<br>
 						<table style="margin: auto; border: 1px solid #c4c4c4; border-collapse: collapse; text-align: left; width: 230px;" border="1">
 							<tr height="40px">
@@ -159,7 +199,7 @@
 				</td>
 			</tr>
 		</table>
-		<table style="margin-left: 460px;">
+		<table style="margin-left: 630px;">
 			<tr>
 				<Td><div class="btn1" onclick="" style="width: 70px;">적용</div></Td>
 				<Td><div class="btn" id="reset" onclick="close_pop();" style="width: 70px;">취소</div></Td>
@@ -173,29 +213,64 @@
     <!-- Modal content -->
 	<div class="modal-content">
 		<p style="font-size: 25px; margin-left: 20px; color: #29a2f7;">열람자 지정</p><Br>
-		<table style="margin:auto; width: 600px; height: 280px;">
+		<table style="margin:auto; width: 600px; height: 320px;">
 			<tr>
-				<td width="270px"><div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;"></div></td>
+				<td width="500px">
+					<div style="width: 400px; height: 410px; border: 1px solid #c4c4c4;">
+						<!-- 직원선택창 -->
+			            <div class="searchModal searchPerson">
+			               <div class="onclickBackground" onclick="closeSearchPerson();"></div>
+			               <div class="searchBox" align="center" style="width: 400px; height: 500px;">
+			                  <div style="background: #004771; border-top-left-radius: 5px; border-top-right-radius: 5px; height: 35px; margin: 0; width: 400px; display: table-cell; vertical-align: middle;">
+			                     <span style="color: white; padding-left: 15px; margin-top: 15px; font-size: 14px;">검색</span>
+			                     <button onclick="closeSearchPerson();" style="background: white; color: black; width: 20px; height: 20px; border: none; border-radius: 5px; margin-left: 323px; font-weight: bold;">X</button>
+			                  </div>
+			                  <div align="center" style="margin-top: 10px; margin-bottom: 15px;">
+			                     <input type="text" name="searchName" style="width: 250px; border: 1px solid #929292; margin-left: 5px;" placeholder="검색하고자 하는 이름을 입력하세요.">
+			                     <button type="button" style="width: 50px; height: 25px; border-radius: 7px; background: #004771; border: nond; color: white; margin-left: 5px; font-size: 13px; border: none;">검색</button>
+			                  </div>
+			                  <div id="selectArea"></div>
+			                  <div style="width: 325px; height: 290px; border: 1px solid #929292; margin-top: 15px; overflow: auto;" align="center">
+			                     <table style="width: 100%; font-size: 13px; text-align: center;" id="personList">
+			                        <c:forEach var="p" items="${ allMemberDept.allMember }">
+			                           <c:if test="${ !empty p }">
+			                              <tr>
+			                                 <td><div style="display: inline-block; width: 38px; height: 38px; border-radius: 50%; background: gray; margin-top: 5px;"></div></td>
+			                                 <td style="padding-left: 10px; width: 80px;"><c:out value="${ p.ename }"/></td>
+			                                 <td><c:out value="${ p.jname }"/></td>
+			                                 <td style="color: #929292; width: 100px;"><c:out value="${ p.dname }"/></td>
+			                                 <td><button class="selectPersonBtn" onclick="goSelectArea(${ p.mno }, '${ p.ename }');">선택</button></td>
+			                              </tr>
+			                           </c:if>
+			                        </c:forEach>
+			                     </table>
+			                  </div>
+			                  <button class="selectBtn" onclick="selectPerson();">선택 완료</button>
+			               </div>
+			            </div>
+			            <!-- 직원 선택창 끝 -->
+					</div>
+				</td>
 				<td width="60px">
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendR.png" style="margin: auto; width: 40px;"><br>
 					<img src="${contextPath }/resources/images/electronicApprovalImg/sendL.png" style="margin: auto; width: 40px;">
 				</td>
 				<td width="270px">
-					<div style="width: 270px; height: 280px; border: 1px solid #c4c4c4;">
+					<div style="width: 270px; height: 410px; border: 1px solid #c4c4c4;">
 						<br>
 						<table style="margin: auto; border: 1px solid #c4c4c4; border-collapse: collapse; text-align: left; width: 230px;" border="1">
 							<tr height="40px">
-								<Td>&nbsp;&nbsp;최우아 기술지원팀</Td>
+								<Td>&nbsp;&nbsp;정다빈 기술지원팀</Td>
 							</tr>
 							<Tr height="40px">
-								<Td>&nbsp;&nbsp;윤수경 경영지원팀</Td>
+								<Td>&nbsp;&nbsp;최재영 마케팅팀</Td>
 							</Tr>
 						</table>
 					</div>
 				</td>
 			</tr>
 		</table>
-		<table style="margin-left: 460px;">
+		<table style="margin-left: 630px;">
 			<tr>
 				<Td><div class="btn1" onclick="" style="width: 70px;">적용</div></Td>
 				<Td><div class="btn" id="reset1" onclick="close_pop();" style="width: 70px;">취소</div></Td>
@@ -203,6 +278,80 @@
 		</table>
 	</div>
 	</div>
+	
+	<script>
+	//선택 버튼 누르면 검색창 아래 DIV에 이름 뜨게 하는 코드
+    function goSelectArea(mno, ename) {
+       var mno = mno;
+       var ename = ename;
+       
+       console.log(mno + ', ' + ename);
+       
+       if($(".selectedMember").length == 0) {
+          $("#selectArea").wrapInner("<div class='selectedMember'>" + ename + 
+             "<img src='${contextPath}/resources/projectManageImages/closeBtn4.png' onclick='removeMember(this);'><input type='hidden' name='tempMno' value='" + mno +"'></div>");
+       } else {
+          if(tdNum == 0) {
+             alert("담당자는 1명만 선택 가능합니다.");
+             return;
+          } else {
+             $(".selectedMember:last-child").after("<div class='selectedMember'>" + ename +
+                "<img src='${contextPath}/resources/projectManageImages/closeBtn4.png' onclick='removeMember(this);'><input type='hidden' name='tempMno' value='" + mno +"'></div>");
+          }
+       }
+       
+       mnoArr = "";
+      for(var i = 0; i < $("input[name=tempMno]").length; i++) {
+         mnoArr += $("input[name=tempMno]")[i].value;
+         if(i < $("input[name=tempMno]").length - 1) {
+               mnoArr += ", ";
+         }
+      }   
+    }
+    
+    //선택된 직원 x 누르면 지우는 코드
+    function removeMember(selectedMember) {
+       var selectedMember = selectedMember;
+       $(selectedMember).parent().remove();
+    }
+    
+    //선택된 직원 정보 input 태그 value 값으로 지정하는 코드
+    function selectPerson() {
+       console.log(mnoArr);
+       var names = '';
+       
+       for(var i = 0; i < $(".selectedMember").length; i++) {
+          names += $(".selectedMember").eq(i).text();
+          if(i != $(".selectedMember").length - 1) {
+             names += ", ";
+          }
+       }
+       
+       if(tdNum == 0) {
+          $("input[name='charge']").val(names);
+          $("input[name='chargeMno']").val(mnoArr);
+          console.log("담당mnoArr : " + mnoArr);
+          mnoArr = "";
+          console.log("담당자 : " + $("input[name='chargeMno']").val());
+       } else if(tdNum == 1) {
+          $("input[name='participant']").val(names);
+          $("input[name='participantMno']").val(mnoArr);
+          console.log("참여mnoArr : " + mnoArr);
+          mnoArr = "";
+          console.log("초기화 후 : " + mnoArr);
+          console.log("참여자 : " + $("input[name='participantMno']").val());
+       } else {
+          $("input[name='perusal']").val(names);
+          $("input[name='perusalMno']").val(mnoArr);
+          console.log("열람mnoArr : " + mnoArr);
+          mnoArr = "";
+          console.log("열람권한 : " + $("input[name='perusalMno']").val());
+       }
+
+       jQuery('.searchPerson').fadeOut('slow');
+       
+    }
+	</script>
 	
 	<script type="text/javascript">
 
@@ -225,8 +374,26 @@
 	</script>
 	
 	<!-- 텍스트 에디터 api -->
-	<textarea name="weditor" id="weditor" rows="10" cols="100" style="resize: none; margin-left: 80px;" readonly>스마트에디터 들어갈자리</textarea>
-	<input type="button" id="writebtn" name="writebtn" value="저장">
+	<!-- <form>
+
+	<table width=80%>
+
+	<tr>
+
+	<td><input type="button" onclick="submitContents();" value="전송" /></td>
+
+	</tr>
+
+		<tr>
+
+	<td><textarea id="content" name="content" rows="10" style="width:100%; display:none;"></textarea></td>
+
+	</tr>
+
+	</table> -->
+	<textarea name="fContent" style="margin-left: 80px; resize:none; width: 1005px; height: 500px;"></textarea>
+
+
 	
 	<br>
 	<table style="margin-left: 325px;">
@@ -251,7 +418,7 @@
 	<table style="margin-left: 910px;">
 		<tr>
 			<td><div class="btn" id="lineBtn" onclick="location.href='#'">결재선</div></td>
-			<td><div class="btn1" onclick="location.href='#'">결재요청</div></td>
+			<td><div class="btn1" onclick="location.href='appRequest.ea'">결재요청</div></td>
 			<td><div class="btn" onclick="temSave();">임시저장</div></td>
 			<td><div class="btn" onclick="cancel();">취소</div></td>
 		</tr>
@@ -301,6 +468,7 @@
 		</table>
 	</div>
 	</div>
+	</form>
 	
 	<script>
 		$("#lineBtn").click(function() {
@@ -328,36 +496,36 @@
 	
 	</script>
 
-	<script type="text/javascript" src="/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
-	<script type="text/javascript">
-		var oEditors = [];
-		nhn.husky.EZCreator.createInIFrame({
-		    oAppRef: oEditors,
-		    elPlaceHolder: "weditor",  //textarea ID
-		    sSkinURI: "${contextPath}/smarteditor/SmartEditor2Skin.html",  //skin경로
-		    fCreator: "createSEditor2",
-		});
-	</script>
-		
-	<script>
-			window.onload = function() {
-			var btn = document.getElementById("writebtn");
-			btn.onclick = function() {
-				submitContents(btn);
-			}
-		}
-		
-		function submitContents(elClickedObj) {
-			oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FILED", []);
-			
-			try {
-				elClickedObj.from.submit();
-			} catch(e) {
-				
-			}
-		}
+<%-- 	<script type="text/javascript" src="${contextPath }/resources/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 	
-	</script>
+	<script type="text/javascript">
+	
+	var oEditors = [];
+
+	nhn.husky.EZCreator.createInIFrame({
+
+	 	 oAppRef: oEditors,
+
+	 	 elPlaceHolder: document.getElementById('content'), // html editor가 들어갈 textarea id
+
+	  	 sSkinURI: "${contextPath}/resources/smarteditor/SmartEditor2Skin.html",  // html editor가 skin url
+
+	     fCreator: "createSEditor2"	
+
+	 });
+
+
+
+	function submitContents() {
+
+	    oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됨
+
+	    alert(document.getElementById("content").value);
+
+	}
+
+</script> --%>
+
 
 </body>
 </html>

@@ -8,9 +8,9 @@
 		<result property="eid" column="EID"/>
 		<result property="epwd" column="EPWD"/>
 		<result property="corpNo" column="CORP_NO"/>
-		<result property="roleNo" column="ROLE_NO"/>
-		<result property="jobNo" column="JOB_NO"/>
-		<result property="deptNo" column="DEPT_NO"/>
+		<result property="roleNo" column="RID"/>
+		<result property="jobNo" column="JID"/>
+		<result property="deptNo" column="DID"/>
 		<result property="ename" column="ENAME"/>
 		<result property="phone" column="PHONE"/>
 		<result property="email" column="EMAIL"/>
@@ -30,4 +30,27 @@
 		   AND EPWD = #{epwd}
 		   AND CORP_NO = #{corpNo}
 	</select>
+	<!-- status가 Y,N 둘 다 중복체크 할 수 있음 -->
+	<select id="duplicationCheck" resultMap="memberResultSet" parameterType="java.lang.String">
+		SELECT *
+		  FROM EMPLOYEE
+		 WHERE EID = #{userId}  		  
+
+	</select>
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO EMPLOYEE
+		VALUES (#{ename}, #{epwd}, #{phone}, #{email}, #{address},
+				#{birthday}, #{eno}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), NULL, DEFAULT,
+				DEFAULT, NULL, SEQ_MEMBER_NO.NEXTVAL, 999, 999,
+				999, #{eid}, #{corpNo})
+				
+	</insert>
+	<!-- hiredate는 sysdate로 넣기 TO_CHAR(SYSDATE, 'YYYY/MM/DD')
+	
+	재직여부 DEFAULT='Y'로 말하기
+	승인상태 DEFAULT='N'
+	
+	 -->
+	
+	
 </mapper>

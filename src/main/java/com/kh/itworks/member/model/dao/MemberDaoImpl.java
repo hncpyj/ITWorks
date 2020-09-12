@@ -23,4 +23,18 @@ public class MemberDaoImpl implements MemberDao {
 		return loginUser;
 	}
 
+	//중복체크
+	@Override
+	public Member duplicationCheck(SqlSessionTemplate sqlSession, String userId) {
+
+		return sqlSession.selectOne("Member.duplicationCheck", userId);
+	}
+
+	//회원가입
+	@Override
+	public int insertMember(SqlSessionTemplate sqlSession, Member m) {
+
+		return sqlSession.insert("Member.insertMember", m);
+	}
+
 }

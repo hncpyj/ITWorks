@@ -72,7 +72,7 @@
 				</select>
 			</td>
 			<td width="230px"><input type="text"  id="search" placeholder=" 검색내용을 입력하세요"></td>
-			<td width="10"><img src="${contextPath}/resources/images/searchBtn.png" onclick="location.href='#'" style="cursor: pointer;"></td>
+			<td width="10"><img src="${contextPath}/resources/images/electronicApprovalImg/searchBtn.png" onclick="location.href='#'" style="cursor: pointer;"></td>
 		</tr>
 	</table>
 	<br>

@@ -87,6 +87,10 @@
         
     </nav>
 
+<<<<<<< src/main/webapp/WEB-INF/views/common/menubar.jsp
+=======
+	
+>>>>>>> src/main/webapp/WEB-INF/views/common/menubar.jsp
 
 
 </body>
