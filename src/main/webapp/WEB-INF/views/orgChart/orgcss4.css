@@ -1,0 +1,9 @@
+/* 2017.1.6 �닿텒�� 異붽� */
+.filter_orgtree .ui-selected a {background-color: #e8ecee;}
+.filter_orgtree .ui-selecting a {background-color: #e8ecee;}
+.filter_orgtree .ui-unselecting a {background: #ffffff;}
+.filter_orgtree .ui-selectable-helper{border: 1px dotted black; z-index : 9999; position: absolute;}
+.filter_orgtree ul.user {line-height: 25px;}
+.filter_orgtree ul.user a{cursor: pointer;}
+.filter_orgtree ul.user a:hover{background-color: #e8ecee;}
+.filter_orgtree .selectedNode {color:white !important; background-color:#375986 !important;}

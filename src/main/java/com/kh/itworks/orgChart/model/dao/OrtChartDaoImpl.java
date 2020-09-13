@@ -16,4 +16,16 @@ public class OrtChartDaoImpl implements OrgChartDao{
 		return (ArrayList) sqlSession.selectList("OrgChart.selectOrg", dept);
 	}
 
+	@Override
+	public ArrayList<DeptVO> selectCompanyDeptList(SqlSessionTemplate sqlSession, DeptVO dept) {
+
+		return (ArrayList) sqlSession.selectList("OrgChart.selectAdminOrg", dept);
+	}
+
+	@Override
+	public int insertDept(SqlSessionTemplate sqlSession, DeptVO dept) {
+		
+		return sqlSession.insert("OrgChart.insertDept", dept) ;
+	}
+
 }

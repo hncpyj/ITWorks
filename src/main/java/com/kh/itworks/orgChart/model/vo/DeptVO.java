@@ -1,22 +1,31 @@
 package com.kh.itworks.orgChart.model.vo;
 
-public class DeptVO {
+import com.kh.itworks.member.model.vo.Member;
+
+public class DeptVO implements java.io.Serializable {
 
 	private String deptNo;
 	private String dName;
 	private int dLevel;
 	private int corpNo;
 	private int dId;
-	
+	private Member member;
+	private CompanyVO company;
+	private String corpName;
+
 	public DeptVO() {}
 
-	public DeptVO(String deptNo, String dName, int dLevel, int corpNo, int dId) {
+	public DeptVO(String deptNo, String dName, int dLevel, int corpNo, int dId, Member member, CompanyVO company,
+			String corpName) {
 		super();
 		this.deptNo = deptNo;
 		this.dName = dName;
 		this.dLevel = dLevel;
 		this.corpNo = corpNo;
 		this.dId = dId;
+		this.member = member;
+		this.company = company;
+		this.corpName = corpName;
 	}
 
 	public String getDeptNo() {
@@ -59,10 +68,33 @@ public class DeptVO {
 		this.dId = dId;
 	}
 
-	@Override
-	public String toString() {
-		return "OrgChartVO [deptNo=" + deptNo + ", dName=" + dName + ", dLevel=" + dLevel + ", corpNo=" + corpNo
-				+ ", dId=" + dId + "]";
+	public Member getMember() {
+		return member;
 	}
 
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public CompanyVO getCompany() {
+		return company;
+	}
+
+	public void setCompany(CompanyVO company) {
+		this.company = company;
+	}
+
+	public String getCorpName() {
+		return corpName;
+	}
+
+	public void setCorpName(String corpName) {
+		this.corpName = corpName;
+	}
+
+	@Override
+	public String toString() {
+		return "DeptVO [deptNo=" + deptNo + ", dName=" + dName + ", dLevel=" + dLevel + ", corpNo=" + corpNo + ", dId="
+				+ dId + ", member=" + member + ", company=" + company + ", corpName=" + corpName + "]";
+	}
 }

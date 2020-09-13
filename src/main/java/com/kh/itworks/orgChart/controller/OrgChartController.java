@@ -19,31 +19,37 @@ public class OrgChartController {
 	@Autowired
 	private OrgChartService ocs;
 
-	   @RequestMapping("orgChart.org")
-	   public String orgChart(HttpServletRequest request ,DeptVO dept) {
-		   
-		   ArrayList<DeptVO> orgChart = ocs.selectDeptList(dept);
-		   
-		   System.out.println(orgChart);
-		   
-		   request.setAttribute("org", orgChart);
-		   
-	      return "orgChart/orgChart";
-	   }
+	@RequestMapping("orgChart.org")
+	public String orgChart(HttpServletRequest request ,DeptVO dept) {
+
+		ArrayList<DeptVO> orgChart = ocs.selectDeptList(dept);
+
+		System.out.println(orgChart);
+		
+
+		request.setAttribute("org", orgChart);
+
+		return "orgChart/orgChart";
+	}
 	@RequestMapping("orgList.org")
-	   public String orgList() {
-	      
-	      return "orgChart/orgList";
-	   }
-	
+	public String orgList() {
+
+		return "orgChart/orgList";
+	}
+
 	@RequestMapping("orgManage.org")
-	   public String orgManage() {
-	      
-	      return "orgChart/orgManage";
-	   }
+	public String orgManage(HttpServletRequest request,DeptVO dept) {
+		
+		ArrayList<DeptVO> orgManage = ocs.selectCompanyDeptList(dept);
+		
+		request.setAttribute("dept", orgManage);
+		
+		return "orgChart/orgManage";
+	}
 	@RequestMapping("positionManage.org")
-	   public String positionManage() {
-	      
-	      return "orgChart/positionManage";
-	   }
+	public String positionManage() {
+
+		return "orgChart/positionManage";
+	}
+	
 }

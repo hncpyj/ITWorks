@@ -11,4 +11,8 @@ public interface OrgChartService {
 	
 	public ArrayList<DeptVO> selectDeptList(DeptVO dept);
 	
+	public ArrayList<DeptVO> selectCompanyDeptList(DeptVO dept);
+	
+	public int insertDept(DeptVO dept);
+	
 }

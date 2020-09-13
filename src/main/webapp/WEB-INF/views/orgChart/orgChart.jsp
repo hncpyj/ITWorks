@@ -114,58 +114,51 @@ tr.upper {
 			<!-- 본문 시작 -->
 			<div class="orgChart">
 				<table id="orgTable">
+					<tr class="dept" id="corpName">
+						<td><p><c:out value="ITWORKS"/></p></td>
+						<td></td>
+					</tr>
 					<tr class="dept">
 						<td><p><c:out value="${ org.get(1).dName }"/></p></td>
 						<td></td>
 					</tr>
 					<tr class="upper">
-						<td><p>아래팀(4)</p></td>
-						<td><p>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</p></td>
+						<td><p></p></td>
+						<td><p>이해림</p></td>
 					</tr>					
-					<tr class="high">
-						<td><p>아아래팀(1)</p></td>
-						<td id="high">여기임,이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
-					</tr>					
+
 					<tr  class="dept">
-						<td><p>부서1(5)</p></td>
+						<td><p><c:out value="${ org.get(2).dName }"/></p></td>
 						<td></td>
 					</tr>					
 					<tr class="upper">
-						<td><p>팀(1)</p></td>
-						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
+						<td><p></p></td>
+						<td><p>최우아</p></td>
 					</tr>					
 					<tr class="upper">
-						<td><p>파덕이네팀(4)</p></td>
-						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
+						<td><p></p></td>
+						<td><p>최재영</p></td>
 					</tr>					
 					<tr class="dept">
-						<td><p>부서1(5)</p></td>
+						<td><p><c:out value="${ org.get(3).dName }"/></p></td>
 						<td></td>
 					</tr>					
 					<tr class="upper">
-						<td><p>팀팀(1)</p></td>
-						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
+						<td><p></p></td>
+						<td><p>임희진</p></td>
 					</tr>					
 					<tr class="upper">
-						<td><p>팀팀팀(4)</p></td>
-						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
+						<td><p></p></td>
+						<td><p>이호정</p></td>
 					</tr>					
 					<tr  class="dept">
-						<td><p>부서1(5)</p></td>
+						<td><p><c:out value="${ org.get(4).dName }"/></p></td>
 						<td></td>
-					</tr>					
-					<tr  class="dept">
-						<td><p>부서1(5)</p></td>
-						<td></td>
-					</tr>					
+					</tr>									
 					<tr class="upper">
-						<td><p>수경팀(5)</p></td>
-						<td>이해림, 최우아, 최재영, 임희진, 윤수경, 이호정</td>
+						<td><p></p></td>
+						<td><p>윤수경</p></td>
 					</tr>					
-					<tr class="upper">
-						<td><p>뚜뚜팀(5)</p></td>
-						<td></td>
-					</tr>
 				</table>
 			</div>
 		</div>

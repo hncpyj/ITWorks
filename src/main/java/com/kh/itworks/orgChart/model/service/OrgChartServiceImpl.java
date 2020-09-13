@@ -25,4 +25,16 @@ public class OrgChartServiceImpl implements OrgChartService {
 		return ocd.selectDeptList(sqlSession, dept);
 	}
 
+	@Override
+	public ArrayList<DeptVO> selectCompanyDeptList(DeptVO dept) {
+	
+		return ocd.selectCompanyDeptList(sqlSession, dept);
+	}
+
+	@Override
+	public int insertDept(DeptVO dept) {
+		
+		return ocd.insertDept(sqlSession, dept);
+	}
+
 }

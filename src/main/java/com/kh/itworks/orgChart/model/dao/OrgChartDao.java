@@ -10,4 +10,8 @@ public interface OrgChartDao {
 	
 	public ArrayList<DeptVO> selectDeptList(SqlSessionTemplate sqlSession, DeptVO dept);
 	
+	public ArrayList<DeptVO> selectCompanyDeptList(SqlSessionTemplate sqlSession, DeptVO dept);
+	
+	public int insertDept(SqlSessionTemplate sqlSession, DeptVO dept);
+	
 }
