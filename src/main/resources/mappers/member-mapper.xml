@@ -45,12 +45,12 @@
 				999, #{eid}, #{corpNo})
 				
 	</insert>
-	<!-- hiredate는 sysdate로 넣기 TO_CHAR(SYSDATE, 'YYYY/MM/DD')
+	<select id="corpNoCheck" resultType="int" parameterType="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM COMPANY
+		 WHERE CORP_NO = #{corpNo}
 	
-	재직여부 DEFAULT='Y'로 말하기
-	승인상태 DEFAULT='N'
-	
-	 -->
+	</select>
 	
 	
 </mapper>

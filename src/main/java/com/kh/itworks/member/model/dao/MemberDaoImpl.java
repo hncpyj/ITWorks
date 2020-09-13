@@ -37,4 +37,11 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.insert("Member.insertMember", m);
 	}
 
+	//회사코드 DB등록여부 체크
+	@Override
+	public int corpNoCheck(SqlSessionTemplate sqlSession, int corpNo) {
+
+		return sqlSession.selectOne("Member.corpNoCheck", corpNo);
+	}
+
 }
