@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberManage">
+	<resultMap type="Member" id="memberResultSet">
+		<id property="mno" column="MNO"/>
+		<result property="eid" column="EID"/>
+		<result property="epwd" column="EPWD"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="rid" column="RID"/>
+		<result property="jid" column="JID"/>
+		<result property="did" column="DID"/>
+		<result property="ename" column="ENAME"/>
+		<result property="phone" column="PHONE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="birthday" column="BIRTHDAY"/>
+		<result property="eno" column="ENO"/>
+		<result property="hireDate" column="HIREDATE"/>
+		<result property="resignationDate" column="RESIGNATIONDATE"/>
+		<result property="status" column="STATUS"/>
+		<result property="approval" column="APPROVAL"/>
+		<result property="internalPhone" column="INTERNAL_PHONE"/>
+		<result property="roleNo" column="ROLE_NO"/>
+		<result property="dName" column="DNAME"/>
+		<result property="jName" column="JNAME"/>
+		
+	</resultMap>
+	
+	<select id="getListCount1" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+		  FROM EMPLOYEE
+		 WHERE APPROVAL = 'N'
+		   AND STATUS = 'Y'
+		   AND CORP_NO = #{corpNo} 
+	</select>
+	<select id="selectMemeberManageList" resultMap="memberResultSet" parameterType="_int">
+		SELECT D.DNAME, J.JNAME, E.*
+  		  FROM EMPLOYEE E
+ 		  JOIN DEPT D ON(E.DID = D.DID)
+  		  JOIN JOB J ON(E.JID = J.JID)
+ 		 WHERE E.APPROVAL = 'N'
+   		   AND E.STATUS = 'Y'
+   		   AND E.CORP_NO = #{corpNo}
+   		 ORDER BY EID ASC
+	</select>
+	
+	<select id="getListCount2" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+		  FROM EMPLOYEE
+		 WHERE APPROVAL = 'Y'
+		   AND STATUS = 'Y'
+		   AND CORP_NO = #{corpNo} 
+	</select>
+	<select id="signUpApprovalList" resultMap="memberResultSet" parameterType="_int">
+		SELECT D.DNAME, J.JNAME, E.*
+  		  FROM EMPLOYEE E
+ 		  JOIN DEPT D ON(E.DID = D.DID)
+  		  JOIN JOB J ON(E.JID = J.JID)
+ 		 WHERE E.APPROVAL = 'Y'
+   		   AND E.STATUS = 'Y'
+   		   AND E.CORP_NO = #{corpNo}
+   		 ORDER BY EID ASC
+	</select>
+	
+	
+	
+</mapper>
