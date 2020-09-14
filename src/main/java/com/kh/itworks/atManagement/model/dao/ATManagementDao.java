@@ -1,6 +1,9 @@
 package com.kh.itworks.atManagement.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -15,6 +18,7 @@ import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
+import com.kh.itworks.atManagement.model.vo.SearchCondition;
 
 public interface ATManagementDao {
 
@@ -95,6 +99,14 @@ public interface ATManagementDao {
 	ArrayList<ATManagement> selectEmp(SqlSessionTemplate sqlSession, int corpNo) throws SelectVacationException;
 
 	ArrayList<ATManagement> selectVacationDate(SqlSessionTemplate sqlSession, ATManagement at) throws SelectVacationException;
+
+	List<Map<String, Object>> selectLateCount(SqlSessionTemplate sqlSession, ATManagement at);
+
+	ArrayList<ATManagement> selectSearchEmployee(SqlSessionTemplate sqlSession, SearchCondition sc);
+
+	ATManagement selectWorkInfo(SqlSessionTemplate sqlSession, ATManagement at);
+
+	int insertObj(SqlSessionTemplate sqlSession, ATManagement at);
 
 
 	

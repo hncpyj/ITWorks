@@ -1,7 +1,9 @@
 package com.kh.itworks.atManagement.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,6 +20,7 @@ import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
+import com.kh.itworks.atManagement.model.vo.SearchCondition;
 
 @Repository
 public class ATManagementDaoImpl implements ATManagementDao {
@@ -305,10 +308,10 @@ public class ATManagementDaoImpl implements ATManagementDao {
 	@Override
 	public ArrayList<ATManagement> selectEmployeeATManagement(SqlSessionTemplate sqlSession, ATManagement at) {
 
+		ArrayList<ATManagement> emplist = (ArrayList)sqlSession.selectList("ATManagement.empATManagement", at);
 		
 		
-		
-		return null;
+		return emplist;
 	}
 
 	@Override
@@ -526,6 +529,41 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		
 		
 		return vacation;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectLateCount(SqlSessionTemplate sqlSession, ATManagement at) {
+
+		
+		List<Map<String, Object>> list = sqlSession.selectList("ATManagement.selectLateCount");
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<ATManagement> selectSearchEmployee(SqlSessionTemplate sqlSession, SearchCondition sc) {
+
+		
+		ArrayList<ATManagement> emplist = (ArrayList)sqlSession.selectList("ATManagement.selectSearchEmployee", sc);
+		
+		
+		return emplist;
+	}
+
+	@Override
+	public ATManagement selectWorkInfo(SqlSessionTemplate sqlSession, ATManagement at) {
+
+		ATManagement workInfo = sqlSession.selectOne("ATManagement.selectWorkInfo", at);
+		
+		return workInfo;
+	}
+
+	@Override
+	public int insertObj(SqlSessionTemplate sqlSession, ATManagement at) {
+
+		int insertObj = sqlSession.insert("ATManagement.insertObj", at);
+		
+		return insertObj;
 	}
 
 	

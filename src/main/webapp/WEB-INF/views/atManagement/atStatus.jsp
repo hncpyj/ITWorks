@@ -57,7 +57,7 @@
     }
     .time{
     	display: inline-block;
-    	width: 630px;
+    	width: 95%;
     	height: 120px;
     	background-color: white;
     	border: 1px solid #929292;
@@ -83,9 +83,10 @@
     	text-decoration: none;
         color: #004771;
         font-size: 14px;
+        
     }
     .timeText{
-    	width: 170px;
+    	width: 270px;
     	text-align: center;
     }
     input[type=text]{
@@ -166,11 +167,11 @@ table.calendar td{
             <br>
             </div>
             <div class="centerBox">
-            <div class="worktime">
+            <!-- <div class="worktime">
             	<label>총 근무 시간 : </label><br>
             	<label>잔여 근무 시간 : </label><br>
             	<label>총 연장 근무 시간 : </label>
-            </div>
+            </div>-->
             <div class="time">
             <form action="insertAtStatus.at">
             
@@ -178,11 +179,12 @@ table.calendar td{
             		<tr>
             			<td class="timeText" id="todayDay"></td>
             			<td><input name="outsideWork" type="checkbox"><span>외근 출퇴근 시에는 체크박스를 체크해주세요.</span></td>
+            			<td rowspan="2"><a class="btn" href="insertObjectionForm.at">출/퇴근 이의 신청</a></td>
             		</tr>
             		<tr>
             			<td class="timeText" id="nowTime"></td>
-            			<td><button id="startBtn" class="timeBtn">출근</button><input id="startText" type="text" disabled></td>
-            			<td><a class="btn" href="insertObjectionForm.at">출/퇴근 이의 신청</a></td>
+            			<td width="350px"><button id="startBtn" class="timeBtn">출근</button><input id="startText" type="text" disabled></td>
+            			
             		</tr>
             		<tr>
             			<td class="timeText">현재 접속 IP : ${ip }</td>
@@ -228,94 +230,23 @@ table.calendar td{
 					$("#nowTime").text(nowTime);
 				}
             </script>
-            <!-- 달력에 출퇴근 출력하기 -->
-            <!-- <script type="text/javascript">
-            var mno = '6';
-            var corpNo = 1;
-            $(document).ready(function() {
-				console.log(mno);
-				console.log(corpNo);
-			
-            	$.ajax({
-            		url: "selectAtStatus.at",
-            		type: "post",
-            		dataType: "json",
-            		success: function() {
-						console.log("악");
-					},
-					error: function(){
-						console.log("에러");
-					}
-            	});
-            });
-            </script> -->
+            
            <c:forEach begin="0" end="${myTime.size() -1}" var="i">
             <input type="hidden" id="wstart${i}" value="${myTime.get(i).wstart }">
             <input type="hidden" id="wend${i}" value="${myTime.get(i).wend }">
             <input type="hidden" id="wdate${i}" value="${myTime.get(i).wdate }">
-            <input type="hidden" id="wstart${i}" value="${myTime.get(i).wstatus }">
+            <input type="hidden" id="wstatus${i}" value="${myTime.get(i).wstatus }">
             </c:forEach>
             
-            			<script type="text/javascript">
-            				var size = ${myTime.size()};
-            				var start="";
-            				var startdate="";
-            				var sdate = "";
-            				var textdate = "";
-            				var syear = "";
-            				var smon = "";
-            				var sday = "";
-            				var now = new Date();
-        					
-        					var todayYear= now.getFullYear();
-                    	    var todayMon = now.getMonth()+1;
-                    	    var todayDay = now.getDate();
-                    	    
-                    	    var todayDate = todayYear+"/"+todayMon+"/"+todayDay;
-            				for(var j = 0; j < size; j++){
-            				start = $("#wstart"+j).val();
-            				startdate = $("#wdate"+j).val();
-            				sdate = startdate.split("/");
-            				textdate = "20"+startdate;
-            				
-	            			syear = "20"+sdate[j][0];
-	            			smon = sdate[j][1];
-	            			sday = sdate[j][2] * 1 +"";
-	            			
-            				console.log(textdate);
-            				console.log("today : " + todayDate);
-            				console.log("start : " + start);
-                    	    if(textdate == todayDate){
-            					$("#startText").val(start);
-            				}
-            			}
-            				
-            			</script>
             		
-            			<script type="text/javascript">
-            				var end = '${myTime.get(i).wend}';
-            				var edate = '${myTime.get(i).wdate}'.split("/");
-            				var eyear = "20"+edate[0];
-            				var emon = edate[1];
-            				var eday = edate[2] * 1 +"";
-            				
-							var now = new Date();
-        					
-        					var todayYear= now.getFullYear();
-                    	    var todayMon = now.getMonth();
-                    	    var todayDay = now.getDate();
-                    	    
-                    	    var todayDate = todayYear+"/"+todayMon+"/"+todayDay;
-            				if('${myTime.get(i).wdate}' == todayDate){
-            					$("#endText").val(end);
-            				}
-            			</script>
-            		
-           
-            <!-- 요일별 시간 -->
+                       <!-- 요일별 시간 -->
             			
             		<input type="hidden" id="listSize" value="${workTimeList.size()}">
             <c:forEach begin="0" var="i" end="${workTimeList.size()-1 }">
+            <input type="hidden" id="dayOfTheWeek${i}" value="${workTimeList.get(i).dayOfTheWeek}">
+            <input type="hidden" id="workingTime${i}" value="${workTimeList.get(i).workingTime}">
+            <input type="hidden" id="quittingTime${i}" value="${workTimeList.get(i).quittingTime}">
+            <input type="hidden" id="workingSetNo${i}" value="${workTimeList.get(i).workingSetNo}">
             	<c:choose>
             		<c:when test="${workTimeList.get(i).workingSetTime eq '기본'}">
             			<c:choose>
@@ -324,12 +255,14 @@ table.calendar td{
 		            				$(document).ready(function() {
 		            					var now = new Date();
 		            					var week = new Array('일', '월', '화', '수', '목', '금', '토');
-		            					var dayOfTheWeek = '${workTimeList.get(i).dayOfTheWeek}';
+		            					
+		            					var dayOfTheWeek = "${workTimeList.get(i).dayOfTheWeek}";
 		            					var todayYear= now.getFullYear();
 		                        	    var todayMon = now.getMonth();
 		                        	    var todayDay = now.getDate();
 		                        	    
 		            					var time = '${workTimeList.get(i).workingTime}'.split(":");
+
 		            					var startHour = time[0];
 		            					var startMin = time[1];
 		            					var startSec = time[2];
@@ -341,7 +274,13 @@ table.calendar td{
 		            					
 		            					var work = new Date(todayYear, todayMon, todayDay, startHour, startMin, startSec);
 		            					var leave = new Date(todayYear, todayMon, todayDay, leaveHour, leaveMin, leaveSec); 
-											if(dayOfTheWeek == week[now.getDay()]){
+										
+		            					console.log(work);
+		            					console.log(leave);
+		            					console.log(dayOfTheWeek);
+		            					console.log(week[now.getDay()]);
+		            					
+		            					if(dayOfTheWeek == week[now.getDay()]){
 												$("#startBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('start');
@@ -360,11 +299,12 @@ table.calendar td{
 													
 												}); 
 												
-												function endBtn() {
+												$("#endBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('end');
 													now = new Date();
 													var leaveTime = now-leave;
+													console.log(leaveTime);
 													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
 													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
@@ -374,7 +314,7 @@ table.calendar td{
 														$("#wstatus").val("퇴근");
 													}
 													
-												}
+												});
 
 											}
 									});
@@ -421,11 +361,12 @@ table.calendar td{
 													
 												}); 
 												
-												function endBtn() {
+												$("#endBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('end');
 													now = new Date();
 													var leaveTime = now-leave;
+													console.log(leaveTime);
 													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
 													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
@@ -435,7 +376,7 @@ table.calendar td{
 														$("#wstatus").val("퇴근");
 													}
 													
-												}
+												});
 
 											}
 									});
@@ -482,11 +423,12 @@ table.calendar td{
 													
 												}); 
 												
-												function endBtn() {
+												$("#endBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('end');
 													now = new Date();
 													var leaveTime = now-leave;
+													console.log(leaveTime);
 													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
 													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
@@ -496,7 +438,7 @@ table.calendar td{
 														$("#wstatus").val("퇴근");
 													}
 													
-												}
+												});
 
 											}
 									});
@@ -543,11 +485,12 @@ table.calendar td{
 													
 												}); 
 												
-												function endBtn() {
+												$("#endBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('end');
 													now = new Date();
 													var leaveTime = now-leave;
+													console.log(leaveTime);
 													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
 													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
@@ -557,7 +500,7 @@ table.calendar td{
 														$("#wstatus").val("퇴근");
 													}
 													
-												}
+												});
 
 											}
 									});
@@ -604,11 +547,12 @@ table.calendar td{
 													
 												}); 
 												
-												function endBtn() {
+												$("#endBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('end');
 													now = new Date();
 													var leaveTime = now-leave;
+													console.log(leaveTime);
 													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
 													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
@@ -618,7 +562,7 @@ table.calendar td{
 														$("#wstatus").val("퇴근");
 													}
 													
-												}
+												});
 
 											}
 									});
@@ -665,11 +609,12 @@ table.calendar td{
 													
 												}); 
 												
-												function endBtn() {
+												$("#endBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('end');
 													now = new Date();
 													var leaveTime = now-leave;
+													console.log(leaveTime);
 													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
 													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
@@ -679,7 +624,7 @@ table.calendar td{
 														$("#wstatus").val("퇴근");
 													}
 													
-												}
+												});
 
 											}
 									});
@@ -726,11 +671,12 @@ table.calendar td{
 													
 												}); 
 												
-												function endBtn() {
+												$("#endBtn").click(function() {
 													$("#workingSetNo").val('${workTimeList.get(i).workingSetNo}');
 													$('#status').val('end');
 													now = new Date();
 													var leaveTime = now-leave;
+													console.log(leaveTime);
 													var 시 = Math.floor((leaveTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 													var 분= Math.floor((leaveTime % (1000 * 60 * 60)) / (1000 * 60));
 													var 초= Math.floor((leaveTime % (1000 * 60)) / 1000);
@@ -740,7 +686,7 @@ table.calendar td{
 														$("#wstatus").val("퇴근");
 													}
 													
-												}
+												});
 
 											}
 									});
@@ -753,6 +699,7 @@ table.calendar td{
             		</c:when>
             	</c:choose>
             </c:forEach>
+
             
             <!-- 달력 -->
                 <div class="cal_top">
@@ -765,7 +712,31 @@ table.calendar td{
     </div>
  
 <script type="text/javascript">
-    
+var size = ${myTime.size()};
+var start="";
+var startdate="";
+var sdate = "";
+var textdate = "";
+var syear = "";
+var smon = "";
+var sday = "";
+
+var end="";
+var enddate="";
+var edate="";
+var eyear ="";
+var emon ="";
+var eday = "";
+var tdate ="";
+
+
+var now = new Date();
+
+var todayYear= now.getFullYear();
+var todayMon = now.getMonth()+1;
+var todayDay = now.getDate();
+
+var todayDate = todayYear+"/"+("0" + todayMon).slice(-2)+"/"+("0" + todayDay).slice(-2);
     var today = null;
     var year = null;
     var month = null;
@@ -779,7 +750,50 @@ table.calendar td{
         initDate();
         drawDays();
         drawSche();
-        inputTime();
+        
+        for(var j = 0; j < size; j++){
+			if($("#wstart"+j).val() != ""){
+			start = $("#wstart"+j).val();
+				
+			startdate = $("#wdate"+j).val();
+			sdate = startdate.split("/");
+			textdate = "20"+startdate;
+			
+			syear = "20"+sdate[0];
+			smon = sdate[1];
+			sday = sdate[2] * 1 +"";
+			
+    	    if(textdate == todayDate){
+				$("#startText").val(start);
+			}
+    	    
+    	    inputStartTime();
+    	    
+			}
+	}
+        
+        
+        
+        for(var i = 0; i < size; i++){
+        	if($("#wend"+i).val() != ""){
+        		end = $("#wend"+i).val();
+        		enddate = $("#wdate"+i).val();
+        		edate = enddate.split("/");
+        		textdate2="20"+enddate;
+        		
+        		eyear = "20"+edate[0];
+        		emon = edate[1];
+        		eday = edate[2] * 1 +"";
+        		
+        		if(textdate2 == todayDate){
+    				$("#endText").val(end);
+    			}
+
+                inputEndTime();
+                
+        	}
+        }
+        
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
     });
@@ -794,7 +808,7 @@ table.calendar td{
             for(var j=0;j<7;j++){
                 setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
                 setTableHTML+='    <div class="cal-day"></div>';
-                setTableHTML+='    <div class="cal-schedule"></div>';
+                setTableHTML+='    <div class="cal-schedule"><div></div><div></div></div>';
                 setTableHTML+='</td>';
             }
             setTableHTML+='</tr>';
@@ -868,7 +882,8 @@ table.calendar td{
         lastDay = new Date(year,month,0);
         drawDays();
         drawSche();
-        inputTime();
+        inputStartTime();
+        inputEndTime();
     }
     
     //2019-08-27 추가본
@@ -894,18 +909,18 @@ table.calendar td{
                     ,"22":"추분"
                 }
                 ,"10":{
-                	"01":"추석"
-                	, "02":"추석"
+                	"1":"추석"
+                	, "2":"추석"
                 }
                 ,"11":{
-                	"07":"입동"
+                	"7":"입동"
                 }
             }
         	
         }
     }
     //출근시간 넣기
-    function inputTime(){
+    function inputStartTime(){
         var dateMatch = null;
         for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
             var txt = "";
@@ -921,14 +936,14 @@ table.calendar td{
                     if(txt == year + "/" + month + "/" + i){
                     	txt = start;
 	                    dateMatch = firstDay.getDay() + i -1; 
-	                    $tdSche.eq(dateMatch).text("출근 : "+txt);
+	                    $tdSche.eq(dateMatch).find("div:first").text("출근 : "+txt);
                     }
                 }
             }
         }
     }
   	//퇴근시간 넣기
-    function inputTime(){
+    function inputEndTime(){
         var dateMatch = null;
         for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
             var txt = "";
@@ -943,7 +958,7 @@ table.calendar td{
                     if(txt == year + "/" + month + "/" + i){
                     	txt = end;
 	                    dateMatch = firstDay.getDay() + i -1; 
-	                    $tdSche.eq(dateMatch).html("출근 : "+start+"<br>퇴근 : "+txt);
+	                    $tdSche.eq(dateMatch).find("div:last").text("퇴근 : "+txt);
                     }
                 }
             }

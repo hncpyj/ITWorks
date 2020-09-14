@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ import com.kh.itworks.atManagement.model.service.ATManagementService;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
 import com.kh.itworks.atManagement.model.vo.Pagination;
+import com.kh.itworks.atManagement.model.vo.SearchCondition;
 import com.kh.itworks.member.model.vo.Member;
 
 
@@ -415,6 +417,10 @@ public class ATManagementController {
 	
 	@RequestMapping("employeeWorkManagement.at")
 	public ModelAndView employeeWorkManagement(ModelAndView mv, ATManagement at) {
+		
+		int corpNo = 1;
+		at.setCorpNo(corpNo);
+		
 		Calendar c = Calendar.getInstance();
  		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yy/MM/dd");
  		c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
@@ -440,7 +446,7 @@ public class ATManagementController {
 			day = new ATManagement();
 			System.out.println("dayArr : "+dayArr[i]);
 			day.setWdate(dayArr[i]);
-			day.setCorpNo(1);
+			day.setCorpNo(at.getCorpNo());
 			
 			date.add(day);
 		}
@@ -465,15 +471,30 @@ public class ATManagementController {
 			
 		}
 		
-		System.out.println("empworklist : " + empworklist);
-		mv.addObject("empworklist", empworklist);
-		mv.setViewName("atManagement/employeeWorkManagement");
+		try {
+			ArrayList<ATManagement> emp = as.selectEmp(at.getCorpNo());
+			for(int i = 0; i < empworklist.size(); i++) {
+				System.out.println("empworklist : " + empworklist.get(i));
+				
+			}
+			mv.addObject("emp", emp);
+			mv.addObject("empworklist", empworklist);
+			mv.setViewName("atManagement/employeeWorkManagement");
+		} catch (SelectVacationException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		
+		
+		
 		
 		return mv;
 	}
 	
+	@ResponseBody
 	@RequestMapping("selectDateEmpWork.at")
-	public ModelAndView selectDateEmpWork(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+	public ArrayList<ATManagement> selectDateEmpWork(ModelAndView mv, ATManagement at, HttpServletRequest request) {
 		
 		String mon = request.getParameter("mon");
 		String tue = request.getParameter("tue");
@@ -515,10 +536,13 @@ public class ATManagementController {
 		}
 		System.out.println("empWorklist.size : " + empWorklist.size());
 		System.out.println("empWorklist : " + empWorklist);
-		mv.addObject("empWorklist", empWorklist);
-		mv.setViewName("jsonView");
 		
-		return mv;
+		
+		/*
+		 * mv.addObject("empWorklist", empWorklist); mv.setViewName("jsonView");
+		 */
+		
+		return empWorklist;
 	}
 	
 	@RequestMapping("selectEmployeeATManagement.at")
@@ -528,11 +552,26 @@ public class ATManagementController {
 		
 		at.setCorpNo(1);
 		
-		ArrayList<ATManagement> emplist = as.selectEmployeeATManagement(at);
+		try {
+			ArrayList<ATManagement> emp = as.selectEmp(at.getCorpNo());
+			ArrayList<ATManagement> emplist = as.selectEmployeeATManagement(at);
+			List<Map<String, Object>> count = as.selectLateCount(at);
+			System.out.println("count : " + count);
+			System.out.println("emp : " + emp);
+			System.out.println("emplist : " + emplist);
+			
+			mv.addObject("count", count);
+			mv.addObject("emp", emp);
+			mv.addObject("emplist", emplist);
+			mv.setViewName("atManagement/employeeATManagement");
+		} catch (SelectVacationException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
 		
 		
 		
-		mv.setViewName("atManagement/employeeATManagement");
+		
 		
 		return mv;
 	}
@@ -833,16 +872,114 @@ public class ATManagementController {
 	
 	
 	
-	@RequestMapping("insertVacation.at")
-	public String insertVacation() {
+	
+	@RequestMapping("insertRewardVacation.at")
+	public String insertRewardVacation() {
 		
-		return "atManagement/insertVacation";
+		return "atManagement/insertRewardVacation";
 	}
+
+	
+	@ResponseBody
+	@RequestMapping("searchEmployee.at")
+	public ArrayList<ATManagement> searchEmployee(HttpServletRequest request, SearchCondition sc, ATManagement at){
+		
+		int corpNo = 1;
+		sc.setCorpNo(corpNo);
+		String searchVal = request.getParameter("searchVal");
+		String optionVal = request.getParameter("optionVal");
+		if(optionVal.equals("name")) {
+			sc.setName(searchVal);
+		} else {
+			sc.setDept(searchVal);
+		}
+		
+		ArrayList<ATManagement> emplist = as.selectSearchEmployee(sc);
+		
+		Calendar cal = Calendar.getInstance();
+		
+		int year = cal.get(Calendar.YEAR);
+		System.out.println(year);
+			try {
+				for(int i = 0; i < emplist.size(); i++) {
+					at.setMno(emplist.get(i).getMno());
+					String hiredate;
+					
+				hiredate = as.selectVacationEmployee(at);
+				System.out.println("hiredate : " + hiredate);
+				String[] year2 = hiredate.split("/");
+				int year3 = Integer.parseInt(year2[0]);
+				
+				int hireyear = year - year3;
+				int aleaveCount = as.selectAleaveCount(hireyear);
+				emplist.get(i).setAleaveCount(aleaveCount);
+				}
+			} catch (SelectVacationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+		
+		return emplist;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("selectWorkInfo.at")
+	public ATManagement selectWorkInfo(ATManagement at, HttpServletRequest request) {
+		
+		int mno = 6;
+		
+		
+		String[] selectdate = request.getParameter("selectDate").split("-");
+		String date = selectdate[0].substring(2) + "/" + selectdate[1] + "/" + selectdate[2];
+		String selectstatus = request.getParameter("status");
+		at.setWdate(date);
+		at.setWstatus(selectstatus);
+		at.setMno(mno);
+		ATManagement workInfo = as.selectWorkInfo(at);
+		
+		System.out.println("workInfo : " + workInfo);
+		System.out.println(date);
+		
+		return workInfo;
+	}
+	
 	@RequestMapping("insertObjectionForm.at")
 	public String insertObjectionForm() {
 		
 		return "atManagement/insertObjectionForm";
 	}
+	
+	@RequestMapping("insertObj.at")
+	public String insertObj(ATManagement at, HttpServletRequest request) {
+		
+		int mno = 6;
+		int corpNo = 1;
+		
+		at.setMno(mno);
+		at.setCorpNo(corpNo);
+		
+		
+		System.out.println("at : " + at);
+		String hour = request.getParameter("hour");
+		String min = request.getParameter("min");
+		String changeDate = hour + ":" + min + ":00"; 
+		at.setChangeDate(changeDate);
+		
+		as.insertObj(at);
+		
+		return "redirect:selectAtStatus.at";
+	}
+	
+	
+	@RequestMapping("insertVacation.at")
+	public String insertVacation() {
+		
+		return "atManagement/insertVacation";
+	}
+	
 	@RequestMapping("insertCorrectionForm.at")
 	public String insertCorrectionForm() {
 		
@@ -861,12 +998,6 @@ public class ATManagementController {
 	}
 	
 
-	
-	@RequestMapping("insertRewardVacation.at")
-	public String insertRewardVacation() {
-		
-		return "atManagement/insertRewardVacation";
-	}
 
 	
 }

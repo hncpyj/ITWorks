@@ -214,6 +214,10 @@
 		<result property="dname" column="DNAME"/>
 		<result property="hiredate" column="HIREDATE"/>
 	</resultMap>
+	<resultMap type="java.util.Map" id="selectMap">
+		<result property="mno" column="MNO"/>
+		<result property="count" column="COUNT"/>
+	</resultMap>
 	<select id="selectAtBt" resultMap="atManagementResultSet1" parameterType="_int">
 		SELECT *
 		  FROM ATTENDENCE A
@@ -293,6 +297,7 @@
 		SELECT *
 		  FROM WORK_INFO
 		 WHERE MNO = ${mno}
+		 ORDER BY WDATE
 	</select>
 	<insert id="insertWorkInfo" parameterType="ATManagement">
 		INSERT
@@ -301,7 +306,7 @@
 		<if test="wstatus == '출근' || wstatus == '지각'">
 			TO_CHAR(SYSDATE,'HH24:MI:SS'), NULL
 		</if>
-		<if test="wstatus == '퇴근'">
+		<if test="wstatus == '퇴근' || wstatus == '조퇴'">
 			NULL, TO_CHAR(SYSDATE,'HH24:MI:SS')
 		</if>
 			, #{ip}, #{outsideWork}, TO_CHAR(SYSDATE, 'YY/MM/DD'), #{mno},#{workingSetNo}
@@ -508,4 +513,98 @@
 		 WHERE LA.CORP_NO = #{corpNo}
 		   AND LA.LSTATUS = 'Y'
 	</select>
+	<select id="empATManagement" resultMap="dateEmpWork" parameterType="ATManagement">
+		SELECT 
+		       E.ENAME
+		     , D.DNAME
+		     , E.MNO
+		     , D.DID
+		     , W.WSTART
+		     , W.WEND
+		     , W.WSTATUS
+		     , W.WDATE
+             , W.WNO
+		     , S.WORKING_SET_NO
+		     , S.DAY_OF_THE_WEEK
+             , W.OT_START
+             , W.OT_END
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON (E.DID = D.DID)
+		  JOIN ( SELECT
+       W1.WDATE
+     , W1.MNO
+     , W1.WNO
+     , W1.WSTATUS
+     , W1.WORKING_SET_NO
+     , W1.WSTART
+     , W2.WEND
+     , O.OT_START
+     , O.OT_END
+  FROM WORK_INFO W1
+      , WORK_INFO W2
+  LEFT OUTER JOIN OVERTIME O
+  ON(W2.WDATE = O.OT_DATE AND W2.MNO = O.MNO AND O.OT_STATUS = 'Y')
+    WHERE W1.MNO = W2.MNO
+      AND W1.WDATE = W2.WDATE
+      AND NOT W1.WSTART IS NULL
+      AND NOT W2.WEND IS NULL) W ON (E.MNO = W.MNO)
+		  JOIN WORK_TIME_SET S ON(W.WORKING_SET_NO = S.WORKING_SET_NO)
+		  WHERE E.CORP_NO = #{corpNo}
+		  ORDER BY WDATE DESC
+	</select>
+	<select id="selectLateCount" resultMap="selectMap">
+		SELECT 
+               COUNT(*) AS COUNT
+              , MNO 
+           FROM WORK_INFO
+          WHERE WSTATUS = '지각' 
+          GROUP BY MNO
+	</select>
+	<select id="selectSearchEmployee" resultMap="employee" >
+		SELECT
+		       E.ENAME
+		     , D.DNAME
+		     , E.HIREDATE
+		     , E.MNO
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON(E.DID=D.DID)
+		 WHERE E.CORP_NO = #{corpNo}
+		 <if test="name != null">
+		 	AND E.ENAME LIKE '%' || #{name} || '%'
+		 </if>
+		 <if test="dept != null">
+		 	AND E.DNAME LIKE '%' || #{dept} || '%'
+		 </if>
+		 
+	</select>
+	<select id="selectWorkInfo" resultMap="workInfo">
+		SELECT *
+		  FROM WORK_INFO
+		 WHERE WDATE = #{wdate}
+		   AND MNO = #{mno}
+		 <if test="wstatus == '출근'">
+		 	AND WSTATUS = '출근'
+		 	 OR WSTATUS = '지각'
+		 </if>
+		 <if test="wstatus == '퇴근'">
+		 	AND WSTATUS = '퇴근'
+		 	 OR WSTATUS = '조퇴'
+		 </if>
+		   AND WDATE = #{wdate}
+		   AND MNO = #{mno}
+	</select>
+	<insert id="insertObj" parameterType="ATManagement">
+		INSERT 
+		  INTO OBJECTION
+		VALUES (SEQ_OBJ_NO.NEXTVAL
+		      , TO_CHAR(SYSDATE, 'YY/MM/DD')
+		      , #{objType}
+		      , #{changeDate}
+		      , #{mno}
+		      , #{objStatus}
+		      , #{objReason}
+		      , #{wno}
+		      , #{corpNo}
+		      , 'N' )
+	</insert>
 </mapper>

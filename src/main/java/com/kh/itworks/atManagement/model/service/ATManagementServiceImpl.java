@@ -1,6 +1,9 @@
 package com.kh.itworks.atManagement.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
+import com.kh.itworks.atManagement.model.vo.SearchCondition;
 
 @Service
 public class ATManagementServiceImpl implements ATManagementService {
@@ -299,6 +303,34 @@ public class ATManagementServiceImpl implements ATManagementService {
 	public ArrayList<ATManagement> selectVacationDate(ATManagement at) throws SelectVacationException {
 
 		return ad.selectVacationDate(sqlSession, at);
+	}
+
+
+	@Override
+	public List<Map<String, Object>> selectLateCount(ATManagement at) {
+
+		return ad.selectLateCount(sqlSession, at);
+	}
+
+
+	@Override
+	public ArrayList<ATManagement> selectSearchEmployee(SearchCondition sc) {
+
+		return ad.selectSearchEmployee(sqlSession, sc);
+	}
+
+
+	@Override
+	public ATManagement selectWorkInfo(ATManagement at) {
+
+		return ad.selectWorkInfo(sqlSession, at);
+	}
+
+
+	@Override
+	public int insertObj(ATManagement at) {
+
+		return ad.insertObj(sqlSession, at);
 	}
 
 

@@ -1,6 +1,9 @@
 package com.kh.itworks.atManagement.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.kh.itworks.atManagement.model.exception.DeleteUpdateInsertException;
 import com.kh.itworks.atManagement.model.exception.InsertWorkInfoException;
@@ -13,6 +16,7 @@ import com.kh.itworks.atManagement.model.exception.SelectWorkTimeListException;
 import com.kh.itworks.atManagement.model.exception.UpdateInsertLeaveException;
 import com.kh.itworks.atManagement.model.vo.ATManagement;
 import com.kh.itworks.atManagement.model.vo.PageInfo;
+import com.kh.itworks.atManagement.model.vo.SearchCondition;
 
 public interface ATManagementService {
 
@@ -93,6 +97,14 @@ public interface ATManagementService {
 	ArrayList<ATManagement> selectEmp(int corpNo) throws SelectVacationException;
 
 	ArrayList<ATManagement> selectVacationDate(ATManagement at) throws SelectVacationException;
+
+	List<Map<String, Object>> selectLateCount(ATManagement at);
+
+	ArrayList<ATManagement> selectSearchEmployee(SearchCondition sc);
+
+	ATManagement selectWorkInfo(ATManagement at);
+
+	int insertObj(ATManagement at);
 
 
 
