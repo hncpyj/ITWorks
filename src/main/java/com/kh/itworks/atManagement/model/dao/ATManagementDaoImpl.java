@@ -566,6 +566,14 @@ public class ATManagementDaoImpl implements ATManagementDao {
 		return insertObj;
 	}
 
+	@Override
+	public int insertVacation(SqlSessionTemplate sqlSession, ATManagement at) {
+
+		int insertVacation = sqlSession.insert("ATManagement.insertVacation", at);
+		
+		return insertVacation;
+	}
+
 	
 
 

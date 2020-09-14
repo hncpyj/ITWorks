@@ -341,8 +341,8 @@
 						
 						$("tr").find("#"+data[i].mno).parents("#empWorkTable").find(".퇴근"+data[i].mno).find($("."+data[i].dayOfTheWeek)).find(".end").text(data[i].wend);
 
-						var otStart = data[i].otStart.split(":");
-						var otEnd = data[i].otEnd.split(":");
+						var otStart = data[i].split(":");
+						var otEnd = data[i].split(":");
 						
 						
 						$("tr").find("#"+data[i].mno).parents("#empWorkTable").find(".연장"+data[i].mno).find($("."+data[i].dayOfTheWeek)).find(".ot").text(otEnd[0]*1 - otStart[0]*1+"시간");
@@ -401,8 +401,8 @@
 						
 						$("tr").find("#"+data[i].mno).parents("#empWorkTable").find(".퇴근"+data[i].mno).find($("."+data[i].dayOfTheWeek)).find(".end").text(data[i].wend);
 
-						var otStart = data[i].otStart.split(":");
-						var otEnd = data[i].otEnd.split(":");
+						var otStart = data[i].split(":");
+						var otEnd = data[i].split(":");
 						
 						
 						$("tr").find("#"+data[i].mno).parents("#empWorkTable").find(".연장"+data[i].mno).find($("."+data[i].dayOfTheWeek)).find(".ot").text(otEnd[0]*1 - otStart[0]*1+"시간");

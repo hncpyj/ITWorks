@@ -108,6 +108,8 @@ public interface ATManagementDao {
 
 	int insertObj(SqlSessionTemplate sqlSession, ATManagement at);
 
+	int insertVacation(SqlSessionTemplate sqlSession, ATManagement at);
+
 
 	
 

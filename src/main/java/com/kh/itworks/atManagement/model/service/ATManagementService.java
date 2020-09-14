@@ -106,6 +106,8 @@ public interface ATManagementService {
 
 	int insertObj(ATManagement at);
 
+	int insertVacation(ATManagement at);
+
 
 
 

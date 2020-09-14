@@ -120,11 +120,11 @@
             <table id="overtimeTable">
                 	<tr>
                 		<th>신청자</th>
-                		<td>헤일리최</td>
+                		<td><c:out value="${loginUser.ename }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>부서</th>
-                		<td>기술지원팀</td>
+                		<td><c:out value="${loginUser.dname }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>신청일시</th>

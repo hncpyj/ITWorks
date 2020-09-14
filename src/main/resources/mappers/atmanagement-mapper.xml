@@ -607,4 +607,18 @@
 		      , #{corpNo}
 		      , 'N' )
 	</insert>
+	<insert id="insertVacation" parameterType="ATManagement">
+		INSERT 
+		  INTO LEAVE_APPLY
+		VALUES ('LI'||SEQ_L_INFO_NO.NEXTVAL
+		      , #{lstartDay}
+		      , #{lendDay}
+		      , NULL
+		      , #{lreason}
+		      , #{leaveNo}
+		      , #{mno}
+		      , #{corpNo}
+		      , TO_CHAR(SYSDATE, 'YY/MM/DD')
+		      , 'N')
+	</insert>
 </mapper>

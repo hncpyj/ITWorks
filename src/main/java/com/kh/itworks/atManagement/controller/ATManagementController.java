@@ -49,10 +49,10 @@ public class ATManagementController {
 	private ATManagementService as;
 	
 	@RequestMapping("selectATManagement.at")
-	public ModelAndView selectATManagement(ATManagement at, ModelAndView mv, HttpSession session) {
+	public ModelAndView selectATManagement(ATManagement at, ModelAndView mv, HttpSession session, @SessionAttribute("loginUser") Member loginUser) {
 			
-		//임시값로그인연결하면바꾸기!!!!!
-		at.setCorpNo(1);
+		int corpNo = loginUser.getCorpNo();
+		at.setCorpNo(corpNo);
 		
 			ATManagement atbt;
 			try {
@@ -77,10 +77,7 @@ public class ATManagementController {
 	@RequestMapping("updateInsert.at")
 	public String updateInsert(Model model, ATManagement at, HttpServletRequest request) {
 		
-		System.out.println(at);
-		//dayOfTheWeek, workingStatusNo, workType, work(,로split해야할듯)
 		
-		//delete workingStatus
 		String[] dwNo = request.getParameterValues("deleteWorkingStatusNo");
 		if(dwNo != null) {
 		for(int i = 0; i <dwNo.length; i++) {
@@ -242,7 +239,7 @@ public class ATManagementController {
 	}
 	@ResponseBody
 	@RequestMapping("selectAtStatus.at")
-	public ModelAndView selectAtStatus(ModelAndView mv, ATManagement at, HttpServletRequest request) throws UnknownHostException {
+	public ModelAndView selectAtStatus(ModelAndView mv, ATManagement at, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) throws UnknownHostException {
 
 		//ip주소 가져오기
 		InetAddress ia = InetAddress.getLocalHost();
@@ -250,8 +247,8 @@ public class ATManagementController {
 		String ip = ia.getHostAddress();
 		
 		//임시번호
-		int corpNo = 1;
-		int mno = 6;
+		int corpNo = loginUser.getCorpNo();
+		int mno = loginUser.getMno();
 		at.setCorpNo(corpNo);
 		at.setMno(mno);
 		
@@ -271,16 +268,7 @@ public class ATManagementController {
 			  request.setAttribute("workTimeList", workTimeList);
 			  request.setAttribute("myTime", myTime);
 			  request.setAttribute("ip", ip);
-			 
-//			  Map<String, Object> retVal = new HashMap<String, Object>();
-//			  retVal.put("workTimeList", workTimeList);
-//			  retVal.put("myTime", myTime);
-//			  mv.addAllObjects(retVal);
-			 
-			//mv.addObject("workTimeList", workTimeList);
-			//mv.addObject("myTime", myTime);
-			//mv.addObject("ip", ip);
-//			mv.setViewName("jsonView");
+
 			mv.setViewName("atManagement/atStatus");
 		} catch (SelectATManagementFailedException | SelectWorkTimeListException e) {
 			mv.addObject("msg", e.getMessage());
@@ -293,7 +281,7 @@ public class ATManagementController {
 	@RequestMapping("insertAtStatus.at")
 	public String insertATManagement(ATManagement at, HttpServletRequest request) throws UnknownHostException {
 		
-		System.out.println("insert : " + at);
+
 		if(at.getOutsideWork() != null) {
 			at.setOutsideWork("Y");
 		} else {
@@ -309,16 +297,14 @@ public class ATManagementController {
 			
 			return "common/errorPage";
 		}
-		
-		
-		//return "atManagement/atStatus";
+
 	}
 	
 	@RequestMapping("selectCorrectionList.at")
-	public ModelAndView selectCorrentionList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+	public ModelAndView selectCorrentionList(ModelAndView mv, ATManagement at, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
 		
-		at.setCorpNo(1);
-		at.setMno(6);
+		at.setCorpNo(loginUser.getCorpNo());
+		at.setMno(loginUser.getMno());
 		int currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -366,10 +352,10 @@ public class ATManagementController {
 	}
 	
 	@RequestMapping("selectOvertimeList.at")
-	public ModelAndView selectOvertimeList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+	public ModelAndView selectOvertimeList(ModelAndView mv, ATManagement at, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
 		
-		at.setCorpNo(1);
-		at.setMno(6);
+		at.setCorpNo(loginUser.getCorpNo());
+		at.setMno(loginUser.getMno());
 		int currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -416,9 +402,9 @@ public class ATManagementController {
 	}
 	
 	@RequestMapping("employeeWorkManagement.at")
-	public ModelAndView employeeWorkManagement(ModelAndView mv, ATManagement at) {
+	public ModelAndView employeeWorkManagement(ModelAndView mv, ATManagement at, @SessionAttribute("loginUser") Member loginUser) {
 		
-		int corpNo = 1;
+		int corpNo = loginUser.getCorpNo();
 		at.setCorpNo(corpNo);
 		
 		Calendar c = Calendar.getInstance();
@@ -494,7 +480,7 @@ public class ATManagementController {
 	
 	@ResponseBody
 	@RequestMapping("selectDateEmpWork.at")
-	public ArrayList<ATManagement> selectDateEmpWork(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+	public ArrayList<ATManagement> selectDateEmpWork(ModelAndView mv, @SessionAttribute("loginUser") Member loginUser, ATManagement at, HttpServletRequest request) {
 		
 		String mon = request.getParameter("mon");
 		String tue = request.getParameter("tue");
@@ -508,9 +494,8 @@ public class ATManagementController {
 		ArrayList<ATManagement> date = new ArrayList<ATManagement>();
 		for(int i = 0 ; i < dayArr.length; i++) {
 			day = new ATManagement();
-			System.out.println("dayArr : "+dayArr[i]);
 			day.setWdate(dayArr[i]);
-			day.setCorpNo(1);
+			day.setCorpNo(loginUser.getCorpNo());
 			
 			date.add(day);
 		}
@@ -519,38 +504,30 @@ public class ATManagementController {
 		ArrayList<ATManagement> empWork = new ArrayList<ATManagement>();
 		ATManagement empwork = null;
 		for(int i = 0 ; i < dayArr.length; i++) {
-			System.out.println("date : " + date.get(i));
 			empWork = as.selectDateEmpWork(date.get(i));
 			
 			
 			for(int j = 0; j < empWork.size(); j++) {
-				System.out.println("뭔데");
 				empwork = new ATManagement();
 				empwork = empWork.get(j);
-				System.out.println("empwork : " + empwork);
 				empWorklist.add(empwork);
 				
 			}
 			
 			
 		}
-		System.out.println("empWorklist.size : " + empWorklist.size());
-		System.out.println("empWorklist : " + empWorklist);
 		
 		
-		/*
-		 * mv.addObject("empWorklist", empWorklist); mv.setViewName("jsonView");
-		 */
 		
 		return empWorklist;
 	}
 	
 	@RequestMapping("selectEmployeeATManagement.at")
-	public ModelAndView selectEmployeeATManagement(ModelAndView mv, ATManagement at) {
+	public ModelAndView selectEmployeeATManagement(ModelAndView mv, ATManagement at, @SessionAttribute("loginUser") Member loginUser) {
 		
 		
 		
-		at.setCorpNo(1);
+		at.setCorpNo(loginUser.getCorpNo());
 		
 		try {
 			ArrayList<ATManagement> emp = as.selectEmp(at.getCorpNo());
@@ -576,15 +553,15 @@ public class ATManagementController {
 		return mv;
 	}
 	
-	//,  @SessionAttribute("loginUser") Member loginUser
+	
 	@RequestMapping("vacationManagement.at")
-	public ModelAndView vacationManagement(ModelAndView mv, ATManagement at) {
+	public ModelAndView vacationManagement(ModelAndView mv, ATManagement at, @SessionAttribute("loginUser") Member loginUser) {
 		
-		/*
-		 * at.setCorpNo(loginUser.getCorpNo());
-		 * System.out.println("corpNo : "+at.getCorpNo());
-		 */
-		at.setCorpNo(1);
+		
+		 at.setCorpNo(loginUser.getCorpNo());
+		 System.out.println("corpNo : "+at.getCorpNo());
+		 
+		
 		try {
 			ATManagement leaveSetting = as.selectLeaveSetting(at);
 			ArrayList<ATManagement> yearAleave = as.selectYearAleave(at);
@@ -606,9 +583,9 @@ public class ATManagementController {
 	}
 	
 	@RequestMapping("updateVacationManagement.at")
-	public String updateVacationManagement(ATManagement at, HttpServletRequest request) {
+	public String updateVacationManagement(ATManagement at, HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser) {
 		
-		int corpNo = 1;
+		int corpNo = loginUser.getCorpNo();
 		
 		at.setCorpNo(corpNo);
 		
@@ -678,10 +655,10 @@ public class ATManagementController {
 	}
 	
 	@RequestMapping("selectVacationStatus.at")
-	public ModelAndView selectVacationStatus(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+	public ModelAndView selectVacationStatus(ModelAndView mv, @SessionAttribute("loginUser") Member loginUser, ATManagement at, HttpServletRequest request) {
 		
-		int corpNo = 1;
-		int mno = 32;
+		int corpNo = loginUser.getCorpNo();
+		int mno = loginUser.getMno();
 		
 		at.setCorpNo(corpNo);
 		at.setMno(mno);
@@ -756,9 +733,9 @@ public class ATManagementController {
 	
 	
 	@RequestMapping("selectVacationList.at")
-	public ModelAndView selectVacationList(ModelAndView mv, ATManagement at, HttpServletRequest request) {
+	public ModelAndView selectVacationList(ModelAndView mv, @SessionAttribute("loginUser") Member loginUser, ATManagement at, HttpServletRequest request) {
 		
-		int corpNo = 1;
+		int corpNo = loginUser.getCorpNo();
 		
 		at.setCorpNo(corpNo);
 		
@@ -823,9 +800,9 @@ public class ATManagementController {
 	}
 	
 	@RequestMapping("employeeVacation.at")
-	public ModelAndView employeeVacation(ModelAndView mv, HttpServletRequest request, ATManagement at) {
+	public ModelAndView employeeVacation(ModelAndView mv, @SessionAttribute("loginUser") Member loginUser, HttpServletRequest request, ATManagement at) {
 		
-		int corpNo = 1;
+		int corpNo = loginUser.getCorpNo();
 		
 		at.setCorpNo(corpNo);
 		
@@ -882,9 +859,9 @@ public class ATManagementController {
 	
 	@ResponseBody
 	@RequestMapping("searchEmployee.at")
-	public ArrayList<ATManagement> searchEmployee(HttpServletRequest request, SearchCondition sc, ATManagement at){
+	public ArrayList<ATManagement> searchEmployee(HttpServletRequest request, @SessionAttribute("loginUser") Member loginUser, SearchCondition sc, ATManagement at){
 		
-		int corpNo = 1;
+		int corpNo = loginUser.getCorpNo();
 		sc.setCorpNo(corpNo);
 		String searchVal = request.getParameter("searchVal");
 		String optionVal = request.getParameter("optionVal");
@@ -927,9 +904,9 @@ public class ATManagementController {
 	
 	@ResponseBody
 	@RequestMapping("selectWorkInfo.at")
-	public ATManagement selectWorkInfo(ATManagement at, HttpServletRequest request) {
+	public ATManagement selectWorkInfo(ATManagement at, @SessionAttribute("loginUser") Member loginUser, HttpServletRequest request) {
 		
-		int mno = 6;
+		int mno = loginUser.getMno();
 		
 		
 		String[] selectdate = request.getParameter("selectDate").split("-");
@@ -953,10 +930,10 @@ public class ATManagementController {
 	}
 	
 	@RequestMapping("insertObj.at")
-	public String insertObj(ATManagement at, HttpServletRequest request) {
+	public String insertObj(ATManagement at, @SessionAttribute("loginUser") Member loginUser, HttpServletRequest request) {
 		
-		int mno = 6;
-		int corpNo = 1;
+		int mno = loginUser.getMno();
+		int corpNo = loginUser.getCorpNo();
 		
 		at.setMno(mno);
 		at.setCorpNo(corpNo);
@@ -974,11 +951,66 @@ public class ATManagementController {
 	}
 	
 	
-	@RequestMapping("insertVacation.at")
-	public String insertVacation() {
+	@RequestMapping("insertVacationForm.at")
+	public ModelAndView insertVacationForm(ATManagement at, @SessionAttribute("loginUser") Member loginUser, ModelAndView mv) {
+		int mno = loginUser.getMno();
+		int corpNo = loginUser.getCorpNo();
+		at.setCorpNo(corpNo);
+		at.setMno(mno);
+		Calendar cal = Calendar.getInstance();
 		
-		return "atManagement/insertVacation";
+		int year = cal.get(Calendar.YEAR);
+		String hiredate;
+		try {
+			hiredate = as.selectVacationEmployee(at);
+			hiredate = as.selectVacationEmployee(at);
+			System.out.println("hiredate : " + hiredate);
+			String[] year2 = hiredate.split("/");
+			int year3 = Integer.parseInt(year2[0]);
+			
+			int hireyear = year - year3;
+			int aleaveCount = as.selectAleaveCount(hireyear);
+			ArrayList<ATManagement> leave = as.selectLeave(at);
+			mv.addObject("aleaveCount", aleaveCount);
+			mv.addObject("leave", leave);
+			mv.setViewName("atManagement/insertVacation");
+			
+		} catch (SelectVacationException | SelectLeaveException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		
+		
+		return mv;
 	}
+	
+	@RequestMapping("insertVacation.at")
+	public String insertVacation(ATManagement at, @SessionAttribute("loginUser") Member loginUser, HttpServletRequest request) {
+		
+		int corpNo = loginUser.getCorpNo();
+		int mno = loginUser.getMno();
+		
+		
+		String startDay = request.getParameter("startDay");
+		String endDay = request.getParameter("endDay");
+		String[] start = startDay.split("-");
+		String[] end = endDay.split("-");
+		String lstartDay = start[0].substring(2)+"/"+start[1]+"/"+start[2];
+		String lendDay = end[0].substring(2)+"/"+end[1]+"/"+end[2];
+		
+		at.setLstartDay(lstartDay);
+		at.setLendDay(lendDay);
+		at.setCorpNo(corpNo);
+		at.setMno(mno);
+		
+		System.out.println(at);
+		
+		as.insertVacation(at);
+		
+		
+		return "redirect:selectVacationList.at";
+	}
+	
 	
 	@RequestMapping("insertCorrectionForm.at")
 	public String insertCorrectionForm() {

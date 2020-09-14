@@ -334,6 +334,13 @@ public class ATManagementServiceImpl implements ATManagementService {
 	}
 
 
+	@Override
+	public int insertVacation(ATManagement at) {
+
+		return ad.insertVacation(sqlSession, at);
+	}
+
+
 	
 
 }

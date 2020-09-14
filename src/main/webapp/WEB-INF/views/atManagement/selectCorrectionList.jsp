@@ -120,7 +120,7 @@
                 		<td>${objection.get(i).changeDate }</td>
                 		<td class="long">${objection.get(i).objReason }</td>
                 		<td>${objection.get(i).checkStatus }</td>
-                		<td><button class="btn" onclick="location.href='selectATDetail.at?no=${objection.get(i).objNo}'">수정</button></td>
+                		<td><button class="btn" onclick="location.href='selectATDetail.at?no=${objection.get(i).objNo}'">상세</button></td>
                 	</tr>
                 	</c:forEach>
                 	
@@ -128,40 +128,39 @@
                 
                 
                 <!-- 페이징 -->
-                <div id="pagingArea" align="center">
-			<c:if test="${ pi.currentPage <= 1 }">
-				[이전] &nbsp;
-			</c:if>
-			<c:if test="${ pi.currentPage > 1 }">
-				<c:url var="blistBack" value="selectCorrectionList.at">
-					<c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
-				</c:url>
-				<a href="${ blistBack }">[이전]</a> &nbsp;
-			</c:if>
-			
-			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<c:if test="${ p eq pi.currentPage }">
-					<font color="red" size="4"><b>[${ p }]</b></font>
-				</c:if>
-				<c:if test="${ p ne pi.currentPage }">
-					<c:url var="blistCheck" value="selectCorrectionList.at">
-						<c:param name="currentPage" value="${ p }"></c:param>
-					</c:url>
-					<a href="${blistCheck }">${ p }</a>
-				</c:if>
-			</c:forEach>
-			
-			<c:if test="${ pi.currentPage >= pi.maxPage }">
-				&nbsp; [다음]
-			</c:if>
-			<c:if test="${ pi.currentPage < pi.maxPage }">
-				<c:url var="blistEnd" value="selectCorrectionList.at">
-					<c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
-				</c:url>
-				&nbsp; <a href="${ blistEnd }">[다음]</a>
-			</c:if>
-			
-		</div>
+                         <div id="pagingArea" align="center">
+            <c:if test="${ pi.currentPage <= 1 }">
+            << &nbsp;
+                 </c:if>
+            <c:if test="${ pi.currentPage > 1 }">
+               <c:url var="prvBack" value="selectCorrectionList.at">
+                  <c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
+               </c:url>
+               <a href="${ prvBack }"><<</a> &nbsp;
+         </c:if>
+
+            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+               <c:if test="${ p eq pi.currentPage }">
+                  <font color="#29A2F7" size="4"><b>${ p }</b></font>
+               </c:if>
+               <c:if test="${ p ne pi.currentPage }">
+                  <c:url var="prvListCheck" value="selectCorrectionList.at">
+                     <c:param name="currentPage" value="${ p }"></c:param>
+                  </c:url>
+                  <a href="${prvListCheck }">${ p }</a>
+               </c:if>
+            </c:forEach>
+
+            <c:if test="${ pi.currentPage >= pi.maxPage }">
+            &nbsp; >>
+         </c:if>
+            <c:if test="${ pi.currentPage < pi.maxPage }">
+               <c:url var="prvListEnd" value="selectCorrectionList.at">
+                  <c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
+               </c:url>
+            &nbsp; <a href="${ prvListEnd }">>></a>
+            </c:if>
+         </div>
 		</div>
 	</section>
 </body>

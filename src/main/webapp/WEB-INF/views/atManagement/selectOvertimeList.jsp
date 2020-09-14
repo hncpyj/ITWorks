@@ -104,8 +104,8 @@
                 	</tr>
                 	<c:forEach begin="0" end="${overTime.size()-1 }" var="i">
                 	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
+                		<td><c:out value="${loginUser.ename }"></c:out></td>
+                		<td><c:out value="${loginUser.dname }"></c:out></td>
                 		<td><c:out value="${overTime.get(i).otDate }"/></td>
                 		<td><c:out value="${overTime.get(i).otEnd }"/></td>
                 		<td><c:out value="${overTime.get(i).otStatus }"/></td>
@@ -114,6 +114,41 @@
                 	</c:forEach>
                 	
                 </table>
+                
+                
+                 <div id="pagingArea" align="center">
+            <c:if test="${ pi.currentPage <= 1 }">
+            << &nbsp;
+                 </c:if>
+            <c:if test="${ pi.currentPage > 1 }">
+               <c:url var="prvBack" value="selectOvertimeList.at">
+                  <c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
+               </c:url>
+               <a href="${ prvBack }"><<</a> &nbsp;
+         </c:if>
+
+            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+               <c:if test="${ p eq pi.currentPage }">
+                  <font color="#29A2F7" size="4"><b>${ p }</b></font>
+               </c:if>
+               <c:if test="${ p ne pi.currentPage }">
+                  <c:url var="prvListCheck" value="selectOvertimeList.at">
+                     <c:param name="currentPage" value="${ p }"></c:param>
+                  </c:url>
+                  <a href="${prvListCheck }">${ p }</a>
+               </c:if>
+            </c:forEach>
+
+            <c:if test="${ pi.currentPage >= pi.maxPage }">
+            &nbsp; >>
+         </c:if>
+            <c:if test="${ pi.currentPage < pi.maxPage }">
+               <c:url var="prvListEnd" value="selectOvertimeList.at">
+                  <c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
+               </c:url>
+            &nbsp; <a href="${ prvListEnd }">>></a>
+            </c:if>
+         </div>
 		</div>
 	</section>
 </body>
