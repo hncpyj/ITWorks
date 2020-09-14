@@ -115,6 +115,8 @@ public class NoticeController {
 		
 		int result = ns.deleteNo(notice);
 		
+		System.out.println("controller : " + notice);
+		
 		if (result > 0) {
 			return "redirect:noticeList.no";
 		} else {
@@ -125,3 +127,17 @@ public class NoticeController {
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

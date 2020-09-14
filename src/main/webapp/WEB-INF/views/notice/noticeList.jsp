@@ -159,7 +159,7 @@
                 <c:forEach var="n" items="${ list }">
                 	<tr>
                 		<td><c:out value="${ n.noticeno }"/></td>
-	                    <td><a onclick="detail('${n.noticeno}');"><c:out value="${ n.ntitle }"/></a></td>
+	                    <td style="cursor: pointer;"><a onclick="detail('${n.noticeno}');"><c:out value="${ n.ntitle }"/></a></td>
 	                    <td><c:out value="${ n.ename }"/></td>
 	                    <td><c:out value="${ n.ndate }"/></td>
 	                    <td><c:out value="${ n.nviews }"/></td>

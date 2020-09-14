@@ -121,7 +121,7 @@
         <!-- 공지사항 폼 -->
         <article>
             <button onclick="">수정하기</button>
-            <button onclick="location.href='deleteNo.no'">삭제하기</button>
+            <button onclick="deleteNotice('${notice2.noticeno}');">삭제하기</button>
             <table>
                 <tr>
                     <th>No</th>
@@ -147,8 +147,21 @@
                     <td colspan="3"></td>
                 </tr>
             </table>
+            <input type="hidden" name="mno" value="${ notice2.mno }">
+            <input type="hidden" name="noticeno" value="${ notice2.noticeno }">
             <button onclick="history.go(-1);">목록으로</button>
         </article>
+        
+        <script>
+        	function deleteNotice(noticeno) {
+        		var confirmTest = confirm('삭제하시겠습니까?');
+        		
+        		if(confirmTest == true) {
+	        		location.href='deleteNo.no?noticeno=' + noticeno;
+        		}     
+        	}
+        </script>
+        
         <!-- 공지사항 폼 종료-->
         <article id="modifyNoticeForm" style="display: none;">
             <form action="">

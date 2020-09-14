@@ -58,6 +58,8 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public int deleteNo(Notice notice) {
 		
+		System.out.println("serviceImpl : " + notice);
+		
 		return nd.deleteNo(sqlSession, notice);
 	}
 	

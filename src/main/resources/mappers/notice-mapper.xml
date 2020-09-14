@@ -58,8 +58,15 @@
 	<update id="deleteNo" parameterType="Notice">
 		UPDATE NOTICE 
 		   SET NSTATUS = 'N'
-		 WHERE MNO = #{mno}
-		   AND NOTICE_NO = #{noticeno}
+		 WHERE NOTICE_NO = #{noticeno}
+	</update>
+	
+	<update id="updateNo" parameterType="Notice">
+		UPDATE NOTICE
+		   SET NTITLE = #{ntitle}
+		     , NCONTENT = #{ncontent}
+		 WHERE NOTICE_NO = #{noticeno}
+		   AND MNO = #{mno}
 	</update>
 
 </mapper>

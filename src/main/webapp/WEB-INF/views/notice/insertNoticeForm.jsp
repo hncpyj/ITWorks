@@ -106,16 +106,16 @@
                 <table>
                     <tr>
                         <th>제목</th>
-                        <td><input name="nTitle" type="text" style="width: 900px;"></td>
+                        <td><input name="ntitle" type="text" style="width: 900px;"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td><c:out value="${ notice.mNo }"/></td>
+                        <td><p><c:out value="${ notice2.ntitle }"/></p></td>
                     </tr>
                     <tr>
                         <th>내용</th>
                         <td>
-                            <textarea name="nContent" id="nContent" cols="126" rows="20" style="resize: none; margin-top: 5px;"></textarea>
+                            <textarea name="ncontent" id="nContent" cols="126" rows="20" style="resize: none; margin-top: 5px;"></textarea>
                         </td>
                     </tr>
                     <tr>

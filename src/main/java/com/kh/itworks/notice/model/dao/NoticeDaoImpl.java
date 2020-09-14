@@ -15,7 +15,7 @@ public class NoticeDaoImpl implements NoticeDao{
 
 	@Override
 	public int insertNo(SqlSessionTemplate sqlSession, Notice notice) {
-		// TODO Auto-generated method stub
+		
 		return sqlSession.insert("Notice.insertNo", notice);
 	}
 	
@@ -60,6 +60,8 @@ public class NoticeDaoImpl implements NoticeDao{
 
 	@Override
 	public int deleteNo(SqlSessionTemplate sqlSession, Notice notice) {
+		
+		System.out.println("daoImpl : " + notice);
 		
 		return sqlSession.update("Notice.deleteNo", notice);
 	}
