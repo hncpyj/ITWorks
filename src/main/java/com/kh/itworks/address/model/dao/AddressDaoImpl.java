@@ -100,6 +100,18 @@ public class AddressDaoImpl implements AddressDao{
 		sqlSession.delete("Address.deleteMainAddress", contactsNo);
 	}
 
+	@Override
+	public int changeImportStatus(SqlSessionTemplate sqlSession, AddressVO address) {
+		
+		return sqlSession.update("Address.updateImportStatus", address);
+	}
+
+	@Override
+	public AddressVO confirmChange(SqlSessionTemplate sqlSession, AddressVO address) {
+		
+		return sqlSession.selectOne("Address.confirmImport", address);
+	}
+
 //	@Override
 //	public AddressVO selectOneMainAddress(SqlSessionTemplate sqlSession, int contactsNo) {
 //

@@ -32,7 +32,11 @@ public interface AddressService {
 	public int countImportantAddressList();
 	
 	//메인 주소록 삭제
-	public void deleteMainAddress(int contactsNo); 
+	public void deleteMainAddress(int contactsNo);
+
+	public int changeConImportStatus(AddressVO address);
+
+	AddressVO changeConfirm(AddressVO address); 
 	
 	
 //	public void delete(BoardDTO boardDTO);

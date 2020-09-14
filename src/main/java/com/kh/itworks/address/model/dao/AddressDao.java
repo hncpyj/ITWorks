@@ -35,12 +35,17 @@ public interface AddressDao {
 	
 	//주소록 삭제
 	public void deleteMainAddress(int contactsNo);
+	
+	//주소록 즐겨찾기 상태 변경
+	int changeImportStatus(SqlSessionTemplate sqlSession ,AddressVO address);
 //	
 //	//주소록 수정
 //	public int update(AddressVO address);
 //	
 //	//주소록 조회하기
 //	public AddressVO select(int num);
+
+	AddressVO confirmChange(SqlSessionTemplate sqlSession, AddressVO address);
 	
 	
 }

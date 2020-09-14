@@ -101,6 +101,19 @@
 		  FROM CONTACTS 
 		 WHERE CONTACTS_NO = 'CONN'||#{contactsNo}
 	</delete>
+	
+	<!-- 주소록 중요상태값 변경 -->
+	<update id="updateImportStatus">
+		UPDATE CONTACTS 
+ 		   SET IMPORT_CON = #{importCon}
+ 	     WHERE CONTACTS_NO = #{contactsNo}
+	</update>
+	
+	<select id="confirmImport" resultMap="addressResultSet">
+		SELECT IMPORT_CON 
+ 		  FROM CONTACTS
+ 	     WHERE CONTACTS_NO = #{contactsNo}
+	</select>
 	<!-- 수정 
 	<update id="update" parameterType="boardDTO">
 		UPDATE b_board SET title = #{title},

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.address.model.exception.AddressMainSelectListCountException;
@@ -88,7 +89,7 @@ public class AddressController {
 		
 		int currentPage = 1;
 		
-		if(request.getParameter("currentPage") != null) {
+		if(request.getParameter("currentPage ") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 				
@@ -142,5 +143,30 @@ public class AddressController {
 		
 		return "";
 	}
-	
+
+	@ResponseBody
+	@RequestMapping("changeStatus.ad")
+	public String changeConImportStatus(HttpServletRequest request, HttpServletResponse response) {
+
+		String contactsNo = request.getParameter("conNo");
+		String tempsCon = request.getParameter("conStatus");
+		String importCon = "";
+			
+		AddressVO address = new AddressVO();
+		
+		if(tempsCon.equals("Y")) {
+			importCon = "N";
+		} else if(tempsCon.equals("N")) {
+			importCon = "Y";
+		}
+		
+		
+		address.setContactsNo(contactsNo);
+		address.setImportCon(importCon);
+		
+		int result = as.changeConImportStatus(address);
+		AddressVO addressConfirm = as.changeConfirm(address);
+
+		return addressConfirm.getImportCon();
+	}
 }

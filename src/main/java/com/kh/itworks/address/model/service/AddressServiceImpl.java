@@ -70,6 +70,18 @@ public class AddressServiceImpl implements AddressService {
 		ad.deleteMainAddress(contactsNo);
 	}
 
+	@Override
+	public int changeConImportStatus(AddressVO address) {
+		
+		return ad.changeImportStatus(sqlSession, address);
+	}
+
+	@Override
+	public AddressVO changeConfirm(AddressVO address) {
+		
+		return ad.confirmChange(sqlSession, address);
+	}
+
 //	@Override
 //	public AddressVO selectOneMainAddress(int contactsNo) {
 //
