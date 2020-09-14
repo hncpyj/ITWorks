@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,7 +81,7 @@
 		height: 30px;
     }
     .month{
-    	width: 45px;
+    	width: 50px;
     }
     #year{
     	color: #004771;
@@ -212,84 +213,106 @@
             </tr>
             </table>
             <table id="employeeAtTable">
+            	
                 	<tr>
                 		<th rowspan="2">이름</th>
                 		<th rowspan="2">소속</th>
                 		<th rowspan="2">입사일</th>
-                		<th rowspan="2">수정/상세</th>
+                		<th rowspan="2">상세</th>
                 		<th id="year" colspan="12">2020</th>
                 	</tr>
                 	<tr>
                 		<th class="month">생성</th>
-                		<th class="month">연차</th>
-                		<th class="month">반차</th>
-                		<th class="month">교육/훈련</th>
-                		<th class="month">출장</th>
-                		<th class="month">경조사</th>
-                		<th class="month">병가</th>
-                		<th class="month">출산</th>
-                		<th class="month">여름휴가</th>
-                		<th class="month">무급</th>
-                		<th class="month">외출</th>
-                		<th class="month">잔여</th>
+                		<c:forEach begin="0" end="${leave.size() -1 }" var="i">
+                		<th class="month"><c:out value="${leave.get(i).lname }"/></th>
+                		</c:forEach>
+                		
+                		
                 	</tr>
-                	<tr>
-                		<td>하이루</td>
-                		<td>대표</td>
-                		<td>2016/05/03</td>
-                		<td><button class="btn" onclick="openModal('modal2');">수정</button>/<button class="btn" onclick="openModal('modal1');">상세</button></td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
+                <c:forEach begin="0" end="${emp.size()-1 }" var="i">
+                	<tr class="spanMno${i}" id="${emp.get(i).mno }">
+                		<td><c:out value="${emp.get(i).ename }"/></td>
+                		<td><c:out value="${emp.get(i).dname }"/></td>
+                		<td><c:out value="${emp.get(i).hiredate }"/></td>
+                		<td><%-- <button class="btn" onclick="openModal('modal2${emp.get(i).mno}');">수정</button>/ --%><button class="btn" onclick="openModal('modal1${emp.get(i).mno}');">상세</button></td>
+                		<td class="month2"><c:out value="${emp.get(i).aleaveCount }"/></td>
+                		<c:forEach begin="0" end="${leave.size() -1 }" var="j">
+                		<td class="month2" id="${leave.get(j).leaveNo }">
+                			<span id="span">0</span>
+                		</td>
+                		</c:forEach>
+                		
                 	</tr>
+            	</c:forEach>
                 </table>
 		</div>
 	</section>
-	
+	<c:forEach begin="0" end="${vacation.size() -1 }" var="j">
+   		<input type="hidden" id="lstart${j}" value="${vacation.get(j).lstartDay }">
+   		<input type="hidden" id="lend${j}" value="${vacation.get(j).lendDay }">
+   		<input type="hidden" id="leaveNo${j}" value="${vacation.get(j).leaveNo }">
+   		<input type="hidden" id="mno${j}" value="${vacation.get(j).mno }">
+   </c:forEach>
+   		<script type="text/javascript">
+   			$(document).ready(function() {
+   				var empSize = ${emp.size()};
+   				var vacationSize = ${vacation.size()};
+   				for(var i = 0; i < empSize; i++){
+				for(var j = 0; j < vacationSize; j++){
+					if($('.spanMno'+i).attr('id') == $("#mno"+j).val()){
+						var lendDay = $("#lend"+j).val().split("/");
+						var lstartDay = $("#lstart"+j).val().split("/");
+						var vacationDay = lendDay[2]-lstartDay[2];
+						
+						$('.spanMno'+i).find("#"+$('#leaveNo'+j).val()).find('#span').text($("#span").text()*1+vacationDay*1);
+						
+						 console.log($('.spanMno'+i).find("#"+$('#leaveNo'+j).val()).attr('id'));
+							
+						
+					}
+				}
+   					
+   				}
+			});
+   		</script>
+   		     		
 	<!-- 상세모달ㅌ창 -->
+	<c:forEach begin="0" end="${emp.size()-1 }" var="i">
 	<div id="modal"></div>
-	  <div class="modal-con modal1">
-	    
+	  <div class="modal-con modal1${emp.get(i).mno}">
 	    <div class="con">
 	      <div class="middleTitle">직원 휴가일 상세</div>
-	      <div class="explain">입사일 : 2016 / 05 / 03</div>
+	      <div class="explain">입사일 : <c:out value="${emp.get(i).hiredate }"/></div>
 	      <table class="modalTable">
+	    <c:forEach begin="0" end="${vacation.size()-1 }" var="j">
+	    <c:if test="${emp.get(i).mno eq vacation.get(j).mno}">
 	      	<tr>
-	      		<th>번호</th>
 	      		<th>신청자</th>
 	      		<th>휴가 종류</th>
-	      		<th>일수</th>
+	      		<th>신청일</th>
 	      		<th>기간</th>
-	      		<th>상태</th>
 	      	</tr>
 	      	<tr>
-	      		<td>1</td>
-	      		<td>헤일리최</td>
-	      		<td>연차</td>
-	      		<td>2일</td>
-	      		<td>2020/08/21~2020/08/22</td>
-	      		<td>결재 완료</td>
+	      		<td><c:out value="${emp.get(i).ename }"/></td>
+	      		<td><c:out value="${vacation.get(j).lname }"/></td>
+	      		<td><c:out value="${vacation.get(j).ldate }"/></td>
+	      		<td><c:out value="${vacation.get(j).lstartDay }"/>~<c:out value="${vacation.get(j).lendDay }"/></td>
 	      	</tr>
+	    </c:if>
+	    </c:forEach>
 	      </table>
 	    	<button class="close" onclick="">닫기</button>
 	    </div>
 	  </div>
 	  <!-- 수정 모달창 -->
-	   <div class="modal-con modal2">
+	   <div class="modal-con modal2${emp.get(i).mno}">
 	    <div class="con">
 	    <div class="middleTitle">직원 휴가일 수정</div>
-	      <div class="explain">입사일 : 2016 / 05 / 03</div>
+	      <div class="explain">입사일 : <c:out value="${emp.get(i).hiredate }"/></div>
 	      <div class="explain">※ 정기 연차와 포상 휴가 일수는 ‘정수’ 로 입력할 수 있습니다.</div>
 	      <table class="modalTable">
+	       <c:forEach begin="0" end="${vacation.size()-1 }" var="j">
+	    <c:if test="${emp.get(i).mno eq vacation.get(j).mno}">
 	      	<tr>
 	      		<th>종류</th>
 	      		<th>현재</th>
@@ -302,12 +325,15 @@
 	      		<td><input class="dayBox" type="text">일</td>
 	      		<td><input class="long" type="text"></td>
 	      	</tr>
+	      	</c:if>
+	    </c:forEach>
 	      </table>
 	      <a href="updateEmpAt.at">수정</a>
 	    	<button class="close" onclick="">닫기</button>
 	    
 	    </div>
 	  </div>
+	  </c:forEach>
 	  <script type="text/javascript">
 	  function openModal(modalname){
 		  document.get

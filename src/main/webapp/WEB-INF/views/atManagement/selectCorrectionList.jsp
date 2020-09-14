@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +61,6 @@
     }
     .long{
     	width: 250px;
-    	text-align: left;
     	margin-left: 5px;
     }
     .btn{
@@ -104,100 +104,63 @@
                 		<th>기존 시간</th>
                 		<th>변경 시간</th>
                 		<th class="long">사유</th>
-                		<th>진행 상태</th>
+                		<th>승인 여부</th>
                 		<th>상세</th>
                 	</tr>
+                	<c:forEach begin="0" end="${objection.size()-1}" var="i">
                 	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn" onclick="location.href='selectATDetail.at'">수정</button></td>
+                		<td>${objection.get(i).objDate }</td>
+                		<td>${objection.get(i).objType }</td>
+                		<c:if test="${objection.get(i).objType eq '출근' }">
+                		<td>${objection.get(i).wstart}</td>                		
+                		</c:if>
+                		<c:if test="${objection.get(i).objType eq '퇴근' }">
+                		<td>${objection.get(i).wend}</td>                		
+                		</c:if>
+                		<td>${objection.get(i).changeDate }</td>
+                		<td class="long">${objection.get(i).objReason }</td>
+                		<td>${objection.get(i).checkStatus }</td>
+                		<td><button class="btn" onclick="location.href='selectATDetail.at?no=${objection.get(i).objNo}'">상세</button></td>
                 	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
-                	<tr>
-                		<td>2020-08-14</td>
-                		<td>출근</td>
-                		<td>9 : 10</td>
-                		<td>9 : 00</td>
-                		<td class="long">전산 오류로 인한 출근 미처리</td>
-                		<td>포함</td>
-                		<td><button class="btn">수정</button></td>
-                	</tr>
+                	</c:forEach>
+                	
                 </table>
+                
+                
+                <!-- 페이징 -->
+                         <div id="pagingArea" align="center">
+            <c:if test="${ pi.currentPage <= 1 }">
+            << &nbsp;
+                 </c:if>
+            <c:if test="${ pi.currentPage > 1 }">
+               <c:url var="prvBack" value="selectCorrectionList.at">
+                  <c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
+               </c:url>
+               <a href="${ prvBack }"><<</a> &nbsp;
+         </c:if>
+
+            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+               <c:if test="${ p eq pi.currentPage }">
+                  <font color="#29A2F7" size="4"><b>${ p }</b></font>
+               </c:if>
+               <c:if test="${ p ne pi.currentPage }">
+                  <c:url var="prvListCheck" value="selectCorrectionList.at">
+                     <c:param name="currentPage" value="${ p }"></c:param>
+                  </c:url>
+                  <a href="${prvListCheck }">${ p }</a>
+               </c:if>
+            </c:forEach>
+
+            <c:if test="${ pi.currentPage >= pi.maxPage }">
+            &nbsp; >>
+         </c:if>
+            <c:if test="${ pi.currentPage < pi.maxPage }">
+               <c:url var="prvListEnd" value="selectCorrectionList.at">
+                  <c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
+               </c:url>
+            &nbsp; <a href="${ prvListEnd }">>></a>
+            </c:if>
+         </div>
 		</div>
 	</section>
 </body>

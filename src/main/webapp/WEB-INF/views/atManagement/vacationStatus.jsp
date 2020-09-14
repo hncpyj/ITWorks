@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	section{
 		width: 75%;
@@ -78,8 +80,9 @@
     	height: 120px;
     	background-color: white;
     	border: 1px solid #929292;
-    	padding-top: 20px;
+    	padding-top: 10px;
     	padding-left: 10px;
+    	padding-bottom:10px;
     	margin-right: 10px;
     	margin-top: auto;
     	margin-bottom: auto;
@@ -95,7 +98,7 @@
     
     .time{
     	display: inline-block;
-    	width: 630px;
+    	width: 670px;
     	height: 140px;
     	background-color: white;
     	border: 1px solid #929292;
@@ -158,10 +161,11 @@
             <div class="box">
             <label class="boxText">내 휴가 정보</label>
             <div class="worktime">
-            	<label>입사일 : 2018-09-18</label><br>
-            	<label>지급된 연차 일수 : 26일</label><br>
-            	<label>잔여 연차 일수 : 23일</label><br>
-            	<label>사용한 연차 일수 : 3일</label>
+            	<label>입사일 : <c:out value="${hiredate }"></c:out></label><br>
+            	<label>지급된 연차 일수 : <c:out value="${aleaveCount }"/>일</label><br>
+            	<label>지급된 포상휴가 일수 : <c:out value="${reward }"/>일</label><br>
+            	<label>잔여 연차 일수 : <span id="remain"><c:out value="${aleaveCount }"/></span>일</label><br>
+            	<label>사용한 연차 일수 : <span id="using"></span>일</label>
             </div>
             </div>
             <!-- 휴가 종류 -->
@@ -170,29 +174,60 @@
             <div class="time">
             	<table class="vacationTable">
             		<tr>
-            			<td>연차</td>
-            			<td>반차</td>
-            			<td>휴가</td>
-            			<td>교육/훈련</td>
-            			<td>조퇴</td>
-            			<td>경조사</td>
-            			<td>출산</td>
-            			<td>병가</td>
+            		<c:forEach begin="0" end="${leave.size()-1 }" var="i">
+            			<td><c:out value="${leave.get(i).lname }"/></td>
+            		</c:forEach>
+            			
             		</tr>
             		<tr height="100px">
-            			<td>2일</td>
-            			<td>0일</td>
-            			<td>0일</td>
-            			<td>0일</td>
-            			<td>0일</td>
-            			<td>0일</td>
-            			<td>0일</td>
-            			<td>0일</td>
+            		<c:forEach begin="0" end="${leave.size()-1 }" var="i">
+            			<td class="leaveNo${i}" id="${leave.get(i).leaveNo }"><span id="span${i}">0</span>일</td>
+            		</c:forEach>
+            			
             		</tr>
             	</table>
             </div>
             </div>
             </div>
+            <c:forEach begin="0" end="${vacation.size()-1 }" var="i">
+            			<input type="hidden" id="leaveNo${i}" value="${vacation.get(i).leaveNo }">
+            			<input type="hidden" id="lstartDay${i}" value="${vacation.get(i).lstartDay }">
+            			<input type="hidden" id="lendDay${i}" value="${vacation.get(i).lendDay }">
+            		</c:forEach>
+            		<script type="text/javascript">
+            			$(document).ready(function() {
+							var leaveSize = ${leave.size()};
+							var vacationSize = ${vacation.size()};
+							
+							for(var j = 0; j < leaveSize; j++){
+								var leaveId = $(".leaveNo"+j).attr("id");
+								console.log(leaveId);
+							
+							for(var i = 0 ; i < vacationSize; i++){
+								if(leaveId == $("#leaveNo"+i).val()){
+								var lendDay = $("#lendDay"+i).val().split("/");
+								var lstartDay = $("#lstartDay"+i).val().split("/");
+								var vacationDay = lendDay[2]-lstartDay[2];
+								$("#span"+j).text($("#span"+j).text()*1+vacationDay*1);
+								console.log($("#span"+j).text());
+									
+								}
+								
+							}
+							}
+							
+							for(var i = 0 ; i < vacationSize; i++){
+								var lendDay = $("#lendDay"+i).val().split("/");
+								var lstartDay = $("#lstartDay"+i).val().split("/");
+								var vacationDay = lendDay[2]-lstartDay[2];
+								
+								$("#using").text($("#using").text()*1+vacationDay*1);
+								
+							}
+								
+								$("#remain").text($("#remain").text()*1 - $("#using").text()*1)
+						});
+            		</script>
             <!-- 내 휴가 현황 -->
             <div class="box">
             <label class="boxText">휴가 신청 내역</label>
@@ -202,102 +237,63 @@
                 		<th>소속</th>
                 		<th class="long">신청기간</th>
                 		<th>종류</th>
-                		<th>일수</th>
+                		<th>신청일</th>
                 		<th>상태</th>
                 		<th>상세</th>
                 	</tr>
+                	<c:forEach begin="0" end="${vacation.size()-1 }" var="i">
                 	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
+                		<td><c:out value="${vacation.get(i).ename }"/></td>
+                		<td><c:out value="${vacation.get(i).dname }"/></td>
+                		<td><c:out value="${vacation.get(i).lstartDay }"/> ~ <c:out value="${vacation.get(i).lendDay }"/></td>
+                		<td><c:out value="${vacation.get(i).lname }"/></td>
+                		<td><c:out value="${vacation.get(i).ldate }"/></td>
+                		<c:if test="${vacation.get(i).lstatus eq 'Y' }">
+                		<td>확정</td>                		
+                		</c:if>
+                		<c:if test="${vacation.get(i).lstatus eq 'N' }">
+                		<td>미확정</td>                		
+                		</c:if>
+                		<td><button type="button" class="btn" onclick="location.href='selectVacationDetail.at?no=${vacation.get(i).lInfoNo}'">상세</button></td>
                 	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
-                	<tr>
-                		<td>이름</td>
-                		<td>기술지원팀</td>
-                		<td>2020-08-03 ~ 2020-08-04</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>결재완료</td>
-                		<td><button class="btn">상세</button></td>
-                	</tr>
+                	</c:forEach>
+                	
                 </table>
                 </div>
+                <!-- 페이징 -->
+                   <div id="pagingArea" align="center">
+            <c:if test="${ pi.currentPage <= 1 }">
+            << &nbsp;
+                 </c:if>
+            <c:if test="${ pi.currentPage > 1 }">
+               <c:url var="prvBack" value="selectVacationStatus.at">
+                  <c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
+               </c:url>
+               <a href="${ prvBack }"><<</a> &nbsp;
+         </c:if>
+
+            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+               <c:if test="${ p eq pi.currentPage }">
+                  <font color="#29A2F7" size="4"><b>${ p }</b></font>
+               </c:if>
+               <c:if test="${ p ne pi.currentPage }">
+                  <c:url var="prvListCheck" value="selectVacationStatus.at">
+                     <c:param name="currentPage" value="${ p }"></c:param>
+                  </c:url>
+                  <a href="${prvListCheck }">${ p }</a>
+               </c:if>
+            </c:forEach>
+
+            <c:if test="${ pi.currentPage >= pi.maxPage }">
+            &nbsp; >>
+         </c:if>
+            <c:if test="${ pi.currentPage < pi.maxPage }">
+               <c:url var="prvListEnd" value="selectVacationStatus.at">
+                  <c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
+               </c:url>
+            &nbsp; <a href="${ prvListEnd }">>></a>
+            </c:if>
+         </div>
 		</div>
 	</section>
 </body>

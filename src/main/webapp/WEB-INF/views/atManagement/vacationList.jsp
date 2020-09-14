@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	section{
 		width: 75%;
@@ -79,8 +81,9 @@
        height: 25px;
     }
     .searchTable{
-    	width: 100%;
+    	width: 250px;
     	margin-bottom: 10px;
+    	float: right;
     }
     .long{
     	width: 250px;
@@ -100,15 +103,7 @@
             </div>
             <table class="searchTable">
             <tr>
-            	<td>
-		            <select>
-		            	<option>모든 소속 부서</option>
-		            	<option>부서명</option>
-		            	<option>부서명2</option>
-		            	<option>부서명3</option>
-		            	<option>부서명4</option>
-		            </select>
-            	</td>
+            	
             	<td width="230px"><input type="text" id="search" placeholder="이름 또는 조직을 검색하세요."></td>
          		<td width="10"><img src="${contextPath}/resources/images/searchBtn.png" onclick="location.href='#'" style="cursor: pointer;"></td>
             </tr>
@@ -118,36 +113,58 @@
                 		<th>이름</th>
                 		<th>소속</th>
                 		<th>종류</th>
-                		<th>일수</th>
+                		<th>신청일</th>
                 		<th class="long">기간</th>
-                		<th>수정 및 취소</th>
+                		<th>상세</th>
                 	</tr>
+                	<c:forEach begin="0" end="${vacation.size()-1 }" var="i">
                 	<tr>
-                		<td>헤일리최</td>
-                		<td>기술지원팀</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>2020-08-17 ~ 2020-08-18</td>
-                		<td><button class="btn">상세</button>/<button class="btn">취소</button></td>
+                		<td><c:out value="${vacation.get(i).ename }"/></td>
+                		<td><c:out value="${vacation.get(i).dname }"/></td>
+                		<td><c:out value="${vacation.get(i).lname }"/></td>
+                		<td><c:out value="${vacation.get(i).ldate }"/></td>
+                		<td><c:out value="${vacation.get(i).lstartDay }"/> ~ <c:out value="${vacation.get(i).lendDay }"/></td>
+                		<td><button class="btn" onclick="location.href='selectAdminVacationDetail.at?no=${vacation.get(i).lInfoNo}'">상세</button></td>
                 	</tr>
-                	<tr>
-                		<td>헤일리최</td>
-                		<td>기술지원팀</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>2020-08-17 ~ 2020-08-18</td>
-                		<td><button class="btn">상세</button>/<button class="btn">취소</button></td>
-                	</tr>
-                	<tr>
-                		<td>헤일리최</td>
-                		<td>기술지원팀</td>
-                		<td>연차</td>
-                		<td>2일</td>
-                		<td>2020-08-17 ~ 2020-08-18</td>
-                		<td><button class="btn">상세</button>/<button class="btn">취소</button></td>
-                	</tr>
+                	</c:forEach>
+                	
                 	
                 </table>
+                
+                
+                <div id="pagingArea" align="center">
+            <c:if test="${ pi.currentPage <= 1 }">
+            << &nbsp;
+                 </c:if>
+            <c:if test="${ pi.currentPage > 1 }">
+               <c:url var="prvBack" value="selectVacationList.at">
+                  <c:param name="currnetPage" value="${ pi.currentPage - 1 }"></c:param>
+               </c:url>
+               <a href="${ prvBack }"><<</a> &nbsp;
+         </c:if>
+
+            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+               <c:if test="${ p eq pi.currentPage }">
+                  <font color="#29A2F7" size="4"><b>${ p }</b></font>
+               </c:if>
+               <c:if test="${ p ne pi.currentPage }">
+                  <c:url var="prvListCheck" value="selectVacationList.at">
+                     <c:param name="currentPage" value="${ p }"></c:param>
+                  </c:url>
+                  <a href="${prvListCheck }">${ p }</a>
+               </c:if>
+            </c:forEach>
+
+            <c:if test="${ pi.currentPage >= pi.maxPage }">
+            &nbsp; >>
+         </c:if>
+            <c:if test="${ pi.currentPage < pi.maxPage }">
+               <c:url var="prvListEnd" value="selectVacationList.at">
+                  <c:param name="currentPage" value="${ pi.currentPage + 1 }"></c:param>
+               </c:url>
+            &nbsp; <a href="${ prvListEnd }">>></a>
+            </c:if>
+         </div>
 		</div>
 	</section>
 </body>

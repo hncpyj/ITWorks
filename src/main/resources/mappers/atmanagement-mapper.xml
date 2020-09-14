@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ATManagement">
+
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="attendence">
+		<id property="corpNo" column="CORP_NO"/>
+		<result property="attendence" column="ATTENDENCE"/>
+		<result property="workTimeLimit" column="WORK_TIME_LIMIT"/>
+		<result property="laborDay" column="LABOR_DAY"/>
+		<result property="holidays" column="HOLIDAYS"/>
+		<result property="alternativeHolidays" column="ALTERNATIVE_HOLIDAYS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="breakTime">
+		<id property="breakTimeNo" column="BREAK_TIME_NO"/>
+		<result property="btType" column="BT_TYPE"/>
+		<result property="btStart" column="BT_START"/>
+		<result property="btEnd" column="BT_END"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leave">
+		<id property="leaveNo" column="LEAVE_NO"/>
+		<result property="lname" column="LNAME"/>
+		<result property="luse" column="LUSE"/>
+		<result property="aleaveDeduction" column="ALEAVE_DEDUCTION"/>
+		<result property="harfLeave" column="HARF_LEAVE"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="lcategory" column="LCOTEGORY"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveApply">
+		<id property="lInfoNo" column="L_INFO_NO"/>
+		<result property="lstartDay" column="LSTART_DAY"/>
+		<result property="lendDay" column="LEND_DAY"/>
+		<result property="lref" column="LREF"/>
+		<result property="lreason" column="LREASON"/>
+		<result property="leaveNo" column="LEAVE_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="ldate" column="LDATE"/>
+		<result property="lstatus" column="LSTATUS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveHistory">
+		<id property="lhistoryNo" column="LHISTORY_NO"/>
+		<result property="lstartDate" column="LSTART_DATE"/>
+		<result property="lendDate" column="LEND_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="leaveNo" column="LEAVE_NO"/>
+		<result property="apvNo" column="APV_NO"/>
+		<result property="apvLineNo" column="APV_LINE_NO"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="leaveSetting">
+		<id property="leaveFunc" column="LEAVE_FUNC"/>
+		<result property="lcreationCondition" column="LCREATION_CONDITION"/>
+		<result property="lcreationDate" column="LCREATION_DATE"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="yearAleave">
+		<id property="yearAleave" column="YEAR_ALEAVE"/>
+		<result property="hireYear" column="HIREYEAR"/>
+		<result property="aleaveCount" column="ALEAVE_COUNT"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="accUnitPeriod" column="ACC_UNIT_PERIOD"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="objection">
+		<id property="objNo" column="OBJ_NO"/>
+		<result property="objDate" column="OBJ_DATE"/>
+		<result property="objType" column="OBJ_TYPE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="objStatus" column="OBJ_STATUS"/>
+		<result property="objReason" column="OBJ_REASON"/>
+		<result property="wno" column="WNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="checkStatus" column="CHECK_STATUS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="overtime">
+		<id property="otNo" column="OT_NO"/>
+		<result property="wno" column="WNO"/>
+		<result property="otRef" column="OT_REF"/>
+		<result property="otDate" column="OT_DATE"/>
+		<result property="otStart" column="OT_START"/>
+		<result property="otEnd" column="OT_END"/>
+		<result property="otReason" column="OT_REASON"/>
+		<result property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="otStatus" column="OT_STATUS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="reward">
+		<id property="rwdNo" column="RWD_NO"/>
+		<result property="rwdName" column="RWD_NAME"/>
+		<result property="rwdPeriod" column="RWD_PERIOD"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="leaveNo" column="LEAVE_NO"/>
+		<result property="mno" column="MNO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="workInfo">
+		<id property="wno" column="WNO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="ip" column="IP"/>
+		<result property="outsideWork" column="OUSIDE_WORK"/>
+		<result property="wdate" column="WDATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="workTimeSet">
+		<id property="workingSetNo" column="WORKING_SET_NO"/>
+		<result property="workingSetTime" column="WORKING_SET_TIME"/>
+		<result property="dayOfTheWeek" column="DAY_OF_THE_WEEK"/>
+		<result property="workingTime" column="WORKING_TIME"/>
+		<result property="quittingTime" column="QUITTING_TIME"/>
+		<result property="harfOff" column="HARF_OFF"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="workingStatus">
+		<result property="workingStatusNo" column="WORKING_STATUS_NO"/>
+		<result property="workType" column="WORK_TYPE"/>
+		<result property="work" column="WORK"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="atManagementResultSet1">
+		<id property="corpNo" column="CORP_NO"/>
+		<result property="attendence" column="ATTENDENCE"/>
+		<result property="workTimeLimit" column="WORK_TIME_LIMIT"/>
+		<result property="laborDay" column="LABOR_DAY"/>
+		<result property="holidays" column="HOLIDAYS"/>
+		<result property="alternativeHolidays" column="ALTERNATIVE_HOLIDAYS"/>
+		<result property="breakTimeNo" column="BREAK_TIME_NO"/>
+		<result property="btType" column="BT_TYPE"/>
+		<result property="btStart" column="BT_START"/>
+		<result property="btEnd" column="BT_END"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="correntionRestulSet">
+		<id property="objNo" column="OBJ_NO"/>
+		<result property="objDate" column="OBJ_DATE"/>
+		<result property="objType" column="OBJ_TYPE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="objStatus" column="OBJ_STATUS"/>
+		<result property="objReason" column="OBJ_REASON"/>
+		<result property="checkStatus" column="CHECK_STATUS"/>
+		<result property="wno" column="WNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="ip" column="IP"/>
+		<result property="outsideWork" column="OUSIDE_WORK"/>
+		<result property="wdate" column="WDATE"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="correntionRestulSet2">
+		<id property="objNo" column="OBJ_NO"/>
+		<result property="objDate" column="OBJ_DATE"/>
+		<result property="objType" column="OBJ_TYPE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="mno" column="MNO"/>
+		<result property="objStatus" column="OBJ_STATUS"/>
+		<result property="objReason" column="OBJ_REASON"/>
+		<result property="checkStatus" column="CHECK_STATUS"/>
+		<result property="wno" column="WNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="ip" column="IP"/>
+		<result property="outsideWork" column="OUSIDE_WORK"/>
+		<result property="wdate" column="WDATE"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.Attachments" id="attachments">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="uploadDate" column="UPLOAD_DATE"/>
+		<result property="uploadTime" column="UPLOAD_TIME"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="fileRole" column="FILE_ROLE"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="apvNo" column="APV_NO"/>
+		<result property="chatNo" column="CHAT_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="noticeNo" column="NOTICE_NO"/>
+		<result property="pno" column="PNO"/>
+		<result property="pnoticeNo" column="PNOTICE_NO"/>
+		<result property="stgNo" column="STG_NO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="ext" column="EXT"/>
+		<result property="fStatus" column="F_STATUS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="dateEmpWork">
+		<id property="mno" column="MNO"/>
+		<result property="dname" column="DNAME"/>
+		<result property="did" column="DID"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="wstatus" column="WSTATUS"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="wdate" column="WDATE"/>
+		<result property="wno" column="WNO"/>
+		<result property="workingSetNo" column="WORKING_SET_NO"/>
+		<result property="dayOfTheWeek" column="DAY_OF_THE_WEEK"/>
+		<result property="otDate" column="OT_DATE"/>
+		<result property="otStart" column="OT_START"/>
+		<result property="otEnd" column="OT_END"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.atManagement.model.vo.ATManagement" id="employee">
+		<id property="mno" column="MNO"/>
+		<result property="corpNo" column="CORP_NO"/>
+		<result property="did" column="DID"/>
+		<result property="ename" column="ENAME"/>
+		<result property="dname" column="DNAME"/>
+		<result property="hiredate" column="HIREDATE"/>
+	</resultMap>
+	<resultMap type="java.util.Map" id="selectMap">
+		<result property="mno" column="MNO"/>
+		<result property="count" column="COUNT"/>
+	</resultMap>
+	<select id="selectAtBt" resultMap="atManagementResultSet1" parameterType="_int">
+		SELECT *
+		  FROM ATTENDENCE A
+		  JOIN BREAKTIME BT ON (A.CORP_NO = BT.CORP_NO)
+		 WHERE A.CORP_NO = #{corpNo}
+	</select>
+	<select id="selectWorkingStatus" resultMap="workingStatus" parameterType="_int">
+		SELECT *
+		  FROM WORKING_STATUS
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<select id="selectWorkTimeSet" resultMap="workTimeSet" parameterType="_int">
+		SELECT *
+		  FROM WORK_TIME_SET
+		 WHERE CORP_NO=#{corpNo}
+	</select>
+	<delete id="deleteWorkingStatus" parameterType="java.lang.String">
+		DELETE
+		  FROM WORKING_STATUS
+		 WHERE WORKING_STATUS_NO = #{dwNo}
+	</delete>
+	<delete id="deleteWorkTimeSet" parameterType="java.lang.String">
+		DELETE
+		  FROM WORK_TIME_SET
+		 WHERE WORKING_SET_NO = #{dtNo}
+	</delete>
+	<update id="updateWorkingStatus" parameterType="ATManagement">
+		UPDATE WORKING_STATUS
+		   SET WORK_TYPE = #{workType}
+		     , WORK = #{work}
+		 WHERE WORKING_STATUS_NO = #{workingStatusNo}
+		   AND CORP_NO = #{corpNo}
+	</update>
+	<update id="updateWorkTimeSet" parameterType="ATManagement">
+		UPDATE WORK_TIME_SET
+		   SET WORKING_TIME = #{workingTime}
+		     , QUITTING_TIME = #{quittingTime}
+		     , HARF_OFF = #{harfOff}
+		 WHERE WORKING_SET_NO = #{workingSetNo}
+		   AND CORP_NO = #{corpNo}  
+	</update>
+	<update id="updateAttendence" parameterType="ATManagement">
+		UPDATE ATTENDENCE
+		   SET ATTENDENCE = #{attendence}
+		     , WORK_TIME_LIMIT = #{workTimeLimit}
+		     , LABOR_DAY = #{laborDay}
+		     , HOLIDAYS = #{holidays}
+		     , ALTERNATIVE_HOLIDAYS = #{alternativeHolidays}
+		 WHERE CORP_NO = #{corpNo}
+	</update>
+	<update id="updateBreaktime" parameterType="ATManagement">
+		UPDATE BREAKTIME
+		   SET BT_START=#{btStart}
+		     , BT_END=#{btEnd}
+		 WHERE BREAK_TIME_NO = #{breakTimeNo}
+	</update>
+	<insert id="insertWorkTimeSet" parameterType="ATManagement">
+		INSERT 
+		  INTO WORK_TIME_SET
+		VALUES (SEQ_WORKING_SET_NO.NEXTVAL
+		     , #{workingSetTime}
+		     , #{dayOfTheWeek}
+		     , #{workingTime}
+		     , #{quittingTime}
+		     , #{harfOff}
+		     , #{corpNo})		
+	</insert>
+	<insert id="insertWorkingStatus" parameterType="ATManagement">
+		INSERT
+		  INTO WORKING_STATUS
+		VALUES ('WS'||SEQ_WORKING_STATUS_NO.NEXTVAL
+		     , #{workType}
+		     , #{work}
+		     , #{corpNo})
+	</insert>
+	<select id="selectMyWorkTime" resultMap="workInfo" parameterType="ATManagement">
+		SELECT *
+		  FROM WORK_INFO
+		 WHERE MNO = ${mno}
+		 ORDER BY WDATE
+	</select>
+	<insert id="insertWorkInfo" parameterType="ATManagement">
+		INSERT
+		  INTO WORK_INFO
+		VALUES (SEQ_WNO.NEXTVAL, #{wstatus},
+		<if test="wstatus == '출근' || wstatus == '지각'">
+			TO_CHAR(SYSDATE,'HH24:MI:SS'), NULL
+		</if>
+		<if test="wstatus == '퇴근' || wstatus == '조퇴'">
+			NULL, TO_CHAR(SYSDATE,'HH24:MI:SS')
+		</if>
+			, #{ip}, #{outsideWork}, TO_CHAR(SYSDATE, 'YY/MM/DD'), #{mno},#{workingSetNo}
+		)
+	</insert>
+	<select id="selectCorrentionList" resultMap="correntionRestulSet" parameterType="ATManagement">
+		SELECT *
+		  FROM OBJECTION O
+		  JOIN WORK_INFO W ON (O.WNO = W.WNO)
+		 WHERE O.CORP_NO = #{corpNo}
+		   AND O.MNO = #{mno}
+		 ORDER BY OBJ_NO DESC
+	</select>
+	<select id="getCorrentionListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM OBJECTION O
+		  JOIN WORK_INFO W ON (O.WNO = W.WNO)
+		 WHERE O.CORP_NO = #{corpNo}
+		   AND O.MNO = #{mno}
+	</select>
+	<select id="selectAtDetail" resultMap="correntionRestulSet" parameterType="_int">
+		SELECT *
+		  FROM OBJECTION O
+		  JOIN WORK_INFO W ON (O.WNO = W.WNO)
+		 WHERE O.OBJ_NO = #{objNo}
+	</select>
+	<select id="selectOvertimeListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM OVERTIME
+		 WHERE MNO = #{mno}
+	</select>
+	<select id="selectOvertimeList" resultMap="overtime" parameterType="ATManagement">
+		SELECT *
+		  FROM OVERTIME
+		 WHERE MNO = #{mno}
+		   AND CORP_NO = #{corpNo}
+	</select>
+	<select id="selectOvertiemDetail" resultMap="overtime" parameterType="_int">
+		SELECT *
+		  FROM OVERTIME
+		 WHERE OT_NO = #{otNo}
+	</select>
+	<select id="selectDateEmpWork" resultMap="dateEmpWork" parameterType="ATManagement">
+		SELECT 
+		       E.ENAME
+		     , D.DNAME
+		     , E.MNO
+		     , D.DID
+		     , W.WSTART
+		     , W.WEND
+		     , W.WSTATUS
+		     , W.WDATE
+             , W.WNO
+		     , S.WORKING_SET_NO
+		     , S.DAY_OF_THE_WEEK
+             , W.OT_START
+             , W.OT_END
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON (E.DID = D.DID)
+		  JOIN ( SELECT
+       W1.WDATE
+     , W1.MNO
+     , W1.WNO
+     , W1.WSTATUS
+     , W1.WORKING_SET_NO
+     , W1.WSTART
+     , W2.WEND
+     , O.OT_START
+     , O.OT_END
+  FROM WORK_INFO W1
+      , WORK_INFO W2
+  LEFT OUTER JOIN OVERTIME O
+  ON(W2.WDATE = O.OT_DATE AND W2.MNO = O.MNO AND O.OT_STATUS = 'Y')
+    WHERE W1.MNO = W2.MNO
+      AND W1.WDATE = W2.WDATE
+      AND NOT W1.WSTART IS NULL
+      AND NOT W2.WEND IS NULL) W ON (E.MNO = W.MNO)
+		  JOIN WORK_TIME_SET S ON(W.WORKING_SET_NO = S.WORKING_SET_NO)
+		  WHERE E.CORP_NO = #{corpNo}
+		    AND W.WDATE = #{wdate}
+	</select>
+	<select id="selectLeaveSetting" resultMap="leaveSetting" parameterType="_int">
+		SELECT *
+		  FROM LEAVE_SETTING
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<select id="selectYearAleave" resultMap="yearAleave" parameterType="ATManagement">
+		SELECT *
+		  FROM YEAR_ALEAVE
+		 WHERE CORP_NO =#{corpNo}
+		 ORDER BY TO_NUMBER(SUBSTR(YEAR_ALEAVE, 3))
+	</select>
+	<select id="selectLeave" resultMap="leave" parameterType="ATManagement">
+		SELECT *
+		  FROM LEAVE
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<update id="updateLeaveList" parameterType="ATManagement">
+		UPDATE LEAVE
+		   SET LUSE = #{luse}
+		     , ALEAVE_DEDUCTION = #{aleaveDeduction}
+		     , HARF_LEAVE = #{harfLeave}
+		 WHERE LEAVE_NO = #{leaveNo}
+	</update>
+	<update id="updateYearAleave" parameterType="ATManagement">
+		UPDATE YEAR_ALEAVE
+		   SET ALEAVE_COUNT = #{aleaveCount}
+		 WHERE YEAR_ALEAVE = #{yearAleave}
+	</update>
+	<update id="updateLeaveSettion" parameterType="ATManagement">
+		UPDATE LEAVE_SETTING
+		   SET LEAVE_FUNC = #{leaveFunc}
+		     , LCREATION_CONDITION = #{lcreationCondition}
+		     , LCREATION_DATE = #{lcreationDate}
+		 WHERE CORP_NO = #{corpNo}
+	</update>
+	<insert id="insertLeaveList" parameterType="ATManagement">
+		INSERT INTO LEAVE
+		VALUES ('LN'||SEQ_LEAVE_NO.NEXTVAL, #{lname}, #{luse}, #{aleaveDeduction}, #{harfLeave}, #{corpNo}, '정기휴가')
+	</insert>
+	<select id="selectVacationStatus" resultMap="leaveApply" parameterType="ATManagement">
+		SELECT L.*
+             , E.ENAME
+             , D.DNAME
+		     , LE.LNAME
+		  FROM LEAVE_APPLY L
+          JOIN LEAVE LE ON(L.LEAVE_NO = LE.LEAVE_NO)
+          JOIN EMPLOYEE E ON (L.MNO = E.MNO)
+          JOIN DEPT D ON (E.DID = D.DID)
+		 WHERE L.CORP_NO = #{corpNo}
+		   AND L.MNO = #{mno}
+		 ORDER BY TO_NUMBER(SUBSTR(L.L_INFO_NO, 3))
+	</select>
+	<select id="getVacationListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM LEAVE_APPLY
+		 WHERE CORP_NO = #{corpNo}
+		   AND MNO = #{mno}
+	</select>
+	<select id="selectVacationEmployee" resultType="java.lang.String" parameterType="ATManagement">
+		SELECT HIREDATE
+		  FROM EMPLOYEE
+		 WHERE MNO=#{mno}
+	</select>
+	<select id="selectRewardCount" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+		  FROM REWARD
+		 WHERE MNO=#{mno}
+	</select>
+	<select id="selectAleaveCount" resultType="_int" parameterType="_int">
+		SELECT ALEAVE_COUNT
+		  FROM YEAR_ALEAVE
+		 WHERE HIREYEAR=#{hireyear}
+	</select>
+	<select id="selectVacationDetail"  resultMap="leaveApply" parameterType="ATManagement" >
+		SELECT L.*
+             , E.ENAME
+             , D.DNAME
+		     , LE.LNAME
+		  FROM LEAVE_APPLY L
+          JOIN LEAVE LE ON(L.LEAVE_NO = LE.LEAVE_NO)
+          JOIN EMPLOYEE E ON (L.MNO = E.MNO)
+          JOIN DEPT D ON (E.DID = D.DID)
+		 WHERE L.L_INFO_NO = #{lInfoNo} 
+	</select>
+	<select id="getAdminVacationListCount" resultType="_int" parameterType="ATManagement">
+		SELECT COUNT(*)
+		  FROM LEAVE_APPLY
+		 WHERE CORP_NO = #{corpNo}
+	</select>
+	<select id="selectVacationList" resultMap="leaveApply" parameterType="ATManagement">
+		SELECT L.*
+             , E.ENAME
+             , D.DNAME
+		     , LE.LNAME
+		  FROM LEAVE_APPLY L
+          JOIN LEAVE LE ON(L.LEAVE_NO = LE.LEAVE_NO)
+          JOIN EMPLOYEE E ON (L.MNO = E.MNO)
+          JOIN DEPT D ON (E.DID = D.DID)
+		 WHERE L.CORP_NO = #{corpNo}
+		 ORDER BY TO_NUMBER(SUBSTR(L.L_INFO_NO, 3))
+	</select>
+	<update id="updateVacationApproval" parameterType="java.lang.String">
+		UPDATE LEAVE_APPLY
+		   SET LSTATUS = 'Y'
+		 WHERE L_INFO_NO = #{lInfoNo}
+	</update>
+	<select id="selectEmp" resultMap="employee">
+		SELECT
+		       E.ENAME
+		     , D.DNAME
+		     , E.HIREDATE
+		     , E.MNO
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON(E.DID=D.DID)
+		 WHERE E.CORP_NO = #{corpNo}
+		 ORDER BY E.HIREDATE
+	</select>
+	<select id="selectVacationDate" resultMap="leaveApply">
+		SELECT LA.*
+		     , L.LNAME
+		  FROM LEAVE_APPLY LA
+		  JOIN LEAVE L ON(LA.LEAVE_NO = L.LEAVE_NO)
+		 WHERE LA.CORP_NO = #{corpNo}
+		   AND LA.LSTATUS = 'Y'
+	</select>
+	<select id="empATManagement" resultMap="dateEmpWork" parameterType="ATManagement">
+		SELECT 
+		       E.ENAME
+		     , D.DNAME
+		     , E.MNO
+		     , D.DID
+		     , W.WSTART
+		     , W.WEND
+		     , W.WSTATUS
+		     , W.WDATE
+             , W.WNO
+		     , S.WORKING_SET_NO
+		     , S.DAY_OF_THE_WEEK
+             , W.OT_START
+             , W.OT_END
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON (E.DID = D.DID)
+		  JOIN ( SELECT
+       W1.WDATE
+     , W1.MNO
+     , W1.WNO
+     , W1.WSTATUS
+     , W1.WORKING_SET_NO
+     , W1.WSTART
+     , W2.WEND
+     , O.OT_START
+     , O.OT_END
+  FROM WORK_INFO W1
+      , WORK_INFO W2
+  LEFT OUTER JOIN OVERTIME O
+  ON(W2.WDATE = O.OT_DATE AND W2.MNO = O.MNO AND O.OT_STATUS = 'Y')
+    WHERE W1.MNO = W2.MNO
+      AND W1.WDATE = W2.WDATE
+      AND NOT W1.WSTART IS NULL
+      AND NOT W2.WEND IS NULL) W ON (E.MNO = W.MNO)
+		  JOIN WORK_TIME_SET S ON(W.WORKING_SET_NO = S.WORKING_SET_NO)
+		  WHERE E.CORP_NO = #{corpNo}
+		  ORDER BY WDATE DESC
+	</select>
+	<select id="selectLateCount" resultMap="selectMap">
+		SELECT 
+               COUNT(*) AS COUNT
+              , MNO 
+           FROM WORK_INFO
+          WHERE WSTATUS = '지각' 
+          GROUP BY MNO
+	</select>
+	<select id="selectSearchEmployee" resultMap="employee" >
+		SELECT
+		       E.ENAME
+		     , D.DNAME
+		     , E.HIREDATE
+		     , E.MNO
+		  FROM EMPLOYEE E
+		  JOIN DEPT D ON(E.DID=D.DID)
+		 WHERE E.CORP_NO = #{corpNo}
+		 <if test="name != null">
+		 	AND E.ENAME LIKE '%' || #{name} || '%'
+		 </if>
+		 <if test="dept != null">
+		 	AND E.DNAME LIKE '%' || #{dept} || '%'
+		 </if>
+		 
+	</select>
+	<select id="selectWorkInfo" resultMap="workInfo">
+		SELECT *
+		  FROM WORK_INFO
+		 WHERE WDATE = #{wdate}
+		   AND MNO = #{mno}
+		 <if test="wstatus == '출근'">
+		 	AND WSTATUS = '출근'
+		 	 OR WSTATUS = '지각'
+		 </if>
+		 <if test="wstatus == '퇴근'">
+		 	AND WSTATUS = '퇴근'
+		 	 OR WSTATUS = '조퇴'
+		 </if>
+		   AND WDATE = #{wdate}
+		   AND MNO = #{mno}
+	</select>
+	<insert id="insertObj" parameterType="ATManagement">
+		INSERT 
+		  INTO OBJECTION
+		VALUES (SEQ_OBJ_NO.NEXTVAL
+		      , TO_CHAR(SYSDATE, 'YY/MM/DD')
+		      , #{objType}
+		      , #{changeDate}
+		      , #{mno}
+		      , #{objStatus}
+		      , #{objReason}
+		      , #{wno}
+		      , #{corpNo}
+		      , 'N' )
+	</insert>
+	<insert id="insertVacation" parameterType="ATManagement">
+		INSERT 
+		  INTO LEAVE_APPLY
+		VALUES ('LI'||SEQ_L_INFO_NO.NEXTVAL
+		      , #{lstartDay}
+		      , #{lendDay}
+		      , NULL
+		      , #{lreason}
+		      , #{leaveNo}
+		      , #{mno}
+		      , #{corpNo}
+		      , TO_CHAR(SYSDATE, 'YY/MM/DD')
+		      , 'N')
+	</insert>
+</mapper>

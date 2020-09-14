@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	section{
 		width: 75%;
@@ -48,7 +49,7 @@
 		color: #000000;
 		background: white;
 		width: 130px;
-		height: 30px;
+		height: 40px;
 		text-align:center;
     }
     #correnctionTable td{
@@ -58,7 +59,7 @@
 		font-size: 14px;
 		line-height: 20px;
 		color: #676767;
-		height: 30px;
+		height: 40px;
 		text-align: left;
 		padding-left: 10px;
     }
@@ -94,82 +95,73 @@
 		height: 30px;
 		border : 0.5px solid #9F9F9F;
     }
+    
 </style>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/menubar.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/common/menubar.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/atManagement/atManagementAside.jsp"></jsp:include>
 	<section>
         <div class="inner">
             <div id="inner-title">
-            <span>근태 수정 상세 내역</span>
+            <span>휴가 상세 내역</span>
             <br>
             <hr>
             <br>
-            </div>
-            <!-- <table class="approvalTable">
-            	<tr>
-            		<th rowspan="2">결재 진행</th>
-            		<th rowspan="2">신청</th>
-            		<th>누구누구대리</th>
-            		<th>누구누구부장</th>
-            	</tr>
-            	<tr>
-            		<td></td>
-            		<td></td>
-            	</tr>
-            </table> -->
+            
             <table id="correnctionTable">
                 	<tr>
                 		<th>신청자</th>
-                		<td><c:out value="${loginUser.ename }"></c:out></td>
+                		<td><c:out value="${vacation.ename }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>부서</th>
-                		<td><c:out value="${loginUser.dname }"></c:out></td>
+                		<td><c:out value="${vacation.dname }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>신청일시</th>
-                		<td><c:out value="${atDetail.objDate }"/></td>
+                		<td><c:out value="${vacation.ldate }"></c:out></td>
                 	</tr>
                 	<tr>
-                		<th>기존 시간</th>
-                		<c:if test="${atDetail.wstatus eq '출근' }">
-                		<td><c:out value="${atDetail.wstart }"/></td>
-                		</c:if>
-                		<c:if test="${atDetail.wstatus eq '지각' }">
-                		<td><c:out value="${atDetail.wstart }"/></td>
-                		</c:if>
-                		<c:if test="${atDetail.wstatus eq '퇴근' }">
-                		<td><c:out value="${atDetail.wend }"/></td>
-                		</c:if>
-                		<c:if test="${atDetail.wstatus eq '야근' }">
-                		<td><c:out value="${atDetail.wend }"/></td>
-                		</c:if>
-                	</tr>
-                	<tr>
-                		<th>변경 시간</th>
-                		<td><c:out value="${atDetail.changeDate }"/></td>
+                		<th>휴가 기간</th>
+                		<td><c:out value="${vacation.lstartDay }"></c:out> ~ <c:out value="${vacation.lendDay }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>종류</th>
-                		<td><c:out value="${atDetail.wstatus}"/></td>
+                		<td><c:out value="${vacation.lname }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>사유</th>
-                		<td><c:out value="${atDetail.objReason}"/></td>
+                		<td><c:out value="${vacation.lreason }"></c:out></td>
                 	</tr>
                 	<tr>
                 		<th>승인 여부</th>
-                		<td><c:out value="${atDetail.checkStatus }"></c:out></td>
+                		<c:if test="${vacation.lstatus eq 'N' }">
+	                		<td>미승인</td>
+                		</c:if>
+                		<c:if test="${vacation.lstatus eq 'Y' }">
+	                		<td>승인</td>
+                		</c:if>
                 	</tr>
                 	<tr>
                 		<th>첨부파일</th>
-                		<td></td>
+                		<td>첨부파일다운로드</td>
                 	</tr>
                 </table>
-            	<button class="close" onclick="location.href='selectCorrectionList.at'">닫기</button>
+                <c:if test="${vacation.lstatus eq 'N' }">
+                <button class="close" onclick="approvalBtn();">승인하기</button>
+                		</c:if>
+                		
+            	<button class="close" onclick="location.href='selectVacationList.at'">닫기</button>
+		</div>
 		</div>
 	</section>
+	<script type="text/javascript">
+		function approvalBtn() {
+			var lInfoNo = "${vacation.lInfoNo}";
+			confirm("휴가를 승인 하시겠습니까?");
+			location.href = "updateVacation.at?no="+lInfoNo;
+		}
+	</script>
 </body>
 </html>

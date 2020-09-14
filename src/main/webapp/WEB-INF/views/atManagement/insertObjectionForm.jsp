@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	section{
 		width: 75%;
@@ -97,7 +99,9 @@
             <br>
             </div>
             <div class="tableBox">
-            <button class="btn">결재선 설정</button>
+            <!-- <button class="btn">결재선 설정</button> -->
+            <form action="insertObj.at" method="post">
+           
             <button class="btn">이의 신청 하기</button>
             <button class="btn">취소하기</button>
             
@@ -105,87 +109,16 @@
                 	<tr>
                 		<th>기존 날짜</th>
                 		<td>
-                			<select>
-                				<option>2020</option>
-                				<option>2019</option>
-                				<option>2018</option>
-                				<option>2017</option>
-                				<option>2016</option>
-                				<option>2015</option>
-                				<option>2014</option>
-                				<option>2013</option>
-                				<option>2012</option>
-                				<option>2011</option>
-                				<option>2010</option>
-                				<option>2009</option>
-                				<option>2008</option>
-                				<option>2007</option>
-                				<option>2006</option>
-                				<option>2005</option>
-                				<option>2004</option>
-                				<option>2003</option>
-                				<option>2002</option>
-                				<option>2001</option>
-                				<option>2000</option>
-                			</select>
-                			<span>년</span>
-                			<select>
-                				<option>01</option>
-                				<option>02</option>
-                				<option>03</option>
-                				<option>04</option>
-                				<option>05</option>
-                				<option>06</option>
-                				<option>07</option>
-                				<option>08</option>
-                				<option>09</option>
-                				<option>10</option>
-                				<option>11</option>
-                				<option>12</option>
-                			</select>
-                			<span>월</span>
-                			<select>
-                				<option>01</option>
-                				<option>02</option>
-                				<option>03</option>
-                				<option>04</option>
-                				<option>05</option>
-                				<option>06</option>
-                				<option>07</option>
-                				<option>08</option>
-                				<option>09</option>
-                				<option>10</option>
-                				<option>11</option>
-                				<option>12</option>
-                				<option>13</option>
-                				<option>14</option>
-                				<option>15</option>
-                				<option>16</option>
-                				<option>17</option>
-                				<option>18</option>
-                				<option>19</option>
-                				<option>20</option>
-                				<option>21</option>
-                				<option>22</option>
-                				<option>23</option>
-                				<option>24</option>
-                				<option>25</option>
-                				<option>26</option>
-                				<option>27</option>
-                				<option>28</option>
-                				<option>29</option>
-                				<option>30</option>
-                				<option>31</option>
-                			</select>
-                			<span>일</span>
+                			
+                			<input type="date" class="change" id="selectdate">
                 		</td>
                 		<th>신청자</th>
-                		<td>헤일리최</td>
+                		<td>이름</td>
                 	</tr>
                 	<tr>
                 		<th>종류</th>
                 		<td>
-                			<select>
+                			<select class="change" id="selectstatus">
                 				<option>출근</option>
                 				<option>퇴근</option>
                 			</select>
@@ -195,14 +128,14 @@
                 	</tr>
                 	<tr>
                 		<th>기존 시간 및 상태</th>
-                		<td>9 : 10 / 지각</td>
+                		<td><span id="time"></span> / <span id="status"></span></td>
                 		<th>요청 날짜</th>
-                		<td>2020/08/22</td>
+                		<td><span id="today"></span></td>
                 	</tr>
                 	<tr>
                 		<th>변경 시간</th>
                 		<td>
-                			<select>
+                			<select name="hour">
                                 <option>01</option>
                                 <option>02</option>
                                 <option>03</option>
@@ -229,7 +162,7 @@
                                 <option>24</option>
                             </select>
                         	<span>시</span>
-                            <select>
+                            <select name="min">
                                 <option>00</option>
                                 <option>01</option>
                                 <option>02</option>
@@ -295,7 +228,7 @@
                 		</td>
                 		<th>변경 상태</th>
                 		<td>
-                			<select>
+                			<select name="objStatus">
                 				<option>정상</option>
                 				<option>지각</option>
                 				<option>연장</option>
@@ -305,15 +238,67 @@
                 	</tr>
                 	<tr>
                 		<th>사유</th>
-                		<td colspan="3" class="long"><textarea cols="100" rows="14"></textarea></td>
+                		<td colspan="3" class="long"><textarea name="objReason" cols="100" rows="14"></textarea></td>
                 	</tr>
                 	<tr>
                 		<th>첨부파일</th>
                 		<td colspan="3"><input type="file"></td>
                 	</tr>
                 </table>
+                <input type="hidden" name="wno" id="wno">
+                <input type="hidden" name="objType" id="objType">
+                 </form>
                 </div>
 		</div>
 	</section>
+	
+	<script type="text/javascript">
+		$(".change").change(function() {
+			var selectDate = $("#selectdate").val();
+			var status = $("#selectstatus").val();
+			console.log(selectDate);
+			console.log(status);
+			
+			
+			$.ajax({
+				url: "selectWorkInfo.at",
+				data: {selectDate: selectDate, status: status},
+				method: "get",
+				success: function(data) {
+					if(data.wstart != null){
+						$("#time").text(data.wstart);
+					} else {
+						$("#time").text(data.wend);
+					}
+					
+					$("#status").text(data.wstatus);
+					$("#wno").val(data.wno);
+					$("#objType").val(data.wstatus);
+				},
+				error: function() {
+					console.log("오류");
+				}
+			});
+			
+			
+			
+		});
+		
+		$(document).ready(function() {
+			var now = new Date();
+			var week = new Array('일', '월', '화', '수', '목', '금', '토');
+			
+			var todayYear= now.getFullYear();
+    	    var todayMon = now.getMonth();
+    	    var todayDay = now.getDate();
+    	    
+    	    var today = todayYear + "/" + todayMon + "/" + todayDay;
+    	    
+    	    $("#today").text(today);
+		});
+	</script>
+	
+	
+	
 </body>
 </html>

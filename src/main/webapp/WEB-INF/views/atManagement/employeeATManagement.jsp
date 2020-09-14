@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -188,7 +189,7 @@
                 	<tr>
                 		<th rowspan="2">이름</th>
                 		<th rowspan="2">소속</th>
-                		<th rowspan="2">지각/미체크</th>
+                		<th rowspan="2">지각</th>
                 		<th rowspan="2">상세</th>
                 		<th id="year" colspan="12">2020</th>
                 	</tr>
@@ -206,38 +207,87 @@
                 		<th class="month">11</th>
                 		<th class="month">12</th>
                 	</tr>
-                	<tr>
-                		<td>하이루</td>
-                		<td>대표</td>
-                		<td>0/0</td>
-                		<td><button class="btn" onclick="openModal('modal1');">상세</button></td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
-                		<td class="month2">0</td>
+                	<c:forEach begin="0" end="${emp.size()-1 }" var="i">
+                	<tr class="mnotr${i}" id="${emp.get(i).mno }">
+                		<td><c:out value="${emp.get(i).ename }"></c:out></td>
+                		<td><c:out value="${emp.get(i).dname }"></c:out></td>
+                		<td id="lateCount"><span>0</span></td>
+                		<td><button class="btn" onclick="openModal('modal1${emp.get(i).mno}');">상세</button></td>
+                		<td class="month2" id="01"><span>0</span></td>
+                		<td class="month2" id="02"><span>0</span></td>
+                		<td class="month2" id="03"><span>0</span></td>
+                		<td class="month2" id="04"><span>0</span></td>
+                		<td class="month2" id="05"><span>0</span></td>
+                		<td class="month2" id="06"><span>0</span></td>
+                		<td class="month2" id="07"><span>0</span></td>
+                		<td class="month2" id="08"><span>0</span></td>
+                		<td class="month2" id="09"><span>0</span></td>
+                		<td class="month2" id="10"><span>0</span></td>
+                		<td class="month2" id="11"><span>0</span></td>
+                		<td class="month2" id="12"><span>0</span></td>
                 	</tr>
+                	</c:forEach>
                 </table>
 		</div>
 	</section>
+	<c:forEach begin="0" end="${emplist.size() -1 }" var="j">
+		<input type="hidden" id="status${j}" value="${emplist.get(j).wstatus }">
+		<input type="hidden" id="mno${j}" value="${emplist.get(j).mno }"> 
+		<input type="hidden" id="wdate${j}" value="${emplist.get(i).wdate }">
+	</c:forEach>
+	<c:forEach begin="0" end="${count.size() -1 }" var="i">
+		<input type="hidden" id="countMno${i}" value="${count[i].mno }">
+		<input type="hidden" id="count${i}" value="${count[i].count }">
+	</c:forEach>
+	<!-- 지각카운트 계산 -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var countlist = ${count.size()};
+			var emplist = ${emplist.size()};
+			var emp = ${emp.size()};
+			var count = 0;
+			
+			for(var i = 0; i < emplist; i++){
+				
+				
+			
+				for(var j = 0; j < emp; j++){
+					
+				if($("#status"+i).val() == '지각'){
+					if($("#mno"+i).val() == $(".mnotr"+j).attr('id')){
+						var date = $("#wdate"+i).val().split("/");
+						console.log(date[1]);
+						console.log($("#"+$("#mno"+i).val()).find("#"+date[1]).find("span").text());
+						$("#"+$("#mno"+i).val()).find("#"+date[1]).find("span").text($("#"+$("#mno"+i).val()).find("#"+date[1]).find("span").text()*1 + 1);
+						
+					}
+					
+					
+				}
+				}
+				for(var j = 0 ; j < countlist; j++){
+					if($("#mno"+i).val() == $("#countMno"+j).val()){
+						$("#"+$("#mno"+i).val()).find("#lateCount").find("span").text($("#count"+j).val());
+						
+					}
+				}
+			}
+		});
+	</script>
+	
+	
 	<!-- 모달창 -->
 	<!-- <div id="wrap">
 	  <a href="javascript:openModal('modal1');" class="button modal-open">모달열기1</a>
 	  <a href="javascript:openModal('modal2');" class="button modal-open">모달열기2</a>
 	</div> -->
-	
+	<c:forEach begin="0" end="${emp.size()-1 }" var="i">
+
 	<div id="modal"></div>
-	  <div class="modal-con modal1">
+	  <div class="modal-con modal1${emp.get(i).mno }">
 	    <!-- <a href="javascript:;" class="close">X</a> -->
 	    <div class="con">
-	      <table>
+<!-- 	      <table>
 	      	<tr>
 	      		<td>
 	      			<select>
@@ -273,7 +323,7 @@
                 			<span>월</span>
 	      		</td>
 	      	</tr>
-	      </table>
+	      </table> -->
 	      <table class="modalTable">
 	      	<tr>
 	      		<th>날짜</th>
@@ -281,17 +331,21 @@
 	      		<th>퇴근 시간</th>
 	      		<th>수정</th>
 	      	</tr>
+	      	<c:forEach begin="0" end="${emplist.size() -1 }" var="j">
+	      	<c:if test="${emp.get(i).mno eq emplist.get(j).mno }">
 	      	<tr>
-	      		<td>2020/08/24</td>
-	      		<td>8 : 58 : 12</td>
-	      		<td>6 : 00 : 02</td>
-	      		<td><a href="updateEmpAt.at">수정</a></td>
+	      		<td><c:out value="${emplist.get(j).wdate }"></c:out></td>
+	      		<td><c:out value="${emplist.get(j).wstart }"></c:out></td>
+	      		<td><c:out value="${emplist.get(j).wend }"></c:out></td>
+	      		<td><a href="updateEmpAt.at?wno=${emplist.get(j).wno }">수정</a></td>
 	      	</tr>
+	      	</c:if>
+	      	</c:forEach>
 	      </table>
 	    <button class="close" onclick="">닫기</button>
 	    </div>
 	  </div>
-	  
+	  	</c:forEach>
 	   <!-- <div class="modal-con modal2">
 	    <a href="javascript:;" class="close">X</a>
 	    <p class="title">제목2</p>

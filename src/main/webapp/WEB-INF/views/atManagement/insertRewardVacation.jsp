@@ -207,11 +207,36 @@
 	      <div class="middleTitle">포상 휴가 대상자 선택</div>
 	      <table>
 	      	<tr>
-	      		<td>이름 / 조직</td>
-	      		<td><input type="search"></td>
-	      		<td><button class="searchBtn">검색</button></td>
+	      		<td>
+	      			<select id="optionVal">
+	      			<option value="name">이름</option>
+	      			<option value="dept">부서</option>
+	      			</select>
+	      		</td>
+	      		<td><input type="search" id="searchVal"></td>
+	      		<td><button class="searchBtn" onclick="searchBtn();">검색</button></td>
 	      	</tr>
 	      </table>
+	      <script type="text/javascript">
+	      	function searchBtn() {
+				var searchVal = $("#searchVal").val();
+				var optionVal = $("#optionVal").val();
+				
+				$.ajax({
+					url:"searchEmployee.at",
+					data:{searchVal: searchVal, optionVal: optionVal},
+					method: "get",
+					success: function(data) {
+						console.log(data);
+					},
+					error: function() {
+						console.log("오류");
+					}
+					
+				});
+				
+			}
+	      </script>
 	      <table class="modalTable">
 	      	<tr>
 	      		<th></th>
