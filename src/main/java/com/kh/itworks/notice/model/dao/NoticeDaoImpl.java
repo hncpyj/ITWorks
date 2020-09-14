@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.itworks.notice.model.exception.NoticeSelectListException;
 import com.kh.itworks.notice.model.vo.Notice;
-import com.kh.itworks.notice.model.vo.PageInfo;
+import com.kh.itworks.notice.model.vo.NoticePageInfo;
 
 @Repository
 public class NoticeDaoImpl implements NoticeDao{
@@ -32,7 +32,7 @@ public class NoticeDaoImpl implements NoticeDao{
 	}
 
 	@Override
-	public ArrayList<Notice> selectNoticeList(SqlSessionTemplate sqlSession, PageInfo pi, int i) throws NoticeSelectListException {
+	public ArrayList<Notice> selectNoticeList(SqlSessionTemplate sqlSession, NoticePageInfo pi, int i) throws NoticeSelectListException {
 
 		ArrayList<Notice> list = null;
 		
@@ -40,8 +40,6 @@ public class NoticeDaoImpl implements NoticeDao{
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		
 		list = (ArrayList) sqlSession.selectList("Notice.selectNoticeList", i, rowBounds);
-		
-		System.out.println("dao noticeList : " + list);
 		
 		if(list == null) {
 			sqlSession.close();
@@ -51,4 +49,32 @@ public class NoticeDaoImpl implements NoticeDao{
 		return list;
 	}
 
+	@Override
+	public Notice selectOneBoard(SqlSessionTemplate sqlSession, String noticeNo) {
+		
+		System.out.println("daoImpl noticeNo : " + noticeNo);
+		Notice notice2 = sqlSession.selectOne("Notice.noticeDetail", noticeNo);
+		
+		return notice2;
+	}
+
+	@Override
+	public int deleteNo(SqlSessionTemplate sqlSession, Notice notice) {
+		
+		return sqlSession.update("Notice.deleteNo", notice);
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

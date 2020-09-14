@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.itworks.notice.model.exception.NoticeSelectListException;
 import com.kh.itworks.notice.model.vo.Notice;
-import com.kh.itworks.notice.model.vo.PageInfo;
+import com.kh.itworks.notice.model.vo.NoticePageInfo;
 
 public interface NoticeService {
 
@@ -12,7 +12,10 @@ public interface NoticeService {
 
 	int getListCount();
 
-	ArrayList<Notice> selectNoticeList(PageInfo pi, int i) throws NoticeSelectListException;
+	ArrayList<Notice> selectNoticeList(NoticePageInfo pi, int i) throws NoticeSelectListException;
 
+	Notice selectOneBoard(String noticeNo);
+
+	int deleteNo(Notice notice);
 	
 }

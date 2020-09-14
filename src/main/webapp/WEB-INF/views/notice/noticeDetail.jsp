@@ -121,26 +121,26 @@
         <!-- 공지사항 폼 -->
         <article>
             <button onclick="">수정하기</button>
-            <button onclick="">삭제하기</button>
+            <button onclick="location.href='deleteNo.no'">삭제하기</button>
             <table>
                 <tr>
                     <th>No</th>
-                    <td width="650px">00</td>
+                    <td width="650px"><p><c:out value="${ notice2.noticeno }"/></p></td>
                     <th>조회수</th>
-                    <td>00</td>
+                    <td><p><c:out value="${ notice2.nviews }"/></p></td>
                 </tr>
                 <tr>
                     <th>제목</th>
-                    <td colspan="3"><p><c:out value="${ notice.nContent }"/></p></td>
+                    <td colspan="3"><p><c:out value="${ notice2.ntitle }"/></p></td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td><p><c:out value="${ notice.mNo }"/></p></td>
+                    <td><p><c:out value="${ notice2.ename }"/></p></td>
                     <th>작성일</th>
-                    <td style="text-align: center; padding-left: 0;"><p><c:out value="${ notice.nDate }"/></p></td>
+                    <td style="text-align: center; padding-left: 0;"><p><c:out value="${ notice2.ndate }"/></p></td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="height: 400px;"></td>
+                    <td colspan="4" style="height: 400px;"><c:out value="${ notice2.ncontent }"/></td>
                 </tr>
                 <tr>
                     <th>첨부파일</th>
@@ -186,13 +186,5 @@
         <!-- 공지사항 수정 폼 -->
     </section>
 
-    <script>
-        function modifyNotice() {
-            $('article:nth-child(n+2)').css('display', 'none');
-            $('#modifyNoticeForm').css('display', 'block');
-            $('#menuTitle>span').text('프로젝트 공지사항 수정');
-            $('#menuTitle>button').hide();
-        }
-    </script>
 </body>
 </html>

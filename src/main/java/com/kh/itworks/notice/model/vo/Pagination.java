@@ -2,9 +2,9 @@ package com.kh.itworks.notice.model.vo;
 
 public class Pagination {
 
-	public static PageInfo getPageInfo(int currentPage, int listCount) {
+	public static NoticePageInfo getPageInfo(int currentPage, int listCount) {
 		
-		PageInfo pi = null;
+		NoticePageInfo pi = null;
 		
 		int limit = 10;
 		int buttonCount = 10;
@@ -21,7 +21,7 @@ public class Pagination {
 			endPage = maxPage;
 		}
 		
-		pi = new PageInfo(currentPage, listCount, limit, maxPage, startPage, endPage);
+		pi = new NoticePageInfo(currentPage, listCount, limit, maxPage, startPage, endPage);
 		
 		return pi;
 		

@@ -1,6 +1,6 @@
 package com.kh.itworks.notice.model.vo;
 
-public class PageInfo implements java.io.Serializable {
+public class NoticePageInfo implements java.io.Serializable {
 
 	private int currentPage;
 	private int listCount;
@@ -9,11 +9,11 @@ public class PageInfo implements java.io.Serializable {
 	private int startPage;
 	private int endPage;
 	
-	public PageInfo() {
+	public NoticePageInfo() {
 		
 	}
 
-	public PageInfo(int currentPage, int listCount, int limit, int maxPage, int startPage, int endPage) {
+	public NoticePageInfo(int currentPage, int listCount, int limit, int maxPage, int startPage, int endPage) {
 		super();
 		this.currentPage = currentPage;
 		this.listCount = listCount;

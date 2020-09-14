@@ -148,7 +148,7 @@
 
         <!-- 공지사항 리스트 -->
         <article>
-            <table>
+            <table id="boardArea">
                 <tr>
                     <th width="50px">No</th>
                     <th>제목</th>
@@ -158,15 +158,21 @@
                 </tr>
                 <c:forEach var="n" items="${ list }">
                 	<tr>
-                		<td><c:out value="${ n.noticeNo }"/></td>
-	                    <td><a href="noticeDetail.no"><c:out value="${ n.nTitle }"/></a></td>
-	                    <td><c:out value="${ n.eName }"/></td>
-	                    <td><c:out value="${ n.nDate }"/></td>
-	                    <td><c:out value="${ n.nViews }"/></td>
+                		<td><c:out value="${ n.noticeno }"/></td>
+	                    <td><a onclick="detail('${n.noticeno}');"><c:out value="${ n.ntitle }"/></a></td>
+	                    <td><c:out value="${ n.ename }"/></td>
+	                    <td><c:out value="${ n.ndate }"/></td>
+	                    <td><c:out value="${ n.nviews }"/></td>
                 	</tr>
                 </c:forEach>
             </table>
 	        <!-- 공지사항 리스트 종료 -->
+	        <script>
+	        	function detail(noticeno) {
+	        		location.href='noticeDetail.no?noticeno=' + noticeno;
+	        	}
+	        </script>
+	        
 	        
 	        <!-- 페이징 시작 -->
 	        <div id="pagingArea" align="center">
@@ -182,7 +188,7 @@
 			
 			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
 				<c:if test="${ p eq pi.currentPage }">
-					<font color="red" size="4"><b>[${ p }]</b></font>
+					<font color="#004771" size="4"><b>[${ p }]</b></font>
 				</c:if>
 				<c:if test="${ p ne pi.currentPage }">
 					<c:url var="blistCheck" value="noticeList.no">
@@ -206,6 +212,18 @@
         </article>
     </section>
 	
+<!-- 	<script>
+		$(function(){
+			$("#boardArea").find("td").click(function(){
+				var noticeNo = $(this).parents().children("td").eq(0).text();
+				
+				console.log(noticeNo);
+				
+				location.href="noticeDetail.no?noticeNo=" + noticeNo;
+				//location.href="noticeDetail.no";
+			});
+		});
+	</script> -->
 	 
 </body>
 </html>

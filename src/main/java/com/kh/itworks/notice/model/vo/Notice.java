@@ -14,102 +14,102 @@ public class Notice implements java.io.Serializable {
 //	RID				NUMBER(20,0)			권한관리코드
 //	CORP_NO			NUMBER(30,0)			회사코드
 	
-	private String noticeNo;	//공지번호관리코드
-	private int cId;			//카테고리관리코드
-	private String nTitle;		//제목
-	private String nDate;		//작성일
-	private String nTime;		//작성시간
-	private String nViews;		//조회수
-	private String nContent;	//내용
-	private String nStatus;		//공개여부
+	private String noticeno;	//공지번호관리코드
+	private int cid;			//카테고리관리코드
+	private String ntitle;		//제목
+	private String ndate;		//작성일
+	private String ntime;		//작성시간
+	private String nviews;		//조회수
+	private String ncontent;	//내용
+	private String nstatus;		//공개여부
 	private int mno;			//회원관리코드
-	private int rId;			//권한관리코드
-	private int corpNo;			//회사코드
-	private String eName;		//이름
+	private int rid;			//권한관리코드
+	private int corpno;			//회사코드
+	private String ename;		//이름
 	
 	public Notice() {
 		
 	}
 
-	public Notice(String noticeNo, int cId, String nTitle, String nDate, String nTime, String nViews, String nContent,
-			String nStatus, int mno, int rId, int corpNo, String eName) {
+	public Notice(String noticeno, int cid, String ntitle, String ndate, String ntime, String nviews, String ncontent,
+			String nstatus, int mno, int rid, int corpno, String ename) {
 		super();
-		this.noticeNo = noticeNo;
-		this.cId = cId;
-		this.nTitle = nTitle;
-		this.nDate = nDate;
-		this.nTime = nTime;
-		this.nViews = nViews;
-		this.nContent = nContent;
-		this.nStatus = nStatus;
+		this.noticeno = noticeno;
+		this.cid = cid;
+		this.ntitle = ntitle;
+		this.ndate = ndate;
+		this.ntime = ntime;
+		this.nviews = nviews;
+		this.ncontent = ncontent;
+		this.nstatus = nstatus;
 		this.mno = mno;
-		this.rId = rId;
-		this.corpNo = corpNo;
-		this.eName = eName;
+		this.rid = rid;
+		this.corpno = corpno;
+		this.ename = ename;
 	}
 
-	public String getNoticeNo() {
-		return noticeNo;
+	public String getNoticeno() {
+		return noticeno;
 	}
 
-	public void setNoticeNo(String noticeNo) {
-		this.noticeNo = noticeNo;
+	public void setNoticeno(String noticeno) {
+		this.noticeno = noticeno;
 	}
 
-	public int getcId() {
-		return cId;
+	public int getCid() {
+		return cid;
 	}
 
-	public void setcId(int cId) {
-		this.cId = cId;
+	public void setCid(int cid) {
+		this.cid = cid;
 	}
 
-	public String getnTitle() {
-		return nTitle;
+	public String getNtitle() {
+		return ntitle;
 	}
 
-	public void setnTitle(String nTitle) {
-		this.nTitle = nTitle;
+	public void setNtitle(String ntitle) {
+		this.ntitle = ntitle;
 	}
 
-	public String getnDate() {
-		return nDate;
+	public String getNdate() {
+		return ndate;
 	}
 
-	public void setnDate(String nDate) {
-		this.nDate = nDate;
+	public void setNdate(String ndate) {
+		this.ndate = ndate;
 	}
 
-	public String getnTime() {
-		return nTime;
+	public String getNtime() {
+		return ntime;
 	}
 
-	public void setnTime(String nTime) {
-		this.nTime = nTime;
+	public void setNtime(String ntime) {
+		this.ntime = ntime;
 	}
 
-	public String getnViews() {
-		return nViews;
+	public String getNviews() {
+		return nviews;
 	}
 
-	public void setnViews(String nViews) {
-		this.nViews = nViews;
+	public void setNviews(String nviews) {
+		this.nviews = nviews;
 	}
 
-	public String getnContent() {
-		return nContent;
+	public String getNcontent() {
+		return ncontent;
 	}
 
-	public void setnContent(String nContent) {
-		this.nContent = nContent;
+	public void setNcontent(String ncontent) {
+		this.ncontent = ncontent;
 	}
 
-	public String getnStatus() {
-		return nStatus;
+	public String getNstatus() {
+		return nstatus;
 	}
 
-	public void setnStatus(String nStatus) {
-		this.nStatus = nStatus;
+	public void setNstatus(String nstatus) {
+		this.nstatus = nstatus;
 	}
 
 	public int getMno() {
@@ -120,35 +120,35 @@ public class Notice implements java.io.Serializable {
 		this.mno = mno;
 	}
 
-	public int getrId() {
-		return rId;
+	public int getRid() {
+		return rid;
 	}
 
-	public void setrId(int rId) {
-		this.rId = rId;
+	public void setRid(int rid) {
+		this.rid = rid;
 	}
 
-	public int getCorpNo() {
-		return corpNo;
+	public int getCorpno() {
+		return corpno;
 	}
 
-	public void setCorpNo(int corpNo) {
-		this.corpNo = corpNo;
+	public void setCorpno(int corpno) {
+		this.corpno = corpno;
 	}
 
-	public String geteName() {
-		return eName;
+	public String getEname() {
+		return ename;
 	}
 
-	public void seteName(String eName) {
-		this.eName = eName;
+	public void setEname(String ename) {
+		this.ename = ename;
 	}
 
 	@Override
 	public String toString() {
-		return "Notice [noticeNo=" + noticeNo + ", cId=" + cId + ", nTitle=" + nTitle + ", nDate=" + nDate + ", nTime="
-				+ nTime + ", nViews=" + nViews + ", nContent=" + nContent + ", nStatus=" + nStatus + ", mno=" + mno
-				+ ", rId=" + rId + ", corpNo=" + corpNo + ", eName=" + eName + "]";
+		return "Notice [noticeno=" + noticeno + ", cid=" + cid + ", ntitle=" + ntitle + ", ndate=" + ndate + ", ntime="
+				+ ntime + ", nviews=" + nviews + ", ncontent=" + ncontent + ", nstatus=" + nstatus + ", mno=" + mno
+				+ ", rid=" + rid + ", corpno=" + corpno + ", ename=" + ename + "]";
 	}
 	
 }

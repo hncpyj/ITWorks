@@ -6,7 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.itworks.notice.model.exception.NoticeSelectListException;
 import com.kh.itworks.notice.model.vo.Notice;
-import com.kh.itworks.notice.model.vo.PageInfo;
+import com.kh.itworks.notice.model.vo.NoticePageInfo;
 
 public interface NoticeDao {
 
@@ -14,7 +14,11 @@ public interface NoticeDao {
 	
 	int getListCount(SqlSessionTemplate sqlSession);
 
-	ArrayList<Notice> selectNoticeList(SqlSessionTemplate sqlSession, PageInfo pi, int i) throws NoticeSelectListException;
+	ArrayList<Notice> selectNoticeList(SqlSessionTemplate sqlSession, NoticePageInfo pi, int i) throws NoticeSelectListException;
+
+	Notice selectOneBoard(SqlSessionTemplate sqlSession, String noticeNo);
+
+	int deleteNo(SqlSessionTemplate sqlSession, Notice notice);
 
 
 }

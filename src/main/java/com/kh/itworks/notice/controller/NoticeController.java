@@ -17,7 +17,7 @@ import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.notice.model.exception.NoticeSelectListException;
 import com.kh.itworks.notice.model.service.NoticeService;
 import com.kh.itworks.notice.model.vo.Notice;
-import com.kh.itworks.notice.model.vo.PageInfo;
+import com.kh.itworks.notice.model.vo.NoticePageInfo;
 import com.kh.itworks.notice.model.vo.Pagination;
 
 @Controller
@@ -40,26 +40,40 @@ public class NoticeController {
 		try {
 			int listCount = ns.getListCount();
 			
-			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			NoticePageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
-			notice.setCorpNo(loginUser.getCorpNo());
+			notice.setCorpno(loginUser.getCorpNo());
 			
-			ArrayList<Notice> list = ns.selectNoticeList(pi, notice.getCorpNo());
+			ArrayList<Notice> list = ns.selectNoticeList(pi, notice.getCorpno());
 			
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
-			
-//			request.setAttribute("list", list);
-//			request.setAttribute("pi", pi);
 			
 			mv.setViewName("notice/noticeList");
 			
 			System.out.println("list : " + list);
 			
 		} catch (NoticeSelectListException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return mv;
+	}
+	
+	@RequestMapping("noticeDetail.no")
+	public ModelAndView noticeDetail(ModelAndView mv, @SessionAttribute("loginUser") Member loginUser, HttpServletRequest request) {
+		
+		//notice.setCorpNo(loginUser.getCorpNo());
+		
+		String noticeNo = request.getParameter("noticeno");
+		
+		Notice notice2 = ns.selectOneBoard(noticeNo);
+		
+		mv.addObject("notice2", notice2);
+		
+		mv.setViewName("notice/noticeDetail");
+		
+		System.out.println("notice2 : " + notice2);
 		
 		return mv;
 	}
@@ -71,18 +85,10 @@ public class NoticeController {
 		return "notice/insertNoticeForm";
 	}
 	
-	//공지사항 리스트에서 글 클릭하면 보여지는 상세보기 화면
-	@RequestMapping("noticeDetail.no")
-	public String showNoticeDetail() {
-		
-		return "notice/noticeDetail";
-				
-	}
-	
 	@RequestMapping("insertNo.no")
 	public String insertNo(Model model, Notice notice, @SessionAttribute("loginUser") Member loginUser) {
 		
-		notice.setCorpNo(loginUser.getCorpNo());
+		notice.setCorpno(loginUser.getCorpNo());
 		notice.setMno(loginUser.getMno());
 		
 		int result = ns.insertNo(notice);
@@ -92,13 +98,30 @@ public class NoticeController {
 		System.out.println("notice : " + notice);
 		
 		if(result > 0) {
-			return "notice/noticeList";
+			return "redirect:noticeList.no";
 //			return "redirect:noticeDetail.notice?no=" + notice.getcId();
 		} else {
 			model.addAttribute("msg", "공지사항 등록 실패");
 			return "notice/noticeList";
 		}
 		 
+	}
+	
+	@RequestMapping("deleteNo.no")
+	public String deleteNo(Model model, Notice notice, @SessionAttribute("loginUser") Member loginUser) {
+		
+		notice.setCorpno(loginUser.getCorpNo());
+		notice.setMno(loginUser.getMno());
+		
+		int result = ns.deleteNo(notice);
+		
+		if (result > 0) {
+			return "redirect:noticeList.no";
+		} else {
+			model.addAttribute("msg", "공지사항 삭제 실패");
+			return "notice/noticeList";
+		}
+
 	}
 	
 }
