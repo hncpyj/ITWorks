@@ -1,6 +1,9 @@
 package com.kh.itworks.fileBox.model.vo;
 
-public class Storage implements java.io.Serializable{
+import java.util.Comparator;
+
+
+public class Storage implements java.io.Serializable {
 	private String stgNo;						//파일보관함관리코드
 	private String newStgDate;					//등록일자
 	private String newStgTime;					//등록시간
@@ -9,7 +12,7 @@ public class Storage implements java.io.Serializable{
 	private String stgLevel;					//폴더레벨
 	private String stgStatus;					//폴더상태
 	private int stgSize;						//폴더용량
-	private String stg_name;					//폴더명
+	private String stgName;					//폴더명
 	private String stgType;						//폴더종류
 	private int corpNo;							//회사코드
 	
@@ -18,7 +21,7 @@ public class Storage implements java.io.Serializable{
 
 
 	public Storage(String stgNo, String newStgDate, String newStgTime, String stgRole, String stgPath, String stgLevel,
-			String stgStatus, int stgSize, String stg_name, String stgType, int corpNo) {
+			String stgStatus, int stgSize, String stgName, String stgType, int corpNo) {
 		super();
 		this.stgNo = stgNo;
 		this.newStgDate = newStgDate;
@@ -28,7 +31,7 @@ public class Storage implements java.io.Serializable{
 		this.stgLevel = stgLevel;
 		this.stgStatus = stgStatus;
 		this.stgSize = stgSize;
-		this.stg_name = stg_name;
+		this.stgName = stgName;
 		this.stgType = stgType;
 		this.corpNo = corpNo;
 	}
@@ -114,13 +117,13 @@ public class Storage implements java.io.Serializable{
 	}
 
 
-	public String getStg_name() {
-		return stg_name;
+	public String getStgName() {
+		return stgName;
 	}
 
 
-	public void setStg_name(String stg_name) {
-		this.stg_name = stg_name;
+	public void setStgName(String stgName) {
+		this.stgName = stgName;
 	}
 
 
@@ -148,10 +151,28 @@ public class Storage implements java.io.Serializable{
 	public String toString() {
 		return "Storage [stgNo=" + stgNo + ", newStgDate=" + newStgDate + ", newStgTime=" + newStgTime + ", stgRole="
 				+ stgRole + ", stgPath=" + stgPath + ", stgLevel=" + stgLevel + ", stgStatus=" + stgStatus
-				+ ", stgSize=" + stgSize + ", stg_name=" + stg_name + ", stgType=" + stgType + ", corpNo=" + corpNo
-				+ "]";
+				+ ", stgSize=" + stgSize + ", stgName=" + stgName + ", stgType=" + stgType + ", corpNo=" + corpNo + "]";
 	}
-	
-	
-	
+
+
+//	@Override
+//	public int compareTo(Storage s) {
+//		String thisSp1 = this.stgPath;
+//		int sp1 = Integer.parseInt(thisSp1);
+//		int sp2 = Integer.parseInt(s.getStgPath());
+//		
+//		if (sp1 < sp2) {
+//            return - 1;
+//        } else if (sp1 > sp2) {
+//            return 1;
+//        }
+//        return 0;
+//	}
+
+
+
+
+
+
+
 }

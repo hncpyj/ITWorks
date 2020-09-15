@@ -8,6 +8,7 @@ public class FileBox implements java.io.Serializable{
 	private String uploadDate;							//등록일
 	private String uploadTime;							//등록시간
 	private Long fileSize;								//파일크기
+	private String ext;									//확장자
 	private String fileRole;							//권한
 	private String fileType;							//파일종류
 	private int apvNo;									//문서번호
@@ -18,12 +19,13 @@ public class FileBox implements java.io.Serializable{
 	private String pNoticeNo;							//프로젝트공지사항관리코드
 	private String stgNo;								//파일보관함관리코드
 	private int corp_no;								//회사코드
+	private String fStatus;								//파일상태
 	
 	public FileBox() {}
 
 	public FileBox(String fileNo, String originName, String changeName, String filePath, String uploadDate,
-			String uploadTime, Long fileSize, String fileRole, String fileType, int apvNo, String chatNo, int mno,
-			String noticeNo, String pno, String pNoticeNo, String stgNo, int corp_no) {
+			String uploadTime, Long fileSize, String ext, String fileRole, String fileType, int apvNo, String chatNo,
+			int mno, String noticeNo, String pno, String pNoticeNo, String stgNo, int corp_no, String fStatus) {
 		super();
 		this.fileNo = fileNo;
 		this.originName = originName;
@@ -32,6 +34,7 @@ public class FileBox implements java.io.Serializable{
 		this.uploadDate = uploadDate;
 		this.uploadTime = uploadTime;
 		this.fileSize = fileSize;
+		this.ext = ext;
 		this.fileRole = fileRole;
 		this.fileType = fileType;
 		this.apvNo = apvNo;
@@ -42,6 +45,7 @@ public class FileBox implements java.io.Serializable{
 		this.pNoticeNo = pNoticeNo;
 		this.stgNo = stgNo;
 		this.corp_no = corp_no;
+		this.fStatus = fStatus;
 	}
 
 	public String getFileNo() {
@@ -98,6 +102,14 @@ public class FileBox implements java.io.Serializable{
 
 	public void setFileSize(Long fileSize) {
 		this.fileSize = fileSize;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	public String getFileRole() {
@@ -180,13 +192,21 @@ public class FileBox implements java.io.Serializable{
 		this.corp_no = corp_no;
 	}
 
+	public String getfStatus() {
+		return fStatus;
+	}
+
+	public void setfStatus(String fStatus) {
+		this.fStatus = fStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "FileBox [fileNo=" + fileNo + ", originName=" + originName + ", changeName=" + changeName + ", filePath="
 				+ filePath + ", uploadDate=" + uploadDate + ", uploadTime=" + uploadTime + ", fileSize=" + fileSize
-				+ ", fileRole=" + fileRole + ", fileType=" + fileType + ", apvNo=" + apvNo + ", chatNo=" + chatNo
-				+ ", mno=" + mno + ", noticeNo=" + noticeNo + ", pno=" + pno + ", pNoticeNo=" + pNoticeNo + ", stgNo="
-				+ stgNo + ", corp_no=" + corp_no + "]";
+				+ ", ext=" + ext + ", fileRole=" + fileRole + ", fileType=" + fileType + ", apvNo=" + apvNo
+				+ ", chatNo=" + chatNo + ", mno=" + mno + ", noticeNo=" + noticeNo + ", pno=" + pno + ", pNoticeNo="
+				+ pNoticeNo + ", stgNo=" + stgNo + ", corp_no=" + corp_no + ", fStatus=" + fStatus + "]";
 	}
 
 	
