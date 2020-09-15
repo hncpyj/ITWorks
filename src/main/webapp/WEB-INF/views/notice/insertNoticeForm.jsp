@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 </head>
 <style>
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 	/*메뉴 타이틀 관련 css 설정*/
     body {
        width: 1420px;
@@ -100,20 +102,21 @@
 
         <!-- 공지사항 입력 폼 -->
         <article>
-            <form action="">
+            <form action="insertNo.no" method="post" enctype="multipart/form-data">
                 <table>
                     <tr>
                         <th>제목</th>
-                        <td><input type="text" style="width: 900px;"></td>
+                        <td><input name="ntitle" type="text" style="width: 900px;"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td></td>
+                        <td><p><c:out value="${ loginUser.ename }"/></p></td>
                     </tr>
+                    
                     <tr>
                         <th>내용</th>
                         <td>
-                            <textarea name="" id="" cols="126" rows="20" style="resize: none; margin-top: 5px;"></textarea>
+                            <textarea name="ncontent" id="nContent" cols="126" rows="20" style="resize: none; margin-top: 5px;"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -121,7 +124,7 @@
                         <td><input type="file"></td>
                     </tr>
                 </table>
-                <input type="submit" value="등록하기">
+                <input type="submit" value="등록하기" onclick="location.href='insertNo.no'">
             </form>
         </article>
         <!-- 공지사항 입력 폼 종료-->

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="Notice">
+
+	<resultMap type="com.kh.itworks.notice.model.vo.Notice" id="noticeResultSet">
+		<id property="noticeno" column="NOTICE_NO"/>
+		<result property="cid" column="CID"/>
+		<result property="ntitle" column="NTITLE"/>
+		<result property="ndate" column="NDATE"/>
+		<result property="ntime" column="NTIME"/>
+		<result property="nviews" column="NVIEWS"/>
+		<result property="ncontent" column="NCONTENT"/>
+		<result property="nstatus" column="NSTATUS"/>
+		<result property="mno" column="MNO"/>
+		<result property="rid" column="RID"/>
+		<result property="corpno" column="CORP_NO"/>
+		<result property="ename" column="ENAME"/>
+	</resultMap>
+
+	<insert id="insertNo" parameterType="Notice">
+		INSERT INTO NOTICE
+		VALUES (SEQ_NOTICE_NO.NEXTVAL, 1, #{ntitle}, SYSDATE, TO_CHAR(SYSDATE, 'hh24:mi:ss'), '0', #{ncontent}, DEFAULT, #{mno}, 999, #{corpno})
+	</insert>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		  FROM NOTICE
+		 WHERE NSTATUS = 'Y'
+	</select>
+	
+	<select id="selectNoticeList" resultMap="noticeResultSet">
+		SELECT N.*
+		     , E.ENAME
+		  FROM NOTICE N
+		  JOIN EMPLOYEE E ON (E.MNO = N.MNO)
+		 WHERE NSTATUS = 'Y'
+		   AND N.CORP_NO = #{corpno}
+		 ORDER BY N.NDATE DESC, N.NTIME DESC
+	</select>
+	
+	<select id="noticeDetail" resultMap="noticeResultSet" parameterType="Notice">
+		SELECT N.NOTICE_NO
+		     , N.NTITLE
+		     , N.NDATE
+		     , N.NTIME
+		     , N.NVIEWS
+		     , N.NCONTENT
+		     , E.ENAME
+		  FROM NOTICE N 
+		  JOIN EMPLOYEE E ON (E.MNO = N.MNO)
+		 WHERE N.NSTATUS = 'Y'
+		   AND N.NOTICE_NO = #{noticeno}
+	</select>
+	
+	<update id="deleteNo" parameterType="Notice">
+		UPDATE NOTICE 
+		   SET NSTATUS = 'N'
+		 WHERE NOTICE_NO = #{noticeno}
+	</update>
+	
+	<update id="updateNo" parameterType="Notice">
+		UPDATE NOTICE
+		   SET NTITLE = #{ntitle}
+		     , NCONTENT = #{ncontent}
+		 WHERE NOTICE_NO = #{noticeno}
+	</update>
+
+</mapper>

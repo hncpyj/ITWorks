@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,9 @@
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
     /*메뉴 타이틀 관련 css 설정*/
+    
     body {
        width: 1420px;
        height: 900px;
@@ -44,7 +47,7 @@
         cursor: pointer;
     }
     /*메뉴 타이틀 관련 css 설정 종료*/
-
+	
     /* 공지사항 내용 */
     article:nth-child(2), article:nth-child(3) {
         margin-top: 40px;
@@ -100,6 +103,18 @@
     button, input[type="submit"] {
         cursor: pointer;
     }
+    #updateTable{
+    	margin-right: auto;
+    	margin-left: auto;
+    	margin-top: 50px;
+    	border-collapse: collapse;
+    	border-top:  2px solid #929292;
+    }
+	#buttonArea{
+   		border-bottom: none;
+   		background: #f4f4f4;
+   		margin-left: 885px;
+   	}
     /* 공지사항 수정 폼 종료 */
 </style>
 </head>
@@ -119,57 +134,72 @@
         <!-- 공지사항 폼 -->
         <article>
             <button onclick="modifyNotice();">수정하기</button>
-            <button>삭제하기</button>
+            <button onclick="deleteNotice('${notice2.noticeno}');">삭제하기</button>
             <table>
                 <tr>
                     <th>No</th>
-                    <td width="650px">00</td>
+                    <td width="650px"><p><c:out value="${ notice2.noticeno }"/></p></td>
                     <th>조회수</th>
-                    <td>00</td>
+                    <td><p><c:out value="${ notice2.nviews }"/></p></td>
                 </tr>
                 <tr>
                     <th>제목</th>
-                    <td colspan="3">공지사항 제목</td>
+                    <td colspan="3"><p><c:out value="${ notice2.ntitle }"/></p></td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>최재영</td>
+                    <td><p><c:out value="${ notice2.ename }"/></p></td>
                     <th>작성일</th>
-                    <td style="text-align: center; padding-left: 0;">YYYY/MM/DD hh:MM:ss</td>
+                    <td style="text-align: center; padding-left: 0;"><p><c:out value="${ notice2.ndate }"/></p></td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="height: 400px;"></td>
+                    <td colspan="4" style="height: 400px;"><pre><c:out value="${ notice2.ncontent }"/></pre></td>
                 </tr>
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3"></td>
                 </tr>
             </table>
+            <input type="hidden" name="mno" value="${ notice2.mno }">
+            <input type="hidden" name="noticeno" value="${ notice2.noticeno }">
             <button onclick="history.go(-1);">목록으로</button>
         </article>
+        
+        <script>
+        	function deleteNotice(noticeno) {
+        		var confirmTest = confirm('삭제하시겠습니까?');
+        		
+        		if(confirmTest == true) {
+	        		location.href='deleteNo.no?noticeno=' + noticeno;
+        		}     
+        	}
+        </script>
         <!-- 공지사항 폼 종료-->
+        
+        
+        <!-- 공지사항 수정 폼 -->
         <article id="modifyNoticeForm" style="display: none;">
-            <form action="">
-                <table>
+            <form action="updateNo.no" method="post" enctype="multipart/form-data">
+                <table id="updateTable">
                     <tr>
                         <th>No</th>
-                        <td width="650px">00</td>
+                        <td width="650px"><input type="hidden" name="noticeno" value="${ notice2.noticeno }"><c:out value="${ notice2.noticeno }"/></td>
                         <th>조회수</th>
-                        <td>00</td>
+                        <td><c:out value="${ notice2.nviews }"/></td>
                     </tr>
                     <tr>
                         <th>제목</th>
-                        <td colspan="3"><input type="text" style="width: 900px;"></td>
+                        <td colspan="3"><input type="text" name="ntitle" style="width: 900px; border: none;" value="${ notice2.ntitle }"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td>최재영</td>
+                        <td><c:out value="${ notice2.ename }"/></td>
                         <th>작성일</th>
-                        <td style="text-align: center; padding-left: 0;">YYYY/MM/DD hh:MM:ss</td>
+                        <td style="text-align: center; padding-left: 0;"><c:out value="${ notice2.ndate }"/></td>
                     </tr>
                     <tr>
                         <td colspan="4" style="height: 400px;">
-                            <textarea name="" id="" cols="141" rows="20" style="resize: none; margin-top: 5px;"></textarea>
+                            <textarea name="ncontent" id="" cols="141" rows="20" style="resize: none; margin-top: 5px; border: none;"><c:out value="${ notice2.ncontent }"/></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -177,14 +207,30 @@
                         <td colspan="3"><input type="file"></td>
                     </tr>
                 </table>
-                <button onclick="history.go(0);" style="background: lightgray; color: black;">취소하기</button>
-                <input type="submit" value="수정하기">
+				<div style=" width: 220px; float: right;">
+              		<button onclick="history.go(0);" style="background: lightgray; color: black; margin-left: 0;">취소하기</button>
+              		<button onclick="updateNotice('${notice2.noticeno}');" style="background-color: #004771; border-color:#004771; outline:0; color: white; margin-left: 0;">수정하기</button>
+				</div>
             </form>
         </article>
-        <!-- 공지사항 수정 폼 -->
+        <!-- 공지사항 수정 폼 종료 -->
+        
+        <script>
+        	
+        	function updateNotice(noticeno) {
+        		
+        		var confirmTest = confirm('수정하시겠습니까?');
+        		
+        		if (confirmTest == true) {
+        			location.href='updateNo.no?noticeno=' + noticeno;
+        		}
+        		
+        	}
+        
+        </script>
+        
     </section>
-
-    <script>
+	<script>
         function modifyNotice() {
             $('article:nth-child(n+2)').css('display', 'none');
             $('#modifyNoticeForm').css('display', 'block');

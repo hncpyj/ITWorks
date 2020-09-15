@@ -7,6 +7,7 @@
 <title>ItWorks</title>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
     #asideBack {
         width: 250px;
         height: 1000px;
