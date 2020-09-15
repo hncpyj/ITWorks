@@ -1,11 +1,9 @@
 package com.kh.itworks.common;
 
-import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
-
 public class Pagination {
 	
-	public static ProjectPageInfo getPageInfo(int currentPage, int listCount) {
-		ProjectPageInfo pi = null;
+	public static PageInfo getPageInfo(int currentPage, int listCount) {
+		PageInfo pi = null;
 		
 		int limit = 10;
 		int buttonCount = 10;
@@ -23,7 +21,7 @@ public class Pagination {
 			endPage = maxPage;
 		}
 		
-		pi = new ProjectPageInfo(currentPage, listCount, limit, maxPage, startPage, endPage);
+		pi = new PageInfo(currentPage, listCount, limit, maxPage, startPage, endPage);
 		 
 		return pi;
 	}

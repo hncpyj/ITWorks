@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.common.CommonUtils;
+import com.kh.itworks.common.PageInfo;
 import com.kh.itworks.common.Pagination;
 import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
@@ -34,7 +35,6 @@ import com.kh.itworks.projectManage.model.service.ProjectService;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectMember;
 import com.kh.itworks.projectManage.model.vo.ProjectNotice;
-import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
 
@@ -60,7 +60,7 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getListCount(loginUser);
 		
-		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectProjectList(pi, loginUser);
 		
@@ -115,7 +115,7 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getSearchListCount(searchCondition, loginUser);
 		
-		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectSearchProjectList(pi, loginUser, searchCondition);
 		
@@ -136,7 +136,7 @@ public class ProjectManageController {
 
 		int listCount = projectService.getOngoingListCount(loginUser);
 		
-		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectOngoingProjectList(pi, loginUser);
 		
@@ -180,7 +180,7 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getSearchOngoingListCount(searchCondition, loginUser);
 		
-		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectSearchOngoingProjectList(pi, loginUser, searchCondition);
 		
@@ -201,7 +201,7 @@ public class ProjectManageController {
 
 		int listCount = projectService.getFinishListCount(loginUser);
 		
-		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectFinishProjectList(pi, loginUser);
 		
@@ -245,7 +245,7 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getSearchFinishListCount(searchCondition, loginUser);
 		
-		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Project> projectList = projectService.selectSearchFinishProjectList(pi, loginUser, searchCondition);
 		
@@ -808,7 +808,7 @@ public class ProjectManageController {
 		
 		int listCount = projectService.getPnoticeListCount(pno);
 		
-		ProjectPageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<ProjectMember> member = projectService.selectWriterChargeMno(pno);
 		ArrayList<ProjectNotice> notice = projectService.selectNoticeList(pno);

@@ -22,9 +22,8 @@
 		<result property="status" column="STATUS"/>
 		<result property="approval" column="APPROVAL"/>
 		<result property="internalPhone" column="INTERNAL_PHONE"/>
-		<result property="roleNo" column="ROLE_NO"/>
-		<result property="dName" column="DNAME"/>
-		<result property="jName" column="JNAME"/>
+		<result property="dname" column="DNAME"/>
+		<result property="jname" column="JNAME"/>
 		
 	</resultMap>
 	
@@ -43,7 +42,7 @@
  		 WHERE E.APPROVAL = 'N'
    		   AND E.STATUS = 'Y'
    		   AND E.CORP_NO = #{corpNo}
-   		 ORDER BY EID ASC
+   		 ORDER BY HIREDATE DESC
 	</select>
 	
 	<select id="getListCount2" resultType="_int" parameterType="_int">
@@ -61,9 +60,38 @@
  		 WHERE E.APPROVAL = 'Y'
    		   AND E.STATUS = 'Y'
    		   AND E.CORP_NO = #{corpNo}
-   		 ORDER BY EID ASC
+   		 ORDER BY HIREDATE DESC
 	</select>
 	
+	<select id="selectAllDept" resultType="map">
+		SELECT DID, DNAME FROM DEPT WHERE CORP_NO = #{corpNo}
+	</select>
 	
+	<insert id="uploadProfile" parameterType="FileBox">
+		INSERT INTO ATTACHMENTS
+		VALUES(SEQ_FILE_NO.NEXTVAL, #{originName}, #{changeName}, #{filePath}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss'), 
+   		#{fileSize}, #{fileRole}, #{fileType}, NULL, NULL, #{mno}, NULL, NULL, NULL, NULL, #{corp_no}, #{ext}, DEFAULT)
+	</insert>
 	
+	<update id="updateMember" parameterType="Member">
+		UPDATE EMPLOYEE
+		   SET ENAME = #{ename},
+		   PHONE = #{phone},
+		   EMAIL = #{email},
+		   ADDRESS = #{address},
+		   BIRTHDAY = #{birthday},
+		   ENO = #{eno},
+		   HIREDATE = #{hireDate},
+		   DID = #{did},
+		   JID = #{jid}
+		 WHERE MNO = #{mno}
+	</update>
+	
+	<select id="selectAllJob" resultType="map">
+		SELECT JID, JNAME FROM JOB WHERE CORP_NO = #{corpNo}
+	</select>
+	
+	<update id="signUpApproval">
+		UPDATE EMPLOYEE SET APPROVAL = 'Y' WHERE MNO = #{mno}
+	</update>
 </mapper>

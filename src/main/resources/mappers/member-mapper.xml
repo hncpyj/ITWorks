@@ -8,9 +8,9 @@
 		<result property="eid" column="EID"/>
 		<result property="epwd" column="EPWD"/>
 		<result property="corpNo" column="CORP_NO"/>
-		<result property="roleNo" column="RID"/>
-		<result property="jobNo" column="JID"/>
-		<result property="deptNo" column="DID"/>
+		<result property="rid" column="RID"/>
+		<result property="jid" column="JID"/>
+		<result property="did" column="DID"/>
 		<result property="ename" column="ENAME"/>
 		<result property="phone" column="PHONE"/>
 		<result property="email" column="EMAIL"/>
@@ -22,13 +22,17 @@
 		<result property="status" column="STATUS"/>
 		<result property="approval" column="APPROVAL"/>
 		<result property="internalPhone" column="INTERNAL_PHONE"/>
+		<result property="dname" column="DNAME"/>
+		<result property="jname" column="JNAME"/>
 	</resultMap>
 	<select id="loginCheck" resultMap="memberResultSet" parameterType="Member">
-		SELECT *
-		  FROM EMPLOYEE
-		 WHERE EID = #{eid}
-		   AND EPWD = #{epwd}
-		   AND CORP_NO = #{corpNo}
+		SELECT D.DNAME, J.JNAME, E.*
+  		  FROM EMPLOYEE E
+ 		  JOIN DEPT D ON(E.DID = D.DID)
+  		  JOIN JOB J ON(E.JID = J.JID)
+		 WHERE E.EID = #{eid}
+		   AND E.EPWD = #{epwd}
+		   AND E.CORP_NO = #{corpNo}
 	</select>
 	<!-- status가 Y,N 둘 다 중복체크 할 수 있음 -->
 	<select id="duplicationCheck" resultMap="memberResultSet" parameterType="java.lang.String">

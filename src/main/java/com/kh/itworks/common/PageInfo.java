@@ -1,6 +1,6 @@
-package com.kh.itworks.projectManage.model.vo;
+package com.kh.itworks.common;
 
-public class ProjectPageInfo {
+public class PageInfo {
 	private int currentPage;
 	private int listCount;
 	private int limit;
@@ -8,9 +8,9 @@ public class ProjectPageInfo {
 	private int startPage;
 	private int endPage;
 	
-	public ProjectPageInfo() {}
+	public PageInfo() {}
 
-	public ProjectPageInfo(int currentPage, int listCount, int limit, int maxPage, int startPage, int endPage) {
+	public PageInfo(int currentPage, int listCount, int limit, int maxPage, int startPage, int endPage) {
 		super();
 		this.currentPage = currentPage;
 		this.listCount = listCount;
