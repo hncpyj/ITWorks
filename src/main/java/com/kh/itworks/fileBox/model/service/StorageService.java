@@ -6,8 +6,16 @@ import com.kh.itworks.fileBox.model.vo.Storage;
 
 public interface StorageService {
 
-	int getStgSize();
+	double getStgSize();
 
 	ArrayList<Storage> selectFolderList();
+
+	ArrayList<Storage> selectSearchFolderList();
+
+	int folderDelete(String stgNo);
+
+	int folderRename(Storage stg);
+
+	int addNewFolder(Storage stg);
 
 }

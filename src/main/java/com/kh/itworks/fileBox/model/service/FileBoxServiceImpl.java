@@ -8,9 +8,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.itworks.common.PageInfo;
 import com.kh.itworks.fileBox.model.dao.FileBoxDao;
 import com.kh.itworks.fileBox.model.vo.FileBox;
-import com.kh.itworks.fileBox.model.vo.PageInfo;
 import com.kh.itworks.member.model.vo.Member;
 
 @Service
@@ -47,6 +47,24 @@ public class FileBoxServiceImpl implements FileBoxService {
 		System.out.println("service : " + list);
 		return list;
 	}
+	
+	@Override
+	public int getSearchListCount(FileBox fb) {
+		System.out.println("***search service 넘어오니..?");
+		int listCount = fbd.getSearchListCount(sqlSession, fb);
+		System.out.println("***search service : " + listCount);
+		
+		return listCount;
+	}
+	
+	@Override
+	public ArrayList<FileBox> searchFileList(PageInfo pi, FileBox fb) {
+		System.out.println("***search service select list 넘어오니..?");
+		
+		ArrayList<FileBox> list = fbd.searchFileList(sqlSession, pi, fb);
+		System.out.println("***search service : " + list);
+		return list;
+	}
 
 	@Override
 	public int uploadFile(ArrayList<FileBox> fileArr, Member loginUser) {
@@ -66,10 +84,35 @@ public class FileBoxServiceImpl implements FileBoxService {
 	}
 
 	@Override
-	public int fileDelete(String fileNo) {
-		System.out.println("service fileNo : " + fileNo);
+	public int fileDelete(FileBox fb) {
+		System.out.println("service fileNo : " + fb);
 		int result = 0;
-		result = fbd.fileDelete(sqlSession, fileNo);
+		result = fbd.fileDelete(sqlSession, fb);
+		return result;
+	}
+
+	@Override
+	public ArrayList<FileBox> selectTrashList(PageInfo pi) {
+		System.out.println("service select list 넘어오니..?");
+		
+		ArrayList<FileBox> list = fbd.selectTrashList(sqlSession, pi);
+		System.out.println("service : " + list);
+		return list;
+	}
+
+	@Override
+	public int fileRestore(FileBox fb) {
+		System.out.println("service fileNo : " + fb);
+		int result = 0;
+		result = fbd.fileRestore(sqlSession, fb);
+		return result;
+	}
+	
+	@Override
+	public int fileDeleteForever(FileBox fb) {
+		System.out.println("service fileDeleteForever fileNo : " + fb);
+		int result = 0;
+		result = fbd.fileDeleteForever(sqlSession, fb);
 		return result;
 	}
 

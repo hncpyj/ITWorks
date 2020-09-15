@@ -6,73 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<script src="https://kit.fontawesome.com/yourcode.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>itworks</title>
 <style>
-
-    #file_title {
-	  margin: 0;
-	  padding-bottom: 20px;
-	  border-bottom: 1px solid #004771;
-	  color: #004771;
-	  font-size: 1.1em;
+	article a {
+		text-decoration: none;
+		color: #004771;
 	}
-    #section {
-        display: inline-block;
-        float: left;
-    }
-    #fileBoxTitle {
-        color: #004771;
-        margin: 20px;
-    }
-	#filePath{
-		display: inline-block;
-		font-weight: bold; 
-        color: #004771;
-	}
-	#fileSearch{
-		text-align: right;
-	}
-	#searchSelect{
-		border: 1px solid #9F9F9F;
+	article a:hover {
+		text-decoration: none;
 		color: #29A2F7;
 	}
-	#searchText {
-		border: 1px solid #29A2F7;
-	  	border-radius: 10px;
-	}
-	/* 
-	#searchBtn {
-		content: '\f002';
-	} */
-	#fileTable {
-        width:100%;
-        border-collapse: collapse;
-        text-align:center;
-    }
-    #thead {
-       border-bottom: 0.5px solid #9F9F9F;
-       border-top: 0.5px solid #9F9F9F;
-       color: #004771;
-    }
-    .tbody {
-       border-bottom: 0.5px solid #9F9F9F;
-       border-top: 0.5px solid #9F9F9F;
-       color: #929292;
-    }
-	#fileTable input {
-		font-size: 0em;
-		font-weight: lighter;
-	}
-	#fileOption{
-		text-align: right;
-	}
-	.fileOptionBtn{
-		background:none;
-		 border: none;
-		 color: #004771;
-		 margin:0px;
-	}
-
 </style>
 </head>
 <body>
@@ -100,32 +46,21 @@
         	<div id="filePath">전체 문서함/회사 공용 문서/전사자료</div>
         	<%-- <div id="filePath">${top}/${middle}/${bottom}</div> --%>
 	        <div id="fileSearch">
-	        	<form action="" method="get">
-	        		<select id="searchSelect" name="searchSelect">
-	        			<option>검색조건</option>
-	        			<option>파일명</option>
-	        			<option>확장자</option>
-	        			<option>문서명</option>
-	        			<option>담당자</option>
-	        		</select>
-	        		<input id="searchText" type="search">
-	        		<button id="searchBtn" onclick="searchFile();">검색<i class="fas fa-search"></i></button>
-	        	</form>
+        		<select id="searchSelect" name="searchSelect">
+        			<option>검색조건</option>
+        			<option value="originName">파일명</option>
+        			<option value="ext">확장자</option>
+        			<option value="uploadDate">날짜</option>
+        		</select>
+        		<input id="searchText" type="search">
+        		<button type="button" id="searchBtn" class="btn" onclick="searchFile('${stgNo}');">검색</button>
 	        </div>
-	        <script>
-	        	function searchFile(){
-	        		var searchSelect = $("#searchSelect").val();
-	        		var searchText = $("#searchValue").val();
-	        		
-	        		location.href = "search.fb?searchSelect=" + searchSelect +
-	        						"&searchText=" + searchText;
-	        	}
-	        </script>
 	        
-        <br><br>
+	        
+        <br>
        
         <div id="fileOption">
-        	<button class="fileOptionBtn"><a href="delete.fb">삭제</a></button>
+        	<!-- <button class="fileOptionBtn"><a href="delete.fb">삭제</a></button> -->
         	<button class="fileOptionBtn"><a href="change.fb">폴더 이동</a></button>
         	<button class="fileOptionBtn"><a href="uploadPage.fb">파일 업로드</a></button>
         </div>
@@ -142,17 +77,17 @@
                     <td>삭제</td>
                     
                 </tr>
-	              <c:forEach var="fb" items="${ list }">
+	              <c:forEach var="fb" items="${ list }" varStatus="status">
 					<tr class="tbody">
 						<td><input type="checkbox"></td>
-						<td><c:out value="${fb.fileNo}"/></td>
+						<td><c:out value="${status.count}"/></td>
 						<td onclick="fileDownload(${fb.fileNo})"><c:out value="${fb.originName}"/></td>
 						<td><c:out value="${fb.ext}"/></td>
 						<td><c:out value="${fb.fileSize}"/></td>
 						<td><c:out value="${fb.fileType}"/></td>
 						<td><c:out value="${fb.uploadDate}"/></td>
-						<td><button onclick="fileDownload(${fb.fileNo})">Down</button></td>
-						<td><button onclick="fileDelete(${fb.fileNo})">Delete</button></td>
+						<td><button type="button" class="btn" onclick="fileDownload(${fb.fileNo})">Down</button></td>
+						<td><button type="button" class="btn" onclick="fileDelete(${fb.fileNo})">Delete</button></td>
 					</tr>
 		         </c:forEach> 
 		             
@@ -195,7 +130,7 @@
 		</c:if>
 		
 	</div>
-
+ 
 	<script>
 		$(function(){
 			$("#fileTableArea").find("td").mouseenter(function(){
@@ -221,9 +156,20 @@
 		function fileDelete(fileNo) {
 		      location.href="delete.fb?fileNo=" + fileNo;
 		}
-        
-		
 	</script>
+	<script>
+       	function searchFile(stgNo){
+       		var searchSelect = $("#searchSelect").val();
+       		var searchText = $("#searchText").val();
+       		
+       		console.log(searchSelect);
+       		console.log(searchText);
+       		console.log(stgNo);
+       		
+       		location.href = "searchList.fb?stgNo=" + stgNo + "&searchSelect=" + searchSelect +
+       						"&searchText=" + searchText;
+       	}
+    </script>
 	
     </c:if>
 	<c:if test="${ empty sessionScope.loginUser }">

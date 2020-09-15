@@ -19,12 +19,13 @@ public class FileBox implements java.io.Serializable{
 	private String pNoticeNo;							//프로젝트공지사항관리코드
 	private String stgNo;								//파일보관함관리코드
 	private int corp_no;								//회사코드
+	private String fStatus;								//파일상태
 	
 	public FileBox() {}
 
 	public FileBox(String fileNo, String originName, String changeName, String filePath, String uploadDate,
 			String uploadTime, Long fileSize, String ext, String fileRole, String fileType, int apvNo, String chatNo,
-			int mno, String noticeNo, String pno, String pNoticeNo, String stgNo, int corp_no) {
+			int mno, String noticeNo, String pno, String pNoticeNo, String stgNo, int corp_no, String fStatus) {
 		super();
 		this.fileNo = fileNo;
 		this.originName = originName;
@@ -44,9 +45,8 @@ public class FileBox implements java.io.Serializable{
 		this.pNoticeNo = pNoticeNo;
 		this.stgNo = stgNo;
 		this.corp_no = corp_no;
+		this.fStatus = fStatus;
 	}
-
-
 
 	public String getFileNo() {
 		return fileNo;
@@ -192,13 +192,21 @@ public class FileBox implements java.io.Serializable{
 		this.corp_no = corp_no;
 	}
 
+	public String getfStatus() {
+		return fStatus;
+	}
+
+	public void setfStatus(String fStatus) {
+		this.fStatus = fStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "FileBox [fileNo=" + fileNo + ", originName=" + originName + ", changeName=" + changeName + ", filePath="
 				+ filePath + ", uploadDate=" + uploadDate + ", uploadTime=" + uploadTime + ", fileSize=" + fileSize
 				+ ", ext=" + ext + ", fileRole=" + fileRole + ", fileType=" + fileType + ", apvNo=" + apvNo
 				+ ", chatNo=" + chatNo + ", mno=" + mno + ", noticeNo=" + noticeNo + ", pno=" + pno + ", pNoticeNo="
-				+ pNoticeNo + ", stgNo=" + stgNo + ", corp_no=" + corp_no + "]";
+				+ pNoticeNo + ", stgNo=" + stgNo + ", corp_no=" + corp_no + ", fStatus=" + fStatus + "]";
 	}
 
 	

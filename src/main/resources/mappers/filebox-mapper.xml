@@ -28,6 +28,55 @@
 		<result property="ext" column="EXT"/>
 	</resultMap>
 
+	<resultMap id="fileResultSet2" type="Map">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="chgngeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="uploadDate" column="UPLOAD_DATE"/>
+		<result property="uploadTime" column="UPLOAD_TIME"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="fileRole" column="FILE_ROLE"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="apvNo" column="APV_NO"/>
+		<result property="chatNo" column="CHAT_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="noticeNo" column="NOTICE_NO"/>
+		<result property="pno" column="PNO"/>
+		<result property="pNoticeNo" column="PNOTICE_NO"/>
+		<result property="stgNo" column="STG_NO"/>
+		<result property="corp_no" column="CORP_NO"/>
+		<result property="ext" column="EXT"/>
+	</resultMap>
+	
+	<resultMap id="folderResultSet" type="Map">
+		<id property="stgNo" column="STG_NO"/>
+		<result property="newStgDate" column="NEWSTG_DATE"/>
+		<result property="newStgTime" column="NEWSTG_TIME"/>
+		<result property="stgRole" column="STG_ROLE"/>
+		<result property="stgPath" column="STG_PATH"/>
+		<result property="stgLevel" column="STG_LEVEL"/>
+		<result property="stgStatus" column="STG_STATUS"/>
+		<result property="stgSize" column="STG_SIZE"/>
+		<result property="stgName" column="STG_NAME"/>
+		<result property="stgType" column="STG_TYPE"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	
+	<resultMap id="folderResultSet2" type="Map">
+		<id property="stgNo" column="STG_NO"/>
+		<result property="newStgDate" column="NEWSTG_DATE"/>
+		<result property="newStgTime" column="NEWSTG_TIME"/>
+		<result property="stgRole" column="STG_ROLE"/>
+		<result property="stgPath" column="STG_PATH"/>
+		<result property="stgLevel" column="STG_LEVEL"/>
+		<result property="stgStatus" column="STG_STATUS"/>
+		<result property="stgSize" column="STG_SIZE"/>
+		<result property="stgName" column="STG_NAME"/>
+		<result property="stgType" column="STG_TYPE"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+
 	<!-- 파일 업로드 -->
 	<update id="uploadFiles" parameterType="java.util.ArrayList">
 		INSERT ALL
@@ -42,9 +91,9 @@
 			#{item.fileSize},
 			#{item.fileRole},
 			'STG',
+			null,
+			null,
 			#{item.mno},
-			null,
-			null,
 			null,
 			null,
 			null,
@@ -59,6 +108,32 @@
 	<!-- 페이징을 위한 리스트 갯수 셀렉트 -->
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
+		FROM ATTACHMENTS
+		WHERE FILE_ROLE = '999'
+	</select>
+	
+	<!-- 검색 결과 페이징을 위한 리스트 갯수 셀렉트 -->
+	<select id="searchListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ATTACHMENTS
+		WHERE FILE_ROLE = '999'
+		AND STG_NO = #{stgNo}
+		<choose>
+		 	<when test="originName != null">
+		 		AND ORIGIN_NAME LIKE '%' || #{originName} || '%'
+		 	</when>
+		 	<when test="ext != null">
+		 		AND EXT LIKE '%' || #{ext} || '%'
+		 	</when>
+		 	<when test="uploadDate != null">
+		 		AND UPLOAD_DATE LIKE '%' || #{uploadDate} || '%'
+		 	</when>
+		 </choose>
+	</select>
+	
+	<!-- 파일보관함 용량 카운트 -->
+	<select id="countStorageSize" resultType="_double">
+		SELECT SUM(FILE_SIZE)/1024
 		FROM ATTACHMENTS
 		WHERE FILE_ROLE = '999'
 	</select>
@@ -86,18 +161,90 @@
 			EXT
 		FROM ATTACHMENTS
 		WHERE F_STATUS = 'Y'
-		<if test="fileType != null">
-		   AND FILE_TYPE = #{fileType}
-		 </if>
+		  AND FILE_TYPE = 'STG'
 		ORDER BY FILE_NO DESC
 		
 	</select>
+	
+	<!-- 파일 검색 셀렉트 -->
+	<select id="searchFileList" resultMap="fileResultSet2">
+		SELECT 
+			FILE_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			UPLOAD_DATE,
+			UPLOAD_TIME,
+			FILE_SIZE,
+			FILE_ROLE,
+			FILE_TYPE,
+			APV_NO,
+			CHAT_NO,
+			MNO,
+			NOTICE_NO,
+			PNO,
+			PNOTICE_NO,
+			STG_NO,
+			CORP_NO,
+			EXT
+		FROM ATTACHMENTS
+		WHERE F_STATUS = 'Y'
+		  AND FILE_TYPE = 'STG'
+		<choose>
+		 	<when test="stgNo == '0'">
+			  AND STG_NO IS NOT NULL
+		 	</when>
+		 	<when test="stgNo != null">
+			  AND STG_NO = #{stgNo}
+		 	</when>
+		 </choose>
+		<choose>
+		 	<when test="originName != null">
+		 		AND ORIGIN_NAME LIKE '%' || #{originName} || '%'
+		 	</when>
+		 	<when test="ext != null">
+		 		AND EXT LIKE '%' || #{ext} || '%'
+		 	</when>
+		 	<when test="uploadDate != null">
+		 		AND UPLOAD_DATE LIKE '%' || #{uploadDate} || '%'
+		 	</when>
+		 </choose>
+		ORDER BY FILE_NO DESC
+		
+	</select>
+	
+	<!-- 파일 리스트로 셀렉트 -->
+	<select id="selectTrashList" resultMap="fileResultSet">
+		SELECT 
+			FILE_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			UPLOAD_DATE,
+			UPLOAD_TIME,
+			FILE_SIZE,
+			FILE_ROLE,
+			FILE_TYPE,
+			APV_NO,
+			CHAT_NO,
+			MNO,
+			NOTICE_NO,
+			PNO,
+			PNOTICE_NO,
+			STG_NO,
+			CORP_NO,
+			EXT
+		FROM ATTACHMENTS
+		WHERE F_STATUS = 'N'
+		  AND FILE_TYPE = 'STG'
+		ORDER BY FILE_NO DESC
+	</select>
 
 	<!-- 파일 리스트로 셀렉트 -->
-	<select id="deleteFileList" resultType="_int">
+	<select id="fileDeleteForever" resultType="_int">
 		DELETE 
 		FROM ATTACHMENTS
-		WHERE FILE_NO = #{fileNo);
+		WHERE FILE_NO = #{fileNo}
 	</select>
 	
 	<select id="selectOneFile" resultMap="fileBox">
@@ -106,9 +253,83 @@
    
    <update id="deleteFile">
    		UPDATE ATTACHMENTS 
-   		SET F_STATUS='N' 
+   		SET F_STATUS = 'N' 
    		WHERE FILE_NO = ${fileNo}
    </update>
+   <update id="fileRestore">
+   		UPDATE ATTACHMENTS 
+   		SET F_STATUS = 'Y' 
+   		WHERE FILE_NO = #{fileNo}
+   </update>
+   
+   
+   <update id="folderDelete" parameterType="string">
+   		UPDATE STORAGE 
+   		SET STG_STATUS = 'N' 
+   		WHERE STG_NO = #{stgNo}
+   </update>
+   
+   
+   <update id="folderRename" parameterType="Storage">
+   		UPDATE STORAGE 
+   		SET STG_NAME = #{stgName} 
+   		WHERE STG_NO = #{stgNo}
+   </update>
+   
+   
+	<insert id="addNewFolder" parameterType="Storage">
+   		INSERT INTO STORAGE VALUES( 
+   				SEQ_STG_NO.NEXTVAL,
+                TO_CHAR(SYSDATE, 'YYYY/MM/DD'),
+                TO_CHAR (SYSDATE, 'HH24:MI:SS'),
+				#{stgRole},
+				#{stgPath},
+				#{stgLevel},
+				#{stgStatus},
+				#{stgSize},
+				#{stgName},
+				#{stgType},
+				#{corpNo})
+	</insert>
+   
+	<select id="selectFolderList" resultMap="folderResultSet">
+   		SELECT 
+   				STG_NO,
+				NEWSTG_DATE,
+				NEWSTG_TIME,
+				STG_ROLE,
+				STG_PATH,
+				STG_LEVEL
+				STG_STATUS,
+				STG_SIZE,
+				STG_NAME,
+				STG_TYPE,
+				CORP_NO
+   		FROM STORAGE
+   		WHERE STG_STATUS = 'Y'
+	</select>
+   
+   
+	<select id="selectSearchFolderList" resultMap="folderResultSet2">
+   		SELECT 
+   				STG_NO,
+				NEWSTG_DATE,
+				NEWSTG_TIME,
+				STG_ROLE,
+				STG_PATH,
+				STG_LEVEL
+				STG_STATUS,
+				STG_SIZE,
+				STG_NAME,
+				STG_TYPE,
+				CORP_NO
+   		FROM STORAGE
+   		WHERE STG_STATUS = 'Y'
+	</select>
+   
+   
+   
+   
 
 </mapper>
 

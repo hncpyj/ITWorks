@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>itworks</title>
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); font-family: 'Noto Sans KR', sans-serif;
@@ -257,51 +258,7 @@
         <hr>
         <br>
     <section>
-        <div id="fileBoxArea">
-            <form id="filebox">
-		    <h1 id="file_title">전사문서함</h1>
-		    <div class="tree">
-		      <div>
-		        <input class="treebox" id="n-0" type="checkbox">
-		        <label class="treelabel" for="n-0">회사공용문서</label>
-		        <div class="sub">
-		            <a href="#link">공지사항</a>
-		            <div>
-		              <input class="treebox" id="n-0-1" type="checkbox">
-		              <label class="treelabel" for="n-0-1">문서양식</label>
-		              <div class="sub">
-		                <a href="#link">인사관련</a>
-		                <a href="#link">근태관련</a>
-		                <a href="#link">일반기안</a>
-		                <a href="#link">경비처리</a>
-		                <a href="#link">기타양식</a>
-		              </div>
-		            </div>
-		            <a href="#link">전사자료</a>
-		          </div>
-		      </div>
-		      <div>
-		        <input class="treebox" id="n-1" type="checkbox">
-		        <label class="treelabel" for="n-1">사내규정</label>
-		        <div class="sub">
-		          <a href="#link">규정</a>
-		          <a href="#link">규칙</a>
-		          <a href="#link">지침</a>
-		          <a href="#link">보안</a>
-		        </div>
-		      </div>
-		      <div>
-		        <input class="treebox" id="n-2" type="checkbox">
-		        <label class="treelabel" for="n-2">기능속성</label>
-		        <div class="sub">
-		          <a href="#link">기능1</a>
-		          <a href="#link">기능2</a>
-		        </div>
-		      </div>
-		    </div>
-		    <input type="reset" class="treebox" id="collapse" value="Collapse All">
-		  </form>
-        </div>
+        <jsp:include page="../fileBox/folderTree.jsp"/>
         <br>
     </section>
     <article>
@@ -322,7 +279,7 @@
 		        </div>
 	        <br><br>
 	        <div id="fileOption">
-	        	<button><a href="selectFirst.fb">뒤로가기</a><button>
+	        	<button class="btn"></button><a href="selectFirst.fb">뒤로가기</a><button>
 	        </div>
 			<table id="fileDetailTable">
 				<tr>

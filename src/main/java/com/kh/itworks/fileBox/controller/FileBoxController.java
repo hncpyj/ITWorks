@@ -20,28 +20,158 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.kh.itworks.common.CommonUtils;
-import com.kh.itworks.fileBox.Pagination;
+import com.kh.itworks.common.PageInfo;
+import com.kh.itworks.common.Pagination;
 import com.kh.itworks.fileBox.model.service.FileBoxService;
 import com.kh.itworks.fileBox.model.service.StorageService;
 import com.kh.itworks.fileBox.model.vo.FileBox;
-import com.kh.itworks.fileBox.model.vo.PageInfo;
+
 import com.kh.itworks.fileBox.model.vo.Storage;
 import com.kh.itworks.member.model.vo.Member;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class FileBoxController {
 	
 	@Autowired
 	private FileBoxService fbs;
+	
 	@Autowired
 	private StorageService stgs;
+	
 	
 //    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	
 	@RequestMapping("selectFirst.fb")
 	public String showFileBox(Model model, FileBox fb, HttpServletRequest request) {
-		System.out.println("controller 넘어오니..?");
+		System.out.println("===================controller 넘어오니..?=============================");
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		String stgNo = null;
+		if(request.getParameter("stgNo") != null) {
+			stgNo = request.getParameter("stgNo");
+		}
+		
+		
+		
+		try {
+			int listCount = fbs.getListCount();
+			System.out.println("controller : " + listCount);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			System.out.println("controller : " + pi);
+			
+			ArrayList<FileBox> list = fbs.selectFileList(pi);
+			
+			ArrayList<Storage> slist = stgs.selectFolderList();
+			
+			//list json으로 parsing하기위해 json배열 할당
+		    JSONArray jsonArray = new JSONArray();
+		    
+		    //json으로 파싱해서 모델에 리스트랑 같이 보내줌
+		    model.addAttribute("slist", slist); 
+		    model.addAttribute("jsonList", jsonArray.fromObject(slist));
+		    request.setAttribute("slist", slist);
+			
+			System.out.println("controller : " + list);
+			request.setAttribute("list", list);
+			request.setAttribute("pi", pi);
+			
+			return "fileBox/fileBox";
+			
+		} catch (Exception e) {
+			request.setAttribute("message", e.getMessage());
+			
+			return "common/error";
+		}
+	}
+	
+	
+	@RequestMapping("searchList.fb")
+	public String showStorageFile(Model model, FileBox fb, HttpServletRequest request) {
+		System.out.println("********************************search folder controller 넘어오니..?**************************************************");
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		//각 폴더에 저장되어있는 파일들 불러오기 위해 폴더 번호 받아오기
+		String stgNo = "00";
+		if(request.getParameter("stgNo") != null) {
+			stgNo = request.getParameter("stgNo");
+		}
+		System.out.println("*************************search search folder stgNo : " + stgNo);
+		
+		//검색 조건 받아오기
+		String searchCondition = null;
+		if(request.getParameter("searchSelect") != null) {
+			searchCondition = request.getParameter("searchSelect");
+		}
+		//검색값 받아오기
+		String searchValue = null;
+		if(request.getParameter("searchText") != null) {
+			searchValue = request.getParameter("searchText");
+		}
+		
+		// 받아온 정보 객체에 담아주기
+		fb.setStgNo(stgNo);
+		System.out.println("***** search searchCondition : " + searchCondition);
+		System.out.println("***** search searchValue : " + searchValue);
+		if(searchCondition != null){
+			if(searchCondition.equals("originName")) {
+				fb.setOriginName(searchValue);
+			} else if(searchCondition.equals("ext")){
+				fb.setExt(searchValue);
+			} else if(searchCondition.equals("uploadDate")) {
+				fb.setUploadDate(searchValue);
+			}
+		}
+		
+		
+		try {
+			int listCount = fbs.getSearchListCount(fb);
+			System.out.println("***search controller : " + listCount);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			System.out.println("***search controller : " + pi);
+			
+			ArrayList<FileBox> list = fbs.searchFileList(pi, fb);
+			System.out.println("***search controller list: " + list);
+			
+			ArrayList<Storage> slist = stgs.selectSearchFolderList();
+			System.out.println("***search slist : " + slist);
+			
+			//list json으로 parsing하기위해 json배열 할당
+			JSONArray jsonArray = new JSONArray();
+			
+			//json으로 파싱해서 모델에 리스트랑 같이 보내줌
+			model.addAttribute("list", list); 
+			model.addAttribute("stgNo", stgNo); 
+			model.addAttribute("jsonList", jsonArray.fromObject(slist));
+			
+			System.out.println("***search controller : " + list);
+			request.setAttribute("slist", slist);
+			request.setAttribute("pi", pi);
+			
+			return "fileBox/fileBox";
+			
+		} catch (Exception e) {
+			request.setAttribute("message", e.getMessage());
+			
+			return "common/error";
+		}
+	}
+	
+	@RequestMapping("selectTrash.fb")
+	public String selectTrash(Model model, FileBox fb, HttpServletRequest request) {
+		System.out.println("selectTrash controller 넘어오니..?");
 		int currentPage = 1;
 		
 		if(request.getParameter("currentPage") != null) {
@@ -55,12 +185,65 @@ public class FileBoxController {
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			System.out.println("controller : " + pi);
 			
-			ArrayList<FileBox> list = fbs.selectFileList(pi);
+			ArrayList<FileBox> list = fbs.selectTrashList(pi);
+			
+			ArrayList<Storage> slist = stgs.selectFolderList();
+			
+			//list json으로 parsing하기위해 json배열 할당
+		    JSONArray jsonArray = new JSONArray();
+		    
+		    //json으로 파싱해서 모델에 리스트랑 같이 보내줌
+		    model.addAttribute("slist", slist); 
+		    model.addAttribute("jsonList", jsonArray.fromObject(slist));
+		    request.setAttribute("slist", slist);
+			
 			System.out.println("controller : " + list);
 			request.setAttribute("list", list);
 			request.setAttribute("pi", pi);
 			
-			return "fileBox/fileBox";
+			return "fileBox/fileTrash";
+			
+		} catch (Exception e) {
+			request.setAttribute("message", e.getMessage());
+			
+			return "common/error";
+		}
+	}
+	
+	
+	@RequestMapping("selectAdminTrash.fb")
+	public String selectAdminTrash(Model model, FileBox fb, HttpServletRequest request) {
+		System.out.println("selectTrash controller 넘어오니..?");
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		try {
+			int listCount = fbs.getListCount();
+			System.out.println("controller : " + listCount);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			System.out.println("controller : " + pi);
+			
+			ArrayList<FileBox> list = fbs.selectTrashList(pi);
+			
+			ArrayList<Storage> slist = stgs.selectFolderList();
+			
+			//list json으로 parsing하기위해 json배열 할당
+			JSONArray jsonArray = new JSONArray();
+			
+			//json으로 파싱해서 모델에 리스트랑 같이 보내줌
+			model.addAttribute("slist", slist); 
+			model.addAttribute("jsonList", jsonArray.fromObject(slist));
+			request.setAttribute("slist", slist);
+			
+			System.out.println("controller : " + list);
+			request.setAttribute("list", list);
+			request.setAttribute("pi", pi);
+			
+			return "fileBox/adminTrash";
 			
 		} catch (Exception e) {
 			request.setAttribute("message", e.getMessage());
@@ -76,30 +259,30 @@ public class FileBoxController {
 		return "fileBox/fileDetail";
 	}
 	
-	@RequestMapping("admin.fb")
-	public String FileBoxAdmin(Model model, Storage stg, HttpServletRequest request) {
-		System.out.println("admin controller 넘어오니..?");
-		try {
-			int stgSize = stgs.getStgSize();
-			System.out.println("controller getStorageSize : " + stgSize);
-			
-			
-			ArrayList<Storage> list = stgs.selectFolderList();
-			System.out.println("controller : " + list);
-			request.setAttribute("list", list);
-			
-			return "fileBox/fileBoxAdmin";
-			
-		} catch (Exception e) {
-			request.setAttribute("message", e.getMessage());
-			
-			return "common/error";
-		}
-//		return "fileBox/fileBoxAdmin";
+	@RequestMapping("referer.fb")
+	public String Referer(Model model, FileBox fb, HttpServletRequest request) {
+		
+		return "redirect:selectFirst.fb";
 	}
 	
+	
+	
 	@RequestMapping("uploadPage.fb")
-	public String FileUploadPage() {
+	public String FileUploadPage(Model model, FileBox fb, HttpServletRequest request) {
+		String fileType = request.getParameter("fileType");
+		System.out.println("fileType : " + fileType);
+		fileType = "STG";
+		fb.setFileType(fileType);
+
+		ArrayList<Storage> slist = stgs.selectFolderList();
+		
+		//list json으로 parsing하기위해 json배열 할당
+	    JSONArray jsonArray = new JSONArray();
+	    
+	    //json으로 파싱해서 모델에 리스트랑 같이 보내줌
+	    model.addAttribute("slist", slist); 
+	    model.addAttribute("jsonList", jsonArray.fromObject(slist));
+	    request.setAttribute("slist", slist);
 		
 		return "fileBox/fileUpload";
 	}
@@ -114,10 +297,30 @@ public class FileBoxController {
 	public String FileDelete(Model model, FileBox fb, HttpServletRequest request, String fileNo, @SessionAttribute("loginUser") Member loginUser) {
 		System.out.println("controller delete fileNo : " + fileNo);
 		fb.setFileNo(fileNo);
-		int fileDelete = fbs.fileDelete(fileNo);
+		int fileDelete = fbs.fileDelete(fb);
 		System.out.println("controller fileDelete : " + fileDelete);
-		
-		return "redirect:select.fb";
+//		return "fileBox/fileBox";
+		return showStorageFile(model, fb, request);
+	}
+	
+	@RequestMapping("restore.fb")
+	public String FileRestore(Model model, FileBox fb, HttpServletRequest request, String fileNo, @SessionAttribute("loginUser") Member loginUser) {
+		System.out.println("controller restore fileNo : " + fileNo);
+		fb.setFileNo(fileNo);
+		int fileRestore = fbs.fileRestore(fb);
+		System.out.println("controller restore : " + fileRestore);
+//		return "fileBox/fileBox";
+		return selectTrash(model, fb, request);
+	}
+	
+	@RequestMapping("deleteForever.fb")
+	public String fileDeleteForever(Model model, FileBox fb, HttpServletRequest request, String fileNo, @SessionAttribute("loginUser") Member loginUser) {
+		System.out.println("controller restore fileNo : " + fileNo);
+		fb.setFileNo(fileNo);
+		int fileDeleteForever = fbs.fileDeleteForever(fb);
+		System.out.println("controller fileDeleteForever : " + fileDeleteForever);
+//		return "fileBox/fileBox";
+		return selectAdminTrash(model, fb, request);
 	}
 	
 	@RequestMapping("upload.fb")
@@ -128,6 +331,9 @@ public class FileBoxController {
 							, @SessionAttribute("loginUser") Member loginUser) {
 		
 		ArrayList<FileBox> fileArr = new ArrayList<FileBox>();
+		
+		
+		
 		FileBox fb = null;
 		
 		System.out.println("controller model : " + model);
@@ -144,7 +350,10 @@ public class FileBoxController {
 			String filePath = root + "/uploadFiles/fileBox";
 			filePath = filePath.replace("/", "\\");
 			System.out.println("filePath : " + filePath);
-					
+			
+			
+			
+			
 			for(int i = 0; i < files.length; i++) {
 				fb = new FileBox();
 				
@@ -171,6 +380,7 @@ public class FileBoxController {
 				fb.setCorp_no(loginUser.getCorpNo());
 				fb.setFileType("fileBox");
 				fb.setExt(ext);
+				fb.setMno(loginUser.getMno());
 				
 				System.out.println(fb);
 				fileArr.add(fb);
@@ -190,7 +400,7 @@ public class FileBoxController {
 		
 		int uploadFile = fbs.uploadFile(fileArr, loginUser);
 		}
-		return "fileBox/fileDetail";
+		return showStorageFile(model, fb, request);
 	}
 	
 	

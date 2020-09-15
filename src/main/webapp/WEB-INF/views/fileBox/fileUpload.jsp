@@ -7,54 +7,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://kit.fontawesome.com/yourcode.js"></script>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>itworks</title>
 <style>
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); font-family: 'Noto Sans KR', sans-serif;
-   * {
-        margin: 0px;
-        font-family: "Noto Sans KR";
-    }
-    #asideBack {
-        width: 250px;
-        height: 900px;
-        background: #E4EBF3;
-    }
-    
-    #asideBack ul li{
-        padding-left: 25px;
-        height: 35px;
-        vertical-align: middle;
-    }
-    #asideMenuTitle {
-        padding-top: 22px; 
-        padding-left: 36px; 
-        font-size: 15px; 
-        font-weight: bold; 
-        color: #004771; 
-        margin-bottom: 10px;
-    }
-    .asideMenu {
-        text-decoration: none;
-        color: #004771;
-        font-size: 14px;
-    }
-    aside {
-        float: left;
-    }
-    section {
-        display: inline-block;
-        float: left;
-    }
-    
-    #text1 {
-        color: #004771;
-        margin-left: 20px;
-        font-family: "Noto Sans KR";
-        
-    }
-    
+	
     .tableArea {
 		width:60%;
 		display: inline-block;
@@ -66,139 +25,6 @@
         float: left;
 	}
 	
-	
-	
-	#filebox {
-		display: inline-block;
-		position: relative;
-		width: 205px;
-	    height: 608px;
-		margin: 20px;
-		margin-left: 40px;
-		padding: 20px;
-		border-top: 10px solid #004771;
-	    border-left: 0.5px solid #929292;
-	    border-bottom: 0.5px solid #929292;
-	    border-right: 0.5px solid #929292;
-	    background: #FFFFFF;
-		box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
-	}
-	
-	
-	#file_title {
-	  margin: 0;
-	  padding-bottom: 20px;
-	  border-bottom: 1px solid #004771;
-	  color: #004771;
-	  font-size: 1.1em;
-	}
-	
-	.tree {
-	  padding: 20px 0;
-	}
-	
-	.tree::after {
-	  content: '';
-	  display: block;
-	  clear: left;
-	}
-	
-	.tree div {
-	  clear: left;
-	}
-	
-	#filebox input[type="checkbox"] {
-	  position: absolute;
-	  left: -9999px;
-	}
-	
-	#filebox label, a {
-	  display: block;
-	  float: left;
-	  clear: left;
-	  position: relative;
-	  margin-left: 25px;
-	  padding: 5px;
-	  border-radius: 5px;
-	  color: #004771;
-	  text-decoration: none;
-	  cursor: pointer;
-	}
-	
-	#filebox label::before, a::before {
-	  display: block;
-	  position: absolute;
-	  top: 6px;
-	  left: -25px;
-	  font-family: 'FontAwesome';
-	}
-	
-	#filebox label::before {
-	  content: '\f07b'; /* closed folder */
-	}
-	
-	#filebox input:checked + label::before {
-	  content: '\f07c'; /* open folder */
-	}
-	
-	#filebox a::before {
-	  content: '-'; /* dash */
-	}
-	
-	#filebox input:focus + label, a:focus {
-	  outline: none;
-	  background-color: #e8ebed;
-	}
-	
-	#filebox .sub {
-	  display: none;
-	  float: left;
-	  margin-left: 30px;
-	}
-	
-	#filebox input:checked ~ .sub {
-	  display: block;
-	}
-	
-	#filebox input[type="reset"] {
-	  display: block;
-	  width: 100%;
-	  padding: 5px;
-	  border: none;
-	  border-radius: 10px;
-	  color: #e8ebed;
-	  background-color: #29A2F7;
-	  font-family: inherit;
-	  font-size: .9em;
-	  cursor: pointer;
-	  -webkit-appearance: none;
-	  -moz-appearance: none;
-	}
-	
-	#filebox input[type="reset"]:focus {
-	  outline: none;
-	  box-shadow: 0 0 0 4px #b9c3c9;
-	}
-	
-	#filePath{
-		display: inline-block;
-		font-weight: bold; 
-        color: #004771;
-	}
-	#fileSearch{
-		text-align: right;
-		
-	}
-	#searchSelect{
-		border: 1px solid #9F9F9F;
-		color: #29A2F7;
-	}
-	
-	#searchText {
-		border: 1px solid #29A2F7;
-		
-	  	border-radius: 10px;
-	}
 	
 	.tableTitle {
 		width: 100xp;
@@ -239,6 +65,30 @@
 	}
 	#uploadSubmit {
 		align: right;
+		border: 1px solid #29A2F7;
+		color: #29A2F7;
+		background: #ffffff;
+		margin: 13px;
+	}
+	#fileUpload {
+		margin: 10px;
+	}
+	#selectedFileList {
+		padding:5px;
+		text-align:left;
+		border:2px solid #c9c9c9;
+		height:337px;
+		overflow: auto;
+	}
+	#selectedFileList::-webkit-scrollbar-thumb {
+    	background-color: #2f3542;
+    	border-radius: 10px;
+    }
+    
+    #selectedFileList::-webkit-scrollbar-track {
+	    background-color: grey;
+	    border-radius: 10px;
+	    box-shadow: inset 0px 0px 5px white;
 	}
 	
 </style>
@@ -247,65 +97,20 @@
 	<c:if test="${ !empty sessionScope.loginUser }">
     <jsp:include page="../common/menubar.jsp"/>
     
-    <aside>
+    <aside id="aside">
         <div id="asideBack">
             <div id="asideMenuTitle">파일보관함</div>
             <ul>
-                <li><a href="#" class="asideMenu">- 전사문서함</a></li>
+                <li><a href="selectFirst.fb" class="asideMenu">- 전사문서함</a></li>
                 <li><a href="admin.fb" class="asideMenu">- 파일보관함 관리자</a></li>
             </ul>
         </div>
     </aside>
-        <h1 id="text1">파일보관함</h1>
-        <br>
+        <h1 id="fileBoxTitle">&nbsp;&nbsp;&nbsp;파일보관함</h1>
         <hr>
         <br>
-    <section>
-        <div id="fileBoxArea">
-            <form id="filebox">
-		    <h1 id="file_title">전사문서함</h1>
-		    <div class="tree">
-		      <div>
-		        <input class="treebox" id="n-0" type="checkbox">
-		        <label class="treelabel" for="n-0">회사공용문서</label>
-		        <div class="sub">
-		            <a href="#link">공지사항</a>
-		            <div>
-		              <input class="treebox" id="n-0-1" type="checkbox">
-		              <label class="treelabel" for="n-0-1">문서양식</label>
-		              <div class="sub">
-		                <a href="#link">인사관련</a>
-		                <a href="#link">근태관련</a>
-		                <a href="#link">일반기안</a>
-		                <a href="#link">경비처리</a>
-		                <a href="#link">기타양식</a>
-		              </div>
-		            </div>
-		            <a href="#link">전사자료</a>
-		          </div>
-		      </div>
-		      <div>
-		        <input class="treebox" id="n-1" type="checkbox">
-		        <label class="treelabel" for="n-1">사내규정</label>
-		        <div class="sub">
-		          <a href="#link">규정</a>
-		          <a href="#link">규칙</a>
-		          <a href="#link">지침</a>
-		          <a href="#link">보안</a>
-		        </div>
-		      </div>
-		      <div>
-		        <input class="treebox" id="n-2" type="checkbox">
-		        <label class="treelabel" for="n-2">기능속성</label>
-		        <div class="sub">
-		          <a href="#link">기능1</a>
-		          <a href="#link">기능2</a>
-		        </div>
-		      </div>
-		    </div>
-		    <input type="reset" class="treebox" id="collapse" value="Collapse All">
-		  </form>
-        </div>
+    <section id="section">
+    	<jsp:include page="../fileBox/folderTree.jsp"/>
         <br>
     </section>
     <article>
@@ -324,12 +129,15 @@
 		        		<button id="searchBtn"><i class="fas fa-search"></i></button>
 		        	</form>
 		        </div>
-	        <br><br>
-	        <div id="fileOption">
-	        	<button><a href="selectFirst.fb">뒤로가기</a><button>
-	        </div>
+	        
+	        <!-- <div id="fileOption">
+	        	<button class="btn" onclick="referer();">뒤로가기<button>
+	        </div> -->
 	        <form action="upload.fb" enctype="multipart/form-data" method="post" onsubmit="return checkNull();">
 		        
+				<div align="right">
+					<input id="uploadSubmit" type="submit" value="upload">
+				</div>
 				<table id="fileDetailTable">
 					<tr>
 						<td class="tableTitle">파일 선택</td>
@@ -337,16 +145,12 @@
 					<tr>
 						<td colspan="4">
 							
-							<div id="selectedFileList" style="border:2px solid #c9c9c9;min-height:100px"></div>
 							<input class="textBox" id="fileUpload" multiple="multiple" type="file" name="files">
+							<div id="selectedFileList"></div>
 							<!-- <input type="text" id="selectedFileList" style="border:2px solid #c9c9c9;min-height:50px"/> -->
 						</td>
 					</tr>
 				</table>
-				<br>
-				<div align="right">
-					<input id="uploadSubmit" type="submit" value="upload">
-				</div>
 			</form>
 			<br>
 		</div>
@@ -354,6 +158,12 @@
     
     </article>
 	<script>
+	//뒤로가기
+	function referer() {
+	      location.href="referer.fb";
+	}
+	
+	
     //파일 업로드 시  div에 파일명 출력
     $("#fileUpload").change(function() {
        var fileList = $("#fileUpload")[0].files;

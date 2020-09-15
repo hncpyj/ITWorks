@@ -2,6 +2,8 @@ package com.kh.itworks.fileBox.model.service;
 
 import java.util.ArrayList;
 
+
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,9 @@ public class StorageServiceImpl implements StorageService{
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public int getStgSize() {
+	public double getStgSize() {
 		System.out.println("service 넘어오니..?");
-		int stgSize = stgd.getStgSige(sqlSession);
+		double stgSize = stgd.getStgSige(sqlSession);
 		System.out.println("service : " + stgSize);
 		
 		return stgSize;
@@ -34,7 +36,41 @@ public class StorageServiceImpl implements StorageService{
 		
 		ArrayList<Storage> list = stgd.selectFolderList(sqlSession);
 		System.out.println("service : " + list);
-		return null;
+		return list;
+	}
+
+	@Override
+	public ArrayList<Storage> selectSearchFolderList() {
+		System.out.println("***Search service select list 넘어오니..?");
+		
+		ArrayList<Storage> list = stgd.selectSearchFolderList(sqlSession);
+		System.out.println("***Search service : " + list);
+		return list;
+	}
+
+	@Override
+	public int folderDelete(String stgNo) {
+		System.out.println("service folderDelete : " + stgNo);
+		int result = 0;
+		result = stgd.folderDelete(sqlSession, stgNo);
+		System.out.println("folder delete impl result : " + result);
+		return result;
+	}
+
+	@Override
+	public int folderRename(Storage stg) {
+		System.out.println("service folderRename fileNo : " + stg);
+		int result = 0;
+		result = stgd.folderRename(sqlSession, stg);
+		return result;
+	}
+	
+	@Override
+	public int addNewFolder(Storage stg) {
+		System.out.println("service addNewFolder fileNo : " + stg);
+		int result = 0;
+		result = stgd.addNewFolder(sqlSession, stg);
+		return result;
 	}
 
 }
