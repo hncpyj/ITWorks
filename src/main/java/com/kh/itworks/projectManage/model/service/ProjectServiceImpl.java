@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 
+import com.kh.itworks.common.PageInfo;
 import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.projectManage.model.dao.ProjectDao;
@@ -17,7 +18,6 @@ import com.kh.itworks.projectManage.model.exception.PnoticeException;
 import com.kh.itworks.projectManage.model.vo.Project;
 import com.kh.itworks.projectManage.model.vo.ProjectMember;
 import com.kh.itworks.projectManage.model.vo.ProjectNotice;
-import com.kh.itworks.projectManage.model.vo.ProjectPageInfo;
 import com.kh.itworks.projectManage.model.vo.ProjectSearchCondition;
 import com.kh.itworks.projectManage.model.vo.ProjectTaskReply;
 
@@ -28,8 +28,6 @@ public class ProjectServiceImpl implements ProjectService{
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private ProjectDao projectDao;
-	@Autowired
-	private DataSourceTransactionManager transactionManager;
 
 	@Override
 	public int getListCount(Member loginUser) {
@@ -37,7 +35,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ArrayList<Project> selectProjectList(ProjectPageInfo pi, Member loginUser) {
+	public ArrayList<Project> selectProjectList(PageInfo pi, Member loginUser) {
 		return projectDao.selectProjectList(sqlSession, pi, loginUser);
 	}
 
@@ -47,7 +45,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ArrayList<Project> selectSearchProjectList(ProjectPageInfo pi, Member loginUser, ProjectSearchCondition searchCondition) {
+	public ArrayList<Project> selectSearchProjectList(PageInfo pi, Member loginUser, ProjectSearchCondition searchCondition) {
 		return projectDao.selectSearchProjectList(sqlSession, pi, loginUser, searchCondition);
 	}
 
@@ -57,7 +55,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ArrayList<Project> selectOngoingProjectList(ProjectPageInfo pi, Member loginUser) {
+	public ArrayList<Project> selectOngoingProjectList(PageInfo pi, Member loginUser) {
 		return projectDao.getOngoingListcount(sqlSession, pi, loginUser);
 	}
 
@@ -67,7 +65,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ArrayList<Project> selectSearchOngoingProjectList(ProjectPageInfo pi, Member loginUser,
+	public ArrayList<Project> selectSearchOngoingProjectList(PageInfo pi, Member loginUser,
 			ProjectSearchCondition searchCondition) {
 		return projectDao.selectSearchOngoingProjectList(sqlSession, pi, loginUser, searchCondition);
 	}
@@ -78,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ArrayList<Project> selectFinishProjectList(ProjectPageInfo pi, Member loginUser) {
+	public ArrayList<Project> selectFinishProjectList(PageInfo pi, Member loginUser) {
 		return projectDao.selectFinishProjectList(sqlSession, pi, loginUser);
 	}
 	
@@ -88,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ArrayList<Project> selectSearchFinishProjectList(ProjectPageInfo pi, Member loginUser, ProjectSearchCondition searchCondition) {
+	public ArrayList<Project> selectSearchFinishProjectList(PageInfo pi, Member loginUser, ProjectSearchCondition searchCondition) {
 		return projectDao.selectSearchFinishProjectList(sqlSession, pi, loginUser, searchCondition);
 	}
 
@@ -99,6 +97,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public HashMap<String, Object> selectAllMemberDept(int corpNo) {
+		System.out.println(corpNo);
 		return projectDao.selectAllMemberDept(sqlSession, corpNo);
 	}
 

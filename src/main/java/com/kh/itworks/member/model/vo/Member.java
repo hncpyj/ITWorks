@@ -1,11 +1,10 @@
 package com.kh.itworks.member.model.vo;
 
 public class Member {
-<<<<<<< src/main/java/com/kh/itworks/member/model/vo/Member.java
 	private int corpNo;
-	private String roleNo;
-	private String jobNo;
-	private String deptNo;
+	private String rid;
+	private String jid;
+	private String did;
 	private String ename;
 	private String epwd;
 	private String phone;
@@ -20,42 +19,20 @@ public class Member {
 	private String internalPhone;
 	private int mno;
 	private String eid;
-=======
-	private int corpNo; 	//회사코드
-	private String roleNo; 	//권한관리코드
-	private String jobNo; 	//직급관리코드
-	private String deptNo; 	//부서관리코드
-	private String ename; 	//이름
-	private String epwd; 	//비밀번호
-	private String phone; 	//휴대전화
-	private String email; 	//이메일
-	private String address; //주소
-	private String birthday; //생년월일
-	private int eno; 				//사번
-	private String hireDate; 		//입사일
-	private String resignationDate; //퇴사일
-	private String status; 			//재직여부
-	private String approval; 		//승인상태
-	private String internalPhone; 	//사내전화
-	private int mno; 				//회원관리코드
-	private String eid;				//회원ID
->>>>>>> src/main/java/com/kh/itworks/member/model/vo/Member.java
+	private String roleNo;
+	private String dname;
+	private String jname;
 	
 	public Member() {}
 
-	public Member(int corpNo, String roleNo, String jobNo, String deptNo, String ename, String epwd, String phone,
-<<<<<<< src/main/java/com/kh/itworks/member/model/vo/Member.java
-			String email, String address, String birthday, int eno, String hireDate, String resignationDate,
-			String status, String approval, String internalPhone, int mno, String eid) {
-=======
-			String email, String address, String birthday, int eno, String hireDate, String resignationDate, String status,
-			String approval, String internalPhone, int mno, String eid) {
->>>>>>> src/main/java/com/kh/itworks/member/model/vo/Member.java
+	public Member(int corpNo, String rid, String jid, String did, String ename, String epwd, String phone, String email,
+			String address, String birthday, int eno, String hireDate, String resignationDate, String status,
+			String approval, String internalPhone, int mno, String eid, String roleNo, String dname, String jname) {
 		super();
 		this.corpNo = corpNo;
-		this.roleNo = roleNo;
-		this.jobNo = jobNo;
-		this.deptNo = deptNo;
+		this.rid = rid;
+		this.jid = jid;
+		this.did = did;
 		this.ename = ename;
 		this.epwd = epwd;
 		this.phone = phone;
@@ -70,6 +47,9 @@ public class Member {
 		this.internalPhone = internalPhone;
 		this.mno = mno;
 		this.eid = eid;
+		this.roleNo = roleNo;
+		this.dname = dname;
+		this.jname = jname;
 	}
 
 	public int getCorpNo() {
@@ -80,28 +60,28 @@ public class Member {
 		this.corpNo = corpNo;
 	}
 
-	public String getRoleNo() {
-		return roleNo;
+	public String getRid() {
+		return rid;
 	}
 
-	public void setRoleNo(String roleNo) {
-		this.roleNo = roleNo;
+	public void setRid(String rid) {
+		this.rid = rid;
 	}
 
-	public String getJobNo() {
-		return jobNo;
+	public String getJid() {
+		return jid;
 	}
 
-	public void setJobNo(String jobNo) {
-		this.jobNo = jobNo;
+	public void setJid(String jid) {
+		this.jid = jid;
 	}
 
-	public String getDeptNo() {
-		return deptNo;
+	public String getDid() {
+		return did;
 	}
 
-	public void setDeptNo(String deptNo) {
-		this.deptNo = deptNo;
+	public void setDid(String did) {
+		this.did = did;
 	}
 
 	public String getEname() {
@@ -216,16 +196,38 @@ public class Member {
 		this.eid = eid;
 	}
 
-	@Override
-	public String toString() {
-		return "Member [corpNo=" + corpNo + ", roleNo=" + roleNo + ", jobNo=" + jobNo + ", deptNo=" + deptNo
-				+ ", ename=" + ename + ", epwd=" + epwd + ", phone=" + phone + ", email=" + email + ", address="
-				+ address + ", birthday=" + birthday + ", eno=" + eno + ", hireDate=" + hireDate + ", resignationDate="
-				+ resignationDate + ", status=" + status + ", approval=" + approval + ", internalPhone=" + internalPhone
-				+ ", mno=" + mno + ", eid=" + eid + "]";
+	public String getRoleNo() {
+		return roleNo;
 	}
 
-	
-	
+	public void setRoleNo(String roleNo) {
+		this.roleNo = roleNo;
+	}
+
+	public String getDname() {
+		return dname;
+	}
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+	public String getJname() {
+		return jname;
+	}
+
+	public void setJname(String jname) {
+		this.jname = jname;
+	}
+
+	@Override
+	public String toString() {
+		return "Member [corpNo=" + corpNo + ", rid=" + rid + ", jid=" + jid + ", did=" + did + ", ename=" + ename
+				+ ", epwd=" + epwd + ", phone=" + phone + ", email=" + email + ", address=" + address + ", birthday="
+				+ birthday + ", eno=" + eno + ", hireDate=" + hireDate + ", resignationDate=" + resignationDate
+				+ ", status=" + status + ", approval=" + approval + ", internalPhone=" + internalPhone + ", mno=" + mno
+				+ ", eid=" + eid + ", roleNo=" + roleNo + ", dname=" + dname + ", jname=" + jname + "]";
+	}
+
 	
 }
