@@ -120,7 +120,7 @@
 
         <!-- 공지사항 폼 -->
         <article>
-            <button onclick="">수정하기</button>
+            <button onclick="modifyNotice();">수정하기</button>
             <button onclick="deleteNotice('${notice2.noticeno}');">삭제하기</button>
             <table>
                 <tr>
@@ -161,30 +161,32 @@
         		}     
         	}
         </script>
-        
         <!-- 공지사항 폼 종료-->
+        
+        
+        <!-- 공지사항 수정 폼 -->
         <article id="modifyNoticeForm" style="display: none;">
-            <form action="">
+            <form action="updateNo.no" method="post" enctype="multipart/form-data">
                 <table>
                     <tr>
                         <th>No</th>
-                        <td width="650px">00</td>
+                        <td width="650px"><input type="hidden" name="noticeno" value="${ notice2.noticeno }"><c:out value="${ notice2.noticeno }"/></td>
                         <th>조회수</th>
-                        <td>00</td>
+                        <td><c:out value="${ notice2.nviews }"/></td>
                     </tr>
                     <tr>
                         <th>제목</th>
-                        <td colspan="3"><input type="text" style="width: 900px;"></td>
+                        <td colspan="3"><input type="text" name="ntitle" style="width: 900px;" value="${ notice2.ntitle }"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td>최재영</td>
+                        <td><c:out value="${ notice2.ename }"/></td>
                         <th>작성일</th>
-                        <td style="text-align: center; padding-left: 0;">YYYY/MM/DD hh:MM:ss</td>
+                        <td style="text-align: center; padding-left: 0;"><c:out value="${ notice2.ndate }"/></td>
                     </tr>
                     <tr>
                         <td colspan="4" style="height: 400px;">
-                            <textarea name="" id="" cols="141" rows="20" style="resize: none; margin-top: 5px;"></textarea>
+                            <textarea name="ncontent" id="" cols="141" rows="20" style="resize: none; margin-top: 5px;"><c:out value="${ notice2.ncontent }"/></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -193,11 +195,33 @@
                     </tr>
                 </table>
                 <button onclick="history.go(0);" style="background: lightgray; color: black;">취소하기</button>
-                <input type="submit" value="수정하기">
+                <input type="submit" value="수정하기" onclick="updateNotice('${notice2.noticeno}');">
             </form>
         </article>
-        <!-- 공지사항 수정 폼 -->
+        <!-- 공지사항 수정 폼 종료 -->
+        
+        <script>
+        	
+        	function updateNotice(noticeno) {
+        		
+        		var confirmTest = confirm('수정하시겠습니까?');
+        		
+        		if (confirmTest == true) {
+        			location.href='updateNo.no?noticeno=' + noticeno;
+        		}
+        		
+        	}
+        
+        </script>
+        
     </section>
-
+	<script>
+        function modifyNotice() {
+            $('article:nth-child(n+2)').css('display', 'none');
+            $('#modifyNoticeForm').css('display', 'block');
+            $('#menuTitle>span').text('프로젝트 공지사항 수정');
+            $('#menuTitle>button').hide();
+        }
+    </script>
 </body>
 </html>

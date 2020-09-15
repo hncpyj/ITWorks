@@ -20,5 +20,7 @@ public interface NoticeDao {
 
 	int deleteNo(SqlSessionTemplate sqlSession, Notice notice);
 
+	int updateNo(SqlSessionTemplate sqlSession, Notice notice);
+
 
 }

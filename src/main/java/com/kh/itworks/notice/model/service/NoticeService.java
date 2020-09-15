@@ -22,5 +22,8 @@ public interface NoticeService {
 
 	//공지사항 삭제
 	int deleteNo(Notice notice);
+
+	//공지사항 수정
+	int updateNo(Notice notice);
 	
 }

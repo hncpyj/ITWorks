@@ -115,7 +115,7 @@ public class NoticeController {
 		
 		int result = ns.deleteNo(notice);
 		
-		System.out.println("controller : " + notice);
+		//System.out.println("controller : " + notice);
 		
 		if (result > 0) {
 			return "redirect:noticeList.no";
@@ -124,6 +124,25 @@ public class NoticeController {
 			return "notice/noticeList";
 		}
 
+	}
+	
+	@RequestMapping("updateNo.no")
+	public String updateNo(Model model, Notice notice, @SessionAttribute("loginUser") Member loginUser) {
+		
+		notice.setCorpno(loginUser.getCorpNo());
+		notice.setMno(loginUser.getMno());
+		
+		int result = ns.updateNo(notice);
+		
+		System.out.println("controller : " + notice);
+		
+		if(result > 0) {
+			return "redirect:noticeList.no";
+		} else {
+			model.addAttribute("msg", "공지사항 수정 실패");
+			return "notice/noticeList";
+		}
+		
 	}
 	
 }

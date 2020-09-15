@@ -61,9 +61,16 @@ public class NoticeDaoImpl implements NoticeDao{
 	@Override
 	public int deleteNo(SqlSessionTemplate sqlSession, Notice notice) {
 		
-		System.out.println("daoImpl : " + notice);
+		//System.out.println("daoImpl : " + notice);
 		
 		return sqlSession.update("Notice.deleteNo", notice);
+	}
+
+	@Override
+	public int updateNo(SqlSessionTemplate sqlSession, Notice notice) {
+
+		System.out.println("daoImpl : " + notice);
+		return sqlSession.update("Notice.updateNo", notice);
 	}
 
 }
