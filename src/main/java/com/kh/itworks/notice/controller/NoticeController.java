@@ -90,6 +90,7 @@ public class NoticeController {
 		
 		notice.setCorpno(loginUser.getCorpNo());
 		notice.setMno(loginUser.getMno());
+		notice.setEname(loginUser.getEname());
 		
 		int result = ns.insertNo(notice);
 		

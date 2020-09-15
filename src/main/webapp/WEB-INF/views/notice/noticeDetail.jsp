@@ -11,6 +11,7 @@
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
     /*메뉴 타이틀 관련 css 설정*/
+    
     body {
        width: 1420px;
        height: 900px;
@@ -46,7 +47,7 @@
         cursor: pointer;
     }
     /*메뉴 타이틀 관련 css 설정 종료*/
-
+	
     /* 공지사항 내용 */
     article:nth-child(2), article:nth-child(3) {
         margin-top: 40px;
@@ -102,6 +103,18 @@
     button, input[type="submit"] {
         cursor: pointer;
     }
+    #updateTable{
+    	margin-right: auto;
+    	margin-left: auto;
+    	margin-top: 50px;
+    	border-collapse: collapse;
+    	border-top:  2px solid #929292;
+    }
+	#buttonArea{
+   		border-bottom: none;
+   		background: #f4f4f4;
+   		margin-left: 885px;
+   	}
     /* 공지사항 수정 폼 종료 */
 </style>
 </head>
@@ -140,7 +153,7 @@
                     <td style="text-align: center; padding-left: 0;"><p><c:out value="${ notice2.ndate }"/></p></td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="height: 400px;"><c:out value="${ notice2.ncontent }"/></td>
+                    <td colspan="4" style="height: 400px;"><pre><c:out value="${ notice2.ncontent }"/></pre></td>
                 </tr>
                 <tr>
                     <th>첨부파일</th>
@@ -167,7 +180,7 @@
         <!-- 공지사항 수정 폼 -->
         <article id="modifyNoticeForm" style="display: none;">
             <form action="updateNo.no" method="post" enctype="multipart/form-data">
-                <table>
+                <table id="updateTable">
                     <tr>
                         <th>No</th>
                         <td width="650px"><input type="hidden" name="noticeno" value="${ notice2.noticeno }"><c:out value="${ notice2.noticeno }"/></td>
@@ -176,7 +189,7 @@
                     </tr>
                     <tr>
                         <th>제목</th>
-                        <td colspan="3"><input type="text" name="ntitle" style="width: 900px;" value="${ notice2.ntitle }"></td>
+                        <td colspan="3"><input type="text" name="ntitle" style="width: 900px; border: none;" value="${ notice2.ntitle }"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
@@ -186,7 +199,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="height: 400px;">
-                            <textarea name="ncontent" id="" cols="141" rows="20" style="resize: none; margin-top: 5px;"><c:out value="${ notice2.ncontent }"/></textarea>
+                            <textarea name="ncontent" id="" cols="141" rows="20" style="resize: none; margin-top: 5px; border: none;"><c:out value="${ notice2.ncontent }"/></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -194,8 +207,10 @@
                         <td colspan="3"><input type="file"></td>
                     </tr>
                 </table>
-                <button onclick="history.go(0);" style="background: lightgray; color: black;">취소하기</button>
-                <input type="submit" value="수정하기" onclick="updateNotice('${notice2.noticeno}');">
+				<div style=" width: 220px; float: right;">
+              		<button onclick="history.go(0);" style="background: lightgray; color: black; margin-left: 0;">취소하기</button>
+              		<button onclick="updateNotice('${notice2.noticeno}');" style="background-color: #004771; border-color:#004771; outline:0; color: white; margin-left: 0;">수정하기</button>
+				</div>
             </form>
         </article>
         <!-- 공지사항 수정 폼 종료 -->

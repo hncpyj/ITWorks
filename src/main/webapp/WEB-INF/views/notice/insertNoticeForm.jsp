@@ -110,8 +110,9 @@
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td><p><c:out value="${ notice2.ntitle }"/></p></td>
+                        <td><p><c:out value="${ loginUser.ename }"/></p></td>
                     </tr>
+                    
                     <tr>
                         <th>내용</th>
                         <td>
