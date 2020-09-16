@@ -173,7 +173,7 @@ table.calendar td{
             	<label>총 연장 근무 시간 : </label>
             </div>-->
             <div class="time">
-            <form action="insertAtStatus.at">
+            <form action="insertAtStatus.at" method="post">
             
             	<table id="btnTable">
             		<tr>
@@ -207,8 +207,31 @@ table.calendar td{
             		//시계, 날짜
             		clock();
             		setInterval(clock, 1000);
+            		
+            		
+            		
 				});
+            			$("#endBtn").click(function() {
+            		if($("#endText").val() != null){
+	            			alert("이미 퇴근이 완료되었습니다.");
+							
+            			$("#endBtn").attr("disabled", true);
+            		} else{
+            			prompt("퇴근하시겠습니까?");
+            			$("#endBtn").attr("disabled", false);
+            		}
+						});
             	
+            			$("#startBtn").click(function() {
+            		if($("#startText").val() != null){
+	            			alert("이미 출근이 완료되었습니다.");
+							
+            			$("#startBtn").attr("disabled", true);
+            		} else{
+            			prompt("출근하시겠습니까?");
+            			$("#startBtn").attr("disabled", false);
+            		}
+						});
             	function clock() {
             		var now = new Date();
             		
