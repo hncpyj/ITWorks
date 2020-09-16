@@ -247,8 +247,8 @@
 			var emp = ${emp.size()};
 			var count = 0;
 			
+				var num = 0;
 			for(var i = 0; i < emplist; i++){
-				
 				
 			
 				for(var j = 0; j < emp; j++){
@@ -257,8 +257,11 @@
 					if($("#mno"+i).val() == $(".mnotr"+j).attr('id')){
 						var date = $("#wdate"+i).val().split("/");
 						console.log(date[1]);
+						
+							num += 1;
+						
 						console.log($("#"+$("#mno"+i).val()).find("#"+date[1]).find("span").text());
-						$("#"+$("#mno"+i).val()).find("#"+date[1]).find("span").text($("#"+$("#mno"+i).val()).find("#"+date[1]).find("span").text()*1 + 1);
+						$("#"+$("#mno"+i).val()).find("#"+date[1]).find("span").text(num);
 						
 					}
 					
