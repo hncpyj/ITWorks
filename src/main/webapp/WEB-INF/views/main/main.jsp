@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ITworks</title>
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
     #asideBack {
         width: 250px;
@@ -58,23 +61,12 @@
     #goAtManage:hover {
         cursor: pointer;
     }
-    section>article:first-child {
-        border-radius: 10px 10px 10px 10px; 
-        background: white; 
-        width: 1100px; 
-        height: 220px; 
-        margin: auto; 
-        margin-top: 35px; 
-        box-shadow: 1px 2px 5px lightgray;
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
+    
     section>article:nth-child(2) {
         border-radius: 10px 10px 10px 10px; 
         background: white; 
         width: 535px; 
         height: 285px; 
-        margin-top: 35px; 
         margin-left: 38px;
         box-shadow: 1px 2px 5px lightgray;
         padding-top: 15px;
@@ -92,14 +84,16 @@
         padding-top: 15px;
         padding-bottom: 15px;
     }
-    section>article:last-child {
-        margin-top: 35px;
+    section>article:first-child {
+        margin-top: 100px;
+        margin-bottom: 80px;
         text-align: center;
+        width: 1200px;
     }
-    section>article:last-child>img {
-        margin-left: 30px;
+    section>article:first-child>img {
+        margin-left: 50px;
     }
-    section>article:last-child>img:first-child {
+    section>article:first-child>img:first-child {
         margin-left: 0;
     }
     #newNoticeList {
@@ -139,111 +133,15 @@
         cursor: pointer;
         
     }
-    
-    /* ======== Calendar ======== */
-.my-calendar {
-  width: 200px;
-  margin: 30px;
-  padding: 20px 20px 10px;
-  text-align: center;
-  font-weight: 800;
-  border: 1px solid #ddd;
-  cursor: default;
-}
-.my-calendar .clicked-date {
-  border-radius: 25px;
-  margin-top: 36px;
-  float: left;
-  width: 42%;
-  padding: 46px 0 26px;
-  background: #ddd;
-}
-.my-calendar .calendar-box {
-  float: right;
-  width: 100%;
-  padding-left: 10px;
-}
-
-.clicked-date .cal-day {
-  font-size: 24px;
-}
-.clicked-date .cal-date {
-  font-size: 130px;
-}
-
-.ctr-box {
-  padding: 0 16px;
-  margin-bottom: 20px;
-  font-size: 20px;
-}
-.ctr-box .btn-cal {
-  position: relative;
-  float: left;
-  width: 25px;
-  height: 25px;
-  margin-top: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-.ctr-box .btn-cal:after {
-  content: '<';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  line-height: 25px;
-  font-weight: bold;
-  font-size: 20px;
-}
-.ctr-box .btn-cal.next {
-  float: right;
-}
-.ctr-box .btn-cal.next:after {
-  content: '>';
-}
-
-.cal-table {
-  width: 100%;
-}
-.cal-table th {
-  width: 14.2857%;
-  padding-bottom: 5px;
-  font-size: 16px;
-  font-weight: 900;
-}
-.cal-table td {
-  padding: 3px 0;
-  height: 50px;
-  font-size: 15px;
-  vertical-align: middle;
-}
-.cal-table td.day {
-  position: relative;
-  cursor: pointer;
-}
-.cal-table td.today {
-  background: #ffd255;
-  border-radius: 50%;
-  color: #fff;
-}
-.cal-table td.day-active {
-  background: #ff8585;
-  border-radius: 50%;
-  color: #fff;
-}
-.cal-table td.has-event:after {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 4px;
-  background: #FFC107;
-}
+    .timeText{
+    	width: 270px;
+    	text-align: center;
+    	margin-bottom: 5px;
+    }
+	#nowTime{
+		font-weight: bold;
+		font-size: 35px;
+	}
 </style>
 </head>
 <body>
@@ -254,235 +152,85 @@
             <div id="atManagementInfo">
                 <img src="${ contextPath }/resources/mainImages/mainAtManagementIcon.png">
                 <div id="atManegeTitle">&nbsp;출퇴근 관리</div>
+                <div class="timeText" id="todayDay"></div>
+                <div class="timeText" id="nowTime"></div>
                 <div id="atTimeCheck">
-                    <b>출근</b>  <!-- 출근등록시간 출력(미등록시 미등록) -->미등록<!--출근등록시간 출력 끝-->
+                    <b>출근</b>  <!-- 출근등록시간 출력(미등록시 미등록) --><span id="start">미등록</span><!--출근등록시간 출력 끝-->
                     &nbsp;&nbsp;ㅣ&nbsp;&nbsp;
-                    <b>퇴근</b>  <!-- 퇴근등록시간 출력(미등록시 미등록) -->미등록<!--퇴근등록시간 출력 끝--> 
+                    <b>퇴근</b>  <!-- 퇴근등록시간 출력(미등록시 미등록) --><span id="end">미등록</span><!--퇴근등록시간 출력 끝--> 
                 </div>
                 <div id="goAtManage">
                     출퇴근 등록
                 </div>
+                
             </div>
-              <!-- // .my-calendar -->
-            <div class="container">
-  <div class="my-calendar clearfix">
-    <!-- <div class="clicked-date">
-      <div class="cal-day"></div>
-      <div class="cal-date"></div>
-    </div> -->
-    <div class="calendar-box">
-      <div class="ctr-box clearfix">
-        <button type="button" title="prev" class="btn-cal prev">
-        </button>
-        <span class="cal-month"></span>
-        <span class="cal-year"></span>
-        <button type="button" title="next" class="btn-cal next">
-        </button>
-      </div>
-      <table class="cal-table">
-        <thead>
-          <tr>
-            <th>S</th>
-            <th>M</th>
-            <th>T</th>
-            <th>W</th>
-            <th>T</th>
-            <th>F</th>
-            <th>S</th>
-          </tr>
-        </thead>
-        <tbody class="cal-body"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<script type="text/javascript">
-//================================
-//START YOUR APP HERE
-//================================
-const init = {
-monList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-dayList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-today: new Date(),
-monForChange: new Date().getMonth(),
-activeDate: new Date(),
-getFirstDay: (yy, mm) => new Date(yy, mm, 1),
-getLastDay: (yy, mm) => new Date(yy, mm + 1, 0),
-nextMonth: function () {
- let d = new Date();
- d.setDate(1);
- d.setMonth(++this.monForChange);
- this.activeDate = d;
- return d;
-},
-prevMonth: function () {
- let d = new Date();
- d.setDate(1);
- d.setMonth(--this.monForChange);
- this.activeDate = d;
- return d;
-},
-addZero: (num) => (num < 10) ? '0' + num : num,
-activeDTag: null,
-getIndex: function (node) {
- let index = 0;
- while (node = node.previousElementSibling) {
-   index++;
- }
- return index;
-}
-};
-
-const $calBody = document.querySelector('.cal-body');
-const $btnNext = document.querySelector('.btn-cal.next');
-const $btnPrev = document.querySelector('.btn-cal.prev');
-
-/**
-* @param {number} date
-* @param {number} dayIn
-*/
-function loadDate (date, dayIn) {
-document.querySelector('.cal-date').textContent = date;
-document.querySelector('.cal-day').textContent = init.dayList[dayIn];
-}
-
-/**
-* @param {date} fullDate
-*/
-function loadYYMM (fullDate) {
-let yy = fullDate.getFullYear();
-let mm = fullDate.getMonth();
-let firstDay = init.getFirstDay(yy, mm);
-let lastDay = init.getLastDay(yy, mm);
-let markToday;  // for marking today date
-
-if (mm === init.today.getMonth() && yy === init.today.getFullYear()) {
- markToday = init.today.getDate();
-}
-
-document.querySelector('.cal-month').textContent = init.monList[mm];
-document.querySelector('.cal-year').textContent = yy;
-
-let trtd = '';
-let startCount;
-let countDay = 0;
-for (let i = 0; i < 6; i++) {
- trtd += '<tr>';
- for (let j = 0; j < 7; j++) {
-   if (i === 0 && !startCount && j === firstDay.getDay()) {
-     startCount = 1;
-   }
-   if (!startCount) {
-     trtd += '<td>'
-   } else {
-     let fullDate = yy + '.' + init.addZero(mm + 1) + '.' + init.addZero(countDay + 1);
-     trtd += '<td class="day';
-     trtd += (markToday && markToday === countDay + 1) ? ' today" ' : '"';
-     trtd += ` data-date="${countDay + 1}" data-fdate="${fullDate}">`;
-   }
-   trtd += (startCount) ? ++countDay : '';
-   if (countDay === lastDay.getDate()) { 
-     startCount = 0; 
-   }
-   trtd += '</td>';
- }
- trtd += '</tr>';
-}
-$calBody.innerHTML = trtd;
-}
-
-/**
-* @param {string} val
-*/
-function createNewList (val) {
-let id = new Date().getTime() + '';
-let yy = init.activeDate.getFullYear();
-let mm = init.activeDate.getMonth() + 1;
-let dd = init.activeDate.getDate();
-const $target = $calBody.querySelector(`.day[data-date="${dd}"]`);
-
-let date = yy + '.' + init.addZero(mm) + '.' + init.addZero(dd);
-
-let eventData = {};
-eventData['date'] = date;
-eventData['memo'] = val;
-eventData['complete'] = false;
-eventData['id'] = id;
-init.event.push(eventData);
-$todoList.appendChild(createLi(id, val, date));
-}
-
-loadYYMM(init.today);
-loadDate(init.today.getDate(), init.today.getDay());
-
-$btnNext.addEventListener('click', () => loadYYMM(init.nextMonth()));
-$btnPrev.addEventListener('click', () => loadYYMM(init.prevMonth()));
-
-$calBody.addEventListener('click', (e) => {
-if (e.target.classList.contains('day')) {
- if (init.activeDTag) {
-   init.activeDTag.classList.remove('day-active');
- }
- let day = Number(e.target.textContent);
- loadDate(day, e.target.cellIndex);
- e.target.classList.add('day-active');
- init.activeDTag = e.target;
- init.activeDate.setDate(day);
- reloadTodo();
-}
-});
-</script>
-  <!-- // .my-calendar -->
-            
-            
-            
-            
             
         </div>
     </aside>
+<c:forEach begin="0" end="${at.size()-1 }" var="i">
+<input type="hidden" id="wstart${i }" value="${at.get(i).wstart }">
+<input type="hidden" id="wend${i }" value="${at.get(i).wend }">
+<input type="hidden" id="wdate${i }" value="${at.get(i).wdate }">
+</c:forEach>
+<script type="text/javascript">
+            	
+            	$("#goAtMAnage").click(function() {
+					location.href="selectAtStatus.at";
+				});
+            	$(document).ready(function() {
+            		//시계, 날짜
+            		clock();
+            		setInterval(clock, 1000);
+            		
+            		var size =  ${at.size()};
+            		
+            		for(var i = 0; i < size; i++){
+            			if($("#wstart"+i).val() != null){
+            				$("#start").text($("#wstart"+i).val());
+            			}
+            			if($("#wend"+i).val() != null){
+            				$("#end").text($("#wend"+i).val());
+            			}
+            		}
+            		
+            		
+				});
+            			
+            	function clock() {
+            		var now = new Date();
+            		
+            	    var todayYear= now.getFullYear();
+            	    var todayMon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+            	    var todayDay = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+            	    var week = new Array('일', '월', '화', '수', '목', '금', '토');
+            	    var chan_val = todayYear + '년 ' + todayMon + '월 ' + todayDay + '일 ' + week[now.getDay()] + '요일';
+					$("#todayDay").text(chan_val);
+					
+					var nowHour = now.getHours();
+					var nowMin = now.getMinutes();
+					var nowSecond = now.getSeconds();
+					if (nowHour < 10){ nowHour = "0" + nowHour; }
+					if (nowMin < 10){ nowMin = "0" + nowMin; } 
+					if (nowSecond < 10){ nowSecond = "0" + nowSecond; }
+					
+					var nowTime = nowHour + " : " + nowMin + " : " + nowSecond;
+					$("#nowTime").text(nowTime);
+				}
+            </script>
+
+
 
     <section style="margin-left: 250px;">
         
 <!--바로가기 버튼영역-->
         <article>
-            <img src="${ contextPath }/resources/mainImages/eaBtn.png" onclick="location.href='approvalIng.ea'">
-            <img src="${ contextPath }/resources/mainImages/projectBtn.png" onclick="location.href='#'">
-            <img src="${ contextPath }/resources/mainImages/fileBtn.png" onclick="location.href='#'">
-            <img src="${ contextPath }/resources/mainImages/addressBtn.png" onclick="location.href='#'">
-            <img src="${ contextPath }/resources/mainImages/messangerBtn.png" onclick="location.href='#'">
+            <img src="${ contextPath }/resources/mainImages/orgBtn.png" onclick="location.href='orgChart.org'">
+            <img src="${ contextPath }/resources/mainImages/projectBtn.png" onclick="location.href='selectAllProjectList.pm'">
+            <img src="${ contextPath }/resources/mainImages/fileBtn.png" onclick="location.href='selectFirst.fb'">
+            <img src="${ contextPath }/resources/mainImages/addressBtn.png" onclick="location.href='mainAddress.ad'">
+            <img src="${ contextPath }/resources/mainImages/atBtn.png" onclick="location.href='selectAtStatus.at'">
         </article>
-        <!--공지사항-->
-        <article>
-            <img src="${ contextPath }/resources/mainImages/mainNoticeLogo.png" width="495px" height="50px" style="margin-left: 20px;">
-            <table id="eaList">
-                <tr style="background: #f6f6f6;">
-                    <th width="400px">제목</th>
-                    <th>등록일</th>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-            </table>
-            <a href="#" style="padding-left: 470px; color:gray; font-size: 13px;">더보기</a>
-        </article>
+        
 
         <!--진행중인프로젝트-->
         <article>
@@ -492,30 +240,34 @@ if (e.target.classList.contains('day')) {
                     <th width="400px">제목</th>
                     <th>등록일</th>
                 </tr>
+                <c:forEach begin="0" end="${project.size()-1 }" var="i">
                 <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
+                    <td><c:out value="${project.get(i).pname }"/></td>
+                    <td><c:out value="${project.get(i).pdate }"/></td>
                 </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
-                <tr>
-                    <td>제모오오오오오오옥</td>
-                    <td>2020/08/21</td>
-                </tr>
+                </c:forEach>
+                
             </table>
             <a href="#" style="padding-left: 470px; color:gray; font-size: 13px;">더보기</a>
         </article>
-
+<!--공지사항-->
+        <article>
+            <img src="${ contextPath }/resources/mainImages/mainNotice.png" width="495px" height="50px" style="margin-left: 20px;">
+            <table id="eaList">
+                <tr style="background: #f6f6f6;">
+                    <th width="400px">제목</th>
+                    <th>등록일</th>
+                </tr>
+                <c:forEach begin="0" end="${notice.size()-1 }" var="i">
+                <tr>
+                    <td><c:out value="${notice.get(i).ntitle }"/></td>
+                    <td><c:out value="${notice.get(i).ndate }"/></td>
+                </tr>
+                </c:forEach>
+               
+            </table>
+            <a href="#" style="padding-left: 470px; color:gray; font-size: 13px;">더보기</a>
+        </article>
         
     </section>
 </body>

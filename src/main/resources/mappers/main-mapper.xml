@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Main">
+
+	<resultMap type="com.kh.itworks.main.model.vo.Main" id="mainNoticeSet">
+		<id property="noticeno" column="NOTICE_NO"/>
+		<result property="ntitle" column="NTITLE"/>
+		<result property="ndate" column="NDATE"/>
+		<result property="corpno" column="CORP_NO"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.main.model.vo.Main" id="mainProjectSet">
+		<id property="pno" column="PNO"/>
+		<result property="pname" column="PNAME"/>
+		<result property="pdate" column="PDATE"/>
+		<result property="pstatus" column="P_STATUS"/>
+	</resultMap>
+	<resultMap type="com.kh.itworks.main.model.vo.Main" id="mainAtStatus">
+		<id property="wno" column="WNO"/>
+		<result property="wstart" column="WSTART"/>
+		<result property="wend" column="WEND"/>
+		<result property="wdate" column="WDATE"/>
+		<result property="mno" column="MNO"/>
+	</resultMap>
+	
+
+
+<select id="selectNoticeMainList" resultMap="mainNoticeSet">
+      SELECT *
+FROM (SELECT 
+ROWNUM RNUM
+, NTITLE , CORP_NO, NOTICE_NO, NDATE
+FROM NOTICE 
+ORDER BY NDATE DESC)
+       WHERE RNUM BETWEEN 1 AND 5
+         AND CORP_NO = #{corpNo}
+         ORDER BY RNUM DESC
+   </select>
+   
+   <select id="selectProjectMainList" resultMap="mainProjectSet">
+   	SELECT * FROM(SELECT
+ROWNUM RNUM
+, PNO
+,PNAME
+, PDATE
+, P_STATUS
+, CORP_NO
+FROM PROJECT
+ORDER BY PDATE DESC)
+WHERE RNUM BETWEEN 1 AND 5
+         AND CORP_NO = #{corpNo}
+         ORDER BY RNUM DESC
+   </select>
+	<select id="selectAtStatus" resultMap="mainAtStatus">
+		SELECT 
+       WNO
+     , MNO
+     , WSTART
+     , WEND
+     , WDATE 
+  FROM WORK_INFO 
+ WHERE MNO = #{mno}
+   AND WDATE = TO_CHAR(SYSDATE, 'YY/MM/DD')
+	</select>
+</mapper>
