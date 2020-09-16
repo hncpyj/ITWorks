@@ -23,7 +23,7 @@
 		margin-top: 80px;
 		margin-bottom: 20px;
 	}
-	input[type=text]{
+	input[type=text], input[type=password] {
 		width: 400px;
 		height: 50px;
 		margin-top: 10px;
@@ -72,14 +72,14 @@
 </head>
 <body>
 <c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-<div class="innerBox" align="center">
+<div class="innerBox" align="center" style="margin-top: 120px;">
 
 	<img src="${contextPath }/resources/images/ItWorksLogo.png">
 	<form action="login.me" method="post">
 	<input type="text" placeholder="회사코드 입력" name="corpNo">
 	<input type="text" placeholder="아이디 입력" name="eid">
 	<input type="password" placeholder="비밀번호 입력" name="epwd">
-	<button class="loginBtn">로그인</button>
+	<button class="loginBtn" style="cursor: pointer;">로그인</button>
 	<div class="saveBox" align="left">
 	<input type="checkbox"><span>아이디 저장</span><br>
 	<input type="checkbox"><span>회사 코드 저장</span>

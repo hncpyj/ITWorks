@@ -25,6 +25,9 @@
 		<result property="dname" column="DNAME"/>
 		<result property="jname" column="JNAME"/>
 	</resultMap>
+	
+	<resultMap type="hashMap" id="selectMap"></resultMap>
+	
 	<select id="loginCheck" resultMap="memberResultSet" parameterType="Member">
 		SELECT D.DNAME, J.JNAME, E.*
   		  FROM EMPLOYEE E
@@ -56,5 +59,38 @@
 	
 	</select>
 	
+	<select id="myPageCheckPwd" parameterType="map" resultType="java.lang.String">
+		SELECT EPWD FROM EMPLOYEE WHERE MNO = #{mno}
+	</select>
 	
+	<insert id="uploadProfile" parameterType="FileBox">
+		INSERT INTO ATTACHMENTS
+		VALUES(SEQ_FILE_NO.NEXTVAL, #{originName}, #{changeName}, #{filePath}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), TO_CHAR(SYSDATE,'hh24:mi:ss'), 
+   		#{fileSize}, #{fileRole}, #{fileType}, NULL, NULL, #{mno}, NULL, NULL, NULL, NULL, #{corp_no}, #{ext}, DEFAULT)
+	</insert>
+	
+	<select id="getProfile" resultType="FileBox">
+		SELECT 
+       ORIGIN_NAME originName,
+       CHANGE_NAME changeName,
+       FILE_PATH filePath,
+       UPLOAD_DATE uploadDate,
+       UPLOAD_TIME uploadTime,
+       EXT ext
+		FROM (SELECT * FROM ATTACHMENTS WHERE MNO = #{mno} AND FILE_TYPE = 'MEMBER' ORDER BY UPLOAD_DATE DESC, UPLOAD_TIME DESC) WHERE ROWNUM = 1
+	</select>
+	
+	<update id="updateUserInfo" parameterType="Member">
+		UPDATE EMPLOYEE
+           SET PHONE = #{phone}
+             , ADDRESS = #{address}
+             , EMAIL = #{email}
+             , BIRTHDAY = #{birthday}
+             , EPWD = #{epwd}
+         WHERE MNO = #{mno}
+	</update>
+	
+	<select id="selectUserInfo" resultMap="memberResultSet">
+		SELECT E.*, J.JNAME, D.DNAME FROM EMPLOYEE E JOIN JOB J ON(E.JID = J.JID) JOIN DEPT D ON(E.DID = D.DID) WHERE MNO = #{mno}
+	</select>
 </mapper>
