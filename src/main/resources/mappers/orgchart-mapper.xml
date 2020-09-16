@@ -3,17 +3,16 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="OrgChart">
-		<resultMap type="com.kh.itworks.member.model.vo.Member" id="memberResultSet">
+		<resultMap type="Member" id="memberResultSet">
 		<id property="mno" column="MNO"/>
-		<result property="eid" column="EID"/>
-		<result property="epwd" column="EPWD"/>
-		<result property="corpNo" column="CORP_NO"/>
-		<result property="rId" column="RID"/>
-		<result property="jId" column="JID"/>
-		<result property="dId" column="DID"/>
+		<result property="rid" column="RID"/>
+		<result property="jid" column="JID"/>
+		<result property="did" column="DID"/>
 		<result property="ename" column="ENAME"/>
+		<result property="epwd" column="EPWD"/>
 		<result property="phone" column="PHONE"/>
 		<result property="email" column="EMAIL"/>
+		<result property="corpNo" column="CORP_NO"/>
 		<result property="address" column="ADDRESS"/>
 		<result property="birthday" column="BIRTHDAY"/>
 		<result property="eno" column="ENO"/>
@@ -22,6 +21,11 @@
 		<result property="status" column="STATUS"/>
 		<result property="approval" column="APPROVAL"/>
 		<result property="internalPhone" column="INTERNAL_PHONE"/>
+		<result property="eid" column="EID"/>
+		<result property="roleNo" column="ROLE_NO"/>
+		<result property="dname" column="DNAME"/>
+		<result property="jname" column="JNAME"/>
+		<result property="jNo" column="JOB_NO"/>
 	</resultMap>
 	
 		<resultMap type="Company" id="companyResultMap">
@@ -41,9 +45,23 @@
 		<result property="dName" column="DNAME"/>
 		<result property="dLevel" column="DLEVEL"/>
 		<result property="corpNo" column="CORP_NO"/>
+		<result property="corpName" column="CORP_NAME"/>
 		<collection property="member" resultMap="memberResultSet"/>
-		<collection property="company" resultMap="companyResultMap"/>
 	</resultMap>
+	
+	<resultMap type="OrgChart" id="deptList">
+		<id property="dId" column="DID"/>
+		<result property="deptNo" column="DEPT_NO"/>
+		<result property="dName" column="DNAME"/>
+		<result property="dLevel" column="DLEVEL"/>
+		<result property="corpNo" column="CORP_NO"/>	
+	</resultMap>
+	
+		<resultMap type="java.util.Map" id="deptMemberCount">
+		<result property="dName" column="DNAME"/>
+		<result property="count" column="COUNT(*)"/>
+		<result property="dLevel" column="DLEVEL"/>
+		</resultMap>
 	
 	<select id="selectOrg" resultMap="orgResultSet">
 		SELECT DEPT_NO, DNAME, DLEVEL, CORP_NO, DID
@@ -61,7 +79,29 @@
 	
 	<insert id="insertDept">
 		INSERT INTO DEPT
-		VALUES ('999',#{deptName},#{level},1,SEQ_DEPT_ID.NEXTVAL)
+		VALUES ('999',#{dName},#{dLevel},1,SEQ_DEPT_ID.NEXTVAL)
 	</insert>
+	
+	<select id="selectEmplyoees" resultMap="orgResultSet">
+		SELECT C.CORP_NAME, D.*, E.*, J.JNAME, J.JOB_NO
+ 		  FROM EMPLOYEE E 
+  		  JOIN DEPT D ON (D.DID = E.DID)
+  		  JOIN COMPANY C ON (C.CORP_NO = E.CORP_NO)
+ 		  JOIN JOB J ON(J.JID = E.JID)
+  		 WHERE C.CORP_NO = 1
+	</select>
+	
+	<select id="selectDepts" resultMap="deptMemberCount">
+		 SELECT *
+  		   FROM DEPT 
+           JOIN (SELECT COUNT(*), DID
+  	       FROM EMPLOYEE 
+ 		  WHERE CORP_NO = 1 
+ 		  GROUP BY DID) USING(DID)
+	</select>
+
+
+
+
 
 </mapper>

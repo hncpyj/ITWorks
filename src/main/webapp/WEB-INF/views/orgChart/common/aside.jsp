@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<title>ItWorks</title>
+<title>ITWorks</title>
 <style type="text/css">
     #asideBack {
         width: 250px;
@@ -43,7 +43,7 @@
             <div class="asideMenuTitle">인사 정보</div>
             <ul>
                 <li><a href="orgChart.org" class="asideMenu">- 조직도</a></li>
-                <li><a href="orgList.org" class="asideMenu">- 조직 목록</a></li>
+                <li><a href="orgList.org" class="asideMenu">- 직원 목록</a></li>
             </ul>
        
       		<div class="asideMenuTitle">조직 관리</div>

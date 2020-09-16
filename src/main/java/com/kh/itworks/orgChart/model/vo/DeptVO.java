@@ -1,6 +1,5 @@
 package com.kh.itworks.orgChart.model.vo;
 
-import com.kh.itworks.member.model.vo.Member;
 
 public class DeptVO implements java.io.Serializable {
 
@@ -9,13 +8,13 @@ public class DeptVO implements java.io.Serializable {
 	private int dLevel;
 	private int corpNo;
 	private int dId;
-	private Member member;
+	private MemberVO member;
 	private CompanyVO company;
 	private String corpName;
 
 	public DeptVO() {}
 
-	public DeptVO(String deptNo, String dName, int dLevel, int corpNo, int dId, Member member, CompanyVO company,
+	public DeptVO(String deptNo, String dName, int dLevel, int corpNo, int dId, MemberVO member, CompanyVO company,
 			String corpName) {
 		super();
 		this.deptNo = deptNo;
@@ -68,11 +67,11 @@ public class DeptVO implements java.io.Serializable {
 		this.dId = dId;
 	}
 
-	public Member getMember() {
+	public MemberVO getMember() {
 		return member;
 	}
 
-	public void setMember(Member member) {
+	public void setMember(MemberVO member) {
 		this.member = member;
 	}
 
@@ -97,4 +96,7 @@ public class DeptVO implements java.io.Serializable {
 		return "DeptVO [deptNo=" + deptNo + ", dName=" + dName + ", dLevel=" + dLevel + ", corpNo=" + corpNo + ", dId="
 				+ dId + ", member=" + member + ", company=" + company + ", corpName=" + corpName + "]";
 	}
+
+	
+	
 }

@@ -95,14 +95,27 @@ section {
 	list-style: none;
 }
 
-#orgArea li {
+.tree li {
 	border: solid 1px #EBEBEB;
 	background: #EBEBEB;
 	list-style-type: none;
-	margin: 60px;
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;	
+	margin-top:30px;
+	margin-right:30px;
+	margin-bottom:30px;
+	margin-left:40px;
+}
+.test li {
+	border: solid 1px #EBEBEB;
+	background: #EBEBEB;
+	list-style-type: none;
+	margin: 50px;
 	vertical-align: middle;
 	height: 30px;
 	line-height: 30px;
+	margin-left:250px;
 }
 
 #2-0 li {
@@ -181,13 +194,13 @@ section {
 	margin:0px;
 	margin-left: 100px;
 	align:center;
-	
 }
 #levelUl li  {
 	list-style-type: none;
 	display:inline-block;
 	padding:0px;
 	text-align:center;
+	width:250px;
 }
 </style>
 </head>
@@ -211,13 +224,12 @@ section {
 			<!-- 본문시작 -->
 			<div style="height:40px;"></div>
 			
-			<div id="levelArea">
+			<div id="levelArea" align="center">
 				<ul id="levelUl">
 					<li>레벨 1</li>
 					<li>레벨 2</li>
 					<li>레벨 3</li>
 					<li>레벨 4</li>
-					<li>레벨 5</li>					
 				</ul>
 			</div>
 			
@@ -226,10 +238,11 @@ section {
 					<li id="1-0-0">
 						<input type="checkbox" id="root">
 							<label for="root">
-								<c:out value="${ dept.get(1).corpName }"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<c:out value="${ dept.get(0).corpName }"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<input id="deptUpdateBtn" type="image" src="./resources/images/orgUpdateBtn.png">&nbsp; 
 									<input id="deptDetail" type="image" src="./resources/images/employees.png">
-					</label>
+							</label>
+					
 							<ul id="2-0" class="test">
 							<c:forEach var="dept" items="${dept}">
 								<c:choose>
@@ -240,10 +253,11 @@ section {
 							src="./resources/images/orgUpdateBtn.png">&nbsp; <input
 							id="deptDetail" type="image"
 							src="./resources/images/employees.png">
-													</a>
+										</a>
 									</c:when>
 								</c:choose>
 							</c:forEach>
+								<ul>
 							<c:forEach var="dept" items="${dept}">
 								<c:choose>
 									<c:when test="${ dept.dLevel eq 3 }">
@@ -256,10 +270,12 @@ section {
 											</label></li>
 									</c:when>
 								</c:choose>
-							</c:forEach>	
+							</c:forEach>
+							</ul>	
+						</li>
 						</ul>
-					</li>
-				</ul>
+					</ul>
+					</ul>
 			</div>
 			
 			<!-- 본문 끝 -->
@@ -279,10 +295,11 @@ function print(){
 }
 
  var addDeptWin = true;
+ var thisWindow;
 $(document).on("click",".updateContent",function(){
 	
 	if(addDeptWin) {	
-	$("#2-0").append('<li><input onchange="print()" type="text" id="inputDept"><button id="updateDeptSendBtn">en</button></li>');	
+	$("#2-0").append('<li id="newDept"><input onchange="print()" type="text" id="inputDept" class="addDept">	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./resources/images/orgUpdateBtn.png">&nbsp; <img id="deptDetail" src="./resources/images/employees.png"></a><button id="updateDeptSendBtn">en</button></li>');	
 	addDeptWin = false;
 	} 
 });
@@ -291,6 +308,7 @@ $(document).on("click","#updateDeptSendBtn",function(){
 	var deptName = temps; 
 	var temp = $(".test").attr('id').split('-');
 	var level = temp[0];
+	var addImg = '';
 	
 	console.log(level);
 	console.log(deptName);
@@ -300,12 +318,15 @@ $(document).on("click","#updateDeptSendBtn",function(){
 		type: "get",
 		data: {deptName : deptName,
 			   level : level},
-		success: function(data) {
-			alert(data);
-		},
+		success : function(data) {
+			if(data == "1" ) {
+				$("#newDept").text(deptName);
+				$("#newDept").img();
+				$("#inputDept").remove(); 
+			}},
 		error: function() {
 			console.log("에러");
-		}	
+			}	
 });
 });
 </script>

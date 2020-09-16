@@ -2,6 +2,7 @@ package com.kh.itworks.orgChart.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,18 @@ public class OrgChartServiceImpl implements OrgChartService {
 	public int insertDept(DeptVO dept) {
 		
 		return ocd.insertDept(sqlSession, dept);
+	}
+
+	@Override
+	public ArrayList<DeptVO> selectEmployees(DeptVO dept) {
+
+		return ocd.selectMembersList(sqlSession, dept);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDefaultList(DeptVO dept) {
+		
+		return ocd.selectDeptCount(sqlSession, dept);
 	}
 
 }

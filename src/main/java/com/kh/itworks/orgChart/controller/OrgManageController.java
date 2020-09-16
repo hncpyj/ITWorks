@@ -24,26 +24,26 @@ public class OrgManageController {
 
 	@ResponseBody
 	@RequestMapping("second.org")
-	public void sendPostMappingMessageFromRequestParam(HttpServletResponse response,
+	public String sendPostMappingMessageFromRequestParam(HttpServletResponse response,
 															HttpServletRequest request, DeptVO dept) throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		
-	    String deptName = request.getParameter("deptName");
-	    int level = Integer.parseInt(request.getParameter("level"));
-	    
-	    dept.setdName(deptName);
-	    dept.setdLevel(level);
-	    
+	    String dName = request.getParameter("deptName");
+	    int dLevel = Integer.parseInt(request.getParameter("level"));
+	    	    
+	    dept.setdName(dName);
+	    dept.setdLevel(dLevel);
+	    	    
 	    int result = ocs.insertDept(dept);
-	    
-	    System.out.println(result);
+	    String fresult = "";
 	    
 	    if(result > 0) {
-	    	ocs.selectDeptList(dept);
+	    	fresult = "1";
+	    } else {
+	    	fresult = "0";
 	    }
-	    
-	    System.out.println(dept);
-	    
-			}	
-	
+	    	    
+	    return fresult;
+	}	
+		
 }
