@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,7 +64,7 @@
                 <li><a href="selectVacationStatus.at" class="asideMenu">- 휴가 현황</a></li>
                 <li><a href="insertVacationForm.at" class="asideMenu">- 휴가 신청</a></li>
             </ul>
-        
+        <c:if test="${loginUser.eid eq 'admin' }">
         <div class="asideMenuTitle">근태 관리</div>
             <ul>
                 <li><a href="selectATManagement.at" class="asideMenu">- 기본 설정</a></li>
@@ -78,6 +79,7 @@
                 <li><a href="selectVacationList.at" class="asideMenu">- 휴가 신청 관리</a></li>
                 <!-- <li><a href="insertRewardVacation.at" class="asideMenu">- 포상 휴가 생성</a></li> -->
             </ul>
+        </c:if>
         </div>
 
     </aside>

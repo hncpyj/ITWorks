@@ -10,7 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
     #asideBack {
-        width: 250px;
+        width: 270px;
         height: 1200px;
         background: #E4EBF3;
     }
@@ -37,7 +37,7 @@
     }
     #atTimeCheck {
         width: 203px; 
-        height: 27px; 
+        height: 50px; 
         background: white; 
         border: none; 
         margin: auto; 
@@ -48,7 +48,7 @@
     }
     #goAtManage {
         width: 203px; 
-        height: 27px; 
+        height: 30px; 
         background: #004771; 
         border: none; 
         margin: auto; 
@@ -165,13 +165,17 @@
                 <div class="timeText" id="todayDay"></div>
                 <div class="timeText" id="nowTime"></div>
                 <div id="atTimeCheck">
+                <div style="margin-bottom: 5px;">
                     <b>출근</b>  <!-- 출근등록시간 출력(미등록시 미등록) --><span id="start">미등록</span><!--출근등록시간 출력 끝-->
-                    &nbsp;&nbsp;ㅣ&nbsp;&nbsp;
+                </div>
+                <div>
+                    
                     <b>퇴근</b>  <!-- 퇴근등록시간 출력(미등록시 미등록) --><span id="end">미등록</span><!--퇴근등록시간 출력 끝--> 
                 </div>
-                <div id="goAtManage">
-                    출퇴근 등록
                 </div>
+                <button type="button" id="goAtManage" onclick="location.href='selectAtStatus.at'">
+                    출퇴근 등록
+                </button>
                 
                 <!-- 달력 -->
                 
@@ -392,9 +396,7 @@
 </c:if>  
 <script type="text/javascript">
             	
-            	$("#goAtMAnage").click(function() {
-					location.href="selectAtStatus.at";
-				});
+            	
             	$(document).ready(function() {
             		//시계, 날짜
             		clock();
@@ -404,12 +406,19 @@
             		
             		for(var i = 0; i < size; i++){
             			if($("#wstart"+i).val() != null){
-            				$("#start").text($("#wstart"+i).val());
+            				$("#start").text($("#wstart0").val());
             			}
             			if($("#wend"+i).val() != null){
             				$("#end").text($("#wend"+i).val());
             			}
             		}
+            		
+            		/* if(${at} != null){
+            			$("#start").text($("#wstart0").val());
+            			if($("#wend1").val() != null){
+            				$("#end").text($("#wend1").val());
+            			}
+            		} */
             		
             		
 				});

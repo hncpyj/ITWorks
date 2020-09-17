@@ -59,7 +59,7 @@
     }
     
     .tableArea {
-		width:60%;
+		width:50%;
 		display: inline-block;
 	}
 	/* 휴지통 파일 리스트 */
@@ -102,7 +102,7 @@
 	#filebox {
 		display: inline-block;
 		position: relative;
-		width: 305px;
+		width: 315px;
 	    height: 608px;
 		margin: 20px;
 		margin-left: 40px;
