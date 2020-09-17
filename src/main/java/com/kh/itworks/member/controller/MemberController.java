@@ -127,10 +127,13 @@ public class MemberController {
 	public String goMyPage(Model model, @SessionAttribute("loginUser") Member loginUser) {
 		
 		Member userInfo = ms.selectUserInfo(loginUser.getMno());
+	    FileBox menubarProfile = ms.getProfile(loginUser.getMno());
+
 		
 		System.out.println(userInfo);
 		
 		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("profile", menubarProfile);
 		
 		return "myPage/myPage";
 	}

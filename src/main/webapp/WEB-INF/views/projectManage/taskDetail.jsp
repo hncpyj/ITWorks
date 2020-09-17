@@ -456,9 +456,9 @@
 	            <c:if test="${ !empty taskInfo.reply }">
 		            <c:forEach var="r" items="${ taskInfo.reply }">
 		                <tr>
-		                	<td style="width: 20px;"></td>
-		                    <td style="width: 40px;"><div class="commentProfile"></div></td>
-		                    <th width="80px" style="font-size: 13px;">
+		                	<!-- <td style="width: 20px;"></td>
+		                    <td style="width: 40px;"><div class="commentProfile"></div></td> -->
+		                    <th width="100px" style="font-size: 13px; color: #004771;">
 		                    	<c:out value="${ r.ename }"/>
 		                    </th>
 		                    <td style="font-size: 13px; word-break:break-all;">

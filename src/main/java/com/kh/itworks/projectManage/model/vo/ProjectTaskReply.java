@@ -11,11 +11,13 @@ public class ProjectTaskReply {
 	private String ename;
 	private String pno;
 	private int writerMno;
+	private String changeName;
+	private String ext;
 	
 	public ProjectTaskReply() {}
 
 	public ProjectTaskReply(String taskReplyNo, String tcontent, String tdate, String ttime, String tstatus,
-			String pmemberId, String ename, String pno, int writerMno) {
+			String pmemberId, String ename, String pno, int writerMno, String changeName, String ext) {
 		super();
 		this.taskReplyNo = taskReplyNo;
 		this.tcontent = tcontent;
@@ -26,6 +28,8 @@ public class ProjectTaskReply {
 		this.ename = ename;
 		this.pno = pno;
 		this.writerMno = writerMno;
+		this.changeName = changeName;
+		this.ext = ext;
 	}
 
 	public String getTaskReplyNo() {
@@ -100,10 +104,28 @@ public class ProjectTaskReply {
 		this.writerMno = writerMno;
 	}
 
+	public String getChangeName() {
+		return changeName;
+	}
+
+	public void setChangeName(String changeName) {
+		this.changeName = changeName;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+
 	@Override
 	public String toString() {
 		return "ProjectTaskReply [taskReplyNo=" + taskReplyNo + ", tcontent=" + tcontent + ", tdate=" + tdate
 				+ ", ttime=" + ttime + ", tstatus=" + tstatus + ", pmemberId=" + pmemberId + ", ename=" + ename
-				+ ", pno=" + pno + ", writerMno=" + writerMno + "]";
+				+ ", pno=" + pno + ", writerMno=" + writerMno + ", changeName=" + changeName + ", ext=" + ext + "]";
 	}
+
+	
 }

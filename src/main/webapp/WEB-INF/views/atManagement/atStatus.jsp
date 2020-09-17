@@ -76,7 +76,7 @@
     	border : 0;
     	background-color: #004771;
     	color: white;
-    	width: 70px;
+    	width: 90px;
     	height: 30px;
     }
     .btn{
@@ -86,7 +86,7 @@
         
     }
     .timeText{
-    	width: 270px;
+    	width: 320px;
     	text-align: center;
     }
     input[type=text]{
@@ -175,15 +175,15 @@ table.calendar td{
             <div class="time">
             <form action="insertAtStatus.at" method="post">
             
-            	<table id="btnTable">
+            	<table id="btnTable" style="width: 1000px;">
             		<tr>
             			<td class="timeText" id="todayDay"></td>
-            			<td><input name="outsideWork" type="checkbox"><span>외근 출퇴근 시에는 체크박스를 체크해주세요.</span></td>
+            			<td><input name="outsideWork" type="checkbox"><span style="font-size: 15px;">외근 출퇴근 시에는 체크박스를 체크해주세요.</span></td>
             			<td rowspan="2"><a class="btn" href="insertObjectionForm.at">출/퇴근 이의 신청</a></td>
             		</tr>
             		<tr>
             			<td class="timeText" id="nowTime"></td>
-            			<td width="350px"><button id="startBtn" class="timeBtn">출근</button><input id="startText" type="text" disabled></td>
+            			<td width="400px"><button id="startBtn" class="timeBtn">출근</button><input id="startText" type="text" disabled></td>
             			
             		</tr>
             		<tr>
@@ -212,24 +212,24 @@ table.calendar td{
             		
 				});
             			$("#endBtn").click(function() {
-            		if($("#endText").val() != null){
+            		if($("#endText").val() != ""){
 	            			alert("이미 퇴근이 완료되었습니다.");
 							
             			$("#endBtn").attr("disabled", true);
             		} else{
-            			prompt("퇴근하시겠습니까?");
-            			$("#endBtn").attr("disabled", false);
+            			confirm("퇴근하시겠습니까?");
+            			
             		}
 						});
             	
             			$("#startBtn").click(function() {
-            		if($("#startText").val() != null){
+            		if($("#startText").val() != ""){
 	            			alert("이미 출근이 완료되었습니다.");
 							
             			$("#startBtn").attr("disabled", true);
             		} else{
-            			prompt("출근하시겠습니까?");
-            			$("#startBtn").attr("disabled", false);
+            			confirm("출근하시겠습니까?");
+            			
             		}
 						});
             	function clock() {

@@ -131,8 +131,10 @@
 		<result property="ttime" column="TTIME"/>
 		<result property="tstatus" column="TSTATUS"/>
 		<result property="pmemberId" column="PMEMBER_ID"/>
-		<result property="ename" column="ename"/>
-		<result property="writerMno" column="mno"/>
+		<result property="ename" column="ENAME"/>
+		<result property="writerMno" column="MNO"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="ext" column="EXT"/>
 	</resultMap>
 	
 	<resultMap type="ProjectNotice" id="notice">
