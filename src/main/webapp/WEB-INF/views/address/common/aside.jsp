@@ -6,15 +6,66 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="icon" href="${contextPath}/resources/images/favicon.ico"
-	type="image/x-icon">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
+.switch {
+  width: 180px;
+  height: 30px;
+  border: 0.5px solid #29A2F7;
+  color: #929292;
+  font-size: 16px;
+  border-radius: 0;
+}
+
+.quality {
+  position: relative;
+  display: inline-block;
+  width: 88px;
+  height: 100%;
+  line-height: 30px;
+}
+.quality:first-child label {
+  border-radius: 0px 0 0 0px;
+}
+.quality:last-child label {
+  border-radius: 0 0px 0px 0;
+}
+.quality label {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.4s, color 0.4s, background-color 0.4s;
+}
+.quality input[type="radio"] {
+  appearance: none;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.quality input[type="radio"]:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.quality input[type="radio"]:checked ~ label {
+  background-color: #fffff;
+  color: #29A2F7;
+  border: 0.5px solid #29A2F7;
+}
+.quality input[type="radio"]:active ~ label {
+  transform: scale(1.05);
+}
+
+
+
 #addAddressWindow {
 	display: none;
 	width: 500px;
-	height:600px;
+	height: 600px;
 	padding: 20px 20px 20px 20px;
 	background-color: #fefefe;
 	border: 1px solid #888;
@@ -144,42 +195,52 @@ nav li {
 	width: 175px;
 	height: 48px;
 	cursor: pointer;
-}	
+}
+
 .modal-title {
-	margin-bottom:10px;
+	margin-bottom: 10px;
 }
+
 #add-address-table {
-	margin-top:10px;
-	margin-bottom:10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	border-collapse: separate;
-	border-spacing:0 5px;
+	border-spacing: 0 5px;
 }
+
 input {
-	height:30px;
-	radius:0;
+	height: 30px;
+	radius: 0;
 }
+
 #dept, #position {
-	width:30%;
+	width: 30%;
 }
+
 #company {
-	width:31%;
+	width: 31%;
 }
+
 .firstLabel {
-	width:50px;
-	font-size:12px;
+	width: 50px;
+	font-size: 16px;
 }
+
 .secondInput {
-	margin-left:20px;
-	width:350px;
+	margin-left: 20px;
+	width: 350px;
 }
+
 #add-address-table select {
-	height:35px;
+	height: 35px;
 }
+
 #saveBtn {
-	float:right;
+	float: right;
 }
+
 #conSaveBtn {
-	float:right;
+	float: right;
 }
 </style>
 </head>
@@ -187,20 +248,24 @@ input {
 	<aside>
 		<div id="asideBack">
 			<div align="center" id="addAddress">
-				<button id="addAddressBtn" class="button modal-open"
-					onclick="javascript:openModal('modal1');"></button>
+				<button id="addAddressBtn" class="button modal-open"></button>
 			</div>
 			<div id="asideMenuTitle">
 				<a href="importantAddress.ad">중요 주소록</a>
 			</div>
-			<div id="asideMenuTitle">개인 주소록</div>
+			<div id="asideMenuTitle">
+				<a href="mainAddress.ad">개인 주소록</a>
+			</div>
 			<ul>
 				<li><a href="mainAddress.ad" class="asideMenu">- 전체 주소록</a></li>
-				<li><a href="#" class="asideMenu">- 태그명</a></li>
+			<!-- 	<li><a href="#" class="asideMenu">- 태그명</a></li>  -->
 			</ul>
 			<div id="asideMenuTitle">
 				<a href="shareAddress.ad">공유 주소록</a>
 			</div>
+			<ul>
+				<li><a href="shareAddress.ad" class="asideMenu">- 전체 주소록</a></li>
+			</ul>		
 		</div>
 	</aside>
 	<section>
@@ -208,20 +273,29 @@ input {
 		<div id="addAddressWindow">
 		<div class="modal-title"><p>주소 추가</p></div>
 		<hr>
-			<form>
+			<form action="insert.ad" method="post">
 				<table id="add-address-table">
 					<tr>
 						<td style="padding-bottom:5px;" colspan="2">
-							<button type="button">개인주소록</button><button type="button">공유주소록</button>
+							<div class='switch'>
+								<div class='quality'>
+									<input checked id='q1' name='conType' type='radio' value='PRV'>
+									<label for='q1'>개인주소록</label>
+								</div>
+								<div class='quality'>
+									<input id='q2' name='conType' type='radio' value='SHR'> 
+									<label for='q2'>공유주소록</label>
+								</div>
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="firstLabel"><label>이름 *</label></td>
-						<td class="secondInput"><input type="text" placeholder="이름을 입력하세요" style="width:100%;"></td>
+						<td class="secondInput"><input type="text" placeholder="이름을 입력하세요" name="conName" style="width:100%;"></td>
 					</tr>
 					<tr>
 						<td class="firstLabel"><label>이메일</label></td>
-						<td class="secondInput"><input type="email" placeholder="이메일을 입력하세요" style="width:100%;"></td>
+						<td class="secondInput"><input type="email" placeholder="이메일을 입력하세요" name="email" style="width:100%;"></td>
 					</tr>
 					<tr>
 						<td class="firstLabel"><label>전화</label></td>
@@ -229,7 +303,7 @@ input {
 							<select style="float:left; margin-right:5px;">
 								<option>휴대폰</option>	
 							</select>
-							<input type="text" style="display:inline-block; width:78%;">
+							<input type="text" style="display:inline-block; width:78%;" name="conPhone">
 						</td>
 					</tr>
 					<tr>
@@ -245,33 +319,37 @@ input {
 					<tr>
 						<td class="firstLabel"><label>회사</label></td>
 						<td class="secondInput">
-							<input type="text" placeholder="회사" id="company">
-							<input type="text" placeholder="부서" id="dept">
-							<input type="text" placeholder="직급" id="position">
+							<input type="text" placeholder="회사" id="company" name="conCorp">
+							<input type="text" placeholder="부서" id="dept" name="deptNo">
+							<input type="text" placeholder="직급" id="position" name="jobNo">
 						</td>
 					</tr>
 					<tr>
 						<td class="firstLabel"><label>주소</label></td>
-						<td class="secondInput"><input type="text" placeholder="주소를 입력하세요" style="width:100%;"></td>
+						<td class="secondInput"><input type="text" placeholder="주소를 입력하세요" style="width:100%;" name="realAddress"></td>
 					</tr>
 					<tr>
 						<td class="firstLabel"><label>홈페이지</label></td>
-						<td class="secondInput"><input type="text" placeholder="주소를 입력하세요" style="width:100%;"></td>
+						<td class="secondInput"><input type="text" placeholder="주소를 입력하세요" style="width:100%;" name="homePage"></td>
 					</tr>
 					<tr>
 						<td class="firstLabel"><label>생일</label></td>
-						<td class="secondInput"><input type="text" placeholder="YYYYMMDD" style="width:100%;"></td>
+						<td class="secondInput"><input type="text" placeholder="YYYYMMDD" style="width:100%;" name="conBirthDay"></td>
 					</tr>
 					<tr>
 						<td class="firstLabel" style="padding-top:0;"><label>메모</label></td>
-						<td class="secondInput"><textarea style="resize:none;width:100%; height:80px;" placeholder="내용을 입력하세요"></textarea></td>
+						<td class="secondInput"><textarea style="resize:none;width:100%; height:80px;" placeholder="내용을 입력하세요" name="conContent"></textarea></td>
 					</tr>
 				</table>	
 				<hr>	
+				<input type="hidden" value="999" name="corpNo">
+				<input type="hidden" value="T10" name="tagId">
+				<input type="hidden" value="999" name="mNo">
+				<input type="hidden" value="999" name="roleNo">
+				
 				<div style="height:30px;"></div>	
-				<button class="modal_close_btn">취소</button>
-				<button id="saveBtn">저장</button>
-				<button id="conSaveBtn">저장 후 계속 추가</button>
+				<button class="modal_cancle_btn" type="reset">취소</button>
+				<button id="saveBtn" type="submit">저장</button>
 			</form>
 
 		</div>
@@ -279,9 +357,9 @@ input {
 </body>
 <script>
 
-	function modal(id) {
+	function modalLayer(id) {
 		var zIndex = 9999;
-		var modal = document.getElementById(id);
+		var modalLayer = document.getElementById(id);
 
 		// 모달 div 뒤에 희끄무레한 레이어
 		var bg = document.createElement('div');
@@ -299,13 +377,13 @@ input {
 		document.body.append(bg);
 
 		// 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-		modal.querySelector('.modal_close_btn').addEventListener('click',
+		modalLayer.querySelector('.modal_cancle_btn').addEventListener('click',
 				function() {
 					bg.remove();
-					modal.style.display = 'none';
+					modalLayer.style.display = 'none';
 				});
 
-		modal
+		modalLayer
 				.setStyle({
 					position : 'fixed',
 					display : 'block',
@@ -333,7 +411,7 @@ input {
 	document.getElementById('addAddressBtn').addEventListener('click',
 			function() {
 				// 모달창 띄우기
-				modal('addAddressWindow');
+				modalLayer('addAddressWindow');
 			});
 </script>
 </html>

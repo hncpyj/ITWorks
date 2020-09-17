@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Address">
+	<resultMap type="Address" id="addressResultSet">
+		<id property="contactsNo" column="CONTACTS_NO" />
+		<id property="corpNo" column="CORP_NO" />
+		<result property="conType" column="CON_TYPE" />
+		<result property="conName" column="CON_NAME" />
+		<result property="email" column="CON_EMAIL" />
+		<result property="conPhone" column="CON_PHONE" />
+		<result property="conCorp" column="CON_CORP" />
+		<result property="homePage" column="CON_HOMEPAGE" />
+		<result property="conBirthDay" column="CON_BIRTHDAY" />
+		<result property="conContent" column="CON_CONTENT" />
+		<result property="importCon" column="IMPORT_CON" />
+		<result property="roleNo" column="ROLE_NO" />
+		<result property="tagNo" column="TAG_NO" />
+		<result property="deptNo" column="DEPTNO" />
+		<result property="jobNo" column="JOBNO" />
+		<result property="mNo" column="MNO" />
+		<result property="tagName" column="TAG_NAME" />
+		<result property="tagId" column="TID" />
+		<result property="realAddress" column="ADDRESS" />
+	</resultMap>
+
+	<!--  주소록등록 -->
+	<insert id="insertAddress" parameterType="Address">
+		INSERT INTO CONTACTS
+		VALUES ('CONN'||SEQ_CONTACTS_NO.NEXTVAL,
+		#{conType},#{conName},#{email},#{conPhone},
+		#{conCorp},#{homePage},#{conBirthDay},#{conContent},DEFAULT,
+		#{corpNo},#{roleNo},#{tagId},#{deptNo},#{jobNo},#{mNo},#{realAddress})
+	</insert>
+
+	<!-- 메인주소록 리스트 게시글 개수 부르기 -->
+	<select id="listCountMain" resultType="_int">
+		SELECT COUNT(*)
+ 		  FROM CONTACTS
+		 WHERE CON_TYPE = 'PRV'
+   		   AND CORP_NO = 999
+           AND MNO = 999
+	</select>
+
+ 	<!-- 회사별 직원별 내 개인주소록 리스트 불러오기  -->
+	<select id="selectMainAddressList" resultMap="addressResultSet">
+		SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, C.CON_HOMEPAGE, 
+               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO,C.IMPORT_CON,CON_BIRTHDAY
+		  FROM CONTACTS C
+          JOIN TAG T USING(TID)
+         WHERE C.CON_TYPE = 'PRV'
+           AND C.CORP_NO = 999
+           AND C.MNO = 999
+		 ORDER BY CONTACTS_NO DESC 
+	</select>
+	
+	<!-- 공유주소록 갯수 -->
+	<select id="listCountShare" resultType="_int">
+		SELECT COUNT(*)
+ 		  FROM CONTACTS
+ 		 WHERE CON_TYPE = 'SHR'
+   	       AND CORP_NO = 999
+	</select>
+
+	<!-- 공유주소록 리스트 -->
+	<select id="selectShareAddressList" resultMap="addressResultSet">
+		SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, C.CON_HOMEPAGE, 
+               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO,C.IMPORT_CON,CON_BIRTHDAY
+		  FROM CONTACTS C
+          JOIN TAG T USING(TID)
+         WHERE C.CON_TYPE = 'SHR'
+           AND C.CORP_NO = 999
+		 ORDER BY CONTACTS_NO DESC 
+	</select>
+	
+		<!-- 중요주소록 갯수 -->
+	<select id="importantListCount" resultType="_int">
+		SELECT COUNT(*)
+  		  FROM CONTACTS
+ 		 WHERE IMPORT_CON = 'Y'
+   		   AND CORP_NO = 999
+   		   AND MNO = 999
+	</select>
+
+	<!-- 중요주소록 리스트 -->
+	<select id="selectImportantAddressList" parameterType="_int" resultMap="addressResultSet">
+		SELECT C.CON_NAME, C.CON_EMAIL, C.CON_PHONE, C.CON_CORP, C.CON_HOMEPAGE, 
+               C.CON_CONTENT, T.TAG_NAME,C.DEPTNO, C.JOBNO,C.ADDRESS, C.CONTACTS_NO,C.IMPORT_CON,CON_BIRTHDAY
+		  FROM CONTACTS C
+          JOIN TAG T USING(TID)
+         WHERE IMPORT_CON = 'Y'
+           AND C.CORP_NO = 999
+           AND C.MNO = 999
+		 ORDER BY CONTACTS_NO DESC 
+	</select>
+
+	<!-- 개인주소록 삭제 -->
+	<delete id="deleteMainAddress" parameterType="_int">
+		DELETE 
+		  FROM CONTACTS 
+		 WHERE CONTACTS_NO = 'CONN'||#{contactsNo}
+	</delete>
+	
+	<!-- 주소록 중요상태값 변경 -->
+	<update id="updateImportStatus">
+		UPDATE CONTACTS 
+ 		   SET IMPORT_CON = #{importCon}
+ 	     WHERE CONTACTS_NO = #{contactsNo}
+	</update>
+	
+	<select id="confirmImport" resultMap="addressResultSet">
+		SELECT IMPORT_CON 
+ 		  FROM CONTACTS
+ 	     WHERE CONTACTS_NO = #{contactsNo}
+	</select>
+
+	<update id="updateAddress" parameterType="Address">
+		UPDATE CONTACTS 
+   		   SET CON_NAME = #{conName},
+               CON_EMAIL = #{email},
+               CON_PHONE = #{conPhone},
+               CON_CORP = #{conCorp},
+               CON_HOMEPAGE = #{homePage},
+               CON_BIRTHDAY = #{conBirthDay},
+               CON_CONTENT = #{conContent},
+               ADDRESS = #{realAddress},
+               DEPTNO = #{deptNo},
+               JOBNO = #{jobNo}     
+         WHERE CONTACTS_NO = #{contactsNo}
+	</update>
+
+</mapper>
