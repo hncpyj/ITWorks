@@ -292,7 +292,7 @@
 			$(document).on("click", ".profileBtn", function() {
 				var formData = $('#uploadProfileForm')[0];
 				var data = new FormData(formData);
-				
+				 
 				$.ajax({
 					url: "uploadProfile.me",
 					data: data,
@@ -301,7 +301,7 @@
 			        contentType: false,
 					success: function(data) {
 						console.log("됐다");
-						location.reload();
+						location.href="goMyPage.me";
 					},
 					error: function(data) {
 						console.log("안됨");
