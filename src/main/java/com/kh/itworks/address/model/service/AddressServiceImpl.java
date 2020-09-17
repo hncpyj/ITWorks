@@ -29,39 +29,39 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public ArrayList<AddressVO> pageList(PageInfo pi) {
+	public ArrayList<AddressVO> pageList(PageInfo pi, AddressVO address) {
 		
-		return ad.pageList(sqlSession, pi);
+		return ad.pageList(sqlSession, pi, address);
 	}
 
 	@Override
-	public int countAddressList() {
+	public int countAddressList(AddressVO address) {
 		
-		return ad.countAddressList(sqlSession);
+		return ad.countAddressList(sqlSession, address);
 	}
 
 	@Override
-	public ArrayList<AddressVO> sharePageList(PageInfo pi) {
+	public ArrayList<AddressVO> sharePageList(PageInfo pi,AddressVO address) {
 		
-		return ad.sharePageList(sqlSession, pi);
+		return ad.sharePageList(sqlSession, pi, address);
 	}
 
 	@Override
-	public int countShareAddressList() {
+	public int countShareAddressList(AddressVO address) {
 		
-		return ad.countShareAddressList(sqlSession);
+		return ad.countShareAddressList(sqlSession, address);
 	}
 
 	@Override
-	public ArrayList<AddressVO> importPageList(PageInfo pi) {
+	public ArrayList<AddressVO> importPageList(PageInfo pi,AddressVO address) {
 		
-		return ad.importantPageList(sqlSession, pi);
+		return ad.importantPageList(sqlSession, pi, address);
 	}
 
 	@Override
-	public int countImportantAddressList() {
+	public int countImportantAddressList(AddressVO address) {
 		
-		return ad.countImportantAddressList(sqlSession);
+		return ad.countImportantAddressList(sqlSession, address);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.itworks.address.model.exception.AddressMainSelectListCountException;
@@ -22,6 +23,7 @@ import com.kh.itworks.address.model.service.AddressService;
 import com.kh.itworks.address.model.vo.AddressVO;
 import com.kh.itworks.address.model.vo.PageInfo;
 import com.kh.itworks.address.model.vo.Pagination;
+import com.kh.itworks.member.model.vo.Member;
 
 @Controller
 public class AddressController {
@@ -30,7 +32,7 @@ public class AddressController {
 	private AddressService as;
 	
 	@RequestMapping("/insert.ad")
-	public String insertAddress(Model model, AddressVO address) {
+	public String insertAddress(Model model, AddressVO address, @SessionAttribute("loginUser") Member loginUser) {
 
 		int result = as.insertAddress(address);
 
@@ -39,7 +41,7 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/mainAddress.ad")
-	public String addressList(HttpServletRequest request, HttpServletResponse response) 
+	public String addressList(HttpServletRequest request, HttpServletResponse response,  AddressVO address,  @SessionAttribute("loginUser") Member loginUser) 
 			throws AddressMainSelectListCountException, AddressMainSelectListException {
 
 		int currentPage = 1;
@@ -48,11 +50,13 @@ public class AddressController {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 				
-		int listCount = as.countAddressList();
+		address.setCorpNo(loginUser.getCorpNo());
+		address.setmNo(loginUser.getMno());
+		int listCount = as.countAddressList(address);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<AddressVO> list = as.pageList(pi);
+		ArrayList<AddressVO> list = as.pageList(pi, address);
 		
 		request.setAttribute("list", list);
 		request.setAttribute("pi", pi);
@@ -62,19 +66,21 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/importantAddress.ad")
-	public String importantAddress(HttpServletRequest request, HttpServletResponse response) {
+	public String importantAddress(HttpServletRequest request, HttpServletResponse response,  AddressVO address, @SessionAttribute("loginUser") Member loginUser) {
 		
 		int currentPage = 1;
 		
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-				
-		int listCount = as.countImportantAddressList();
+			
+		address.setCorpNo(loginUser.getCorpNo());
+		address.setmNo(loginUser.getMno());
+		int listCount = as.countImportantAddressList(address);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<AddressVO> list = as.importPageList(pi);
+		ArrayList<AddressVO> list = as.importPageList(pi, address);
 		
 		request.setAttribute("list", list);
 		request.setAttribute("pi", pi);
@@ -85,19 +91,21 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/shareAddress.ad")
-	public String shareAddress(HttpServletRequest request, HttpServletResponse response) {
+	public String shareAddress(HttpServletRequest request, HttpServletResponse response,  AddressVO address, @SessionAttribute("loginUser") Member loginUser) {
 		
 		int currentPage = 1;
 		
 		if(request.getParameter("currentPage ") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-				
-		int listCount = as.countShareAddressList();
+			
+		address.setCorpNo(loginUser.getCorpNo());
+		address.setmNo(loginUser.getMno());
+		int listCount = as.countShareAddressList(address);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<AddressVO> list = as.sharePageList(pi);
+		ArrayList<AddressVO> list = as.sharePageList(pi, address);
 		
 		request.setAttribute("list", list);
 		request.setAttribute("pi", pi);
@@ -107,7 +115,7 @@ public class AddressController {
 	}
 
 	@RequestMapping("/delete.ad")
-	public String deleteAddress(HttpServletRequest request, HttpServletResponse response) {
+	public String deleteAddress(HttpServletRequest request, HttpServletResponse response, @SessionAttribute("loginUser") Member loginUser) {
 		
 		String num = request.getParameter("checkboxs");
 		int contactsNo = Integer.parseInt(num.substring(4));		
@@ -117,7 +125,7 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/importDelete.ad")
-	public String deleteImportAddress(HttpServletRequest request, HttpServletResponse response) {
+	public String deleteImportAddress(HttpServletRequest request, HttpServletResponse response, @SessionAttribute("loginUser") Member loginUser) {
 		
 		String num = request.getParameter("checkboxs");
 		int contactsNo = Integer.parseInt(num.substring(4));
@@ -128,7 +136,7 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/shareDelete.ad")
-	public String deleteShareAddress(HttpServletRequest request, HttpServletResponse response) {
+	public String deleteShareAddress(HttpServletRequest request, HttpServletResponse response, @SessionAttribute("loginUser") Member loginUser) {
 		
 		String num = request.getParameter("checkboxs");
 		int contactsNo = Integer.parseInt(num.substring(4));
@@ -139,20 +147,21 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/search.ad")
-	public String searchValue(HttpServletRequest request, HttpServletResponse response) {
+	public String searchValue(HttpServletRequest request, HttpServletResponse response, @SessionAttribute("loginUser") Member loginUser) {
 		
 		return "";
 	}
 
 	@ResponseBody
 	@RequestMapping("changeStatus.ad")
-	public String changeConImportStatus(HttpServletRequest request, HttpServletResponse response) {
+	public String changeConImportStatus(HttpServletRequest request,  AddressVO address, HttpServletResponse response, @SessionAttribute("loginUser") Member loginUser) {
 
 		String contactsNo = request.getParameter("conNo");
 		String tempsCon = request.getParameter("conStatus");
 		String importCon = "";
-			
-		AddressVO address = new AddressVO();
+		address.setCorpNo(loginUser.getCorpNo());
+		address.setmNo(loginUser.getMno());	
+		
 		
 		if(tempsCon.equals("Y")) {
 			importCon = "N";
@@ -170,11 +179,15 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/update.ad")
-	public String updateAddress(AddressVO address, HttpServletRequest request, HttpServletResponse response) 
+	public String updateAddress(AddressVO address, HttpServletRequest request, HttpServletResponse response, @SessionAttribute("loginUser") Member loginUser) 
 			throws AddressMainSelectListCountException, AddressMainSelectListException {
 		
+		address.setCorpNo(loginUser.getCorpNo());
+		address.setmNo(loginUser.getMno());	
+		
 		int result = as.updateAddress(address);
+		
 			
-		return addressList(request, response);
+		return addressList(request, response, address, loginUser);
 	}
 }

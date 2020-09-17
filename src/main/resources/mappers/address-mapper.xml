@@ -39,8 +39,8 @@
 		SELECT COUNT(*)
  		  FROM CONTACTS
 		 WHERE CON_TYPE = 'PRV'
-   		   AND CORP_NO = 999
-           AND MNO = 999
+   		   AND CORP_NO = #{corpNo}
+           AND MNO = #{mNo}
 	</select>
 
  	<!-- 회사별 직원별 내 개인주소록 리스트 불러오기  -->
@@ -50,8 +50,8 @@
 		  FROM CONTACTS C
           JOIN TAG T USING(TID)
          WHERE C.CON_TYPE = 'PRV'
-           AND C.CORP_NO = 999
-           AND C.MNO = 999
+           AND C.CORP_NO = #{corpNo}
+           AND C.MNO = #{mNo}
 		 ORDER BY CONTACTS_NO DESC 
 	</select>
 	
@@ -60,7 +60,7 @@
 		SELECT COUNT(*)
  		  FROM CONTACTS
  		 WHERE CON_TYPE = 'SHR'
-   	       AND CORP_NO = 999
+   	       AND CORP_NO = #{corpNo}
 	</select>
 
 	<!-- 공유주소록 리스트 -->
@@ -70,7 +70,7 @@
 		  FROM CONTACTS C
           JOIN TAG T USING(TID)
          WHERE C.CON_TYPE = 'SHR'
-           AND C.CORP_NO = 999
+           AND C.CORP_NO = #{corpNo}
 		 ORDER BY CONTACTS_NO DESC 
 	</select>
 	
@@ -79,8 +79,8 @@
 		SELECT COUNT(*)
   		  FROM CONTACTS
  		 WHERE IMPORT_CON = 'Y'
-   		   AND CORP_NO = 999
-   		   AND MNO = 999
+   		   AND CORP_NO = #{corpNo}
+   		   AND MNO = #{mNo}
 	</select>
 
 	<!-- 중요주소록 리스트 -->
@@ -90,8 +90,8 @@
 		  FROM CONTACTS C
           JOIN TAG T USING(TID)
          WHERE IMPORT_CON = 'Y'
-           AND C.CORP_NO = 999
-           AND C.MNO = 999
+           AND C.CORP_NO = #{corpNo}
+           AND C.MNO = #{mNo}
 		 ORDER BY CONTACTS_NO DESC 
 	</select>
 
