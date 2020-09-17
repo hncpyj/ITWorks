@@ -142,6 +142,15 @@
 		font-weight: bold;
 		font-size: 35px;
 	}
+	#mainSchedule{
+		margin-left: 70px;
+		margin-right: auto;
+		margin-top: 30px;
+	}
+	.active{
+           background: #ef3333bd;
+           color: white;
+        }
 </style>
 </head>
 <body>
@@ -163,10 +172,217 @@
                     출퇴근 등록
                 </div>
                 
+                <!-- 달력 -->
+                
+                <div id="mainSchedule">
+               
+               
+                  <div id="calendar">
+                      <div class="calmain">
+                         <div class="content-wrap" style="margin-left: 0px; border: none; height: 360px; margin-top: 0px;">
+                           <div class="content-right" style="margin-left: -60px;">
+                             <table id="calendar" align="center">
+                               <thead>
+                                 <tr class="btn-wrap clearfix">
+                                   <td style="text-align: center;">
+                                      <div onclick="prev();">
+                                        <label id="prev" >
+                                           &#60;
+                                        </label>
+                                     </div>
+                                   </td>
+                                   <td align="center" id="current-year-month" colspan="5" ></td>
+                                   <td style="text-align: center;">
+                                      <div onclick="next();">
+                                     <label id="next">
+                                         &#62;
+                                     </label>
+                                     </div>
+                                   </td>
+                                 </tr>
+                                 <tr>
+                                     <td class = "sun" align="center">Sun</td>
+                                     <td align="center">Mon</td>
+                                     <td align="center">Tue</td>
+                                     <td align="center">Wed</td>
+                                     <td align="center">Thu</td>
+                                     <td align="center">Fri</td>
+                                     <td class= "sat" align="center">Sat</td>
+                                   </tr>
+                               </thead>
+                               <tbody id="calendar-body" class="calendar-body"></tbody>
+                             </table>
+                           </div>
+                         </div>
+                       </div>
+                  </div>
+               
+            </div>
+                
+                
+                
+                
             </div>
             
         </div>
     </aside>
+    
+    
+    <script>
+      var currentTitle = document.getElementById('current-year-month');
+      var calendarBody = document.getElementById('calendar-body');
+      var today = new Date();
+      var first = new Date(today.getFullYear(), today.getMonth(),1);
+      var dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var monthList = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      var leapYear=[31,29,31,30,31,30,31,31,30,31,30,31]; //윤년
+      var notLeapYear=[31,28,31,30,31,30,31,31,30,31,30,31]; //윤년 아님
+      var pageFirst = first; 
+      var firstMonth = today.getMonth();
+      var pageMonth = today.getMonth();
+      var todayMonth = firstMonth+1;
+      var todayYear = today.getFullYear();
+      var todayDate = today.getDate();
+      var calYear = todayYear;      
+      var pageYear;
+
+      if(todayMonth<10){
+         todayMonth = "0"+todayMonth;
+      }
+      
+      todayText = todayYear + "/" + todayMonth + "/" + todayDate;
+      
+      if(first.getFullYear() % 4 === 0){
+          pageYear = leapYear;
+      }else{
+          pageYear = notLeapYear;
+      }
+
+      //달력을 출력하는 함수
+      function showCalendar(){
+          let monthCnt = 100;
+          let cnt = 1;
+          for(var i = 0; i < 6; i++){
+              var $tr = document.createElement('tr');
+              $tr.setAttribute('id', monthCnt);   
+              for(var j = 0; j < 7; j++){
+                  if((i === 0 && j < first.getDay()) || cnt > pageYear[first.getMonth()]){
+                      var $td = document.createElement('td');
+                      $tr.appendChild($td);     
+                  }else{
+                      var $td = document.createElement('td');
+                      var $tdEle = document.createElement('div');
+                      $tdEle.textContent = cnt;
+
+                  var eleId = calYear +""+ (pageMonth+1) +""+ cnt  
+                      
+                      $tdEle.setAttribute('id', eleId); 
+                      //표 칸마다 id를 붙이며 id값는 숫자
+                      
+                      $tdEle.setAttribute('style','text-align: center;')
+                      //90x60 스타일을 적용하는 setAttribute
+                      
+                      $td.appendChild($tdEle);
+                  //td부분에 요소 추가
+                                     
+                      $tr.appendChild($td);
+                      cnt++;
+                  }
+              }
+              monthCnt++;
+              currentTitle.innerHTML = monthList[first.getMonth()] + '&nbsp;&nbsp;&nbsp;&nbsp;'+ first.getFullYear();
+              today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+              calendarBody.appendChild($tr);
+          }
+      }
+
+      showCalendar();
+
+      //달력 달수를 변경할때 달력을 전부 지우고 다시불러오기 위해 지우는 함수
+      function removeCalendar(){
+          let catchTr = 100;
+          for(var i = 100; i< 106; i++){
+              var $tr = document.getElementById(catchTr);
+              $tr.remove();
+              catchTr++;
+          }
+      }
+
+      //전달로 이동하는 함수
+      function prev(){
+          const $divs = document.querySelectorAll('#input-list > div');
+          $divs.forEach(function(e){
+            e.remove();
+          });
+          const $btns = document.querySelectorAll('#input-list > button');
+          $btns.forEach(function(e1){
+            e1.remove();
+          });
+          if(pageFirst.getMonth() === 1){
+              pageFirst = new Date(first.getFullYear()-1, 12, 1);
+              first = pageFirst;
+              if(first.getFullYear() % 4 === 0){
+                  pageYear = leapYear;
+              }else{
+                  pageYear = notLeapYear;
+              }
+          }else{
+              pageFirst = new Date(first.getFullYear(), first.getMonth()-1, 1);
+              first = pageFirst;
+          }
+          pageMonth = pageFirst.getMonth();
+          calYear = pageFirst.getFullYear();
+          currentTitle.innerHTML = monthList[first.getMonth()] + '&nbsp;&nbsp;&nbsp;&nbsp;'+ first.getFullYear();
+          removeCalendar();
+          showCalendar();
+           showToday();
+      }
+
+      //다음달로 이동하는 함수
+      function next(){
+          const $divs = document.querySelectorAll('#input-list > div');
+          $divs.forEach(function(e){
+            e.remove();
+          });
+          const $btns = document.querySelectorAll('#input-list > button');
+          $btns.forEach(function(e1){
+            e1.remove();
+          });
+          if(pageFirst.getMonth() === 12){
+              pageFirst = new Date(first.getFullYear()+1, 1, 1);
+              first = pageFirst;
+              if(first.getFullYear() % 4 === 0){
+                  pageYear = leapYear;
+              }else{
+                  pageYear = notLeapYear;
+              }
+          }else{
+              pageFirst = new Date(first.getFullYear(), first.getMonth()+1, 1);
+              first = pageFirst;
+          }
+          pageMonth = pageFirst.getMonth();
+          calYear = pageFirst.getFullYear();
+          currentTitle.innerHTML = monthList[first.getMonth()] + '&nbsp;&nbsp;&nbsp;&nbsp;'+ first.getFullYear();
+          removeCalendar();
+          showCalendar(); 
+           showToday();
+      }
+
+      //오늘인 부분은 오페라 색상으로 변경(연도 구분없음 )
+      function showToday(){
+      
+         if(firstMonth == pageMonth && todayYear == calYear){
+
+             clickedDate1 = document.getElementById(calYear+""+(pageMonth+1)+""+todayDate);
+             clickedDate1.classList.add('active');
+         }
+      }
+        showToday();
+   </script>
+   
+
+    
+    
 <c:forEach begin="0" end="${at.size()-1 }" var="i">
 <input type="hidden" id="wstart${i }" value="${at.get(i).wstart }">
 <input type="hidden" id="wend${i }" value="${at.get(i).wend }">
@@ -195,7 +411,7 @@
             		
             		
 				});
-            			
+
             	function clock() {
             		var now = new Date();
             		
