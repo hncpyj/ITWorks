@@ -301,7 +301,7 @@
 			        contentType: false,
 					success: function(data) {
 						console.log("됐다");
-						location.reload();
+						location.href="goMyPage.me";
 					},
 					error: function(data) {
 						console.log("안됨");
