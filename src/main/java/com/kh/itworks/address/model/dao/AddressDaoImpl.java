@@ -28,14 +28,14 @@ public class AddressDaoImpl implements AddressDao{
 	
 	//메인리스트 카운트
 	@Override
-	public int countAddressList(SqlSessionTemplate sqlSession) {
+	public int countAddressList(SqlSessionTemplate sqlSession, AddressVO address) {
 		
-		return sqlSession.selectOne("Address.listCountMain");
+		return sqlSession.selectOne("Address.listCountMain", address);
 	}
 
 	//메인리스트 리스트
 	@Override
-	public ArrayList<AddressVO> pageList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<AddressVO> pageList(SqlSessionTemplate sqlSession, PageInfo pi, AddressVO address) {
 		
 		ArrayList<AddressVO> list = null;
 		
@@ -43,21 +43,21 @@ public class AddressDaoImpl implements AddressDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 
-		list = (ArrayList) sqlSession.selectList("Address.selectMainAddressList", null, rowBounds);
+		list = (ArrayList) sqlSession.selectList("Address.selectMainAddressList", address, rowBounds);
 		
 		return list;
 	}
 
 	//공유 주소록 카운트
 	@Override
-	public int countShareAddressList(SqlSessionTemplate sqlSession) {
+	public int countShareAddressList(SqlSessionTemplate sqlSession, AddressVO address) {
 		
-		return sqlSession.selectOne("Address.listCountShare");
+		return sqlSession.selectOne("Address.listCountShare", address);
 	}
 	
 	//공유 주소록 리스트
 	@Override
-	public ArrayList<AddressVO> sharePageList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<AddressVO> sharePageList(SqlSessionTemplate sqlSession, PageInfo pi, AddressVO address) {
 		
 		ArrayList<AddressVO> list = null;
 		
@@ -65,21 +65,21 @@ public class AddressDaoImpl implements AddressDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 
-		list = (ArrayList) sqlSession.selectList("Address.selectShareAddressList", null, rowBounds);
+		list = (ArrayList) sqlSession.selectList("Address.selectShareAddressList", address, rowBounds);
 		
 		return list;
 	}
 	
 	//중요 주소록 카운트
 	@Override
-	public int countImportantAddressList(SqlSessionTemplate sqlSession) {
+	public int countImportantAddressList(SqlSessionTemplate sqlSession, AddressVO address) {
 		
-		return sqlSession.selectOne("Address.importantListCount");
+		return sqlSession.selectOne("Address.importantListCount", address);
 	}
 
 	//중요 주소록 카운트
 	@Override
-	public ArrayList<AddressVO> importantPageList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<AddressVO> importantPageList(SqlSessionTemplate sqlSession, PageInfo pi, AddressVO address) {
 		
 		ArrayList<AddressVO> list = null;
 		
@@ -87,7 +87,7 @@ public class AddressDaoImpl implements AddressDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 
-		list = (ArrayList) sqlSession.selectList("Address.selectImportantAddressList", null, rowBounds);
+		list = (ArrayList) sqlSession.selectList("Address.selectImportantAddressList", address, rowBounds);
 		
 		return list;
 	}

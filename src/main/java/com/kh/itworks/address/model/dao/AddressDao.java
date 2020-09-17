@@ -16,22 +16,22 @@ public interface AddressDao {
 	int insertAddress(SqlSessionTemplate sqlSession, AddressVO address);
 
 	//메인 주소록 리스트 
-	public ArrayList<AddressVO>pageList(SqlSessionTemplate sqlSession, PageInfo pi);
+	public ArrayList<AddressVO>pageList(SqlSessionTemplate sqlSession, PageInfo pi, AddressVO address);
 	
 	//메인 주소록 개수
-	public int countAddressList(SqlSessionTemplate sqlSession);
+	public int countAddressList(SqlSessionTemplate sqlSession, AddressVO address);
 	
 	//공유 주소록 리스트
-	public ArrayList<AddressVO>sharePageList(SqlSessionTemplate sqlSession, PageInfo pi);
+	public ArrayList<AddressVO>sharePageList(SqlSessionTemplate sqlSession, PageInfo pi, AddressVO address);
 	
 	//공유 주소록 개수
-	public int countShareAddressList(SqlSessionTemplate sqlSession);
+	public int countShareAddressList(SqlSessionTemplate sqlSession, AddressVO address);
 	
 	//중요 주소록 리스트
-	public ArrayList<AddressVO>importantPageList(SqlSessionTemplate sqlSession, PageInfo pi);
+	public ArrayList<AddressVO>importantPageList(SqlSessionTemplate sqlSession, PageInfo pi, AddressVO address);
 	
 	//중요 주소록 개수
-	public int countImportantAddressList(SqlSessionTemplate sqlSession);
+	public int countImportantAddressList(SqlSessionTemplate sqlSession, AddressVO address);
 	
 	//주소록 삭제
 	public void deleteMainAddress(int contactsNo);

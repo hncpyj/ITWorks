@@ -150,6 +150,7 @@
 	.active{
            background: #ef3333bd;
            color: white;
+           border-radius: 50px;
         }
 </style>
 </head>
@@ -382,12 +383,13 @@
    
 
     
-    
+<c:if test="${not empty at }">
 <c:forEach begin="0" end="${at.size()-1 }" var="i">
 <input type="hidden" id="wstart${i }" value="${at.get(i).wstart }">
 <input type="hidden" id="wend${i }" value="${at.get(i).wend }">
 <input type="hidden" id="wdate${i }" value="${at.get(i).wdate }">
 </c:forEach>
+</c:if>  
 <script type="text/javascript">
             	
             	$("#goAtMAnage").click(function() {

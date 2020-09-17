@@ -14,22 +14,22 @@ public interface AddressService {
 	int insertAddress(AddressVO address);
 	
 	//메인 주소록 리스트
-	ArrayList<AddressVO> pageList(PageInfo pi);
+	ArrayList<AddressVO> pageList(PageInfo pi, AddressVO address);
 	
 	//메인 주소록 카운트
-	public int countAddressList();
+	public int countAddressList(AddressVO address);
 	
 	//공유 주소록 리스트
-	ArrayList<AddressVO> sharePageList(PageInfo pi);
+	ArrayList<AddressVO> sharePageList(PageInfo pi,AddressVO address);
 	
 	//공유 주소록 카운트
-	public int countShareAddressList();
+	public int countShareAddressList(AddressVO address);
 	
 	//중요 주소록 리스트
-	ArrayList<AddressVO> importPageList(PageInfo pi);
+	ArrayList<AddressVO> importPageList(PageInfo pi,AddressVO address);
 	
 	//중요 주소록 카운트
-	public int countImportantAddressList();
+	public int countImportantAddressList(AddressVO address);
 	
 	//메인 주소록 삭제
 	public void deleteMainAddress(int contactsNo);
