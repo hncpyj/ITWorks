@@ -112,33 +112,10 @@ public class AddressDaoImpl implements AddressDao{
 		return sqlSession.selectOne("Address.confirmImport", address);
 	}
 
-//	@Override
-//	public AddressVO selectOneMainAddress(SqlSessionTemplate sqlSession, int contactsNo) {
-//
-//		//List<AddressVO> address = sqlSession.selectList("Address.selectImportantAddressList", contactsNo);
-//		AddressVO address = sqlSession.selectOne("Address.selectOneMainAddress", contactsNo);
-//	//	AddressVO address = sqlSession.selectOne("Address.selectImportantAddressList", contactsNo);
-//		
-//		return address;
-//	}
-
+	@Override
+	public int updateAddress(SqlSessionTemplate sqlSession, AddressVO address) {
+		
+		return sqlSession.update("Address.updateAddress", address);
+	}
 	
-
-
-//	@Override
-//	public void delete(BoardDTO boardDTO) {
-//		sqlSessionTemplate.delete("boardDAO.delete", boardDTO);
-//	}
-//
-//	@Override
-//	public int update(BoardDTO boardDTO) {
-//		return sqlSessionTemplate.update("boardDAO.update", boardDTO);
-//	}
-//
-//	@Override
-//	public BoardDTO select(int num) {
-//		BoardDTO dto = (BoardDTO)sqlSessionTemplate.selectOne("boardDAO.select", num);
-//		return dto;
-//	}
-
 }

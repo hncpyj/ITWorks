@@ -14,6 +14,7 @@
 aside {
 	float: left;
 }
+
 section {
 	display: inline-block;
 	width: 75%;
@@ -100,6 +101,7 @@ section {
 	cursor: pointer;
 	outline: none;
 }
+
 .modal-title {
 	margin-bottom: 10px;
 }
@@ -132,7 +134,7 @@ input.modalSection {
 .secondPrint {
 	margin-left: 20px;
 	width: 350px;
-	font-size:16px;
+	font-size: 16px;
 }
 
 #add-address-table select {
@@ -148,8 +150,9 @@ input.modalSection {
 }
 
 #hiddenText {
-	display:none;
+	display: none;
 }
+
 .addressWindow, .addressWindow2 {
 	display: none;
 	width: 500px;
@@ -157,70 +160,84 @@ input.modalSection {
 	padding: 20px 20px 20px 20px;
 	background-color: #fefefe;
 	border: 1px solid #888;
-	border-radius: 3px;	
-	margin-top:10px;
-	margin-bottom:10px;
+	border-radius: 3px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
+
 #modalBtnArea {
 	
 }
+
 #searchBtn {
 	background: url("./resources/images/glass.png" ) no-repeat;
-	width:26px;
-	height:20px;
+	width: 26px;
+	height: 20px;
 	border: none;
 }
+
 #prvAddressDetail {
-    border-collapse: separate;
-    border-spacing: 10px;
-    padding-top:15px;
+	border-collapse: separate;
+	border-spacing: 10px;
+	padding-top: 15px;
 }
+
 #closeBtn {
 	background: url("./resources/images/xBtn.png" ) no-repeat;
-	width:57px;
-	height:26px;
-	border: none;	
+	width: 57px;
+	height: 26px;
+	border: none;
 }
+
 .updateBtn {
 	background: url("./resources/images/updateBtn.png" ) no-repeat;
-	width:57px;
-	height:26px;
-	border: none;	
+	width: 57px;
+	height: 26px;
+	border: none;
 }
-.star {
-	cursor:pointer;
-}
-#deleteBtn { 
-	cursor:pointer;
-	border:none;
-	background:none;
-	font-size:18px;
-	color:#29A2F7;
-}
-#deleteBtn:hover {
-	background:rgb(239, 239, 239);
-}
-.modal {
-   display: none; /* Hidden by default */
-   position: fixed; /* Stay in place */
-   z-index: 1; /* Sit on top */
-   left: 0;
-   top: 0;
-   width: 500px; /* Full width */
-   height: auto; /* Full height */
-   overflow: auto; /* Enable scroll if needed */
-   background-color: rgb(0, 0, 0); /* Fallback color */
-   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-   	margin-top:10px;
-	margin-bottom:10px;
-}
-.modal-content {
-   background-color: #fefefe;
-   border: 1px solid #888;
-   	border-radius: 3px;	
 
-		padding: 20px 20px 20px 20px;
-	
+.star {
+	cursor: pointer;
+}
+
+#deleteBtn {
+	cursor: pointer;
+	border: none;
+	background: none;
+	font-size: 18px;
+	color: #29A2F7;
+}
+
+#deleteBtn:hover {
+	background: rgb(239, 239, 239);
+}
+
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 500px; /* Full width */
+	height: auto; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.modal-content {
+	background-color: #fefefe;
+	border: 1px solid #888;
+	border-radius: 3px;
+	padding: 20px 20px 20px 20px;
+}
+/* 수정하는 모달창 css */
+.newInput {
+	border-radius: 0px;
+	border: 0.5px solid #606266;
+	width:300px;
 }
 </style>
 </head>
@@ -353,7 +370,7 @@ input.modalSection {
 						</c:otherwise>
 				</c:choose>
 				&nbsp;
-				<span><c:out value="${ address.conName }"/></span>
+				<span class="conname"><c:out value="${ address.conName }"/></span>
 			</div>
 			<hr color = "#C4C4C4" size = "0.75">
 			<form>
@@ -374,16 +391,6 @@ input.modalSection {
 					<tr id="phone">
 						<td class="firstDetail"><label>전화</label></td>
 						<td class="secondPrint" id="modalPhone"><c:out value="${ address.conPhone }"/></td>
-					</tr>
-					</c:when>
-					<c:otherwise>			
-					</c:otherwise>
-					</c:choose>
-					<c:choose>
-					<c:when test="${ not empty address.tagName}">
-					<tr id="tag">
-						<td class="firstDetail"><label>태그</label></td>
-						<td class="secondPrint" id="modalTag"><c:out value="${ address.tagName }"/></td>
 					</tr>
 					</c:when>
 					<c:otherwise>			
@@ -464,7 +471,7 @@ input.modalSection {
 				<div id="modalBtnArea" align="center">
 				<button id="closeBtn" class="realmodal_close_btn${ address.contactsNo }" type="button"></button>
 				&nbsp;
-				<button class="updateBtn" id="updateBtn${ address.contactsNo }" onclick="updateAddress()" name="updateBtn" type="button"></button>
+				<button class="updateBtn" id="updateBtn${ address.contactsNo }" onclick="updateAddress(id)" name="updateBtn" type="button"></button>
 				</div>
 				<div style="height: 15px;"></div>
 			</form>
@@ -472,14 +479,20 @@ input.modalSection {
 		</div>
 		</c:forEach>
 	</section>
+	<form action="update.ad" method="post" id="changeForm">
+		<input type="hidden" id="realName" name="conName"> 
+		<input type="hidden" id="realEmail" name="email"> 
+		<input type="hidden" id="realPhone" name="conPhone"> 
+		<input type="hidden" id="realCorp" name="conCorp"> 
+		<input type="hidden" id="realDept" name="deptNo"> 
+		<input type="hidden" id="realJob" name="jobNo"> 
+		<input type="hidden" id="realAddress" name="realAddress"> 
+		<input type="hidden" id="realHomepage" name="homePage"> 
+		<input type="hidden" id="realBirth" name="conBirthDay"> 
+		<input type="hidden" id="realMemo" name="conContent">
+		<input type="hidden" id="conNo" name="contactsNo"> 
+	</form>
 </body>
-<script>
-	function updateAddress(clicked_id) {
-		$("#email td: nth-child(2)").empty();
-		$("#email td: nth-child(2)").append('<input type="text">');
-		console.log("123");
-	}
-</script>
 <script>
 	function importantStatus(clicked_id) {
 		
@@ -541,41 +554,67 @@ input.modalSection {
 	var homepage;
 	var birth;
 	var memo;
-	var button;
+	var cname;
+	var update = 0;
+	
+	function updateAddress(clicked_id) {
 
-	function updateAddress() {
-	//	modalAddressWindow(rootcontext);
-	//	modalAddressWindow(rootcontext + "a");
+		var temps = clicked_id;
+		var conNO = temps.substr(9);
+		console.log(conNO);
+		
+		if(update == 0) {
+			
+		$("#modal"+modalclass+" .modal-title").find(".conname").empty();
+		$("#modal"+modalclass+" .modal-title").find(".conname").append('<input name="conName" class="newInput" id="newName" type="text" value="'+cname+'">');	
+
 		$("#modal"+modalclass+" #email").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #email").find(".secondPrint").append('<input type="text" value="'+email+'">');
+		$("#modal"+modalclass+" #email").find(".secondPrint").append('<input name="email" class="newInput" id="newEmail" type="text" value="'+email+'">');
 		
 		$("#modal"+modalclass+" #phone").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #phone").find(".secondPrint").append('<input type="text" value="'+phone+'">');
-		
-		$("#modal"+modalclass+" #tag").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #tag").find(".secondPrint").append('<input type="text" value="'+tag+'">');
+		$("#modal"+modalclass+" #phone").find(".secondPrint").append('<input name="conPhone" class="newInput" id="newPhone" type="text" value="'+phone+'">');
 		
 		$("#modal"+modalclass+" #corp").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #corp").find(".secondPrint").append('<input type="text" value="'+corp+'">');
+		$("#modal"+modalclass+" #corp").find(".secondPrint").append('<input name="conCorp" class="newInput" id="newCorp" type="text" value="'+corp+'">');
 		
 		$("#modal"+modalclass+" #dept").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #dept").find(".secondPrint").append('<input type="text" value="'+dept+'">');
+		$("#modal"+modalclass+" #dept").find(".secondPrint").append('<input name="deptNo" class="newInput" id="newDept" type="text" value="'+dept+'">');
 		
 		$("#modal"+modalclass+" #job").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #job").find(".secondPrint").append('<input type="text" value="'+job+'">');
+		$("#modal"+modalclass+" #job").find(".secondPrint").append('<input name="jobNo" class="newInput" id="newJob" type="text" value="'+job+'">');
 		
 		$("#modal"+modalclass+" #address").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #address").find(".secondPrint").append('<input type="text" value="'+address+'">');
+		$("#modal"+modalclass+" #address").find(".secondPrint").append('<input name="realAddress" class="newInput" id="newAddress" type="text" value="'+address+'">');
 		
 		$("#modal"+modalclass+" #homepage").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #homepage").find(".secondPrint").append('<input type="text" value="'+homepage+'">');
-		
+		$("#modal"+modalclass+" #homepage").find(".secondPrint").append('<input name="homePage" class="newInput" id="newHomepage" type="text" value="'+homepage+'">');
+
 		$("#modal"+modalclass+" #birth").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #birth").find(".secondPrint").append('<input type="text" value="'+birth+'">');
+		$("#modal"+modalclass+" #birth").find(".secondPrint").append('<input name="conBirthDay" class="newInput" id="newBirth" type="text" value="'+birth+'">');
 		
 		$("#modal"+modalclass+" #memo").find(".secondPrint").empty();
-		$("#modal"+modalclass+" #memo").find(".secondPrint").append('<input type="text" value="'+memo+'">');
-
+		$("#modal"+modalclass+" #memo").find(".secondPrint").append('<input name="conContent" class="newInput" id="newMemo" type="text" value="'+memo+'">');
+		
+		update = 1;
+		
+		} else if(update == 1) {
+			
+			$("#realName").val($("#newName").val());
+			$("#realEmail").val($("#newEmail").val());
+			$("#realPhone").val($("#newPhone").val());
+			$("#realCorp").val($("#newCorp").val());
+			$("#realDept").val($("#newDept").val());
+			$("#realJob").val($("#newJob").val());
+			$("#realAddress").val($("#newAddress").val());
+			$("#realHomepage").val($("#newHomepage").val());
+			$("#realBirth").val($("#newBirth").val());
+			$("#realMemo").val($("#newMemo").val());
+			$("#conNo").val(conNO).val();
+			
+			$("#changeForm").submit();
+			
+			update = 0;
+		}
 	}
 
 	var rootcontext = "";
@@ -613,10 +652,9 @@ var modalclass;
 					modalAddressWindow('modal' + modalclass);
 					$("#modal"+modalclass).fadeIn(300);
 					
-					<button class="updateBtn" id="updateBtn${ address.contactsNo }" onclick="updateAddress()" name="updateBtn" type="button"></button>
 					$( 'p.b' ).find( 'span.ip' ).css( 'font-size', '2em');
 
-					console.log($("#modal"+modalclass+" #email").find(".secondPrint").text());
+					cname = $("#modal"+modalclass+" .modal-title").find(".conname").text();
 					email = $("#modal"+modalclass+" #email").find(".secondPrint").text();
 					phone = $("#modal"+modalclass+" #phone").find(".secondPrint").text();
 					tag = $("#modal"+modalclass+" #tag").find(".secondPrint").text();
@@ -627,7 +665,6 @@ var modalclass;
 					homepage = $("#modal"+modalclass+" #homepage").find(".secondPrint").text();
 					birth = $("#modal"+modalclass+" #birth").find(".secondPrint").text();
 					memo = $("#modal"+modalclass+" #memo").find(".secondPrint").text();
-					button = $(".updateBtn").find("").
 					
 					rootcontext = 'modal' + modalclass;
 					console.log(rootcontext);

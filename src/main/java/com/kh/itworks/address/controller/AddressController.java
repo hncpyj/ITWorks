@@ -159,8 +159,7 @@ public class AddressController {
 		} else if(tempsCon.equals("N")) {
 			importCon = "Y";
 		}
-		
-		
+				
 		address.setContactsNo(contactsNo);
 		address.setImportCon(importCon);
 		
@@ -168,5 +167,14 @@ public class AddressController {
 		AddressVO addressConfirm = as.changeConfirm(address);
 
 		return addressConfirm.getImportCon();
+	}
+	
+	@RequestMapping("/update.ad")
+	public String updateAddress(AddressVO address, HttpServletRequest request, HttpServletResponse response) 
+			throws AddressMainSelectListCountException, AddressMainSelectListException {
+		
+		int result = as.updateAddress(address);
+			
+		return addressList(request, response);
 	}
 }

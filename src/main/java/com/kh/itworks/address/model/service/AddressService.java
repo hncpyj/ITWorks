@@ -33,18 +33,14 @@ public interface AddressService {
 	
 	//메인 주소록 삭제
 	public void deleteMainAddress(int contactsNo);
-
+	
+	//중요 주소록 상태 변경
 	public int changeConImportStatus(AddressVO address);
 
+	//중요 주소록 상태 변경 확인
 	AddressVO changeConfirm(AddressVO address); 
 	
-	
-//	public void delete(BoardDTO boardDTO);
-//	
-//	
-//	public int edit(BoardDTO boardDTO);	
-//	
-//	public BoardDTO read(int num);
-	
+	//개인주소록 업데이트
+	int updateAddress(AddressVO address);
 
 }

@@ -82,36 +82,10 @@ public class AddressServiceImpl implements AddressService {
 		return ad.confirmChange(sqlSession, address);
 	}
 
-//	@Override
-//	public AddressVO selectOneMainAddress(int contactsNo) {
-//
-//		return ad.selectOneMainAddress(sqlSession, contactsNo);
-//	}
-
-//	@Override
-//	public List<BoardDTO> list() {
-//		return boardDAO.list();
-//	}
-//
-//	@Override
-//	public void delete(BoardDTO boardDTO) {
-//		boardDAO.delete(boardDTO);
-//	}
-//
-//	@Override
-//	public int edit(BoardDTO boardDTO) {
-//		return boardDAO.update(boardDTO);
-//	}
-//
-//	@Override
-//	public void write(BoardDTO boardDTO) {
-//		boardDAO.insert(boardDTO);
-//	}
-//
-//	@Override
-//	public BoardDTO read(int num) {
-//		boardDAO.updateReadCount(num);
-//		return boardDAO.select(num);
-//	}
+	@Override
+	public int updateAddress(AddressVO address) {
+		
+		return ad.updateAddress(sqlSession, address);
+	}
 
 }

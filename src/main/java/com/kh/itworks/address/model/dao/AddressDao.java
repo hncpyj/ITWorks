@@ -38,14 +38,11 @@ public interface AddressDao {
 	
 	//주소록 즐겨찾기 상태 변경
 	int changeImportStatus(SqlSessionTemplate sqlSession ,AddressVO address);
-//	
-//	//주소록 수정
-//	public int update(AddressVO address);
-//	
-//	//주소록 조회하기
-//	public AddressVO select(int num);
-
+	
+	//주소록 즐겨찾기 상태 변경 확인
 	AddressVO confirmChange(SqlSessionTemplate sqlSession, AddressVO address);
 	
+	//주소록 업데이트
+	public int updateAddress(SqlSessionTemplate sqlSession, AddressVO address);
 	
 }
