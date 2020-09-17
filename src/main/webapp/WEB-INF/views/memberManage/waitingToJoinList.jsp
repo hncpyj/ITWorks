@@ -198,7 +198,7 @@
 	사번,입사일,부서,직급 4가지 항목 추가된 모달창 뜨게 하기 -->
 
 	<jsp:include page="../common/menubar.jsp"></jsp:include>
-	<jsp:include page="memberManageAside.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/orgChart/common/aside.jsp"></jsp:include>
 	
 	<section>
         <!--메뉴 타이틀-->

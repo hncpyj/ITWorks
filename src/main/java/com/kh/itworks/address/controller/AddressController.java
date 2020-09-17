@@ -34,6 +34,8 @@ public class AddressController {
 	@RequestMapping("/insert.ad")
 	public String insertAddress(Model model, AddressVO address, @SessionAttribute("loginUser") Member loginUser) {
 
+		address.setCorpNo(loginUser.getCorpNo());
+		address.setmNo(loginUser.getMno());
 		int result = as.insertAddress(address);
 
 		return "redirect:mainAddress.ad";
