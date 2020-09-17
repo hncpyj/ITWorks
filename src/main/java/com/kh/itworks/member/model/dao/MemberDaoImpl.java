@@ -1,8 +1,11 @@
 package com.kh.itworks.member.model.dao;
 
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.itworks.fileBox.model.vo.FileBox;
 import com.kh.itworks.member.model.exception.LoginFailedException;
 import com.kh.itworks.member.model.vo.Member;
 
@@ -43,5 +46,38 @@ public class MemberDaoImpl implements MemberDao {
 
 		return sqlSession.selectOne("Member.corpNoCheck", corpNo);
 	}
+
+	@Override
+	public String myPageCheckPwd(SqlSessionTemplate sqlSession, HashMap<String, String> info) {
+		
+		String pwd = sqlSession.selectOne("Member.myPageCheckPwd", info);
+		
+		return pwd;
+	}
+	
+	@Override
+	public int uploadProfile(SqlSessionTemplate sqlSession, FileBox profile) {
+		return sqlSession.insert("Member.uploadProfile", profile);
+	}
+
+	@Override
+	public FileBox getProfile(SqlSessionTemplate sqlSession, int mno) {
+		FileBox profile = sqlSession.selectOne("Member.getProfile", mno);
+		return profile;
+	}
+
+	@Override
+	public int updateUserInfo(SqlSessionTemplate sqlSession, Member m) {
+		int result = sqlSession.update("Member.updateUserInfo", m);
+		return result;
+	}
+
+	@Override
+	public Member selectUserInfo(SqlSessionTemplate sqlSession, int mno) {
+		Member userInfo = sqlSession.selectOne("Member.selectUserInfo", mno);
+		return userInfo;
+	}
+
+	
 
 }

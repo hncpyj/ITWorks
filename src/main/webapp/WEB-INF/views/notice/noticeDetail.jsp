@@ -234,7 +234,7 @@
         function modifyNotice() {
             $('article:nth-child(n+2)').css('display', 'none');
             $('#modifyNoticeForm').css('display', 'block');
-            $('#menuTitle>span').text('프로젝트 공지사항 수정');
+            $('#menuTitle>span').text('공지사항 수정');
             $('#menuTitle>button').hide();
         }
     </script>
