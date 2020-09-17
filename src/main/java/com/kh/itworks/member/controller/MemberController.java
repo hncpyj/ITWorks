@@ -31,11 +31,7 @@ public class MemberController {
 	@Autowired
 	private MemberService ms;
 	
-	@RequestMapping("main.me")
-	public String main() {
-		
-		return "main/main";
-	}
+
 	  
 	//로그인
 	@RequestMapping("login.me")
