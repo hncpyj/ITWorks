@@ -10,7 +10,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.kh.itworks.member.model.vo.Member;
 import com.kh.itworks.orgChart.model.service.OrgChartService;
 import com.kh.itworks.orgChart.model.vo.DeptVO;
 
@@ -21,8 +23,9 @@ public class OrgChartController {
 	private OrgChartService ocs;
 
 	@RequestMapping("orgChart.org")
-	public String orgChart(HttpServletRequest request ,DeptVO dept) {
+	public String orgChart(HttpServletRequest request ,DeptVO dept, @SessionAttribute("loginUser") Member loginUser) {
 
+		dept.setCorpNo(loginUser.getCorpNo());
 		ArrayList<DeptVO> orgChart = ocs.selectDeptList(dept);		
 
 		request.setAttribute("org", orgChart);
@@ -31,7 +34,8 @@ public class OrgChartController {
 	}
 	
 	@RequestMapping("orgList.org")
-	public String orgList(HttpServletRequest request,DeptVO dept) {
+	public String orgList(HttpServletRequest request,DeptVO dept, @SessionAttribute("loginUser") Member loginUser) {
+		dept.setCorpNo(loginUser.getCorpNo());
 
 		ArrayList<DeptVO> memberList = ocs.selectEmployees(dept);
 		
@@ -44,8 +48,9 @@ public class OrgChartController {
 	}
 
 	@RequestMapping("orgManage.org")
-	public String orgManage(HttpServletRequest request,DeptVO dept) {
-		
+	public String orgManage(HttpServletRequest request,DeptVO dept, @SessionAttribute("loginUser") Member loginUser) {
+		dept.setCorpNo(loginUser.getCorpNo());
+
 		ArrayList<DeptVO> orgManage = ocs.selectCompanyDeptList(dept);
 		
 		request.setAttribute("dept", orgManage);

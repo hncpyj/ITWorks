@@ -42,6 +42,7 @@ section {
 	width: 20px;
 	height: 20px;
 	border-radius: 0px;
+		z-index:1000;
 }
 
 #addressTable td, th {
@@ -198,6 +199,7 @@ input.modalSection {
 
 .star {
 	cursor: pointer;
+	z-index:1000;
 }
 
 #deleteBtn {
@@ -279,15 +281,14 @@ input.modalSection {
 					<th style="width: 10%;">회사
 						<button id="toggleBtn" type="button"></button>
 					</th>
-					<th style="width:24%;">태그</th>
 					<th id="hiddenText" style="width:1%;"></th>
 				</tr>
 				<c:forEach var="prv" items="${ list }">
 					<tr>
-						<th class="${prv.contactsNo }" style="width: 5%;">
+						<th class="${prv.contactsNo }" style="width: 5%;background:#fafafa; ">
 						<input name="checkboxs" value="${prv.contactsNo }" type="checkbox" class="checkAddress" onclick="showMe('deleteBtnArea')">
 						</th>
-						<th class="${prv.contactsNo }" style="width: 5%;" id="importantAdr">
+						<th class="${prv.contactsNo }" style="width: 5%; background:#fafafa;" id="importantAdr">
 						<c:choose>
 						<c:when test="${ prv.importCon eq 'N' }">
 						<div id="reload">
@@ -307,7 +308,6 @@ input.modalSection {
 						<td class="${prv.contactsNo }" style="width: 30%;"><c:out value="${prv.email }"></c:out></td>
 						<td class="${prv.contactsNo }" style="width: 15%;"><c:out value="${prv.conPhone }"></c:out></td>
 						<td class="${prv.contactsNo }" style="width: 10%;"><c:out value="${prv.conCorp }"></c:out></td>
-						<td class="${prv.contactsNo }" style="width: 24%;"><c:out value="${prv.tagName }"></c:out></td>
 						<td class="${prv.contactsNo }" id="hiddenText" style="width: 1;"><c:out value="${prv.contactsNo }"/></td>						
 					</tr>
 				</c:forEach>				
@@ -518,8 +518,8 @@ input.modalSection {
 				}
 		})		
 	}
-</script>
-<script>
+	
+	
 	function showMe(box) {
 		var chboxs = document.getElementsByName("checkboxs");
 		var vis = "hidden";

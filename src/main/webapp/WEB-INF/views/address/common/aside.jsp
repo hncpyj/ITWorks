@@ -9,11 +9,12 @@
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
+
 .switch {
   width: 180px;
   height: 30px;
   border: 0.5px solid #29A2F7;
-  color: #929292;
+  color: #EBEBEB;
   font-size: 16px;
   border-radius: 0;
 }
@@ -52,7 +53,7 @@
   outline-offset: 0;
 }
 .quality input[type="radio"]:checked ~ label {
-  background-color: #fffff;
+  background-color: #ffffff;
   color: #29A2F7;
   border: 0.5px solid #29A2F7;
 }
@@ -65,17 +66,13 @@
 #addAddressWindow {
 	display: none;
 	width: 500px;
-	height: 600px;
+	height: auto;
 	padding: 20px 20px 20px 20px;
 	background-color: #fefefe;
 	border: 1px solid #888;
 	border-radius: 3px;
+	margin-bottom:50px;
 }
-
-#addAddressWindow .modal_close_btn {
-	
-}
-
 a.button {
 	display: inline-block;
 	padding: 10px 20px;
@@ -211,34 +208,46 @@ nav li {
 input {
 	height: 30px;
 	radius: 0;
+	border-radius: 0px;
+	border: 0.5px solid #606266;
+}
+textarea {
+	radius: 0;
+	border-radius: 0px;
+	border: 0.5px solid #606266;
 }
 
 #dept, #position {
-	width: 30%;
+	width: 120px;
 }
 
 #company {
-	width: 31%;
+	width: 130px;
 }
 
 .firstLabel {
-	width: 50px;
+	width: 100px;
 	font-size: 16px;
-}
-
-.secondInput {
-	margin-left: 20px;
-	width: 350px;
 }
 
 #add-address-table select {
 	height: 35px;
 }
-
 #saveBtn {
 	float: right;
+	background: url("./resources/images/addSaveBtn.png" ) no-repeat;
+	width:60px;
+	height:26px;
+	border: none;
+	cursor: pointer;
 }
-
+.modal_cancle_btn {
+	background: url("./resources/images/cccBtn.png" ) no-repeat;
+	width:60px;
+	height:26px;
+		border: none;
+	cursor: pointer;
+}
 #conSaveBtn {
 	float: right;
 }
@@ -303,7 +312,7 @@ input {
 							<select style="float:left; margin-right:5px;">
 								<option>휴대폰</option>	
 							</select>
-							<input type="text" style="display:inline-block; width:78%;" name="conPhone">
+							<input type="text" style="display:inline-block; width:323px;" name="conPhone">
 						</td>
 					</tr>
 					<tr>
@@ -314,12 +323,11 @@ input {
 								<option>선택</option>
 							</select>
 						</td>
-						<td><input type="button" value="새 태그 만들기"></td>
 					</tr>
 					<tr>
 						<td class="firstLabel"><label>회사</label></td>
 						<td class="secondInput">
-							<input type="text" placeholder="회사" id="company" name="conCorp">
+							<input type="text" placeholder="회사" id="company" name="conCorp" style="width:">
 							<input type="text" placeholder="부서" id="dept" name="deptNo">
 							<input type="text" placeholder="직급" id="position" name="jobNo">
 						</td>
@@ -342,14 +350,11 @@ input {
 					</tr>
 				</table>	
 				<hr>	
-				<input type="hidden" value="999" name="corpNo">
 				<input type="hidden" value="T10" name="tagId">
-				<input type="hidden" value="999" name="mNo">
-				<input type="hidden" value="999" name="roleNo">
-				
+				<input type="hidden" value="${ loginUser.corpNo }" name="corpNo">
 				<div style="height:30px;"></div>	
-				<button class="modal_cancle_btn" type="reset">취소</button>
-				<button id="saveBtn" type="submit">저장</button>
+				<button class="modal_cancle_btn" type="reset"></button>
+				<button id="saveBtn" type="submit"></button>
 			</form>
 
 		</div>

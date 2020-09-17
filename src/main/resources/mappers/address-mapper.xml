@@ -31,7 +31,7 @@
 		VALUES ('CONN'||SEQ_CONTACTS_NO.NEXTVAL,
 		#{conType},#{conName},#{email},#{conPhone},
 		#{conCorp},#{homePage},#{conBirthDay},#{conContent},DEFAULT,
-		#{corpNo},#{roleNo},#{tagId},#{deptNo},#{jobNo},#{mNo},#{realAddress})
+		#{roleNo},#{corpNo},#{tagId},#{deptNo},#{jobNo},#{mNo},#{realAddress})
 	</insert>
 
 	<!-- 메인주소록 리스트 게시글 개수 부르기 -->
