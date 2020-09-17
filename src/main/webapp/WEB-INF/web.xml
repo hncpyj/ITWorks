@@ -56,9 +56,106 @@
 		</init-param>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>notice</servlet-name>
+		<servlet-name>notice</servlet-name> 
 		<url-pattern>*.no</url-pattern>
 	</servlet-mapping>
+	
+	
+	
+	<servlet>
+		<servlet-name>projectManage</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/projectManage-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>projectManage</servlet-name>
+		<url-pattern>*.pm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>address</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>/WEB-INF/config/address-servlet.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>address</servlet-name>
+      <url-pattern>*.ad</url-pattern>
+   </servlet-mapping>
+	
+	<servlet>
+      <servlet-name>orgChart</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>/WEB-INF/config/orgchart-servlet.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>orgChart</servlet-name>
+      <url-pattern>*.org</url-pattern>
+   </servlet-mapping>
+	
+	<servlet>
+		<servlet-name>memberManage</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/memberManage-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>memberManage</servlet-name>
+		<url-pattern>*.mm</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- fileBox -->
+	<servlet>
+		<servlet-name>fileBox</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/fileBox-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>fileBox</servlet-name>
+		<url-pattern>*.fb</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Storage -->
+
+	
+	
+	 <servlet>
+      <servlet-name>atManagement</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>/WEB-INF/config/atManagement-servlet.xml</param-value>
+      </init-param>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>atManagement</servlet-name>
+      <url-pattern>*.at</url-pattern>
+   </servlet-mapping>
+	
+	
+	
+	
+	
 	
 	<filter>
 		<filter-name>encodingFilter</filter-name>
