@@ -292,7 +292,7 @@
 			$(document).on("click", ".profileBtn", function() {
 				var formData = $('#uploadProfileForm')[0];
 				var data = new FormData(formData);
-				
+				 
 				$.ajax({
 					url: "uploadProfile.me",
 					data: data,
