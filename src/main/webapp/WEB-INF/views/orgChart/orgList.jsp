@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ItWorks</title>
+<title>ITWorks!</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="icon" href="${contextPath}/resources/images/favicon.ico"
@@ -17,12 +17,13 @@ section {
 	margin-left: 50px;
 	margin-top: 30px;
 }
+
 .mSection {
 	display: inline-block;
-	width: 1190px;
-	margin-left:0px;
-	margin-top:10px;
-} 
+	width: 1150px;
+	margin-left: 0px;
+	margin-top: 10px;
+}
 
 #middleSection {
 	width: 100%;
@@ -49,52 +50,150 @@ section {
 .orglist {
 	float: left;
 	border-top: 1px solid #C4C4C4;
-	border-right:1px solid #C4C4C4;
-	margin-left:0;
-	width:250px;
-	height:800px;
+	border-right: 1px solid #C4C4C4;
+	margin-left: 0;
+	width: 250px;
+	height: 800px;
 }
 
 .orgMembers {
 	display: inline-block;
 	border-top: 1px solid #C4C4C4;
-	width:930px;
-	margin-right:0px;
-	height:800px;
+	width: 890px;
+	margin-right: 0px;
+	height: 800px;
 }
+
 ol, ul, li {
-	list-style:none;
+	list-style: none;
 }
+
 #orgMembers>dl {
-	float:right;
-} 
+	float: right;
+}
+
 .container {
-	width:fit;
-	height:40px;
+	width: 210px;
+	height: 40px;
 	border-bottom: 1px solid #C4C4C4;
-	padding-left:0;
-	padding-top:10px;
+	padding-left: 40px;
+	padding-top: 10px;
 }
+
 .member-wrap {
-	padding-left:40px;
-	padding-top:40px;
+	padding-left: 40px;
+	padding-top: 40px;
+	width: 200px;
+	height: 110px;
 }
+
 .profileCard {
-	display:inline-block;
+	display: inline-block;
 }
+
 .profileName {
-	font-size:16px;
-	font-weight:bolder;
-} 
-dd {
-	color:gray;
+	font-size: 16px;
+	font-weight: bolder;
 }
+
+dd {
+	color: gray;
+}
+
 .titleContainer {
-	padding-left:20px;
-	padding-top:10px;
-	padding-bottom:10px;
-	width:fit;
+	padding-left: 20px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+	width: fit;
 	border-bottom: 1px solid #C4C4C4;
+	height: 30px;
+	vertical-align: center;
+}
+
+.orglist ul {
+	display: table-row;
+	width: fit;
+}
+
+#corp {
+	vertical-align: center;
+}
+
+#goDetail {
+	cursor: pointer;
+}
+/*
+ 모달창 css 
+*/
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+	box-shadow: 5px 5px 5px 5px gray;
+}
+
+/* Modal Content/Box */
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 500px; /* Could be more or less, depending on screen size */
+	height: 550px;
+}
+
+#modalCloseBtn {
+	border: none;
+	outline:none;
+	cursor:pointer;
+	background: url(./resources/images/closeBtn.png) no-repeat;
+	width:30px;
+	height:30px;
+	float:right;
+}
+.inner-content {
+	padding:10px;
+}
+#profileImg {
+	width:100px;
+	height:100px;
+	border-radius:75px;
+	display:inline-block;
+	border: 1px solid gray;
+}
+#profileTitle {
+	display:inline-block;
+	padding-left:30px;
+	width:450px;
+}
+.profileContent {
+	padding-left:30px;
+	padding-top:30px;
+}
+.profileTable td:first-of-type, #imgTd {
+	width:150px;
+}
+#ename {
+	font-size:20px;
+	font-weight:bold;
+}
+.profileTable {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+#infor {
+	padding-top:5px;
+	margin-bottom:15px;
+	font-size:20px;
+	color:#29A2F7;
+	font-weight:normal;
 }
 </style>
 </head>
@@ -117,68 +216,248 @@ dd {
 			<!-- 본문시작 -->
 		</div>
 	</section>
+
 	<div class="mSection">
 		<div class="orglist">
 			<div class="org-tree-wrap">
-				<div class="titleContainer" >
+				<div class="titleContainer">
 					<i onclick=""></i>
-					<span>ItWorks</span>
-					<span>(6)</span>
+					<div id="corp">
+						<span>ㅡ</span>&nbsp;&nbsp;
+						<c:out value="${ membersList.get(0).corpName }" />
+					</div>
 				</div>
-			<ul>
-				<li>
-					<div class="container" onclick="">
-						<i></i>
-						<span>프로젝트관리부</span>
-						<span>(1)</span>
-					</div>
-				</li>
-				<li>
-					<div class="container" onclick="">
-						<i></i>
-						<span>프로젝트관리부</span>
-						<span>(1)</span>
-					</div>
-				</li><li>
-					<div class="container" onclick="">
-						<i></i>
-						<span>프로젝트관리부</span>
-						<span>(1)</span>
-					</div>
-				</li><li>
-					<div class="container" onclick="">
-						<i></i>
-						<span>프로젝트관리부</span>
-						<span>(1)</span>
-					</div>
-				</li><li>
-					<div class="container" onclick="">
-						<i></i>
-						<span>프로젝트관리부</span>
-						<span>(1)</span>
-					</div>
-				</li><li>
-					<div class="container" onclick="">
-						<i></i>
-						<span>프로젝트관리부</span>
-						<span>(1)</span>
-					</div>
-				</li>
-			</ul>		
-		</div>
-		</div>
-		<div class="orgMembers">
-			<div class="member-wrap">
-				<div id="profile-img" style="float:left; width:80px; height:80px; border:1px solid gray;"></div>
-				<dl title="Itworks 대표 " style="margin-left:10px;" class="profileCard">
-					<dt class="profileName">Itworks</dt>
-					<dd>본부</dd>
-					<dd>대표</dd>
-				</dl>
+				<c:forEach var="dept" items="${ dept }">
+					<c:choose>
+						<c:when test="${ dept.dLevel eq 2 }">
+							<ul>
+								<li>
+									<div class="container">
+										<i></i> <span><span> - </span>
+										<c:out value="${ dept.dName }"></c:out></span> <span>(<c:out
+												value="${ dept.count }" />)
+										</span>
+									</div>
+								</li>
+							</ul>
+						</c:when>
+						<c:when test="${ dept.dLevel eq 3 }">
+							<ul>
+								<li>
+									<div class="container" onclick="">
+										<i></i> <span><span> - </span>
+										<c:out value="${ dept.dName }"></c:out></span> <span>(<c:out
+												value="${ dept.count }" />)
+										</span>
+									</div>
+								</li>
+							</ul>
+						</c:when>
+						<c:when test="${ dept.dLevel eq 4 }">
+							<ul>
+								<li>
+									<div class="container" onclick="">
+										<i></i> <span><span> - </span>
+										<c:out value="${ dept.dName }"></c:out></span> <span>(<c:out
+												value="${ dept.count }" />)
+										</span>
+									</div>
+								</li>
+							</ul>
+						</c:when>
+					</c:choose>
+				</c:forEach>
 			</div>
 		</div>
-	</div>	
+		<div class="orgMembers">
+
+			<c:forEach var="ml" items="${ membersList }">
+				<c:choose>
+					<c:when test="${ ml.member.jNo eq 'J1' }">
+						<div class="member-wrap">
+							<div id="profile-img"
+								style="float: left; width: 80px; height: 80px; border: 1px solid gray;"></div>
+							<dl title="Itworks 대표 " style="margin-left: 10px;"
+								class="profileCard">
+								<dt class="profileName">
+									<a id="goDetail" onclick="detailProfile();"><c:out value="${ ml.member.ename }" /></a>
+								</dt>
+								<dd>본부</dd>
+								<dd>
+									<c:out value="${ ml.member.jname }" />
+								</dd>
+							</dl>
+						</div>
+					</c:when>
+					<c:when test="${ ml.member.jNo eq 'J4' }">
+						<div class="member-wrap">
+							<div id="profile-img"
+								style="float: left; width: 80px; height: 80px; border: 1px solid gray;"></div>
+							<dl style="margin-left: 10px;" class="profileCard">
+								<dt class="profileName">
+									<a id="goDetail" onclick="detailProfile();"><c:out value="${ ml.member.ename }" /></a>
+								</dt>
+								<dd>
+									<c:out value="${ ml.member.dname }" />
+								</dd>
+								<dd>
+									<c:out value="${ ml.member.jname }" />
+								</dd>
+							</dl>
+						</div>
+					</c:when>
+					<c:when test="${ ml.member.jNo eq 'J5' }">
+						<div class="member-wrap">
+							<div id="profile-img"
+								style="float: left; width: 80px; height: 80px; border: 1px solid gray;"></div>
+							<dl style="margin-left: 10px;" class="profileCard">
+								<dt class="profileName">
+									<a id="goDetail" onclick="detailProfile();"><c:out value="${ ml.member.ename }" /></a>
+								</dt>
+								<dd>
+									<c:out value="${ ml.member.dname }" />
+								</dd>
+								<dd>
+									<c:out value="${ ml.member.jname }" />
+								</dd>
+							</dl>
+						</div>
+					</c:when>
+					<c:when test="${ ml.member.jNo eq 'J6' }">
+						<div class="member-wrap">
+							<div id="profile-img"
+								style="float: left; width: 80px; height: 80px; border: 1px solid gray;"></div>
+							<dl style="margin-left: 10px;" class="profileCard">
+								<dt class="profileName" >
+									<a id="goDetail" onclick="detailProfile();"><c:out value="${ ml.member.ename }"/></a>
+								</dt>
+								<dd>
+									<c:out value="${ ml.member.dname }" />
+								</dd>
+								<dd>
+									<c:out value="${ ml.member.jname }" />
+								</dd>
+							</dl>
+						</div>
+					</c:when>
+					<c:when test="${ ml.member.jNo eq 'J7' }">
+						<div class="member-wrap">
+							<div id="profile-img"
+								style="float: left; width: 80px; height: 80px; border: 1px solid gray;"></div>
+							<dl style="margin-left: 10px;" class="profileCard">
+								<dt class="profileName">
+									<a id="goDetail" onclick="detailProfile();"><c:out value="${ ml.member.ename }" /></a>
+								</dt>
+								<dd>
+									<c:out value="${ ml.member.dname }" />
+								</dd>
+								<dd>
+									<c:out value="${ ml.member.jname }" />
+								</dd>
+							</dl>
+						</div>
+					</c:when>
+				</c:choose>
+			</c:forEach>
+
+		</div>
+                        
+	<c:forEach var="md" items="${ membersList }">
+	<!-- The Modal1 -->
+			<div id="myModal" class="modal">
+
+				<!-- Modal content -->
+				<div class="modal-content" style="">
+					<button id="modalCloseBtn" onClick="close_modal1();"></button>
+					<div class="inner-content">
+						<p id="infor">직원 정보</p>
+						<div id="profileTitle">
+						<table class="titleTable">
+						<tr>
+							<td rowspan="4" id="imgTd">
+							<div id="profileImg"></div>
+							</td>
+						</tr>
+						<tr>
+							<td><p id="ename">최우아</p></td>
+						</tr>
+						<tr>
+							<td id="teamNcorp">IT WORKS > 기술지원팀</td>
+						</tr>
+						<tr>
+							<td id="jlevel">사원</td>
+						</tr>	
+						</table>
+						</div>
+						<div class="profileContent">
+						<table class="profileTable"> 
+							<tr>
+								<td>입사일</td>
+								<td>2020-01-01</td>
+							</tr>
+							<tr>
+								<td>이메일</td>
+								<td>2020-01-01</td>
+							</tr>
+							<tr>
+								<td>사내 전화</td>
+								<td>2020-01-01</td>
+							</tr>
+							<tr>
+								<td>휴대 전화</td>
+								<td>2020-01-01</td>
+							</tr>
+							<tr>
+								<td>사번</td>
+								<td>2020-01-01</td>
+							</tr>
+							<tr>
+								<td>생년월일</td>
+								<td>2020-01-01</td>
+							</tr>
+							<tr>
+								<td>기타 정보</td>
+								<td>2020-01-01</td>
+							</tr>
+						</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--End Modal-->
+	</c:forEach>
+	</div>
+	
 </body>
+<script>
+var name = "${ membersList }";
+
+	
+	function detailProfile() {
+        $('#myModal').fadeIn(300);
+        console.log(name[2].corpName);
+	}
+	
+    function close_modal1(flag) {
+        $('#myModal').fadeOut(300);
+    }
+
+</script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

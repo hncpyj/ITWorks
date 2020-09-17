@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Company">
+	<resultMap type="Company" id="companyResultMap">
+		<id property="corpName" column="CORP_NAME"/>
+		<result property="corpAddress" column="CORP_ADDRESS"/>
+		<result property="corpRepName" column="CORP_REP_NAME"/>
+		<result property="corpRegistNo" column="CORP_REGIST_NO"/>
+		<result property="corpType" column="CORP_TYPE"/>
+		<result property="corpEmail" column="CORP_EMAIL"/>
+		<result property="corpFax" column="CORP_FAX"/>
+		<result property="corpNo" column="CORP_NO"/>
+	</resultMap>
+	
+	
+	
+	
+		
+	
+</mapper>

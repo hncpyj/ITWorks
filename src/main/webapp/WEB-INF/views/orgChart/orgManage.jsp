@@ -6,10 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>ItWorks</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="icon" href="${contextPath}/resources/images/favicon.ico"
-	type="image/x-icon">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="icon" href="${contextPath}/resources/images/favicon.ico" type="image/x-icon">
 <style>
 section {
 	display: inline-block;
@@ -17,6 +15,7 @@ section {
 	margin-left: 50px;
 	margin-top: 30px;
 }
+
 #middleSection {
 	width: 100%;
 }
@@ -28,19 +27,180 @@ section {
 }
 
 .mainTitleArea span {
-	font-size: 24px;
+	font-size: 30px;
 	color: #004771;
 	font-weight: 400;
 }
-.org_map_header {
+
+.codepenDefault {
+	background-color: white;
+	padding: 30px 30px 60px 50px;
+	border: 1px solid #BFBFBF;
+	margin: 120px 120px;
+	border-radius: 10px;
+	font-size: 14px;
+	word-wrap: break-word;
+	color: #000000;
+	width: 50%;
+}
+
+.tree {
+	color: #393939;
+	font-size: 16px;
+}
+
+.tree, .tree ul {
+	list-style: none;
+	padding-left: 17px;
+}
+
+.tree *:before {
+	width: 17px;
+	height: 17px;
+	display: inline-block;
+}
+
+.tree label {
+	cursor: pointer;
+}
+
+.tree label:before {
+	content: '\f256';
+}
+
+.tree a {
+	text-decoration: none;
+	color: #393939;
+}
+
+.tree a:before {
+	content: '\e800';
+}
+
+.tree input[type="checkbox"] {
+	display: none;
+}
+
+.tree input[type="checkbox"]:checked ~ul {
+	display: none;
+}
+
+.tree input[type="checkbox"]:checked+label:before {
+	content: '\f255';
+}
+
+.tree ul {
+	display: table-row;
+	padding: 0px;
+	list-style: none;
+}
+
+.tree li {
+	border: solid 1px #EBEBEB;
+	background: #EBEBEB;
+	list-style-type: none;
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;	
 	margin-top:30px;
-	height:40px;
+	margin-right:30px;
+	margin-bottom:30px;
+	margin-left:40px;
 }
-dl, li, ol, ul {
-	list-style:none;
+.test li {
+	border: solid 1px #EBEBEB;
+	background: #EBEBEB;
+	list-style-type: none;
+	margin: 50px;
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;
+	margin-left:250px;
 }
-.org_map_header li {
+
+#2-0 li {
+	margin-left: 200px;
+}
+
+#orgArea ul, li {
+	width: 200px;
+}
+
+#deptUpdateBtn {
+	margin-bottom: 5px;
+}
+
+#deptDetail {
+	margin-bottom: -2px;
+}
+
+.updateDeptModal {
+	display: none;
+	width: 120px;
+	height: 40px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -250px 0 0 -250px;
+	background: #fafafa;
+	z-index: 2;
+	border: solid 0.75px #525252;
+	font-size: 15px;
+}
+
+.updateContent {
+	vertical-align: center;
+	line-height: 40px;
+	margin-left: 10px;
+}
+
+.modal_close {
+	width: 26px;
+	height: 26px;
+	position: absolute;
+	top: -30px;
+	right: 0;
+}
+
+.modal_close>a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: url(https://img.icons8.com/metro/26/000000/close-window.png);
+	text-indent: -9999px;
+}
+
+.updateContent>a:link {
+	text-decoration: none;
+}
+
+.updateContent>a:visited {
+	color: black;
+	text-decoration: none;
+}
+
+.updateContent>a:hover {
+	text-decoration: none;
+}
+
+#inputDept {
+	width: 180px;
+	background:;
+}
+#levelUl {
+	list-style-type: none;
+	display: table-row;
+	padding:0px;
+	margin:0px;
+	margin-left: 100px;
+	align:center;
+}
+#levelUl li  {
+	list-style-type: none;
 	display:inline-block;
+	padding:0px;
+	text-align:center;
+	width:250px;
 }
 </style>
 </head>
@@ -59,21 +219,129 @@ dl, li, ol, ul {
 					</tr>
 				</table>
 			</div>
+			<div style="height:20px;"></div>
 			<hr style="border: solid 0.5px #C4C4C4;">
 			<!-- 본문시작 -->
+			<div style="height:40px;"></div>
 			
-			<ol id="orgMapHeader" class="org_map_header">
-				<li>레벨1</li>
-				<li>레벨2</li>
-				<li>레벨3</li>
-				<li style="display:none;">레벨4</li>
-				<li style="display:none;">레벨5</li>
-			</ol>
-			
-			
-			
+			<div id="levelArea" align="center">
+				<ul id="levelUl">
+					<li>레벨 1</li>
+					<li>레벨 2</li>
+					<li>레벨 3</li>
+					<li>레벨 4</li>
+				</ul>
 			</div>
+			
+			<div id="orgArea">
+				<ul class="tree">
+					<li id="1-0-0">
+						<input type="checkbox" id="root">
+							<label for="root">
+								<c:out value="${ dept.get(0).corpName }"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input id="deptUpdateBtn" type="image" src="./resources/images/orgUpdateBtn.png">&nbsp; 
+									<input id="deptDetail" type="image" src="./resources/images/employees.png">
+							</label>
+					
+							<ul id="2-0" class="test">
+							<c:forEach var="dept" items="${dept}">
+								<c:choose>
+									<c:when test="${ dept.dLevel eq 2 }">
+										<li id="2-0-0"><a href="#"><input type="checkbox" id="root"><c:out value="${ dept.dName }" />
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="deptUpdateBtn" type="image"
+							src="./resources/images/orgUpdateBtn.png">&nbsp; <input
+							id="deptDetail" type="image"
+							src="./resources/images/employees.png">
+										</a>
+									</c:when>
+								</c:choose>
+							</c:forEach>
+								<ul>
+							<c:forEach var="dept" items="${dept}">
+								<c:choose>
+									<c:when test="${ dept.dLevel eq 3 }">
+										<li id="2-2-0"><input type="checkbox" id="node3">
+											<label for="node3"><c:out value="${ dept.dName }" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="deptUpdateBtn" type="image"
+							src="./resources/images/orgUpdateBtn.png">&nbsp; <input
+							id="deptDetail" type="image"
+							src="./resources/images/employees.png">							
+											</label></li>
+									</c:when>
+								</c:choose>
+							</c:forEach>
+							</ul>	
+						</li>
+						</ul>
+					</ul>
+					</ul>
+			</div>
+			
+			<!-- 본문 끝 -->
+		</div>
+	</section>
+	<section>
+		<div class="updateDeptModal">
+			<div class="modal_close"><a href="#">close</a></div>
+					<div class="updateContent"><a href="#">+ 하위조직 생성</a></div>
+		</div>
 	</section>
 </body>
-</html>
+<script>
+var temps = "";
+function print(){
+	temps = document.getElementById("inputDept").value;
+}
 
+ var addDeptWin = true;
+ var thisWindow;
+$(document).on("click",".updateContent",function(){
+	
+	if(addDeptWin) {	
+	$("#2-0").append('<li id="newDept"><input onchange="print()" type="text" id="inputDept" class="addDept">	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./resources/images/orgUpdateBtn.png">&nbsp; <img id="deptDetail" src="./resources/images/employees.png"></a><button id="updateDeptSendBtn">en</button></li>');	
+	addDeptWin = false;
+	} 
+});
+//부서생성ajax
+$(document).on("click","#updateDeptSendBtn",function(){
+	var deptName = temps; 
+	var temp = $(".test").attr('id').split('-');
+	var level = temp[0];
+	var addImg = '';
+	
+	console.log(level);
+	console.log(deptName);
+	
+	$.ajax({
+		url: "second.org",
+		type: "get",
+		data: {deptName : deptName,
+			   level : level},
+		success : function(data) {
+			if(data == "1" ) {
+				$("#newDept").text(deptName);
+				$("#newDept").img();
+				$("#inputDept").remove(); 
+			}},
+		error: function() {
+			console.log("에러");
+			}	
+});
+});
+</script>
+<script>
+
+window.onload = function() {
+		function onClick() {
+	        document.querySelector('.updateDeptModal').style.display ='block';
+	    }   
+	    function offClick() {
+	        document.querySelector('.updateDeptModal').style.display ='none';
+	    }
+	 
+	    document.getElementById('deptUpdateBtn').addEventListener('click', onClick);
+	    document.querySelector('.modal_close').addEventListener('click', offClick);
+	}
+</script>
+</html>
